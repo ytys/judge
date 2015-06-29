@@ -1,0 +1,47 @@
+<!--
+    Document   : test
+    Created on : Jun 12, 2015, 15:33:37
+    Author     : zhanhb
+-->
+
+<jsp:root version="2.0" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:escape="urn:jsptagdir:/WEB-INF/tags/escape"
+          xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+          xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+          xmlns:form="http://www.springframework.org/tags/form"
+          xmlns:html="urn:jsptagdir:/WEB-INF/tags/html"
+          xmlns:judge="urn:jsptagdir:/WEB-INF/tags/judge"
+          xmlns:site="urn:jsptagdir:/WEB-INF/tags/site"
+          xmlns:spring="http://www.springframework.org/tags"
+          xmlns:tiles="http://tiles.apache.org/tags-tiles"
+          xmlns:util="urn:jsptagdir:/WEB-INF/tags/util">
+
+    <jsp:output omit-xml-declaration="yes" />
+
+    <jsp:directive.page contentType="text/html" pageEncoding="UTF-8" session="false" />
+
+    <site:basic>
+        <jsp:attribute name="title">JSPX Page</jsp:attribute>
+
+        <jsp:attribute name="body">
+            ${test}
+            <html:a href="${test}">test</html:a>
+
+            <c:set var="test" value="&amp;"/>
+            <escape:url value="123#a"/>
+
+            <pre>
+                <jsp:text>${pageContext}</jsp:text>
+                <jsp:text>${tt}</jsp:text>
+                <form:form servletRelativeAction="/upload" role="form" enctype="multipart/form-data">
+                    <jsp:attribute name="methodParam">
+                        <jsp:param name="name" value="value"/>
+                    </jsp:attribute>
+                    <input type="file" name="file"/>
+                    <input type="submit"/>
+                </form:form>
+            </pre>
+        </jsp:attribute>
+    </site:basic>
+</jsp:root>

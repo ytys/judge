@@ -1,0 +1,20 @@
+<!--
+    Document   : foot
+    Created on : Jun 2, 2015, 20:38:03
+    Author     : zhanhb
+-->
+
+<jsp:root version="2.0" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:util="urn:jsptagdir:/WEB-INF/tags/util"
+          xmlns:spring="http://www.springframework.org/tags">
+
+    <jsp:output omit-xml-declaration="yes"/>
+
+    <jsp:directive.page contentType="text/html" pageEncoding="UTF-8" session="false"/>
+
+    <footer class="footer text-center">
+        <p>Copyright &amp;copy; <util:datetime format="yyyy"/> ZJNU ACM</p>
+    </footer>
+    <spring:message var="back_to_top" code="back_to_top"/>
+    <span title="${back_to_top}" class="back-to-top" id="back-to-top"><jsp:text/></span>
+</jsp:root>

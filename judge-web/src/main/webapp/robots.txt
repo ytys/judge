@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /CLanguage/
+Allow: /DataStruct/
+Allow: /nexus/
+Allow: /!/
+Disallow: /

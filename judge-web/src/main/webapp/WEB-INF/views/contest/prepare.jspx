@@ -1,0 +1,19 @@
+<!--
+    Document   : prepare
+    Created on : Jun 17, 2015, 10:59:03
+    Author     : zhanhb
+-->
+
+<jsp:root version="2.0" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <jsp:output omit-xml-declaration="yes" />
+
+    <jsp:directive.page contentType="text/html" pageEncoding="UTF-8" session="false" />
+
+    <c:set var="homeURL" scope="request" value="/${contest.name}/"/>
+    <c:set var="loginURL" scope="request" value="/${contest.name}/login"/>
+    <c:set var="problemURL" scope="request" value="/${contest.name}/problem"/>
+    <c:set var="userprofileURL" scope="request" value="/${contest.name}/user"/>
+    <c:set var="contestURL" scope="request" value="/${contest.name}/contest"/>
+</jsp:root>

@@ -1,0 +1,51 @@
+<!--
+    Document   : home
+    Created on : Jun 15, 2015, 17:33:08
+    Author     : zhanhb
+-->
+
+<jsp:root version="2.0"
+          xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:html="urn:jsptagdir:/WEB-INF/tags/html"
+          xmlns:escape="urn:jsptagdir:/WEB-INF/tags/escape">
+
+    <jsp:output omit-xml-declaration="yes" />
+
+    <jsp:directive.page contentType="text/html" pageEncoding="UTF-8" session="false" />
+    <div class="container">
+        <escape:none>
+            <style>
+                #repo-list {
+                    padding: 30px 10px 60px 10px;
+                }
+                #repo-list li {
+                    display: inline-block;
+                    list-style-type: none;
+                    border: 1px solid transparent;
+                    font-size: 26px;
+                }
+                #repo-list li a {
+                    display: inline-block;
+                    min-width: 200px;
+                    text-decoration: none;
+                    padding: 20px 5px 20px 10px;
+                }
+            </style>
+        </escape:none>
+        <link href="/!/css/font-awesome.min.css" type="text/css" rel="stylesheet"/>
+        <ul id="repo-list">
+            <li>
+                <html:a href="/clanguage"><span class="fa fa-database"><jsp:text/></span> CLanguage</html:a>
+                <html:a href="/datastruct"><span class="fa fa-database"><jsp:text/></span> DataStruct</html:a>
+                <html:a href="/java"><span class="fa fa-database"><jsp:text/></span> java</html:a>
+                <html:a href="/java"><span class="fa fa-database"><jsp:text/></span> java</html:a>
+                <html:a href="/java"><span class="fa fa-database"><jsp:text/></span> java</html:a>
+                <html:a href="/java"><span class="fa fa-database"><jsp:text/></span> java</html:a>
+                <html:a href="/java"><span class="fa fa-database"><jsp:text/></span> java</html:a>
+                <html:a href="/java"><span class="fa fa-database"><jsp:text/></span> java</html:a>
+                <html:a href="/java"><span class="fa fa-database"><jsp:text/></span> java</html:a>
+                <html:a href="/java"><span class="fa fa-database"><jsp:text/></span> java</html:a>
+                </li>
+            </ul>
+        </div>
+</jsp:root>

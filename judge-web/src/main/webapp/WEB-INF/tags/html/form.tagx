@@ -1,0 +1,21 @@
+<!--
+    Document   : form
+    Created on : Jun 3, 2015, 1:12:44
+    Author     : zhanhb
+-->
+
+<jsp:root version="2.0" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:util="urn:jsptagdir:/WEB-INF/tags/util">
+
+    <jsp:directive.tag description="put the tag description here"/>
+    <jsp:directive.tag dynamic-attributes="attrs"/>
+
+    <!-- The list of normal or fragment attributes can be specified here: -->
+    <jsp:directive.attribute name="action" required="true"/>
+
+    <!-- any content can be specified here e.g.: -->
+    <util:output name="form" content="true" dynamic="${attrs}"
+                 urlName="action" urlValue="${action}">
+        <jsp:doBody/>
+    </util:output>
+</jsp:root>

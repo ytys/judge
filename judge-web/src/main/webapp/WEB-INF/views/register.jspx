@@ -1,0 +1,68 @@
+<!--
+    Document   : register
+    Created on : Jun 7, 2015, 16:40:04
+    Author     : zhanhb
+-->
+
+<jsp:root version="2.0" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:form="http://www.springframework.org/tags/form">
+
+    <jsp:output omit-xml-declaration="yes" />
+
+    <jsp:directive.page contentType="text/html" pageEncoding="UTF-8" session="false" />
+
+    <div class="container">
+        <div class="row" style="margin-top:40px;">
+            <div class="col-md-4 col-md-offset-4">
+                <form:form modelAttribute="userRegisterForm" accept-charset="UTF-8" role="form" class="form-signin">
+                    <h3 style="color:dimgray; text-align: center">Register now to create and fork snippets</h3>
+
+                    <hr class="colorgraph"/>
+                    <fieldset>
+                        <form:errors path="handle" cssClass="error"/>
+                        <form:input class="form-control" placeholder="Username" path="handle" type="text"/>
+                        <form:errors path="email" cssClass="error" delimiter=", " />
+                        <form:input class="form-control middle" placeholder="E-mail" path="email" type="text"/>
+                        <form:errors path="password" cssClass="error" delimiter=", " element="span"/>
+                        <form:input class="form-control middle" placeholder="Password" path="password" type="password"/>
+                        <form:errors path="rptPassword" cssClass="error" delimiter=", " element="span"/>
+                        <form:input class="form-control bottom" placeholder="Confirm Password" path="rptPassword" type="password"/>
+                        <form:errors path="realname" cssClass="error" delimiter=", " element="span"/>
+                        <form:input class="form-control middle" placeholder="Real name" path="realname" type="text"/>
+                        <form:errors path="school" cssClass="error" delimiter=", " element="span"/>
+                        <form:input class="form-control middle" placeholder="School" path="school" type="text"/>
+                        <form:errors path="major" cssClass="error" delimiter=", " element="span"/>
+                        <form:input class="form-control middle" placeholder="Major" path="major" type="text"/>
+                        <input class="btn btn-lg btn-primary btn-block" type="submit" value="Register"/>
+                        <p class="text-center" style="margin-top:10px;">OR</p>
+                        <a class="btn btn-lg btn-default btn-block" href="${pageContext.request.contextPath}/login/github"><i class="icon-github"><jsp:text/></i> Register with Github</a>
+                        <br/>
+                        <p class="text-center"><a href="${pageContext.request.contextPath}/login">Already have an account?</a></p>
+                    </fieldset>
+                    <script>//<![CDATA[
+                        jQuery(function ($) {
+                            function submit() {
+                                function submit() {
+                                    return $.post(form.attr("action"), form.serialize(), function (html) {
+                                        var id = form.attr("id");
+                                        form.replaceWith($(html).find('#' + id));
+                                        return false;
+                                    });
+                                }
+                                var form = $(this);
+                                submit().statusCode({
+                                    "403": function () {
+                                        $.get(form.attr("action"), function (html) {
+                                            form.find("input:hidden[name$='csrf']").replaceWith($(html).find("input:hidden[name$='csrf']"))[0] && submit();
+                                        });
+                                    }
+                                });
+                                return false;
+                            }
+                            $("form#userRegisterForm").submit(submit);
+                        });//]]></script>
+                    </form:form>
+            </div>
+        </div>
+    </div>
+</jsp:root>

@@ -1,0 +1,18 @@
+<!--
+    Document   : html
+    Created on : Jun 15, 2015, 0:42:10
+    Author     : zhanhb
+-->
+
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:escape="urn:jsptagdir:/WEB-INF/tags/escape" version="2.0">
+
+    <jsp:directive.tag body-content="empty"/>
+    <jsp:directive.tag description="put the tag description here" />
+
+    <!-- The list of normal or fragment attributes can be specified here: -->
+    <jsp:directive.attribute name="value" required="true"/>
+
+    <!-- any content can be specified here e.g.: -->
+    <escape:xml value="${value}"/>
+</jsp:root>

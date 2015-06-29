@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+    <definition name="default" template="/WEB-INF/layouts/layout.jspx">
+        <put-attribute name="title_code" value="default_title"/>
+        <put-attribute name="global_prepare" value="/WEB-INF/views/default/global_prepare.jspx"/>
+        <put-attribute name="header" value="/WEB-INF/views/default/header.jspx"/>
+        <!--<put-attribute name="body" value="this is required"/>-->
+        <put-attribute name="foot" value="/WEB-INF/views/default/foot.jspx"/>
+    </definition>
+    <definition extends="default" name="home">
+        <put-attribute name="body" value="/WEB-INF/views/home.jspx"/>
+    </definition>
+    <definition extends="default" name="faq">
+        <put-attribute name="title_code" value="faq_title"/>
+        <put-attribute name="body" value="/WEB-INF/views/faq.jspx"/>
+    </definition>
+    <definition extends="default" name="login">
+        <put-attribute name="body" value="/WEB-INF/views/login.jspx"/>
+    </definition>
+    <definition extends="default" name="register">
+        <put-attribute name="body" value="/WEB-INF/views/register.jspx"/>
+    </definition>
+    <definition extends="default" name="password">
+        <put-attribute name="body" value="/WEB-INF/views/password.jspx"/>
+    </definition>
+    <definition name="error" template="/WEB-INF/views/error.jspx"/>
+    <definition name="test" template="/test.jspx"/>
+    <definition name="success" template="/test.jspx"/>
+</tiles-definitions>

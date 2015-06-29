@@ -1,0 +1,16 @@
+<!--
+    Document   : view
+    Created on : May 31, 2015, 17:39:54
+    Author     : zhanhb
+-->
+
+<jsp:root version="2.0" xmlns:jsp="http://java.sun.com/JSP/Page">
+
+    <jsp:output omit-xml-declaration="yes"/>
+    <jsp:directive.page contentType="text/html" pageEncoding="UTF-8" session="false"/>
+
+    <div class="container">
+        <h1>${userprofile.handle}</h1>
+        <h1>${userprofile.nickname}</h1>
+    </div>
+</jsp:root>

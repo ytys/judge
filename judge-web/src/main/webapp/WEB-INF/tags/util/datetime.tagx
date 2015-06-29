@@ -1,0 +1,25 @@
+<!--
+    Document   : now
+    Created on : May 31, 2015, 9:07:33
+    Author     : zhanhb
+-->
+
+<jsp:root version="2.0" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:fmt="http://java.sun.com/jsp/jstl/fmt">
+
+    <jsp:directive.tag body-content="empty"/>
+    <jsp:directive.tag description="date time format"/>
+
+    <!-- The list of normal or fragment attributes can be specified here: -->
+    <jsp:directive.attribute name="format" required="true"/>
+    <jsp:directive.attribute name="value"/>
+
+    <!-- any content can be specified here e.g.: -->
+    <c:if test="${empty value}">
+        <jsp:useBean id="value" class="java.util.Date"/>
+    </c:if>
+
+    <fmt:setLocale value="${pageContext.response.locale}"/>
+    <fmt:formatDate pattern="${format}" value="${value}"/>
+</jsp:root>

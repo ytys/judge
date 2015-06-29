@@ -1,0 +1,23 @@
+<!--
+    Document   : metaData
+    Created on : Jun 23, 2015, 19:10:52
+    Author     : zhanhb
+-->
+
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:html="urn:jsptagdir:/WEB-INF/tags/html" version="2.0">
+
+    <jsp:directive.tag description="put the tag description here" />
+
+    <!-- The list of normal or fragment attributes can be specified here: -->
+
+    <!-- any content can be specified here e.g.: -->
+
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <html:link href="/favicon.png" rel="shortcut icon" type="image/png"/>
+    <html:link href="/favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+
+</jsp:root>

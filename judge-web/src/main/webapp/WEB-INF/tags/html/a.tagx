@@ -1,0 +1,22 @@
+<!--
+    Document   : a
+    Created on : May 31, 2015, 2:21:15
+    Author     : zhanhb
+-->
+
+<jsp:root version="2.0" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:util="urn:jsptagdir:/WEB-INF/tags/util">
+
+    <jsp:directive.tag description="Render a HTML href element that when clicked can optionally call a URL via remote XMLHttpRequest and updates its targets"/>
+    <jsp:directive.tag dynamic-attributes="attrs"/>
+
+    <!-- The list of normal or fragment attributes can be specified here: -->
+
+    <jsp:directive.attribute name="href" required="true"/>
+
+    <!-- any content can be specified here e.g.: -->
+    <util:output name="a" dynamic="${attrs}" content="true"
+                 urlName="href" urlValue="${href}">
+        <jsp:doBody/>
+    </util:output>
+</jsp:root>

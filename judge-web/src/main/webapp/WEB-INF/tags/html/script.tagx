@@ -1,0 +1,21 @@
+<!--
+    Document   : script
+    Created on : May 30, 2015, 23:45:55
+    Author     : zhanhb
+-->
+
+<jsp:root version="2.0" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:util="urn:jsptagdir:/WEB-INF/tags/util">
+
+    <jsp:directive.tag description="script tag, it will not generate self close tags."/>
+    <jsp:directive.tag dynamic-attributes="attrs"/>
+
+    <!-- The list of normal or fragment attributes can be specified here: -->
+    <jsp:directive.attribute name="src" required="true"/>
+
+    <!-- any content can be specified here e.g.: -->
+    <util:output name="script" content="true" dynamic="${attrs}"
+                 urlName="src" urlValue="${src}">
+        <jsp:doBody/>
+    </util:output>
+</jsp:root>
