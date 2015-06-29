@@ -12,12 +12,13 @@
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <jackson.version>2.5.4</jackson.version>
         <java.version>1.8</java.version>
+        <liquibase.version>3.3.5</liquibase.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
-        <liquibase.version>3.3.5</liquibase.version>
         <!--<maven.test.failure.ignore>true</maven.test.failure.ignore>-->
         <!--<maven.test.skip>true</maven.test.skip>-->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <querydsl.version>3.6.4</querydsl.version>
         <slf4j.version>1.7.12</slf4j.version>
     </properties>
     <dependencyManagement>
@@ -43,6 +44,11 @@
             <groupId>com.github.zhanhb</groupId>
             <artifactId>character-encoding-filter</artifactId>
             <version>2.1.6.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-compress</artifactId>
+            <version>1.9</version>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -143,7 +149,7 @@
         <dependency>
             <groupId>com.mysema.querydsl</groupId>
             <artifactId>querydsl-jpa</artifactId>
-            <version>3.6.4</version>
+            <version>${querydsl.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -226,9 +232,9 @@
             <version>1.4.01</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-compress</artifactId>
-            <version>1.9</version>
+            <groupId>org.jvnet.jaxb2.maven2</groupId>
+            <artifactId>maven-jaxb2-plugin</artifactId>
+            <version>0.12.3</version>
         </dependency>
         <dependency>
             <groupId>javax</groupId>
@@ -245,7 +251,7 @@
         <dependency>
             <groupId>com.mysema.querydsl</groupId>
             <artifactId>querydsl-apt</artifactId>
-            <version>3.6.4</version>
+            <version>${querydsl.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -447,6 +453,7 @@
                 here we use 3.1 -->
                 <version>3.1</version>
                 <configuration>
+                    <argLine>-Dfile.encoding=UTF8</argLine>
                     <annotationProcessors>
                         <!-- JPAMetaModelEntityProcessor is an annotation processor based on JSR_269 with the task of creating JPA 2 static metamodel classes -->
                         <annotationProcessor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</annotationProcessor>
@@ -469,6 +476,7 @@
                             <goal>copy</goal>
                         </goals>
                         <configuration>
+                            <argLine>-Dfile.encoding=UTF8</argLine>
                             <outputDirectory>${endorsed.dir}</outputDirectory>
                             <silent>true</silent>
                             <artifactItems>
@@ -504,6 +512,7 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <argLine>-Dfile.encoding=UTF8</argLine>
                     <rules>
                         <requireMavenVersion>
                             <message>You are running an older version of Maven. JHipster requires at least Maven 3.0</message>
