@@ -31,27 +31,37 @@ import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 @Utility
 public class Zip {
 
-    public void zip(Path source, Path target) throws IOException {
+    public void zip(Path target, Path... sources) throws IOException {
         try (OutputStream os = Files.newOutputStream(target)) {
-            zip(source, os);
+            zip(os, sources);
         }
     }
 
-    public void zip(Path source, OutputStream target) throws IOException {
+    public void zip(OutputStream target, Path... sources) throws IOException {
         try (ZipArchiveOutputStream zip = new ZipArchiveOutputStream(target)) {
-            Files.walk(source)
-                    .filter(file -> Files.isRegularFile(file))
-                    .forEach((Path file) -> copy(file, source, zip));
+            for (Path source : sources) {
+                String name = source.getFileName().toString();
+                if (Files.isDirectory(source)) {
+                    Files.walk(source)
+                            .filter(file -> Files.isRegularFile(file))
+                            .forEach((Path file) -> copy(file, source, zip, name));
+                } else {
+                    copyEntry(zip, name, source);
+                }
+            }
         } catch (UncheckedIOException ex) {
             throw ex.getCause();
         }
     }
 
-    protected void copy(Path file, Path source, ZipArchiveOutputStream zip) {
+    protected void copy(Path file, Path source, ZipArchiveOutputStream zip, String prefix) {
+        String name = prefix + '/' + source.relativize(file).toString();
+        copyEntry(zip, name, file);
+    }
+
+    private void copyEntry(ZipArchiveOutputStream zip, String name, Path file) {
         try {
             BasicFileAttributes attrs = Files.readAttributes(file, BasicFileAttributes.class);
-
-            String name = source.relativize(file).toString();
 
             ZipArchiveEntry entry = new ZipArchiveEntry(name);
             entry.setCreationTime(attrs.creationTime());

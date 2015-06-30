@@ -32,7 +32,7 @@ public class Main extends AbstractContextControllerTests {
 
     @Test
     public void test() throws IOException {
-        zip.zip(Paths.get("src"), Paths.get("target/test.zip"));
+        zip.zip(Paths.get("target/test.zip"), Paths.get("src"));
     }
 
 }
