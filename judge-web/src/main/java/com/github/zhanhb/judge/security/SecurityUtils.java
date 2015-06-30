@@ -1,8 +1,11 @@
 package com.github.zhanhb.judge.security;
 
-import com.github.zhanhb.judge.audit.CustomUserDetails;
 import com.github.zhanhb.judge.model.Userprofile;
+import com.github.zhanhb.judge.repository.UserprofileRepository;
+import com.github.zhanhb.judge.util.Utility;
+import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,17 +14,18 @@ import org.springframework.security.core.userdetails.UserDetails;
  * Utility class for Spring Security.
  */
 @Slf4j
-public final class SecurityUtils {
+@Utility
+public class SecurityUtils {
 
-    private SecurityUtils() {
-    }
+    @Autowired
+    private UserprofileRepository repository;
 
     /**
      * Get the login of the current user.
      *
      * @return
      */
-    public static Userprofile getCurrentLogin() {
+    public Userprofile getCurrentLogin() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication == null || !authentication.isAuthenticated()) {
@@ -29,17 +33,14 @@ public final class SecurityUtils {
         }
 
         Object principal = authentication.getPrincipal();
+        String username = null;
 
-        if (principal instanceof CustomUserDetails) {
-            if (log.isDebugEnabled()) {
-                log.debug(((UserDetails) principal).getUsername());
-            }
-            return ((CustomUserDetails) principal).getUserprofile();
-        } else if (log.isDebugEnabled()) {
-            log.debug(String.valueOf(principal));
+        if (principal instanceof String) {
+            username = (String) principal;
+        } else if (principal instanceof UserDetails) {
+            username = ((UserDetails) principal).getUsername();
         }
-
-        return null;
+        return Optional.ofNullable(username).flatMap(repository::findByHandleIgnoreCase).orElse(null);
     }
 
     /**
@@ -47,7 +48,7 @@ public final class SecurityUtils {
      *
      * @return true if the user is authenticated, false otherwise
      */
-    public static boolean isAuthenticated() {
+    public boolean isAuthenticated() {
         return getCurrentLogin() != null;
     }
 

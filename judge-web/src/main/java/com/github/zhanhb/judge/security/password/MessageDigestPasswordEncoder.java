@@ -15,7 +15,7 @@
  */
 package com.github.zhanhb.judge.security.password;
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,12 +28,7 @@ public class MessageDigestPasswordEncoder implements PasswordEncoder {
     private final int passwordLength;
 
     public MessageDigestPasswordEncoder(String algorithm) {
-        MessageDigest digest;
-        try {
-            digest = MessageDigest.getInstance(algorithm);
-        } catch (NoSuchAlgorithmException ex) {
-            throw new IllegalArgumentException("no such algorithm '" + algorithm + "'", ex);
-        }
+        MessageDigest digest = getDigest(algorithm);
         this.algorithm = digest.getAlgorithm();
         passwordLength = digest.getDigestLength() << 1; // hex bytes
     }
@@ -48,12 +43,9 @@ public class MessageDigestPasswordEncoder implements PasswordEncoder {
 
     @Override
     public String encode(CharSequence password) {
-        try {
-            MessageDigest digest = MessageDigest.getInstance(algorithm);
-            return hexBytes(digest.digest(password.toString().getBytes("UTF-8")));
-        } catch (UnsupportedEncodingException | NoSuchAlgorithmException ex) {
-            throw new Error(ex);
-        }
+        return hexBytes(getDigest(algorithm)
+                .digest(password.toString()
+                        .getBytes(StandardCharsets.UTF_8)));
     }
 
     @Override
@@ -70,4 +62,13 @@ public class MessageDigestPasswordEncoder implements PasswordEncoder {
         }
         return new String(str);
     }
+
+    private MessageDigest getDigest(String algorithm) {
+        try {
+            return MessageDigest.getInstance(algorithm);
+        } catch (NoSuchAlgorithmException ex) {
+            throw new IllegalArgumentException("no such algorithm '" + algorithm + "'", ex);
+        }
+    }
+
 }

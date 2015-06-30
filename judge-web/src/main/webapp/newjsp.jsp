@@ -17,4 +17,6 @@
     if (test != null) {
         out.println(test.length());
     }
+    out.println();
+    new Exception().printStackTrace(new java.io.PrintWriter(out, true));
 %></pre>

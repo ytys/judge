@@ -17,17 +17,23 @@ package com.github.zhanhb.judge.audit;
 
 import com.github.zhanhb.judge.model.Userprofile;
 import com.github.zhanhb.judge.security.SecurityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.AuditorAware;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author zhanhb
  */
+@Service
 public class UserAuditorAware implements AuditorAware<Userprofile> {
+
+    @Autowired
+    private SecurityUtils securityUtils;
 
     @Override
     public Userprofile getCurrentAuditor() {
-        return SecurityUtils.getCurrentLogin();
+        return securityUtils.getCurrentLogin();
     }
 
 }

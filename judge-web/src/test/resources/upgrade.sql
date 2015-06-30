@@ -2,7 +2,7 @@ use oj;
 ALTER TABLE `access_log`
     DROP FOREIGN KEY IF EXISTS `FK_access_log_userprofile`;
 ALTER TABLE `access_log`
-    ADD CONSTRAINT IF EXISTS `FK_access_log_userprofile` FOREIGN KEY (`userprofile`) REFERENCES `userprofile` (`id`) ON UPDATE CASCADE;
+    ADD CONSTRAINT `FK_access_log_userprofile` FOREIGN KEY (`userprofile`) REFERENCES `userprofile` (`id`) ON UPDATE CASCADE;
 
 ALTER TABLE `contest`
     DROP FOREIGN KEY IF EXISTS `FK_contest_creation_user`,
@@ -36,13 +36,6 @@ ALTER TABLE `problem`
 ALTER TABLE `problem`
     ADD CONSTRAINT `FK_problem_creation_user` FOREIGN KEY (`creation_user`) REFERENCES `userprofile` (`id`) ON UPDATE CASCADE,
     ADD CONSTRAINT `FK_problem_limits` FOREIGN KEY (`limits`) REFERENCES `limits` (`id`) ON UPDATE CASCADE;
-
-ALTER TABLE `role_permission`
-    DROP FOREIGN KEY IF EXISTS `FK_role_permission_permission`,
-    DROP FOREIGN KEY IF EXISTS `FK_role_permission_role`;
-ALTER TABLE `role_permission`
-    ADD CONSTRAINT `FK_role_permission_permission` FOREIGN KEY (`permission`) REFERENCES `permission` (`id`) ON UPDATE CASCADE,
-    ADD CONSTRAINT `FK_role_permission_role` FOREIGN KEY (`role`) REFERENCES `role` (`id`) ON UPDATE CASCADE;
 
 ALTER TABLE `submission`
     DROP FOREIGN KEY IF EXISTS `FK_submission_contest`,
@@ -127,7 +120,7 @@ create table oj_temp_schema.problem_clanguage
     from clanguage.problem p
     where p.defunct='N';
 ALTER TABLE `oj_temp_schema`.`problem_clanguage`
-	CHANGE COLUMN `new_id` `new_id` BIGINT NULL LAST;
+    CHANGE COLUMN `new_id` `new_id` BIGINT NULL DEFAULT NULL AFTER `case_time_limit`;
 
 /* problem end */
 
@@ -197,6 +190,7 @@ insert into oj.userprofile (
 
 ALTER TABLE `oj`.`problem` AUTO_INCREMENT=0;
 insert into oj.problem (
+    id,
     creation_date,
     description,
     hint,
@@ -210,6 +204,7 @@ insert into oj.problem (
     creation_user,
     limits
 ) select
+    orign_id,
     creation_date,
     description,
     hint,

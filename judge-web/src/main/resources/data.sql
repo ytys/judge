@@ -13,9 +13,9 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO';
 -- 正在导出表  oj.contest 的数据：~3 rows (大约)
 ALTER TABLE `contest` DISABLE KEYS;
 REPLACE INTO `contest` (`id`, `begin_time`, `creation_date`, `disabled`, `finish_time`, `last_update_date`, `name`, `password`, `title`, `type`, `creation_user`, `last_update_user`) VALUES
-	(1, NULL, '2015-06-14 09:57:41', b'0', NULL, '2015-06-22 23:36:46', 'CLanguage', NULL, 'CLanguage', 1, 1, NULL),
-	(2, NULL, '2015-06-14 09:57:51', b'0', NULL, '2015-06-22 23:36:50', 'DataStruct', NULL, 'DataStruct', 1, 1, NULL),
-	(3, NULL, '2015-06-14 09:57:59', b'0', NULL, '2015-06-22 23:36:53', 'java', NULL, 'java', 1, 1, NULL);
+	(1, NULL, now(), 0, NULL, now(), 'CLanguage', NULL, 'CLanguage', 1, 1, NULL),
+	(2, NULL, now(), 0, NULL, now(), 'DataStruct', NULL, 'DataStruct', 1, 1, NULL),
+	(3, NULL, now(), 0, NULL, now(), 'java', NULL, 'java', 1, 1, NULL);
 ALTER TABLE `contest` ENABLE KEYS;
 
 -- 正在导出表  oj.contest_language 的数据：~15 rows (大约)
@@ -111,8 +111,10 @@ ALTER TABLE `role` ENABLE KEYS;
 
 -- 正在导出表  oj.userprofile 的数据：~1 rows (大约)
 ALTER TABLE `userprofile` DISABLE KEYS;
-REPLACE INTO `userprofile` (`id`, `birth_date`, `creation_date`, `disabled`, `email`, `handle`, `last_update_date`, `major`, `nickname`, `password`, `school`, `creation_user`) VALUES
-	(1, '1992-08-24', '2015-06-22 23:18:12', b'0', 'zhanhb8@qq.com', 'admin', '2015-06-22 23:18:12', 'software', 'Administrator', 'admin', 'ZJNU', NULL);
+REPLACE INTO `userprofile` (`id`, `creation_date`, `disabled`, `email`, `handle`, `last_update_date`, `major`, `nickname`, `password`, `school`, `creation_user`) VALUES
+        (1, now(), 0, 'system@localhost', 'system', now(), NULL, 'system', '$2a$10$mE.qmcV0mFU5NcKh73TZx.z4ueI/.bDWbj0T1BYyqP481kGGarKLG', NULL, 1),
+        (2, now(), 0, 'anonymous@localhost', 'anonymousUser', now(), NULL, 'anonymousUser', '$2a$10$j8S5d7Sr7.8VTOYNviDPOeWX8KcYILUVJBsYV83Y5NtECayypx9lO', NULL, 1),
+        (3, now(), 0, 'admin@localhost', 'admin', now(), NULL, 'admin', '$2a$10$gSAhZrxMllrbgj/kkK9UceBPpChGWJA7SYIb1Mqo.n5aNLq1/oRrC', NULL, 1);
 ALTER TABLE `userprofile` ENABLE KEYS;
 
 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '');

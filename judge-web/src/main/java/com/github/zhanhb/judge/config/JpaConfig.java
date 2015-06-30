@@ -15,12 +15,8 @@
  */
 package com.github.zhanhb.judge.config;
 
-import com.github.zhanhb.judge.audit.UserAuditorAware;
-import com.github.zhanhb.judge.model.Userprofile;
 import com.github.zhanhb.judge.repository.BaseRepository;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
@@ -32,10 +28,5 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableJpaAuditing
 @EnableJpaRepositories(basePackageClasses = BaseRepository.class)
 public class JpaConfig {
-
-    @Bean
-    public AuditorAware<Userprofile> auditorProvider() {
-        return new UserAuditorAware();
-    }
 
 }

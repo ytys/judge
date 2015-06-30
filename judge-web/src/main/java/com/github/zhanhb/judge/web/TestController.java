@@ -76,7 +76,7 @@ public class TestController {
     public void show(HttpServletRequest request, HttpServletResponse response,
             @PathVariable String id) throws IOException {
         response.setContentType("text/plain");
-        response.setCharacterEncoding("utf-8");
+        response.setCharacterEncoding("UTF-8");
         try (PrintWriter out = response.getWriter()) {
             out.println(id);
         }

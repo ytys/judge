@@ -18,9 +18,6 @@
                data-page-number="${param.page!=null?param.page+1:1}"
                data-pagination="true"
                data-side-pagination="server"
-               data-state-save="true"
-               data-state-save-expire="z"
-               data-state-save-id-table="problemList"
                data-toggle="table"
                data-url="?">
             <thead>

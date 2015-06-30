@@ -67,49 +67,49 @@ public class Problem implements Serializable {
     @Id
     private Long id;
 
-    @Column(nullable = false, length = Integer.MAX_VALUE)
+    @Column(length = Integer.MAX_VALUE)
     @Lob
     @NotNull
     @Length(min = 1, max = Integer.MAX_VALUE)
     private String title;
 
     @Lob
-    @Column(nullable = false, length = Integer.MAX_VALUE)
+    @Column(length = Integer.MAX_VALUE)
     @NotNull
     @Length(min = 0, max = Integer.MAX_VALUE)
     private String description;
 
-    @Column(nullable = false, length = Integer.MAX_VALUE)
+    @Column(length = Integer.MAX_VALUE)
     @Lob
     @NotNull
     @Length(min = 0, max = Integer.MAX_VALUE)
     private String input;
 
-    @Column(nullable = false, length = Integer.MAX_VALUE)
+    @Column(length = Integer.MAX_VALUE)
     @Lob
     @NotNull
     @Length(min = 0, max = Integer.MAX_VALUE)
     private String output;
 
-    @Column(name = "sample_input", nullable = false, length = Integer.MAX_VALUE)
+    @Column(name = "sample_input", length = Integer.MAX_VALUE)
     @Lob
     @NotNull
     @Length(min = 0, max = Integer.MAX_VALUE)
     private String sampleInput;
 
-    @Column(name = "sample_output", nullable = false, length = Integer.MAX_VALUE)
+    @Column(name = "sample_output", length = Integer.MAX_VALUE)
     @Lob
     @NotNull
     @Length(min = 0, max = Integer.MAX_VALUE)
     private String sampleOutput;
 
-    @Column(nullable = false, length = Integer.MAX_VALUE)
+    @Column(length = Integer.MAX_VALUE)
     @Lob
     @NotNull
     @Length(min = 0, max = Integer.MAX_VALUE)
     private String hint;
 
-    @Column(nullable = false, length = Integer.MAX_VALUE)
+    @Column(length = Integer.MAX_VALUE)
     @Lob
     @NotNull
     @Length(min = 0, max = Integer.MAX_VALUE)
@@ -120,7 +120,7 @@ public class Problem implements Serializable {
     @JsonUnwrapped
     private Limits limits;
 
-    @Column(name = "creation_date", nullable = false)
+    @Column(name = "creation_date")
     @CreatedDate
     @JsonIgnore
     @Type(type = "org.jadira.usertype.dateandtime.threeten.PersistentLocalDateTime")
@@ -132,7 +132,7 @@ public class Problem implements Serializable {
     @ManyToOne
     private Userprofile creationUser;
 
-    @Column(name = "last_update_date", nullable = false)
+    @Column(name = "last_update_date")
     @JsonIgnore
     @LastModifiedDate
     @Type(type = "org.jadira.usertype.dateandtime.threeten.PersistentLocalDateTime")
