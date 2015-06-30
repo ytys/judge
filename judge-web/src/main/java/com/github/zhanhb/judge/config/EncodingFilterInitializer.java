@@ -31,7 +31,7 @@ public class EncodingFilterInitializer implements WebApplicationInitializer {
 
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
-        servletContext.addFilter("characterEncodingFilter", CharacterEncodingFilter.class).addMappingForUrlPatterns(null, false, "/*");
+        servletContext.addFilter("characterEncodingFilter", new CharacterEncodingFilter().useProxy()).addMappingForUrlPatterns(null, false, "/*");
     }
 
 }

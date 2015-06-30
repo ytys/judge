@@ -42,6 +42,7 @@
                     <input type="submit"/>
                 </form:form>
             </pre>
+            <jsp:directive.include file="newjsp.jsp"/>
         </jsp:attribute>
     </site:basic>
 </jsp:root>

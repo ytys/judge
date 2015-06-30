@@ -4,8 +4,8 @@
     Author     : zhanhb
 --%>
 
-<%@page contentType="text/plain" pageEncoding="UTF-8" session="false"%>
-<%
+<%@page contentType="text/html" pageEncoding="UTF-8" session="false"%>
+<pre><%
     out.println(request.getClass());
     ServletRequest r = request;
     while (r instanceof ServletRequestWrapper) {
@@ -17,4 +17,4 @@
     if (test != null) {
         out.println(test.length());
     }
-%>
+%></pre>

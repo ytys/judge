@@ -1,7 +1,93 @@
+use oj;
+ALTER TABLE `access_log`
+    DROP FOREIGN KEY IF EXISTS `FK_access_log_userprofile`;
+ALTER TABLE `access_log`
+    ADD CONSTRAINT IF EXISTS `FK_access_log_userprofile` FOREIGN KEY (`userprofile`) REFERENCES `userprofile` (`id`) ON UPDATE CASCADE;
+
+ALTER TABLE `contest`
+    DROP FOREIGN KEY IF EXISTS `FK_contest_creation_user`,
+    DROP FOREIGN KEY IF EXISTS `FK_contest_last_update_user`;
+ALTER TABLE `contest`
+    ADD CONSTRAINT `FK_contest_creation_user` FOREIGN KEY (`creation_user`) REFERENCES `userprofile` (`id`) ON UPDATE CASCADE,
+    ADD CONSTRAINT `FK_contest_last_update_user` FOREIGN KEY (`last_update_user`) REFERENCES `userprofile` (`id`);
+
+ALTER TABLE `contest_userprofile_statistics`
+    DROP FOREIGN KEY IF EXISTS `FK_contest_userprofile_statistics_contest`,
+    DROP FOREIGN KEY IF EXISTS `FK_contest_userprofile_statistics_userprofile`;
+ALTER TABLE `contest_userprofile_statistics`
+    ADD CONSTRAINT `FK_contest_userprofile_statistics_contest` FOREIGN KEY (`contest`) REFERENCES `contest` (`id`) ON UPDATE CASCADE,
+    ADD CONSTRAINT `FK_contest_userprofile_statistics_userprofile` FOREIGN KEY (`userprofile`) REFERENCES `userprofile` (`id`) ON UPDATE CASCADE;
+
+ALTER TABLE `judge_reply`
+    DROP FOREIGN KEY IF EXISTS `FK_judge_reply_creation_user`,
+    DROP FOREIGN KEY IF EXISTS `FK_judge_reply_last_update_user`;
+ALTER TABLE `judge_reply`
+    ADD CONSTRAINT `FK_judge_reply_creation_user` FOREIGN KEY (`creation_user`) REFERENCES `userprofile` (`id`) ON UPDATE CASCADE,
+    ADD CONSTRAINT `FK_judge_reply_last_update_user` FOREIGN KEY (`last_update_user`) REFERENCES `userprofile` (`id`) ON UPDATE CASCADE;
+
+ALTER TABLE `language`
+    DROP FOREIGN KEY IF EXISTS `FK_language_creation_user`;
+ALTER TABLE `language`
+    ADD CONSTRAINT `FK_language_creation_user` FOREIGN KEY (`creation_user`) REFERENCES `userprofile` (`id`) ON UPDATE CASCADE;
+
+ALTER TABLE `problem`
+    DROP FOREIGN KEY IF EXISTS `FK_problem_creation_user`,
+    DROP FOREIGN KEY IF EXISTS `FK_problem_limits`;
+ALTER TABLE `problem`
+    ADD CONSTRAINT `FK_problem_creation_user` FOREIGN KEY (`creation_user`) REFERENCES `userprofile` (`id`) ON UPDATE CASCADE,
+    ADD CONSTRAINT `FK_problem_limits` FOREIGN KEY (`limits`) REFERENCES `limits` (`id`) ON UPDATE CASCADE;
+
+ALTER TABLE `role_permission`
+    DROP FOREIGN KEY IF EXISTS `FK_role_permission_permission`,
+    DROP FOREIGN KEY IF EXISTS `FK_role_permission_role`;
+ALTER TABLE `role_permission`
+    ADD CONSTRAINT `FK_role_permission_permission` FOREIGN KEY (`permission`) REFERENCES `permission` (`id`) ON UPDATE CASCADE,
+    ADD CONSTRAINT `FK_role_permission_role` FOREIGN KEY (`role`) REFERENCES `role` (`id`) ON UPDATE CASCADE;
+
+ALTER TABLE `submission`
+    DROP FOREIGN KEY IF EXISTS `FK_submission_contest`,
+    DROP FOREIGN KEY IF EXISTS `FK_submission_judge_reply`,
+    DROP FOREIGN KEY IF EXISTS `FK_submission_language`,
+    DROP FOREIGN KEY IF EXISTS `FK_submission_problem`,
+    DROP FOREIGN KEY IF EXISTS `FK_submission_userprofile`;
+ALTER TABLE `submission`
+    ADD CONSTRAINT `FK_submission_contest` FOREIGN KEY (`contest`) REFERENCES `contest` (`id`) ON UPDATE CASCADE,
+    ADD CONSTRAINT `FK_submission_judge_reply` FOREIGN KEY (`judge_reply`) REFERENCES `judge_reply` (`id`) ON UPDATE CASCADE,
+    ADD CONSTRAINT `FK_submission_language` FOREIGN KEY (`language`) REFERENCES `language` (`id`) ON UPDATE CASCADE,
+    ADD CONSTRAINT `FK_submission_problem` FOREIGN KEY (`problem`) REFERENCES `problem` (`id`) ON UPDATE CASCADE,
+    ADD CONSTRAINT `FK_submission_userprofile` FOREIGN KEY (`userprofile`) REFERENCES `userprofile` (`id`);
+
+ALTER TABLE `usergroup`
+    DROP FOREIGN KEY IF EXISTS `FK_usergroup_owner`;
+ALTER TABLE `usergroup`
+    ADD CONSTRAINT `FK_usergroup_owner` FOREIGN KEY (`owner`) REFERENCES `userprofile` (`id`) ON UPDATE CASCADE;
+
+ALTER TABLE `usergroup_userprofile`
+    DROP FOREIGN KEY IF EXISTS `FK_usergroup_userprofile_usergroup`,
+    DROP FOREIGN KEY IF EXISTS `FK_usergroup_userprofile_userprofile`;
+ALTER TABLE `usergroup_userprofile`
+    ADD CONSTRAINT `FK_usergroup_userprofile_usergroup` FOREIGN KEY (`usergroup`) REFERENCES `usergroup` (`id`) ON UPDATE CASCADE,
+    ADD CONSTRAINT `FK_usergroup_userprofile_userprofile` FOREIGN KEY (`userprofile`) REFERENCES `userprofile` (`id`) ON UPDATE CASCADE;
+
+ALTER TABLE `userprofile`
+    DROP FOREIGN KEY IF EXISTS `FK_userprofile_creation_user`;
+ALTER TABLE `userprofile`
+    ADD CONSTRAINT `FK_userprofile_creation_user` FOREIGN KEY (`creation_user`) REFERENCES `userprofile` (`id`);
+
+ALTER TABLE `userprofile_role`
+    DROP FOREIGN KEY IF EXISTS `FK_userprofile_role_role`,
+    DROP FOREIGN KEY IF EXISTS `FK_userprofile_role_userprofile`;
+ALTER TABLE `userprofile_role`
+    ADD CONSTRAINT `FK_userprofile_role_role` FOREIGN KEY (`role`) REFERENCES `role` (`id`) ON UPDATE CASCADE,
+    ADD CONSTRAINT `FK_userprofile_role_userprofile` FOREIGN KEY (`userprofile`) REFERENCES `userprofile` (`id`) ON UPDATE CASCADE;
+
+
+
 use clanguage;
 
 create database if not exists oj_temp_schema COLLATE 'utf8_general_ci';
 
+/* userprofile start */
 drop table if exists oj_temp_schema.userprofile_clanguage;
 create table oj_temp_schema.userprofile_clanguage
     select
@@ -18,10 +104,38 @@ create table oj_temp_schema.userprofile_clanguage
         NULL            as      creation_user
     from users u1
     order by creation_date asc, handle asc;
+/* userprofile end */
+/* problem start */
+drop table if exists oj_temp_schema.problem_clanguage;
+create table oj_temp_schema.problem_clanguage
+    select
+        problem_id as orign_id,
+        title,
+        description,
+        input,
+        output,
+        sample_input,
+        sample_output,
+        hint,
+        source,
+        sample_Program,
+        in_date as creation_date,
+        time_limit,
+        memory_limit,
+        case_time_limit,
+        CAST(NULL AS INT) AS new_id
+    from clanguage.problem p
+    where p.defunct='N';
+ALTER TABLE `oj_temp_schema`.`problem_clanguage`
+	CHANGE COLUMN `new_id` `new_id` BIGINT NULL LAST;
+
+/* problem end */
+
 
 use oj_temp_schema;
 
-update userprofile_clanguage set
+update userprofile_clanguage
+set
         email = replace(trim(email),' ',''),
         nickname = trim(nickname),
         school = trim(school),
@@ -53,7 +167,7 @@ where
     t.email not like '$%';
 
 ALTER TABLE `userprofile_clanguage`
-	DROP COLUMN `id`;
+    DROP COLUMN `id`;
 
 insert into oj.userprofile (
     birth_date,
@@ -79,29 +193,40 @@ insert into oj.userprofile (
     password,
     school,
     creation_user
-	from oj_temp_schema.userprofile_clanguage;
+    from oj_temp_schema.userprofile_clanguage;
+
+ALTER TABLE `oj`.`problem` AUTO_INCREMENT=0;
+insert into oj.problem (
+    creation_date,
+    description,
+    hint,
+    input,
+    last_update_date,
+    output,
+    sample_input,
+    sample_output,
+    source,
+    title,
+    creation_user,
+    limits
+) select
+    creation_date,
+    description,
+    hint,
+    input,
+    creation_date,
+    output,
+    sample_input,
+    sample_output,
+    source,
+    title,
+    NULL,
+    1
+from
+    oj_temp_schema.problem_clanguage;
 
 
-use java;
-drop table if exists oj_temp_schema.userprofile_java;
 
-create table oj_temp_schema.userprofile_java
-    select
-        cast(null as int) as id,
-        u1.user_id      as      handle,
-        u1.password     as      password,
-        u1.nick         as      nickname,
-        u1.email        as      email,
-        ''              as      first_name,
-        ''              as      last_name,
-        ip              as      last_login_ip,
-        accesstime      as      last_access_time,
-        school          as      major,
-        NULL            as      creation_user,
-        u1.reg_time     as      creation_date,
-        IF(u1.defunct='Y',1,0)  as disabled
-    from users u1
-    order by creation_date asc, handle asc;
 
 use oj_temp_schema;
 
@@ -122,7 +247,7 @@ update users set submit = (
 );
 
 select * from users tb where (
-	select count(1) from users where email = tb.email
+    select count(1) from users where email = tb.email
 ) >= 2 and email is not null and trim(email) <>'' and email<>'null' order by email asc;
 
 */

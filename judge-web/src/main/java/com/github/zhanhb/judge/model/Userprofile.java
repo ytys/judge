@@ -105,15 +105,15 @@ public class Userprofile implements Serializable {
     private Userprofile createdBy;
 
     @Column(name = "last_update_date")
-    @Type(type = "org.jadira.usertype.dateandtime.threeten.PersistentLocalDateTime")
     @JsonIgnore
     @LastModifiedDate
+    @Type(type = "org.jadira.usertype.dateandtime.threeten.PersistentLocalDateTime")
     private LocalDateTime lastUpdateDate;
 
     @Column(name = "creation_date", nullable = false)
-    @Type(type = "org.jadira.usertype.dateandtime.threeten.PersistentLocalDateTime")
     @CreatedDate
     @JsonIgnore
+    @Type(type = "org.jadira.usertype.dateandtime.threeten.PersistentLocalDateTime")
     private LocalDateTime creationDate;
 
 }
