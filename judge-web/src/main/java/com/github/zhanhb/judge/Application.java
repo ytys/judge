@@ -33,21 +33,7 @@ import org.springframework.core.env.Environment;
 public class Application {
 
     public static void main(String[] args) {
-        ConfigurableApplicationContext context = SpringApplication.run(Application.class, args);
-        java.util.Scanner scanner = new java.util.Scanner(System.in);
-        while (scanner.hasNextLine()) {
-            String line = scanner.nextLine();
-            switch (line) {
-                case "exit":
-                case "":
-                    SpringApplication.exit(context);
-                    return;
-                case "reload":
-                    SpringApplication.exit(context);
-                    context = SpringApplication.run(Application.class, args);
-                    break;
-            }
-        }
+        ConfigurableApplicationContext app = SpringApplication.run(Application.class, args);
     }
 
     @Autowired

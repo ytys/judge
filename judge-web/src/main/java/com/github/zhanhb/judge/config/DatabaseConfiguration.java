@@ -31,7 +31,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  */
 @Configuration
 @EnableTransactionManagement
-public class DataConfig {
+public class DatabaseConfiguration {
 
     @Bean(name = "entityManagerFactory", destroyMethod = "destroy")
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
