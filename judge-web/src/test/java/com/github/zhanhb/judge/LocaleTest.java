@@ -48,7 +48,7 @@ public class LocaleTest extends AbstractContextControllerTests {
     }
 
     @Test
-    public void testChangeLocale() throws Exception {
+    public void testChangeLocale() throws Exception {org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration b;
         mockMvc.perform(get("/?lang=en")).andExpect(cookie().value("locale", "en"));
         mockMvc.perform(get("/?lang=zh")).andExpect(cookie().value("locale", "zh"));
     }

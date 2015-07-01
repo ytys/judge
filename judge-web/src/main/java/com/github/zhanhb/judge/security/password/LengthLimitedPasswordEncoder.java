@@ -31,8 +31,20 @@ public class LengthLimitedPasswordEncoder extends PasswordEncoderWrapper {
     }
 
     @Override
+    public String encode(CharSequence rawPassword) {
+        return super.encode(limit(rawPassword));
+    }
+
+    @Override
     public boolean matches(CharSequence rawPassword, String encodedPassword) {
-        return rawPassword.length() <= length && super.matches(rawPassword, encodedPassword);
+        return super.matches(limit(rawPassword), encodedPassword);
+    }
+
+    private CharSequence limit(CharSequence orignPassword) {
+        if (orignPassword == null || orignPassword.length() <= length) {
+            return orignPassword;
+        }
+        return orignPassword.subSequence(0, length);
     }
 
 }

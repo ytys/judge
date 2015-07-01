@@ -76,7 +76,7 @@ public class Contest implements Auditable<Userprofile, Long, LocalDateTime> {
     private Long id;
 
     @Column(length = 255)
-    @Pattern(regexp = "^[a-zA-Z][a-zA-Z0-9-_\\.]*+?$", message = "{Error}")
+    @Pattern(regexp = "^[a-zA-Z][a-zA-Z0-9-_\\.]*+$", message = "{Error}")
     @Length(min = 1, max = 255)
     private String name;
 

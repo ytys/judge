@@ -15,14 +15,13 @@
  */
 package com.github.zhanhb.judge;
 
-import java.util.Arrays;
-import javax.annotation.PostConstruct;
+import java.io.IOException;
+import java.net.InetAddress;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.core.env.Environment;
+import org.springframework.core.env.ConfigurableEnvironment;
 
 /**
  *
@@ -32,20 +31,17 @@ import org.springframework.core.env.Environment;
 @SpringBootApplication
 public class Application {
 
-    public static void main(String[] args) {
-        ConfigurableApplicationContext app = SpringApplication.run(Application.class, args);
-    }
-
-    @Autowired
-    private Environment env;
-
-    @PostConstruct
-    public void initApplication() {
-        if (env.getActiveProfiles().length == 0) {
-            log.warn("No Spring profile configured, running with default configuration");
-        } else {
-            log.info("Running with Spring profile(s) : {}", Arrays.toString(env.getActiveProfiles()));
-        }
+    public static void main(String[] args) throws IOException {
+        ConfigurableApplicationContext ctx = SpringApplication.run(Application.class, args);
+        ConfigurableEnvironment env = ctx.getEnvironment();
+        Integer port = env.getProperty("local.server.port", int.class);
+        String portStr = port != null ? String.valueOf(port) : "?";
+        log.info("Access URLs:\n----------------------------------------------------------\n\t"
+                + "Local: \t\thttp://127.0.0.1:{}\n\t"
+                + "External: \thttp://{}:{}\n----------------------------------------------------------",
+                portStr,
+                InetAddress.getLocalHost().getHostAddress(),
+                portStr);
     }
 
 }

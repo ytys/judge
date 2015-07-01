@@ -5,8 +5,11 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JSR310Module;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.hateoas.config.EnableHypermediaSupport;
+import org.springframework.hateoas.config.EnableHypermediaSupport.HypermediaType;
 
 @Configuration
+@EnableHypermediaSupport(type = HypermediaType.HAL)
 public class JacksonConfiguration {
 
     @Bean

@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 zhanhb.
+ * Copyright 2015 Pivotal Software, Inc..
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,26 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.zhanhb.judge.config;
+package com.github.zhanhb.judge;
 
-import com.github.zhanhb.filter.CharacterEncodingFilter;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
-import org.springframework.web.WebApplicationInitializer;
 
 /**
- * disabled when run as a java application.
- * 
+ *
  * @author zhanhb
  */
-@Order(Ordered.HIGHEST_PRECEDENCE)
-public class EncodingFilterInitializer implements WebApplicationInitializer {
+@Order(Ordered.LOWEST_PRECEDENCE)
+public class ApplicationWebXml extends SpringBootServletInitializer {
 
     @Override
-    public void onStartup(ServletContext servletContext) throws ServletException {
-        servletContext.addFilter("characterEncodingFilter", new CharacterEncodingFilter().useProxy(true)).addMappingForUrlPatterns(null, false, "/*");
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.showBanner(false)
+                .addCommandLineProperties(false)
+                .logStartupInfo(true)
+                .sources(Application.class);
     }
 
 }

@@ -16,10 +16,11 @@ import java.lang.management.ManagementFactory;
 import java.net.InetSocketAddress;
 import java.util.concurrent.TimeUnit;
 import javax.annotation.PostConstruct;
-import javax.inject.Inject;
+import javax.annotation.PreDestroy;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.bind.RelaxedPropertyResolver;
 import org.springframework.context.EnvironmentAware;
@@ -53,6 +54,7 @@ public class MetricsConfiguration extends MetricsConfigurerAdapter implements En
     private final HealthCheckRegistry healthCheckRegistry = new HealthCheckRegistry();
 
     private RelaxedPropertyResolver propertyResolver;
+    private JmxReporter jmxReporter;
 
     @Override
     public void setEnvironment(Environment environment) {
@@ -81,8 +83,15 @@ public class MetricsConfiguration extends MetricsConfigurerAdapter implements En
         metricRegistry.register(PROP_METRIC_REG_JVM_BUFFERS, new BufferPoolMetricSet(ManagementFactory.getPlatformMBeanServer()));
         if (propertyResolver.getProperty(PROP_JMX_ENABLED, Boolean.class, false)) {
             log.info("Initializing Metrics JMX reporting");
-            JmxReporter jmxReporter = JmxReporter.forRegistry(metricRegistry).build();
+            jmxReporter = JmxReporter.forRegistry(metricRegistry).build();
             jmxReporter.start();
+        }
+    }
+
+    @PreDestroy
+    public void destory() {
+        if (jmxReporter != null) {
+            jmxReporter.stop();
         }
     }
 
@@ -93,10 +102,11 @@ public class MetricsConfiguration extends MetricsConfigurerAdapter implements En
 
         private final Logger log = LoggerFactory.getLogger(GraphiteRegistry.class);
 
-        @Inject
+        @Autowired
         private MetricRegistry metricRegistry;
 
         private RelaxedPropertyResolver propertyResolver;
+        private GraphiteReporter graphiteReporter;
 
         @Override
         public void setEnvironment(Environment environment) {
@@ -113,12 +123,19 @@ public class MetricsConfiguration extends MetricsConfigurerAdapter implements En
                 String graphitePrefix = propertyResolver.getProperty(PROP_GRAPHITE_PREFIX, String.class, "");
 
                 Graphite graphite = new Graphite(new InetSocketAddress(graphiteHost, graphitePort));
-                GraphiteReporter graphiteReporter = GraphiteReporter.forRegistry(metricRegistry)
+                graphiteReporter = GraphiteReporter.forRegistry(metricRegistry)
                         .convertRatesTo(TimeUnit.SECONDS)
                         .convertDurationsTo(TimeUnit.MILLISECONDS)
                         .prefixedWith(graphitePrefix)
                         .build(graphite);
                 graphiteReporter.start(1, TimeUnit.MINUTES);
+            }
+        }
+
+        @PreDestroy
+        public void destory() {
+            if (graphiteReporter != null) {
+                graphiteReporter.stop();
             }
         }
     }
