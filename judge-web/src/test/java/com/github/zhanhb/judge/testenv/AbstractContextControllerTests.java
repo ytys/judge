@@ -1,6 +1,8 @@
 package com.github.zhanhb.judge.testenv;
 
 import com.github.zhanhb.judge.Application;
+import org.junit.Before;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener;
 import org.springframework.test.context.ContextConfiguration;
@@ -29,5 +31,10 @@ public abstract class AbstractContextControllerTests extends AbstractJUnit4Sprin
 //    @Autowired
 //    @Qualifier("logoutFilter")
 //    private Filter logoutFilter;
+
+    @Before
+    public void globalSetup() {
+        MockitoAnnotations.initMocks(this);
+    }
 
 }

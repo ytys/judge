@@ -19,19 +19,18 @@ import com.github.zhanhb.judge.model.ModelInfo;
 import java.util.MissingResourceException;
 import java.util.Properties;
 import java.util.ResourceBundle;
-import javax.persistence.EntityManagerFactory;
 import org.hibernate.jpa.HibernatePersistenceProvider;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  *
  * @author zhanhb
  */
 @Configuration
+@EnableTransactionManagement
 public class DataConfig {
 
     @Bean(name = "entityManagerFactory", destroyMethod = "destroy")
@@ -56,14 +55,6 @@ public class DataConfig {
             }
         }
         throw exception;
-    }
-
-    @Autowired
-    @Bean(name = "transactionManager")
-    public JpaTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
-        JpaTransactionManager tm = new JpaTransactionManager();
-        tm.setEntityManagerFactory(entityManagerFactory);
-        return tm;
     }
 
 }

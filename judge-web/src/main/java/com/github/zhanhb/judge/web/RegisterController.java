@@ -15,10 +15,10 @@
  */
 package com.github.zhanhb.judge.web;
 
-import com.github.zhanhb.judge.web.form.UserRegisterForm;
 import com.github.zhanhb.judge.model.Userprofile;
 import com.github.zhanhb.judge.repository.UserprofileRepository;
 import com.github.zhanhb.judge.util.StringUtils;
+import com.github.zhanhb.judge.web.form.UserRegisterForm;
 import java.util.function.Consumer;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +38,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  * @author zhanhb
  */
 @Controller
-@Transactional
 public class RegisterController extends BaseController {
 
     @Autowired

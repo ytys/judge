@@ -11,6 +11,7 @@
       xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
       xmlns:fn="http://java.sun.com/jsp/jstl/functions"
       xmlns:form="http://www.springframework.org/tags/form"
+      xmlns:sec="http://www.springframework.org/security/tags"
       xmlns:spring="http://www.springframework.org/tags"
       xmlns:tiles="http://tiles.apache.org/tags-tiles"
       xmlns:html="urn:jsptagdir:/WEB-INF/tags/html"
@@ -25,6 +26,9 @@
         <title>JSPX Page</title>
     </head>
     <body>
+        <div>
+            <sec:authentication property="principal" />
+        </div>
         <tiles:putAttribute name="body" value="/WEB-INF/views/home.jspx"/>
         <tiles:insertAttribute name="body"/>
         <h1>Hello World!</h1>

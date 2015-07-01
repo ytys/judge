@@ -19,18 +19,36 @@ import java.util.Arrays;
 import javax.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.Environment;
 
 /**
  *
  * @author zhanhb
  */
-@Configuration
-@ComponentScan
 @Slf4j
+@SpringBootApplication
 public class Application {
+
+    public static void main(String[] args) {
+        ConfigurableApplicationContext context = SpringApplication.run(Application.class, args);
+        java.util.Scanner scanner = new java.util.Scanner(System.in);
+        while (scanner.hasNextLine()) {
+            String line = scanner.nextLine();
+            switch (line) {
+                case "exit":
+                case "":
+                    SpringApplication.exit(context);
+                    return;
+                case "reload":
+                    SpringApplication.exit(context);
+                    context = SpringApplication.run(Application.class, args);
+                    break;
+            }
+        }
+    }
 
     @Autowired
     private Environment env;
