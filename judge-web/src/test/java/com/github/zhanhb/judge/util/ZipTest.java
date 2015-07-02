@@ -15,17 +15,24 @@
  */
 package com.github.zhanhb.judge.util;
 
-import com.github.zhanhb.judge.testenv.AbstractContextControllerTests;
+import com.github.zhanhb.judge.Application;
 import java.io.IOException;
 import java.nio.file.Paths;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 /**
  *
  * @author zhanhb
  */
-public class Main extends AbstractContextControllerTests {
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringApplicationConfiguration(classes = Application.class)
+@WebAppConfiguration
+public class ZipTest {
 
     @Autowired
     private Zip zip;

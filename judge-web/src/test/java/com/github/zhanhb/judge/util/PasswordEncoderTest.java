@@ -15,25 +15,29 @@
  */
 package com.github.zhanhb.judge.util;
 
-import com.github.zhanhb.judge.testenv.AbstractContextControllerTests;
+import com.github.zhanhb.judge.Application;
 import lombok.extern.slf4j.Slf4j;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 /**
  *
  * @author zhanhb
  * @date Jun 4, 2015, 16:57:35
  */
-@Slf4j
 @RunWith(SpringJUnit4ClassRunner.class)
-public class PasswordEncoderTest extends AbstractContextControllerTests {
+@Slf4j
+@SpringApplicationConfiguration(classes = Application.class)
+@WebAppConfiguration
+public class PasswordEncoderTest {
 
     @Autowired
     private PasswordEncoder passwordEncoder;

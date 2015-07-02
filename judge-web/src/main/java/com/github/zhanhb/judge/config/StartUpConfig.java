@@ -13,23 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.zhanhb.judge;
+package com.github.zhanhb.judge.config;
 
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.context.web.SpringBootServletInitializer;
+import javax.servlet.ServletContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Configuration;
 
 /**
  *
  * @author zhanhb
  */
-public class ApplicationWebXml extends SpringBootServletInitializer {
+@Configuration
+public class StartUpConfig {
 
-    @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.showBanner(false)
-                .addCommandLineProperties(false)
-                .logStartupInfo(true)
-                .sources(Application.class);
+    @Autowired
+    public void setStartupDate(ServletContext servlet, ApplicationContext application) {
+        servlet.setAttribute("startUpDate", application.getStartupDate());
     }
 
 }

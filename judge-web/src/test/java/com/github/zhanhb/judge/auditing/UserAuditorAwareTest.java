@@ -15,19 +15,24 @@
  */
 package com.github.zhanhb.judge.auditing;
 
+import com.github.zhanhb.judge.Application;
 import com.github.zhanhb.judge.audit.UserAuditorAware;
 import com.github.zhanhb.judge.model.Userprofile;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-import org.junit.Ignore;
+import static org.junit.Assert.assertNull;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 /**
  *
  * @author zhanhb
  */
-@Ignore
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringApplicationConfiguration(classes = Application.class)
+@WebAppConfiguration
 public class UserAuditorAwareTest {
 
     @Autowired
@@ -39,11 +44,8 @@ public class UserAuditorAwareTest {
     @Test
     public void testGetCurrentAuditor() {
         System.out.println("getCurrentAuditor");
-        Userprofile expResult = null;
         Userprofile result = instance.getCurrentAuditor();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertNull(result);
     }
 
 }

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bonecp-config>
+    <default-config>
+        <property name="jdbcUrl">jdbc:h2:mem:judge;DB_CLOSE_DELAY=-1</property>
+        <property name="username">sa</property>
+        <property name="password"></property>
+        <!-->
+        <property name="jdbcUrl">jdbc:mariadb:///oj_test_db?zeroDateTimeBehavior=convertToNull&amp;characterEncoding=UTF-8</property>
+        <property name="username">root</property>
+        <property name="password">root</property>
+        <!-->
+        <property name="idleConnectionTestPeriodInMinutes">14400</property>
+        <property name="initialPoolSize">1</property>
+        <property name="acquireIncrement">1</property>
+        <property name="connectionTestStatement">select 1</property>
+        <property name="logStatementsEnabled">true</property>
+    </default-config>
+</bonecp-config>

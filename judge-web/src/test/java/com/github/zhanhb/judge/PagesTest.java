@@ -42,7 +42,7 @@ import org.junit.Test;
  * @date Jun 5, 2015, 14:11:28
  */
 @Slf4j
-public class PagesChecker {
+public class PagesTest {
 
     private static final Set<String> collect;
 

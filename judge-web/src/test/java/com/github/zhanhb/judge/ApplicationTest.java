@@ -16,6 +16,7 @@
 package com.github.zhanhb.judge;
 
 import org.junit.Assert;
+import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
-@WebIntegrationTest("server.port:0")
+@WebIntegrationTest(randomPort = true)
 public class ApplicationTest {
 
     /**
@@ -51,12 +52,14 @@ public class ApplicationTest {
     private Environment env;
 
     @Test
-    public void test() {org.springframework.boot.actuate.system.ApplicationPidFileWriter a;
+    public void test() {
         Assert.assertNotEquals(0, port);
         Assert.assertNotNull(server);
         System.out.println(server.getStartupDate());
         System.out.println(port);
-        System.out.println(env.getProperty("local.server.port", Integer.class));
+        Integer property = env.getProperty("local.server.port", Integer.class);
+        assertNotNull(property);
+        System.out.println(property);
         System.out.println(server.getNamespace());
         System.out.println(server.getApplicationName());
     }

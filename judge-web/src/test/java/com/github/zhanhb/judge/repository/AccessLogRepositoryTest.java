@@ -15,13 +15,14 @@
  */
 package com.github.zhanhb.judge.repository;
 
+import com.github.zhanhb.judge.Application;
 import com.github.zhanhb.judge.model.AccessLog;
-import com.github.zhanhb.judge.testenv.AbstractContextControllerTests;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,10 +31,10 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author zhanhb
  */
-@WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
-@Transactional
-public class AccessLogRepositoryTest extends AbstractContextControllerTests {
+@SpringApplicationConfiguration(classes = Application.class)
+@WebAppConfiguration
+public class AccessLogRepositoryTest {
 
     @Autowired
     private AccessLogRepository accessLogRepository;

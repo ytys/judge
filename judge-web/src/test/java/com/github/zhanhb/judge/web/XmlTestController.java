@@ -37,4 +37,5 @@ public class XmlTestController {
     public Map<?, ?> listAllAsJson(Model model) {
         return Collections.singletonMap("hello", "world");
     }
+
 }

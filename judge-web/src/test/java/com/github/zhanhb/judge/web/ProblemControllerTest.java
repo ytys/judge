@@ -20,12 +20,9 @@ import com.github.zhanhb.judge.repository.ProblemRepository;
 import com.github.zhanhb.judge.testenv.AbstractMockMvcTests;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_XML;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -38,8 +35,6 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
  * @author zhanhb
  * @date Jun 5, 2015, 2:20:42
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@WebAppConfiguration
 public class ProblemControllerTest extends AbstractMockMvcTests {
 
     private static final String PROBLEM_LIST = "/problem";

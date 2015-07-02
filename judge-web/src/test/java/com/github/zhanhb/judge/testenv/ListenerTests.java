@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 zhanhb.
+ * Copyright 2015 Pivotal Software, Inc..
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,16 +16,16 @@
 package com.github.zhanhb.judge.testenv;
 
 import com.github.zhanhb.judge.Application;
-import org.junit.Before;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener;
+import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
+import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
+import org.springframework.test.context.web.ServletTestExecutionListener;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.test.web.servlet.MockMvc;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
-import org.springframework.web.context.WebApplicationContext;
 
 /**
  *
@@ -33,16 +33,15 @@ import org.springframework.web.context.WebApplicationContext;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
+@SuppressWarnings("ClassMayBeInterface")
+@TestExecutionListeners(listeners = {
+    ServletTestExecutionListener.class,
+    DependencyInjectionTestExecutionListener.class,
+    DirtiesContextTestExecutionListener.class,
+    TransactionalTestExecutionListener.class,
+    WithSecurityContextTestExecutionListener.class
+})
 @WebAppConfiguration
-public abstract class AbstractMockMvcTests {
-
-    @Autowired
-    protected WebApplicationContext wac;
-    protected MockMvc mockMvc;
-
-    @Before
-    public void mockSetUp() throws Exception {
-        mockMvc = webAppContextSetup(wac).alwaysExpect(status().isOk()).build();
-    }
+public abstract class ListenerTests {
 
 }

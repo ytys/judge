@@ -18,7 +18,7 @@
         <jackson.version>2.5.4</jackson.version>
         <java.version>1.8</java.version>
         <javassist.version>3.19.0-GA</javassist.version>
-        <liquibase.version>3.3.5</liquibase.version>
+        <liquibase.version>3.4.0</liquibase.version>
         <lombok.version>1.16.4</lombok.version>
         <metrics-spring.version>3.1.0</metrics-spring.version>
         <!--<maven.test.failure.ignore>true</maven.test.failure.ignore>-->
@@ -27,6 +27,7 @@
         <querydsl.version>3.6.4</querydsl.version>
         <spring-data-releasetrain.version>Fowler-RELEASE</spring-data-releasetrain.version>
         <spring-hateoas.version>0.17.0.RELEASE</spring-hateoas.version>
+        <spring-plugin.version>1.2.0.RELEASE</spring-plugin.version>
         <spring-security.version>4.0.1.RELEASE</spring-security.version>
         <spring.version>4.1.6.RELEASE</spring.version>
         <tomcat.version>7.0.62</tomcat.version>
@@ -51,6 +52,16 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-compress</artifactId>
             <version>1.9</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.ehcache</groupId>
+            <artifactId>ehcache</artifactId>
+            <version>2.10.0</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.ehcache</groupId>
+            <artifactId>ehcache-core</artifactId>
+            <version>2.6.11</version>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -198,10 +209,6 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-autoconfigure</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
             <exclusions>
                 <exclusion>
@@ -236,15 +243,11 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
+            <artifactId>spring-boot-starter-logging</artifactId>
             <exclusions>
                 <exclusion>
                     <artifactId>log4j-over-slf4j</artifactId>
                     <groupId>org.slf4j</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>logback-core</artifactId>
-                    <groupId>ch.qos.logback</groupId>
                 </exclusion>
                 <exclusion>
                     <artifactId>logback-classic</artifactId>
@@ -254,13 +257,7 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-            <exclusions>
-                <exclusion>
-                    <artifactId>spring-boot-starter-logging</artifactId>
-                    <groupId>org.springframework.boot</groupId>
-                </exclusion>
-            </exclusions>
+            <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -289,6 +286,10 @@
             <version>1.4.01</version>
         </dependency>
         <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+        </dependency>
+        <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-api</artifactId>
             <version>7.0</version>
@@ -315,7 +316,6 @@
             <groupId>com.jolbox</groupId>
             <artifactId>bonecp</artifactId>
             <version>0.8.0.RELEASE</version>
-            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>cglib</groupId>
@@ -391,11 +391,6 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -640,6 +635,22 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <argLine>-Dfile.encoding=UTF8</argLine>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <version>${liquibase.version}</version>
+                <configuration>
+                    <argLine>-Dfile.encoding=UTF8</argLine>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.7</version>
                 <configuration>
                     <argLine>-Dfile.encoding=UTF8</argLine>
                 </configuration>

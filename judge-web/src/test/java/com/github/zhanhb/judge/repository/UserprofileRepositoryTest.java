@@ -15,8 +15,8 @@
  */
 package com.github.zhanhb.judge.repository;
 
+import com.github.zhanhb.judge.Application;
 import com.github.zhanhb.judge.model.Userprofile;
-import com.github.zhanhb.judge.testenv.AbstractContextControllerTests;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.util.Date;
@@ -27,6 +27,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -37,8 +38,9 @@ import org.springframework.test.context.web.WebAppConfiguration;
  */
 @Slf4j
 @RunWith(SpringJUnit4ClassRunner.class)
+@SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
-public class UserprofileRepositoryTest extends AbstractContextControllerTests {
+public class UserprofileRepositoryTest {
 
     private static final String handle = "testaccount1";
     private static final String password = "testpassword1";

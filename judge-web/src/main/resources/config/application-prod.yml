@@ -1,0 +1,107 @@
+# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+
+# Disable the spring security default configuration from spring-boot-actuator
+management.security.enabled: true
+security.basic.enabled: false
+spring.application.admin.enabled: true
+
+# Disable Jolokia - An http/json bridge for remote JMX access
+endpoints.jolokia.enabled: true
+
+mail:
+    host: localhost
+    port: 25
+    username:
+    password:
+    protocol: smtp
+    tls: false
+    auth: false
+    from: judge@localhost
+
+swagger:
+    title: judge API
+    description: judge applications and beyond!
+    termsOfServiceUrl: http://github.com/zhanhb/
+    contact:
+    license: Apache 2.0
+    licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.html
+
+server:
+    port: 8080
+
+# @see org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfiguration
+# @see org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties
+liquibase:
+    enabled: false
+    contexts: prod
+    changeLog: classpath:config/liquibase/master.xml
+
+spring:
+# @see org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+# @see org.springframework.boot.autoconfigure.jdbc.DataSourceProperties
+    datasource:
+        driver-class-name: org.mariadb.jdbc.Driver
+        url: jdbc:mariadb:///oj?zeroDateTimeBehavior=convertToNull&characterEncoding=UTF-8
+        username: root
+        password: root
+        jmx-enabled: false
+        validation-query: select 1
+
+# @see org.springframework.boot.autoconfigure.orm.jpa.JpaProperties
+    jpa:
+        show-sql:
+        hibernate:
+            naming-strategy: org.hibernate.cfg.EJB3NamingStrategy
+        properties:
+            javax.persistence.jdbc.validation.mode: none
+
+            hibernate:
+                cache.provider_class: org.hibernate.cache.NoCacheProvider
+                query.substitutions: true '1', false '0'
+
+                cache:
+                    use_second_level_cache: true
+                    use_query_cache: false
+                    region.factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
+
+                generate_statistics: false
+
+                hbm2ddl:
+                    auto: update
+                    import_files: /0000data.sql
+                    import_files_sql_extractor: org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor
+
+            bonecp:
+                idleConnectionTestPeriodInMinutes: 14400
+#                initialPoolSize: 1
+#                acquireIncrement: 1
+                connectionTestStatement: select 1
+                logStatementsEnabled: true
+
+    thymeleaf:
+        mode: XHTML
+        cache: true
+
+metrics:
+    jmx.enabled: true
+    graphite:
+        enabled: false
+        host: localhost
+        port: 2003
+        prefix: judge
+
+http:
+    cache:
+        timeToLiveInDays: 31
+
+cache:
+    timeToLiveSeconds: 3600
+    ehcache:
+        maxBytesLocalHeap: 256M
+
+spring.http:
+    encoding.enabled: false # enable http encoding support
+    converters.preferred-json-mapper: gson
+
+spring:
+    hateoas.apply-to-primary-object-mapper: true

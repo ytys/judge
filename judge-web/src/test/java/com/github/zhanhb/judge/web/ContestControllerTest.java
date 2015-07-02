@@ -21,11 +21,8 @@ import com.github.zhanhb.judge.repository.ContestRepository;
 import com.github.zhanhb.judge.testenv.AbstractMockMvcTests;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -35,8 +32,6 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
  *
  * @author zhanhb
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@WebAppConfiguration
 public class ContestControllerTest extends AbstractMockMvcTests {
 
     private static final String contestName = "testcontest1";

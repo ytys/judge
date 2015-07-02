@@ -17,11 +17,13 @@ package com.github.zhanhb.judge;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.util.Scanner;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.context.annotation.Bean;
 
 /**
  *
@@ -33,15 +35,36 @@ public class Application {
 
     public static void main(String[] args) throws IOException {
         ConfigurableApplicationContext ctx = SpringApplication.run(Application.class, args);
-        ConfigurableEnvironment env = ctx.getEnvironment();
-        Integer port = env.getProperty("local.server.port", int.class);
-        String portStr = port != null ? String.valueOf(port) : "?";
+        String port = ctx.getEnvironment().getProperty("server.port");
+
         log.info("Access URLs:\n----------------------------------------------------------\n\t"
                 + "Local: \t\thttp://127.0.0.1:{}\n\t"
                 + "External: \thttp://{}:{}\n----------------------------------------------------------",
-                portStr,
+                port,
                 InetAddress.getLocalHost().getHostAddress(),
-                portStr);
+                port);
+
+        Scanner scanner = new Scanner(System.in);
+        while (scanner.hasNext()) {
+            String name = scanner.next();
+            switch (name) {
+                case "exit":
+                case "quit":
+                    SpringApplication.exit(ctx);
+                    return;
+                case "reload":
+                    SpringApplication.exit(ctx);
+                    ctx = SpringApplication.run(Application.class, args);
+                    continue;
+            }
+            String property = ctx.getEnvironment().getProperty(name);
+            System.out.println(property);
+        }
+    }
+
+    @Bean
+    public EmbeddedServletContainerCustomizer embeddedCustomizer() {
+        return container -> container.setContextPath("/judge");
     }
 
 }

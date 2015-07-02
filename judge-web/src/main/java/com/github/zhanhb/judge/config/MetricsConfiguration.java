@@ -49,10 +49,6 @@ public class MetricsConfiguration extends MetricsConfigurerAdapter implements En
     private static final String PROP_METRIC_REG_JVM_FILES = "jvm.files";
     private static final String PROP_METRIC_REG_JVM_BUFFERS = "jvm.buffers";
 
-    private final MetricRegistry metricRegistry = new MetricRegistry();
-
-    private final HealthCheckRegistry healthCheckRegistry = new HealthCheckRegistry();
-
     private RelaxedPropertyResolver propertyResolver;
     private JmxReporter jmxReporter;
 
@@ -61,29 +57,29 @@ public class MetricsConfiguration extends MetricsConfigurerAdapter implements En
         this.propertyResolver = new RelaxedPropertyResolver(environment, ENV_METRICS);
     }
 
-    @Override
     @Bean
+    @Override
     public MetricRegistry getMetricRegistry() {
-        return metricRegistry;
+        return new MetricRegistry();
     }
 
-    @Override
     @Bean
+    @Override
     public HealthCheckRegistry getHealthCheckRegistry() {
-        return healthCheckRegistry;
+        return new HealthCheckRegistry();
     }
 
     @PostConstruct
     public void init() {
         log.debug("Registering JVM gauges");
-        metricRegistry.register(PROP_METRIC_REG_JVM_MEMORY, new MemoryUsageGaugeSet());
-        metricRegistry.register(PROP_METRIC_REG_JVM_GARBAGE, new GarbageCollectorMetricSet());
-        metricRegistry.register(PROP_METRIC_REG_JVM_THREADS, new ThreadStatesGaugeSet());
-        metricRegistry.register(PROP_METRIC_REG_JVM_FILES, new FileDescriptorRatioGauge());
-        metricRegistry.register(PROP_METRIC_REG_JVM_BUFFERS, new BufferPoolMetricSet(ManagementFactory.getPlatformMBeanServer()));
+        getMetricRegistry().register(PROP_METRIC_REG_JVM_MEMORY, new MemoryUsageGaugeSet());
+        getMetricRegistry().register(PROP_METRIC_REG_JVM_GARBAGE, new GarbageCollectorMetricSet());
+        getMetricRegistry().register(PROP_METRIC_REG_JVM_THREADS, new ThreadStatesGaugeSet());
+        getMetricRegistry().register(PROP_METRIC_REG_JVM_FILES, new FileDescriptorRatioGauge());
+        getMetricRegistry().register(PROP_METRIC_REG_JVM_BUFFERS, new BufferPoolMetricSet(ManagementFactory.getPlatformMBeanServer()));
         if (propertyResolver.getProperty(PROP_JMX_ENABLED, Boolean.class, false)) {
             log.info("Initializing Metrics JMX reporting");
-            jmxReporter = JmxReporter.forRegistry(metricRegistry).build();
+            jmxReporter = JmxReporter.forRegistry(getMetricRegistry()).build();
             jmxReporter.start();
         }
     }

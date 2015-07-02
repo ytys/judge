@@ -7,16 +7,11 @@ import javax.annotation.Resource;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 // spring security, here is no controller, so ignored
 @Ignore
-@RunWith(SpringJUnit4ClassRunner.class)
-@WebAppConfiguration
 public class LoginControllerTest extends AbstractMockMvcTests {
 
     private static final String handle = "testaccount2";

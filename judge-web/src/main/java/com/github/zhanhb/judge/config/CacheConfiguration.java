@@ -1,10 +1,8 @@
 package com.github.zhanhb.judge.config;
 
-import com.codahale.metrics.MetricFilter;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.ehcache.InstrumentedEhcache;
 import java.util.Set;
-import javax.annotation.PreDestroy;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.metamodel.EntityType;
@@ -39,21 +37,16 @@ public class CacheConfiguration {
     @Autowired
     private MetricRegistry metricRegistry;
 
-    private net.sf.ehcache.CacheManager cacheManager;
-
-    @PreDestroy
-    public void destroy() {
-        log.info("Remove Cache Manager metrics");
-        metricRegistry.removeMatching(MetricFilter.ALL);
-        log.info("Closing Cache Manager");
-        cacheManager.shutdown();
+    @Bean
+    public net.sf.ehcache.CacheManager ehcacheManager() {
+        log.debug("Starting Ehcache");
+        net.sf.ehcache.CacheManager cacheManager = net.sf.ehcache.CacheManager.create();
+        cacheManager.getConfiguration().setMaxBytesLocalHeap(env.getProperty("cache.ehcache.maxBytesLocalHeap", String.class, "16M"));
+        return cacheManager;
     }
 
     @Bean
     public CacheManager cacheManager() {
-        log.debug("Starting Ehcache");
-        cacheManager = net.sf.ehcache.CacheManager.create();
-        cacheManager.getConfiguration().setMaxBytesLocalHeap(env.getProperty("cache.ehcache.maxBytesLocalHeap", String.class, "16M"));
         log.debug("Registering Ehcache Metrics gauges");
         Set<EntityType<?>> entities = entityManager.getMetamodel().getEntities();
         for (EntityType<?> entity : entities) {
@@ -64,15 +57,15 @@ public class CacheConfiguration {
             }
             Assert.notNull(name, "entity cannot exist without a identifier");
 
-            net.sf.ehcache.Cache cache = cacheManager.getCache(name);
+            net.sf.ehcache.Cache cache = ehcacheManager().getCache(name);
             if (cache != null) {
                 cache.getCacheConfiguration().setTimeToLiveSeconds(env.getProperty("cache.timeToLiveSeconds", Long.class, 3600L));
                 net.sf.ehcache.Ehcache decoratedCache = InstrumentedEhcache.instrument(metricRegistry, cache);
-                cacheManager.replaceCacheWithDecoratedCache(cache, decoratedCache);
+                ehcacheManager().replaceCacheWithDecoratedCache(cache, decoratedCache);
             }
         }
         EhCacheCacheManager ehCacheManager = new EhCacheCacheManager();
-        ehCacheManager.setCacheManager(cacheManager);
+        ehCacheManager.setCacheManager(ehcacheManager());
         return ehCacheManager;
     }
 }

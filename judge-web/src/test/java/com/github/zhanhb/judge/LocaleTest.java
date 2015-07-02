@@ -15,11 +15,12 @@
  */
 package com.github.zhanhb.judge;
 
-import com.github.zhanhb.judge.testenv.AbstractContextControllerTests;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -27,15 +28,19 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.cookie;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
+import org.springframework.web.context.WebApplicationContext;
 
 /**
  *
  * @author zhanhb
  */
-@WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
-public class LocaleTest extends AbstractContextControllerTests {
+@SpringApplicationConfiguration(classes = Application.class)
+@WebAppConfiguration
+public class LocaleTest {
 
+    @Autowired
+    private WebApplicationContext wac;
     private MockMvc mockMvc;
 
     @Before
@@ -48,7 +53,8 @@ public class LocaleTest extends AbstractContextControllerTests {
     }
 
     @Test
-    public void testChangeLocale() throws Exception {org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration b;
+    public void testChangeLocale() throws Exception {
+        org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration b;
         mockMvc.perform(get("/?lang=en")).andExpect(cookie().value("locale", "en"));
         mockMvc.perform(get("/?lang=zh")).andExpect(cookie().value("locale", "zh"));
     }
