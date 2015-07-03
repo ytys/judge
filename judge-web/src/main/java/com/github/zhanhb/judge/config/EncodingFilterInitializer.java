@@ -24,7 +24,7 @@ import org.springframework.web.WebApplicationInitializer;
 
 /**
  * disabled when run as a java application.
- * 
+ *
  * @author zhanhb
  */
 @Order(Ordered.HIGHEST_PRECEDENCE)

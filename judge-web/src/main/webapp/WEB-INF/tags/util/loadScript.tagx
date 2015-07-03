@@ -23,7 +23,7 @@
 
     <!-- Latest compiled and minified JavaScript -->
     <!-- my css -->
-    <html:css href="/static/css/site.css?${applicationScope.startUpTime}"/>
+    <html:css href="/static/css/site.css?${applicationScope.startUpDate}"/>
 
     <jsp:text>&lt;!--[if lte IE 6]&gt;</jsp:text>
     <html:css href="/static/bootstrap/css/bootstrap-ie6.css"/>
@@ -49,5 +49,5 @@
     <html:script src="/static/bootstrap-table/bootstrap-table-locale-zh.js" type="text/javascript"/>
     <html:script src="/static/js/purl.min.js"/>
 
-    <html:script src="/static/js/site.js?${applicationScope.startUpTime}"/>
+    <html:script src="/static/js/site.js?${applicationScope.startUpDate}"/>
 </jsp:root>

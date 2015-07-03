@@ -46,8 +46,7 @@
                     <input type="submit"/>
                 </form:form>
             </pre>
-
-            <jsp:directive.include file="newjsp.jsp"/>
+            <sec:authentication property='principal.enabled' />
         </jsp:attribute>
     </site:basic>
 </jsp:root>

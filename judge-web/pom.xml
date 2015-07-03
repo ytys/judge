@@ -11,20 +11,36 @@
     <artifactId>judge-web</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
+    <name>ZJNU Online Judge</name>
     <description>ZJNU Online Judge</description>
+    <url>https://github.com/zhanhb/judge/</url>
+    <scm>
+        <connection>scm:git:git://github.com/zhanhb/judge.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/zhanhb/judge.git</developerConnection>
+        <url>https://github.com/zhanhb/judge</url>
+    </scm>
+    <issueManagement>
+        <system>Github</system>
+        <url>https://github.com/zhanhb/judge/issues</url>
+    </issueManagement>
     <properties>
+        <commons-dbcp2.version>2.1</commons-dbcp2.version>
         <dropwizard-metrics.version>3.1.2</dropwizard-metrics.version>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
+        <hikaricp.version>2.3.8</hikaricp.version>
         <jackson.version>2.5.4</jackson.version>
         <java.version>1.8</java.version>
         <javassist.version>3.19.0-GA</javassist.version>
         <liquibase.version>3.4.0</liquibase.version>
         <lombok.version>1.16.4</lombok.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
         <metrics-spring.version>3.1.0</metrics-spring.version>
         <!--<maven.test.failure.ignore>true</maven.test.failure.ignore>-->
         <!--<maven.test.skip>true</maven.test.skip>-->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <querydsl.version>3.6.4</querydsl.version>
+        <snakeyaml.version>1.15</snakeyaml.version>
         <spring-data-releasetrain.version>Fowler-RELEASE</spring-data-releasetrain.version>
         <spring-hateoas.version>0.17.0.RELEASE</spring-hateoas.version>
         <spring-plugin.version>1.2.0.RELEASE</spring-plugin.version>
@@ -38,7 +54,6 @@
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>${lombok.version}</version>
-                <scope>provided</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -86,10 +101,6 @@
         </dependency>
         <!-- required, convert object to json and xml -->
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.fasterxml.jackson.dataformat</groupId>
             <artifactId>jackson-dataformat-xml</artifactId>
         </dependency>
@@ -112,6 +123,11 @@
             <version>3.2.0</version>
         </dependency>
         <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+        <dependency>
             <groupId>org.glassfish.web</groupId>
             <artifactId>jstl-impl</artifactId>
             <version>1.2</version>
@@ -125,6 +141,10 @@
                     <groupId>javax.servlet</groupId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
         </dependency>
         <dependency>
             <groupId>io.dropwizard.metrics</groupId>
@@ -210,20 +230,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
-            <exclusions>
-                <exclusion>
-                    <artifactId>logback-core</artifactId>
-                    <groupId>ch.qos.logback</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>logback-classic</artifactId>
-                    <groupId>ch.qos.logback</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>log4j-over-slf4j</artifactId>
-                    <groupId>org.slf4j</groupId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -232,6 +238,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-rest</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                    <groupId>org.springframework.boot</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -280,14 +292,15 @@
             <artifactId>tiles-jsp</artifactId>
             <version>3.0.5</version>
         </dependency>
+        <!-- tomcat connection pool -->
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-jdbc</artifactId>
+        </dependency>
         <dependency>
             <groupId>xml-apis</groupId>
             <artifactId>xml-apis</artifactId>
             <version>1.4.01</version>
-        </dependency>
-        <dependency>
-            <groupId>org.liquibase</groupId>
-            <artifactId>liquibase-core</artifactId>
         </dependency>
         <dependency>
             <groupId>javax</groupId>
@@ -311,11 +324,6 @@
             <artifactId>asm</artifactId>
             <version>5.0.4</version>
             <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.jolbox</groupId>
-            <artifactId>bonecp</artifactId>
-            <version>0.8.0.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>cglib</groupId>
@@ -391,6 +399,12 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-servlet-api</artifactId>
+            <version>${tomcat.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -609,6 +623,14 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.7</version>
+                <configuration>
+                    <argLine>-Dfile.encoding=UTF8</argLine>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.18.1</version>
                 <configuration>
@@ -633,13 +655,6 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <argLine>-Dfile.encoding=UTF8</argLine>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>org.liquibase</groupId>
                 <artifactId>liquibase-maven-plugin</artifactId>
                 <version>${liquibase.version}</version>
@@ -648,9 +663,8 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>2.7</version>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <argLine>-Dfile.encoding=UTF8</argLine>
                 </configuration>

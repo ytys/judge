@@ -1,7 +1,4 @@
 spring:
-    datasource:
-        url: jdbc:mariadb:///oj_test_db?zeroDateTimeBehavior=convertToNull&characterEncoding=UTF-8
-
     jpa:
         show-sql: true
         hibernate:

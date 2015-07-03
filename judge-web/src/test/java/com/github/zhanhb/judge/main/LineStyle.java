@@ -38,7 +38,7 @@ import java.util.stream.Collectors;
 public class LineStyle {
 
     private static final String LINE_STYLE;
-    private static final Set<String> acceptsuffix = new HashSet<>(Arrays.asList("java,xml,jspx,tagx,css,js,jsp,tag".split("[^a-z]+")));
+    private static final Set<String> acceptsuffix = new HashSet<>(Arrays.asList("java,xml,jspx,tagx,css,js,jsp,tag,yml".split("[^a-z]+")));
 
     static {
         StringWriter sw = new StringWriter(4);

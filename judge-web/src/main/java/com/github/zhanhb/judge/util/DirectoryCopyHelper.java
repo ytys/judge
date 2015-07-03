@@ -33,11 +33,13 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import java.nio.file.attribute.BasicFileAttributeView;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Objects;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  *
  * @author zhanhb
  */
+@Slf4j
 public class DirectoryCopyHelper extends SimpleFileVisitor<Path> {
 
     public static Path copy(Path source, Path target) throws IOException {
@@ -99,7 +101,7 @@ public class DirectoryCopyHelper extends SimpleFileVisitor<Path> {
     }
 
     protected Path resolve(Path dir) {
-        return target.resolve(source.relativize(dir));
+        return target.resolve(source.relativize(dir).toString());
     }
 
     @Override

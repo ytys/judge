@@ -9,13 +9,6 @@
         </goals>
     </action>
     <action>
-        <actionName>CUSTOM-verify</actionName>
-        <displayName>verify</displayName>
-        <goals>
-            <goal>verify</goal>
-        </goals>
-    </action>
-    <action>
         <actionName>CUSTOM-spring-boot:run server.port=0</actionName>
         <displayName>spring-boot:run server.port=0</displayName>
         <goals>
@@ -23,7 +16,7 @@
         </goals>
         <properties>
             <server.port>0</server.port>
-            <debug/>
+            <debug></debug>
         </properties>
     </action>
     <action>
@@ -36,7 +29,7 @@
             <goal>org.codehaus.mojo:exec-maven-plugin:1.2.1:exec</goal>
         </goals>
         <properties>
-            <exec.args>-classpath %classpath com.github.zhanhb.judge.Application</exec.args>
+            <exec.args>-classpath %classpath ${packageClassName}</exec.args>
             <exec.executable>java</exec.executable>
         </properties>
     </action>
@@ -50,7 +43,7 @@
             <goal>org.codehaus.mojo:exec-maven-plugin:1.2.1:exec</goal>
         </goals>
         <properties>
-            <exec.args>-Xdebug -Xrunjdwp:transport=dt_socket,server=n,address=${jpda.address} -classpath %classpath com.github.zhanhb.judge.Application</exec.args>
+            <exec.args>-Xdebug -Xrunjdwp:transport=dt_socket,server=n,address=${jpda.address} -classpath %classpath ${packageClassName}</exec.args>
             <exec.executable>java</exec.executable>
             <jpda.listen>true</jpda.listen>
         </properties>
@@ -65,8 +58,23 @@
             <goal>org.codehaus.mojo:exec-maven-plugin:1.2.1:exec</goal>
         </goals>
         <properties>
-            <exec.args>-classpath %classpath com.github.zhanhb.judge.Application</exec.args>
+            <exec.args>-classpath %classpath ${packageClassName}</exec.args>
             <exec.executable>java</exec.executable>
         </properties>
+    </action>
+    <action>
+        <actionName>CUSTOM-package-all</actionName>
+        <displayName>package-all</displayName>
+        <goals>
+            <goal>package</goal>
+            <goal>spring-boot:repackage</goal>
+        </goals>
+    </action>
+    <action>
+        <actionName>CUSTOM-sortpom:sort</actionName>
+        <displayName>sortpom:sort</displayName>
+        <goals>
+            <goal>sortpom:sort</goal>
+        </goals>
     </action>
 </actions>

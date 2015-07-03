@@ -3,7 +3,6 @@
 # Disable the spring security default configuration from spring-boot-actuator
 management.security.enabled: true
 security.basic.enabled: false
-spring.application.admin.enabled: true
 
 # Disable Jolokia - An http/json bridge for remote JMX access
 endpoints.jolokia.enabled: true
@@ -39,23 +38,30 @@ liquibase:
 spring:
 # @see org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
 # @see org.springframework.boot.autoconfigure.jdbc.DataSourceProperties
+# pool type
+# org.apache.tomcat.jdbc.pool.DataSource
+# com.zaxxer.hikari.HikariDataSource
+# org.apache.commons.dbcp.BasicDataSource
+# org.apache.commons.dbcp2.BasicDataSource
     datasource:
-        driver-class-name: org.mariadb.jdbc.Driver
-        url: jdbc:mariadb:///oj?zeroDateTimeBehavior=convertToNull&characterEncoding=UTF-8
-        username: root
-        password: root
-        jmx-enabled: false
+        # populate using data.sql
+        initialize: false
+        jmx-enabled: true
+        # tomcat pool
         validation-query: select 1
+        # Hikari
+        connectionTestQuery: select 1
 
 # @see org.springframework.boot.autoconfigure.orm.jpa.JpaProperties
     jpa:
-        show-sql:
+#        show-sql: true
         hibernate:
             naming-strategy: org.hibernate.cfg.EJB3NamingStrategy
         properties:
             javax.persistence.jdbc.validation.mode: none
 
             hibernate:
+#                dialect:
                 cache.provider_class: org.hibernate.cache.NoCacheProvider
                 query.substitutions: true '1', false '0'
 
@@ -67,20 +73,15 @@ spring:
                 generate_statistics: false
 
                 hbm2ddl:
-                    auto: update
+                    auto: create
                     import_files: /0000data.sql
                     import_files_sql_extractor: org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor
-
-            bonecp:
-                idleConnectionTestPeriodInMinutes: 14400
-#                initialPoolSize: 1
-#                acquireIncrement: 1
-                connectionTestStatement: select 1
-                logStatementsEnabled: true
 
     thymeleaf:
         mode: XHTML
         cache: true
+    application.admin.enabled: true
+    hateoas.apply-to-primary-object-mapper: true
 
 metrics:
     jmx.enabled: true
@@ -103,5 +104,3 @@ spring.http:
     encoding.enabled: false # enable http encoding support
     converters.preferred-json-mapper: gson
 
-spring:
-    hateoas.apply-to-primary-object-mapper: true
