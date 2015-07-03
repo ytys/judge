@@ -35,8 +35,7 @@ public class ReadOnly {
         Files.walkFileTree(Paths.get("src/main/webapp/static/bootstrap-table"), new SetReadOnlyVisitor());
         Files.walkFileTree(Paths.get("src/main/webapp/static/ckeditor"), new SetReadOnlyVisitor());
         Files.walkFileTree(Paths.get("src/main/webapp/static/css/problem-statement.css"), new SetReadOnlyVisitor());
-        Files.walkFileTree(Paths.get("src/main/webapp/static/js"), new SetReadOnlyVisitor());
-        Paths.get("src/main/webapp/static/js/site.js").toFile().setWritable(true);
+        Files.walkFileTree(Paths.get("src/main/webapp/static/commons/js"), new SetReadOnlyVisitor());
     }
 
     private static class SetReadOnlyVisitor extends SimpleFileVisitor<Path> {

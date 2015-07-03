@@ -73,8 +73,8 @@ spring:
                 generate_statistics: false
 
                 hbm2ddl:
-                    auto: create
-                    import_files: /0000data.sql
+                    auto: update
+                    import_files: /data.sql
                     import_files_sql_extractor: org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor
 
     thymeleaf:

@@ -69,4 +69,15 @@
             };
         }
     });
+
+    var QRCode = window.QRCode;
+
+    QRCode && ($.fn.qrcode = function (options) {
+        $.each(this, function () {
+            var me = $(this), qrcode;
+            typeof options === "string" && (qrcode = me.data("qrcode")) ? qrcode.makeCode(options) :
+                    me.data("qrcode", new QRCode(me.empty()[0], options));
+        });
+        return this;
+    });
 })(this, jQuery);

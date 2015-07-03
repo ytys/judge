@@ -35,19 +35,20 @@
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <jsp:text>&lt;!--[if lt IE 9]&gt;</jsp:text>
-    <html:script src="/static/js/html5shiv.min.js" type="text/javascript"/>
-    <html:script src="/static/js/respond.min.js" type="text/javascript"/>
-    <html:script src="/static/js/json2.min.js" type="text/javascript"/>
+    <html:script src="/static/commons/js/html5shiv.min.js" type="text/javascript"/>
+    <html:script src="/static/commons/js/respond.min.js" type="text/javascript"/>
+    <html:script src="/static/commons/js/json2.min.js" type="text/javascript"/>
     <jsp:text>&lt;![endif]--&gt;</jsp:text>
 
-    <html:script src="/static/js/jquery-1.11.3.min.js" type="text/javascript"/>
+    <html:script src="/static/commons/js/jquery-1.11.3.min.js" type="text/javascript"/>
 
-    <html:script src="/static/js/jquery.placeholder.min.js" type="text/javascript"/>
+    <html:script src="/static/commons/js/jquery.placeholder.min.js" type="text/javascript"/>
 
     <html:script src="/static/bootstrap/js/bootstrap.min.js"/>
     <html:script src="/static/bootstrap-table/bootstrap-table-all.min.js" type="text/javascript"/>
     <html:script src="/static/bootstrap-table/bootstrap-table-locale-zh.js" type="text/javascript"/>
-    <html:script src="/static/js/purl.min.js"/>
+    <html:script src="/static/commons/js/purl.min.js"/>
+    <html:script src="/static/commons/js/qrcode.min.js"/>
 
     <html:script src="/static/js/site.js?${applicationScope.startUpDate}"/>
 </jsp:root>

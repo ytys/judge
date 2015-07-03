@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!--
+    TODO define vocabulary identification
+    PUBLIC ID: -//vendor//vocabulary//EN
+    SYSTEM ID: http://server/path/logback.dtd
+
+-->
+
+<!--
+    An example how to use this DTD from your XML document:
+
+    <?xml version="1.0"?>
+
+    <!DOCTYPE configuration SYSTEM "logback.dtd">
+
+    <configuration>
+    ...
+    </configuration>
+-->
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT configuration (appender|logger|contextListener|root)*>
+<!ATTLIST configuration
+    scan CDATA #IMPLIED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT appender (encoder)*>
+<!ATTLIST appender
+    name CDATA #IMPLIED
+    class CDATA #IMPLIED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT encoder (charset|pattern)*>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT charset (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT pattern (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT logger EMPTY>
+<!ATTLIST logger
+    name CDATA #IMPLIED
+    level CDATA #IMPLIED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT contextListener (resetJUL)*>
+<!ATTLIST contextListener
+    class CDATA #IMPLIED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT resetJUL (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT root (appender-ref)*>
+<!ATTLIST root
+    level CDATA #IMPLIED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT appender-ref EMPTY>
+<!ATTLIST appender-ref
+    ref CDATA #IMPLIED
+  >

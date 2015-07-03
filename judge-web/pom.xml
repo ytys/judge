@@ -4,7 +4,7 @@
     <parent>
         <artifactId>spring-boot-parent</artifactId>
         <groupId>org.springframework.boot</groupId>
-        <version>1.2.4.RELEASE</version>
+        <version>1.2.5.RELEASE</version>
         <relativePath />
     </parent>
     <groupId>com.github.zhanhb</groupId>
@@ -25,19 +25,19 @@
     </issueManagement>
     <properties>
         <commons-dbcp2.version>2.1</commons-dbcp2.version>
-        <dropwizard-metrics.version>3.1.2</dropwizard-metrics.version>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <hikaricp.version>2.3.8</hikaricp.version>
         <jackson.version>2.5.4</jackson.version>
         <java.version>1.8</java.version>
         <javassist.version>3.19.0-GA</javassist.version>
+        <liquibase-hibernate4.version>3.5</liquibase-hibernate4.version>
         <liquibase.version>3.4.0</liquibase.version>
         <lombok.version>1.16.4</lombok.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
+        <!--<maven.test.failure.ignore>true</maven.test.failure.ignore>
+        <maven.test.skip>true</maven.test.skip>-->
         <metrics-spring.version>3.1.0</metrics-spring.version>
-        <!--<maven.test.failure.ignore>true</maven.test.failure.ignore>-->
-        <!--<maven.test.skip>true</maven.test.skip>-->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <querydsl.version>3.6.4</querydsl.version>
         <snakeyaml.version>1.15</snakeyaml.version>
@@ -45,7 +45,6 @@
         <spring-hateoas.version>0.17.0.RELEASE</spring-hateoas.version>
         <spring-plugin.version>1.2.0.RELEASE</spring-plugin.version>
         <spring-security.version>4.0.1.RELEASE</spring-security.version>
-        <spring.version>4.1.6.RELEASE</spring.version>
         <tomcat.version>7.0.62</tomcat.version>
     </properties>
     <dependencyManagement>
@@ -116,11 +115,6 @@
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.google.zxing</groupId>
-            <artifactId>javase</artifactId>
-            <version>3.2.0</version>
         </dependency>
         <dependency>
             <groupId>com.google.code.findbugs</groupId>
@@ -238,12 +232,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-rest</artifactId>
-            <exclusions>
-                <exclusion>
-                    <artifactId>spring-boot-starter-tomcat</artifactId>
-                    <groupId>org.springframework.boot</groupId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -251,21 +239,11 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-log4j</artifactId>
+            <artifactId>spring-boot-starter-integration</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-logging</artifactId>
-            <exclusions>
-                <exclusion>
-                    <artifactId>log4j-over-slf4j</artifactId>
-                    <groupId>org.slf4j</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>logback-classic</artifactId>
-                    <groupId>ch.qos.logback</groupId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -317,6 +295,11 @@
             <groupId>com.mysema.querydsl</groupId>
             <artifactId>querydsl-apt</artifactId>
             <version>${querydsl.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -518,9 +501,9 @@
                             <cssTargetDir>static/css</cssTargetDir>
                             <jsSourceDir>/</jsSourceDir>
                             <jsSourceFiles>
-                                <jsSourceFile>static/js/jquery-1.11.3.js</jsSourceFile>
-                                <jsSourceFile>static/js/jquery.placeholder.js</jsSourceFile>
-                                <jsSourceFile>static/js/site.js</jsSourceFile>
+                                <jsSourceFile>static/commons/js/jquery-1.11.3.js</jsSourceFile>
+                                <jsSourceFile>static/commons/js/jquery.placeholder.js</jsSourceFile>
+                                <jsSourceFile>static/commons/js/site.js</jsSourceFile>
                             </jsSourceFiles>
                             <jsSourceIncludes>
                                 <jsSourceInclude>static/shjs/lang/*.js</jsSourceInclude>

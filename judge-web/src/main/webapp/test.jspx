@@ -46,7 +46,7 @@
                     <input type="submit"/>
                 </form:form>
             </pre>
-            <sec:authentication property='principal.enabled' />
+            <script><![CDATA[jQuery("<div>").qrcode("hello,world").appendTo("body");]]></script>
         </jsp:attribute>
     </site:basic>
 </jsp:root>

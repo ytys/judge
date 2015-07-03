@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
  *
  * @author zhanhb
  */
-public class NewClass {
+public class JSEncoder {
 
     public static void main(String[] args) throws IOException {
         Path path = Paths.get("src/main/webapp/static/bootstrap-table/bootstrap-table-locale-zh.js");
