@@ -2,7 +2,7 @@ spring:
     jpa:
         show-sql: true
         hibernate:
-            hbm2ddl: create
+            hbm2ddl: none
 
 liquibase:
-    enabled: false
+    enabled: true

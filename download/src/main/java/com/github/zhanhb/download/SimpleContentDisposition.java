@@ -99,7 +99,7 @@ public class SimpleContentDisposition implements ContentDisposition {
             dontNeedEncoding.set('#');
             dontNeedEncoding.set('$');
             dontNeedEncoding.set('&');
-            // dontNeedEncoding.set('+'); // we don't encoding +
+            // dontNeedEncoding.set('+'); // we will encoding +
             dontNeedEncoding.set('-');
             dontNeedEncoding.set('.');
             dontNeedEncoding.set('^');
@@ -109,7 +109,6 @@ public class SimpleContentDisposition implements ContentDisposition {
             dontNeedEncoding.set('~');
         }
 
-        @SuppressWarnings("NestedAssignment")
         public static String encode(String s, String enc) {
             boolean needToChange = false;
             StringBuilder out = new StringBuilder(s.length());
@@ -118,22 +117,23 @@ public class SimpleContentDisposition implements ContentDisposition {
                     .onMalformedInput(CodingErrorAction.REPLACE)
                     .onUnmappableCharacter(CodingErrorAction.REPLACE);
 
-            for (int i = 0, length = s.length(); i < length;) {
-                char c = s.charAt(i);
-
-                if (dontNeedEncoding.get(c)) {
-                    out.append(c);
-                    i++;
-                } else {
-                    // convert to external encoding before hex conversion
-                    int cs = i;
-                    do {
-                        i++;
-                    } while (i < length && !dontNeedEncoding.get((c = s.charAt(i))));
-
+            for (int cur = 0, length = s.length(); cur < length;) {
+                int start = cur;
+                while (cur < length && dontNeedEncoding.get(s.charAt(cur))) {
+                    ++cur;
+                }
+                if (start != cur) {
+                    out.append(s, start, cur);
+                    start = cur;
+                }
+                // convert to external encoding before hex conversion
+                while (cur < length && !dontNeedEncoding.get((s.charAt(cur)))) {
+                    ++cur;
+                }
+                if (start != cur) {
                     ByteBuffer buffer;
                     try {
-                        buffer = encoder.encode(CharBuffer.wrap(s, cs, i));
+                        buffer = encoder.encode(CharBuffer.wrap(s, start, cur));
                     } catch (CharacterCodingException ex) {
                         throw new Error(ex);
                     }

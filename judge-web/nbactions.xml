@@ -18,17 +18,6 @@
             <server.port>0</server.port>
             <debug></debug>
         </properties>
-    </action> 
-    <action>
-        <actionName>CUSTOM-package spring-boot:repackage spring-boot:repackage</actionName>
-        <displayName>package spring-boot:repackage spring-boot:repackage</displayName>
-        <goals>
-            <goal>package</goal>
-            <goal>spring-boot:repackage</goal>
-        </goals>
-        <properties>
-            <maven.test.skip>true</maven.test.skip>
-        </properties>
     </action>
     <action>
         <actionName>CUSTOM-sortpom:sort</actionName>
@@ -38,11 +27,10 @@
         </goals>
     </action>
     <action>
-        <actionName>CUSTOM-pakckage maven.test.skip=true</actionName>
-        <displayName>pakckage maven.test.skip=true</displayName>
+        <actionName>CUSTOM-pakckage skip test</actionName>
+        <displayName>pakckage skip test</displayName>
         <goals>
             <goal>package</goal>
-            <goal>spring-boot:repackage</goal>
         </goals>
         <properties>
             <maven.test.skip>true</maven.test.skip>

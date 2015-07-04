@@ -94,6 +94,7 @@ public class MetricsConfiguration extends MetricsConfigurerAdapter implements En
     @Configuration
     @ConditionalOnClass(Graphite.class)
     @Profile("!" + Constants.SPRING_PROFILE_FAST)
+    @SuppressWarnings("PublicInnerClass")
     public static class GraphiteRegistry implements EnvironmentAware {
 
         private final Logger log = LoggerFactory.getLogger(GraphiteRegistry.class);

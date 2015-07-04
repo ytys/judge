@@ -21,9 +21,7 @@ import java.util.Scanner;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.Bean;
 
 /**
  *
@@ -60,11 +58,6 @@ public class Application {
             String property = ctx.getEnvironment().getProperty(name);
             System.out.println(property);
         }
-    }
-
-    @Bean
-    public EmbeddedServletContainerCustomizer embeddedCustomizer() {
-        return container -> container.setContextPath("/judge");
     }
 
 }

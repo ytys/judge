@@ -39,30 +39,28 @@ public class SimpleContentDispositionTest {
      * @param s
      * @param enc
      * @return
-     * @throws java.io.UnsupportedEncodingException
-     * @see SimpleContentDisposition.Encoder#encode(String, String, boolean)
+     * @see SimpleContentDisposition.Encoder#encode(String, String)
      */
-    public String encode(String s, String enc) throws UnsupportedEncodingException {
+    public String encode(String s, String enc) {
         return SimpleContentDisposition.Encoder.encode(s, enc);
     }
 
     /**
      * Test of setContentDisposition method, of class SimpleContentDisposition.
      *
-     * @throws java.lang.Exception
+     * @throws java.io.UnsupportedEncodingException
      */
     @Test
-    @SuppressWarnings("unchecked")
-    public void testEncoder() throws Exception {
+    public void testEncoder() throws UnsupportedEncodingException {
         Charset UTF_8 = Charset.forName("UTF-8");
 
         int len = 128;
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder(len);
         for (int i = 0; i < len; ++i) {
             sb.append((char) i);
         }
         Random random = new Random();
-        for (int i = 0; i < 10000; ++i) {
+        for (int i = 0; i < 10000000; ++i) {
             int ch = random.nextInt(10 * 65536 - 128) + 128;
             if (isSurrogate(ch)) {
                 continue;
@@ -88,10 +86,12 @@ public class SimpleContentDispositionTest {
             test.set(b);
         }
 
-        BitSet sub = test.get('a', 'z' + 1);
-        sub.or(test.get('A', 'Z' + 1));
-        sub.or(test.get('0', '9' + 1));
-        assertEquals(64, sub.size());
+        BitSet tmp = new BitSet(128);
+        tmp.set('a', 'z' + 1); // 26
+        tmp.set('A', 'Z' + 1); // 26
+        tmp.set('0', '9' + 1); // 10
+        tmp.and(test);
+        assertEquals(26 * 2 + 10, tmp.cardinality());
     }
 
 }

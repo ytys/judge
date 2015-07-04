@@ -35,8 +35,8 @@
         <lombok.version>1.16.4</lombok.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
-        <!--<maven.test.failure.ignore>true</maven.test.failure.ignore>
-        <maven.test.skip>true</maven.test.skip>-->
+        <!--<maven.test.failure.ignore>true</maven.test.failure.ignore>-->
+        <!--<maven.test.skip>true</maven.test.skip>-->
         <metrics-spring.version>3.1.0</metrics-spring.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <querydsl.version>3.6.4</querydsl.version>
@@ -115,11 +115,6 @@
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.google.code.findbugs</groupId>
-            <artifactId>jsr305</artifactId>
-            <version>3.0.0</version>
         </dependency>
         <dependency>
             <groupId>org.glassfish.web</groupId>
@@ -218,10 +213,6 @@
             <version>${querydsl.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
@@ -240,10 +231,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-integration</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-logging</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -339,7 +326,7 @@
         <dependency>
             <groupId>org.mariadb.jdbc</groupId>
             <artifactId>mariadb-java-client</artifactId>
-            <version>1.1.8</version>
+            <version>1.1.9</version>
             <scope>runtime</scope>
             <exclusions>
                 <exclusion>
@@ -503,14 +490,6 @@
                 </executions>
             </plugin>-->
             <plugin>
-                <groupId>maven</groupId>
-                <artifactId>maven-test-plugin</artifactId>
-                <version>1.8.2</version>
-                <configuration>
-                    <argLine>-Dfile.encoding=UTF8</argLine>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <!--
@@ -625,8 +604,36 @@
                 <groupId>org.liquibase</groupId>
                 <artifactId>liquibase-maven-plugin</artifactId>
                 <version>${liquibase.version}</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.javassist</groupId>
+                        <artifactId>javassist</artifactId>
+                        <version>${javassist.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.liquibase.ext</groupId>
+                        <artifactId>liquibase-hibernate4</artifactId>
+                        <version>${liquibase-hibernate4.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-starter-data-jpa</artifactId>
+                        <version>${spring-boot.version}</version>
+                    </dependency>
+                </dependencies>
                 <configuration>
                     <argLine>-Dfile.encoding=UTF8</argLine>
+                    <changeLogFile>src/main/resources/config/liquibase/master.xml</changeLogFile>
+                    <diffChangeLogFile>src/main/resources/config/liquibase/changelog/${maven.build.timestamp}_changelog.xml</diffChangeLogFile>
+                    <driver>org.mariadb.jdbc.Driver</driver>
+                    <url>jdbc:mariadb://localhost/oj?zeroDateTimeBehavior=convertToNull&amp;characterEncoding=UTF-8</url>
+                    <defaultSchemaName>oj</defaultSchemaName>
+                    <username>root</username>
+                    <password>root</password>
+                    <referenceUrl>hibernate:spring:com.github.zhanhb.judge.model?dialect=org.hibernate.dialect.MySQLInnoDBDialect</referenceUrl>
+                    <verbose>true</verbose>
+                    <logging>debug</logging>
+                    <tag>local</tag>
                 </configuration>
             </plugin>
             <plugin>
@@ -635,6 +642,14 @@
                 <configuration>
                     <argLine>-Dfile.encoding=UTF8</argLine>
                 </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

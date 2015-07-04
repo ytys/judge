@@ -32,7 +32,7 @@ server:
 # @see org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties
 liquibase:
     enabled: false
-    contexts: prod
+    contexts: prod, test
     changeLog: classpath:config/liquibase/master.xml
 
 spring:

@@ -15,6 +15,7 @@
  */
 package com.github.zhanhb.judge.config;
 
+import com.github.zhanhb.judge.security.AuthoritiesConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -69,8 +70,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .sameOrigin()
                 .and()
             .authorizeRequests()
-                .regexMatchers("/login")
-                    .anonymous();
+                .regexMatchers("/login").anonymous()
+                .antMatchers("/metrics/**").hasAuthority(AuthoritiesConstants.ADMIN)
+                .antMatchers("/health/**").hasAuthority(AuthoritiesConstants.ADMIN)
+                .antMatchers("/trace/**").hasAuthority(AuthoritiesConstants.ADMIN)
+                .antMatchers("/dump/**").hasAuthority(AuthoritiesConstants.ADMIN)
+                .antMatchers("/shutdown/**").hasAuthority(AuthoritiesConstants.ADMIN)
+                .antMatchers("/beans/**").hasAuthority(AuthoritiesConstants.ADMIN)
+                .antMatchers("/configprops/**").hasAuthority(AuthoritiesConstants.ADMIN)
+                .antMatchers("/info/**").hasAuthority(AuthoritiesConstants.ADMIN)
+                .antMatchers("/autoconfig/**").hasAuthority(AuthoritiesConstants.ADMIN)
+                .antMatchers("/env/**").hasAuthority(AuthoritiesConstants.ADMIN);
     }
     // @formatter:on
 

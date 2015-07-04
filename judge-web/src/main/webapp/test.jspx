@@ -46,7 +46,12 @@
                     <input type="submit"/>
                 </form:form>
             </pre>
-            <script><![CDATA[jQuery("<div>").qrcode("hello,world").appendTo("body");]]></script>
+            <script>//<![CDATA[
+                jQuery("<div>").qrcode("hello,world").appendTo("body");//]]></script>
+
+            <input type="text" style="display: inline-block" />
+            <input type="text" style="display: inline-block" />
+
         </jsp:attribute>
     </site:basic>
 </jsp:root>
