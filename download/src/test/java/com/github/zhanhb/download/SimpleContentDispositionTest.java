@@ -15,13 +15,13 @@
  */
 package com.github.zhanhb.download;
 
-import static net.sourceforge.jwebunit.junit.JWebUnit.assertTitleEquals;
-import static net.sourceforge.jwebunit.junit.JWebUnit.beginAt;
-import static net.sourceforge.jwebunit.junit.JWebUnit.clickLink;
-import static net.sourceforge.jwebunit.junit.JWebUnit.setBaseUrl;
-import static net.sourceforge.jwebunit.junit.JWebUnit.setTextField;
-import static net.sourceforge.jwebunit.junit.JWebUnit.submit;
-import org.junit.Before;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.Charset;
+import java.util.BitSet;
+import java.util.Random;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 /**
@@ -30,19 +30,68 @@ import org.junit.Test;
  */
 public class SimpleContentDispositionTest {
 
-    @Before
-    public void setup() {
-        setBaseUrl("http://localhost/download_test");
+    public static boolean isSurrogate(int ch) {
+        return (ch >= 55296) && (ch < 57344);
     }
 
-    @Test
-    public void testLogin() {
-        beginAt("/index.jsp");
-        clickLink("login");
-        assertTitleEquals("Login");
-        setTextField("username", "test");
-        setTextField("password", "test123");
-        submit();
-        assertTitleEquals("Welcome, test!");
+    /**
+     *
+     * @param s
+     * @param enc
+     * @return
+     * @throws java.io.UnsupportedEncodingException
+     * @see SimpleContentDisposition.Encoder#encode(String, String, boolean)
+     */
+    public String encode(String s, String enc) throws UnsupportedEncodingException {
+        return SimpleContentDisposition.Encoder.encode(s, enc);
     }
+
+    /**
+     * Test of setContentDisposition method, of class SimpleContentDisposition.
+     *
+     * @throws java.lang.Exception
+     */
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testEncoder() throws Exception {
+        Charset UTF_8 = Charset.forName("UTF-8");
+
+        int len = 128;
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < len; ++i) {
+            sb.append((char) i);
+        }
+        Random random = new Random();
+        for (int i = 0; i < 10000; ++i) {
+            int ch = random.nextInt(10 * 65536 - 128) + 128;
+            if (isSurrogate(ch)) {
+                continue;
+            }
+            sb.append(Character.toChars(ch));
+        }
+
+        String s = sb.toString();
+
+        String enc = UTF_8.name();
+        String encoded = encode(s, enc);
+
+        for (char ch : encoded.toCharArray()) {
+            assertTrue(32 < ch && ch < 127);
+        }
+
+        String decode = URLDecoder.decode(encoded, enc);
+        assertEquals(s, decode);
+
+        char[] arr = encoded.replaceAll("%[a-z0-9]{2}", "").toCharArray();
+        BitSet test = new BitSet(128);
+        for (char b : arr) {
+            test.set(b);
+        }
+
+        BitSet sub = test.get('a', 'z' + 1);
+        sub.or(test.get('A', 'Z' + 1));
+        sub.or(test.get('0', '9' + 1));
+        assertEquals(64, sub.size());
+    }
+
 }

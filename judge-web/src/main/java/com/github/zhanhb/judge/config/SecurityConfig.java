@@ -25,7 +25,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
 
 /**
@@ -44,23 +46,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     // @formatter:off
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        SavedRequestAwareAuthenticationSuccessHandler sraash = new SavedRequestAwareAuthenticationSuccessHandler();
-        sraash.setUseReferer(true);
-        sraash.setDefaultTargetUrl("/");
-
-        SimpleUrlLogoutSuccessHandler sulsh = new SimpleUrlLogoutSuccessHandler();
-        sulsh.setUseReferer(true);
-        sulsh.setDefaultTargetUrl("/");
-
         http
             .formLogin()
                 .loginPage("/login")
                 .usernameParameter("login")
                 .passwordParameter("password")
-                .successHandler(sraash)
+                .successHandler(authenticationSuccessHandler())
                 .and()
             .logout()
-                .logoutSuccessHandler(sulsh)
+                .logoutSuccessHandler(logoutSuccessHandler())
                 .and()
             .rememberMe()
                 .and()
@@ -88,6 +82,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public SecurityEvaluationContextExtension securityEvaluationContextExtension() {
         return new SecurityEvaluationContextExtension();
+    }
+
+    @Bean
+    public AuthenticationSuccessHandler authenticationSuccessHandler() {
+        SavedRequestAwareAuthenticationSuccessHandler sraash = new SavedRequestAwareAuthenticationSuccessHandler();
+        sraash.setUseReferer(true);
+        sraash.setDefaultTargetUrl("/");
+        return sraash;
+    }
+
+    @Bean
+    public LogoutSuccessHandler logoutSuccessHandler() {
+        SimpleUrlLogoutSuccessHandler sulsh = new SimpleUrlLogoutSuccessHandler();
+        sulsh.setUseReferer(true);
+        sulsh.setDefaultTargetUrl("/");
+        return sulsh;
     }
 
 }

@@ -15,148 +15,136 @@
  */
 package com.github.zhanhb.download;
 
-import java.io.CharArrayWriter;
-import java.io.UnsupportedEncodingException;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
-import java.nio.charset.IllegalCharsetNameException;
-import java.nio.charset.UnsupportedCharsetException;
+import java.nio.charset.CharsetEncoder;
+import java.nio.charset.CodingErrorAction;
 import java.util.BitSet;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ *
+ * @author zhanhb
+ * @see https://tools.ietf.org/html/rfc6266#page-4
+ */
 public class SimpleContentDisposition implements ContentDisposition {
 
     @Override
-    public void setContentDisposition(HttpServletRequest request, HttpServletResponse response,
-            String filename) {
-        if (filename == null) {
+    public void setContentDisposition(HttpServletResponse response, String filename) {
+        if (filename == null || filename.length() == 0) {
             response.setHeader("Content-Disposition", "attachment");
-            return;
-        }
-        if (filename.matches("^[\040-~\011\012\015&&[^%]]+$")) {
-            response.setHeader("Content-Disposition", "attachment; filename=\"" + filename + "\"");
+        } else if (isToken(filename)) { // already a token
+            response.setHeader("Content-Disposition", "attachment; filename=" + filename);
         } else {
-            String encoded;
-            try {
-                encoded = Encoder.encode(filename, "utf-8", false);
-            } catch (UnsupportedEncodingException ex) {
-                throw new Error(ex);
-            }
-            response.setHeader("Content-Disposition", "attachment; filename=\"" + encoded + "\";  filename*=utf-8''" + encoded);
+            String encoded = Encoder.encode(filename, "utf-8");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + encoded + "\"; filename*=utf-8''" + encoded);
         }
     }
 
-    private static class Encoder {
+    private boolean isToken(String filename) {
+        if (filename == null || filename.length() == 0) {
+            return false;
+        }
+        for (int i = 0, len = filename.length(); i < len; ++i) {
+            char ch = filename.charAt(i);
+            if (ch >= 0x80 || ch <= ' ') {
+                return false;
+            }
+            switch (ch) {
+                // token separators
+                // @see https://tools.ietf.org/html/rfc2616#section-2.2
+                case '(':
+                case ')':
+                case '<':
+                case '>':
+                case '@':
+                case ',':
+                case ';':
+                case ':':
+                case '\\':
+                case '"':
+                case '/':
+                case '[':
+                case ']':
+                case '?':
+                case '=':
+                case '{':
+                case '}':
+                case ' ':
+                case '\t':
+                case '\u007F':
+                    return false;
+            }
+        }
+        return true;
+    }
+
+    @SuppressWarnings("PackageVisibleInnerClass")
+    static class Encoder {
 
         private static final BitSet dontNeedEncoding;
         static final int caseDiff = ('a' - 'A');
         private static final char[] hexChars = "0123456789ABCDEF".toCharArray();
 
         static {
+            dontNeedEncoding = new BitSet(128);
+            // https://tools.ietf.org/html/rfc5987#section-3.2
+            dontNeedEncoding.set('a', 'z' + 1);
+            dontNeedEncoding.set('A', 'Z' + 1);
+            dontNeedEncoding.set('0', '9' + 1);
 
-            /* The list of characters that are not encoded has been
-             * determined as follows:
-             *
-             * RFC 2396 states:
-             * -----
-             * Data characters that are allowed in a URI but do not have a
-             * reserved purpose are called unreserved.  These include upper
-             * and lower case letters, decimal digits, and a limited set of
-             * punctuation marks and symbols.
-             *
-             * unreserved  = alphanum | mark
-             *
-             * mark        = "-" | "_" | "." | "!" | "~" | "*" | "'" | "(" | ")"
-             *
-             * Unreserved characters can be escaped without changing the
-             * semantics of the URI, but this should not be done unless the
-             * URI is being used in a context that does not allow the
-             * unescaped character to appear.
-             * -----
-             *
-             * It appears that both Netscape and Internet Explorer escape
-             * all special characters from this list with the exception
-             * of "-", "_", ".", "*". While it is not clear why they are
-             * escaping the other characters, perhaps it is safest to
-             * assume that there might be contexts in which the others
-             * are unsafe if not escaped. Therefore, we will use the same
-             * list. It is also noteworthy that this is consistent with
-             * O'Reilly's "HTML: The Definitive Guide" (page 164).
-             *
-             * As a last note, Intenet Explorer does not encode the "@"
-             * character which is clearly not unreserved according to the
-             * RFC. We are being consistent with the RFC in this matter,
-             * as is Netscape.
-             *
-             */
-            dontNeedEncoding = new BitSet(127);
-            int i;
-            for (i = 'a'; i <= 'z'; i++) {
-                dontNeedEncoding.set(i);
-            }
-            for (i = 'A'; i <= 'Z'; i++) {
-                dontNeedEncoding.set(i);
-            }
-            for (i = '0'; i <= '9'; i++) {
-                dontNeedEncoding.set(i);
-            }
-            dontNeedEncoding.set(' '); /* encoding a space to a + is done
-             * in the encode() method */
-
+            dontNeedEncoding.set('!');
+            dontNeedEncoding.set('#');
+            dontNeedEncoding.set('$');
+            dontNeedEncoding.set('&');
+            // dontNeedEncoding.set('+'); // we don't encoding +
             dontNeedEncoding.set('-');
-            dontNeedEncoding.set('_');
             dontNeedEncoding.set('.');
-            dontNeedEncoding.set('*');
+            dontNeedEncoding.set('^');
+            dontNeedEncoding.set('_');
+            dontNeedEncoding.set('`');
+            dontNeedEncoding.set('|');
+            dontNeedEncoding.set('~');
         }
 
         @SuppressWarnings("NestedAssignment")
-        public static String encode(String s, String enc, boolean convertWhiteSpaceToPlus)
-                throws UnsupportedEncodingException {
-
+        public static String encode(String s, String enc) {
             boolean needToChange = false;
             StringBuilder out = new StringBuilder(s.length());
-            CharArrayWriter charArrayWriter = new CharArrayWriter();
 
-            if (enc == null) {
-                throw new NullPointerException("charsetName");
-            }
+            CharsetEncoder encoder = Charset.forName(enc).newEncoder()
+                    .onMalformedInput(CodingErrorAction.REPLACE)
+                    .onUnmappableCharacter(CodingErrorAction.REPLACE);
 
-            Charset charset;
-            try {
-                charset = Charset.forName(enc);
-            } catch (IllegalCharsetNameException e) {
-                throw new UnsupportedEncodingException(enc);
-            } catch (UnsupportedCharsetException e) {
-                throw new UnsupportedEncodingException(enc);
-            }
+            for (int i = 0, length = s.length(); i < length;) {
+                char c = s.charAt(i);
 
-            for (int i = 0; i < s.length();) {
-                int c = s.charAt(i);
                 if (dontNeedEncoding.get(c)) {
-                    if (convertWhiteSpaceToPlus && c == ' ') {
-                        c = '+';
-                        needToChange = true;
-                    }
-                    out.append((char) c);
+                    out.append(c);
                     i++;
                 } else {
                     // convert to external encoding before hex conversion
+                    int cs = i;
                     do {
-                        charArrayWriter.write(c);
                         i++;
-                    } while (i < s.length() && !dontNeedEncoding.get((c = s.charAt(i))));
+                    } while (i < length && !dontNeedEncoding.get((c = s.charAt(i))));
 
-                    charArrayWriter.flush();
-                    String str = new String(charArrayWriter.toCharArray());
-                    byte[] ba = str.getBytes(charset.name());
-                    for (int j = 0, len = ba.length; j < len; j++) {
-                        out.append('%').append(hexChars[ba[j] >> 4 & 15]).append(hexChars[ba[j] & 15]);
+                    ByteBuffer buffer;
+                    try {
+                        buffer = encoder.encode(CharBuffer.wrap(s, cs, i));
+                    } catch (CharacterCodingException ex) {
+                        throw new Error(ex);
                     }
-                    charArrayWriter.reset();
+                    byte[] ba = buffer.array();
+                    for (int bs = buffer.arrayOffset(), be = buffer.remaining() + buffer.arrayOffset(); bs < be; bs++) {
+                        out.append('%').append(hexChars[ba[bs] >> 4 & 15]).append(hexChars[ba[bs] & 15]);
+                    }
                     needToChange = true;
                 }
             }
-            return (needToChange ? out.toString() : s);
+            return needToChange ? out.toString() : s;
         }
 
         private Encoder() {

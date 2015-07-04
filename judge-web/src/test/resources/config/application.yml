@@ -3,3 +3,8 @@ spring:
         active: test
         include: prod
 
+    datasource:
+        url: jdbc:mariadb:///oj_test_db?zeroDateTimeBehavior=convertToNull&characterEncoding=UTF-8
+        username: root
+        password: root
+
