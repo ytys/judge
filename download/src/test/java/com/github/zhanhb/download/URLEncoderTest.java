@@ -16,8 +16,12 @@
 package com.github.zhanhb.download;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.nio.charset.Charset;
+import java.util.BitSet;
 import java.util.Random;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 /**
@@ -57,7 +61,7 @@ public class URLEncoderTest {
 
         String encoded = URLEncoder.CONTENT_DISPOSITION.encode(s, charset);
 
-        /*for (char ch : encoded.toCharArray()) {
+        for (char ch : encoded.toCharArray()) {
             assertTrue(32 < ch && ch < 127);
         }
 
@@ -75,7 +79,7 @@ public class URLEncoderTest {
         tmp.set('A', 'Z' + 1); // 26
         tmp.set('0', '9' + 1); // 10
         tmp.and(test);
-        assertEquals(26 * 2 + 10, tmp.cardinality());*/
+        assertEquals(26 * 2 + 10, tmp.cardinality());
     }
 
 }
