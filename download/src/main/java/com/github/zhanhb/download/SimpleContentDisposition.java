@@ -20,7 +20,6 @@ import java.nio.CharBuffer;
 import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
-import java.nio.charset.CodingErrorAction;
 import java.util.BitSet;
 import javax.servlet.http.HttpServletResponse;
 
@@ -38,7 +37,7 @@ public class SimpleContentDisposition implements ContentDisposition {
         } else if (isToken(filename)) { // already a token
             response.setHeader("Content-Disposition", "attachment; filename=" + filename);
         } else {
-            String encoded = Encoder.encode(filename, "utf-8");
+            String encoded = Encoder.encode(filename, Charset.forName("utf-8"));
             response.setHeader("Content-Disposition", "attachment; filename=\"" + encoded + "\"; filename*=utf-8''" + encoded);
         }
     }
@@ -49,7 +48,7 @@ public class SimpleContentDisposition implements ContentDisposition {
         }
         for (int i = 0, len = filename.length(); i < len; ++i) {
             char ch = filename.charAt(i);
-            if (ch >= 0x80 || ch <= ' ') {
+            if (ch >= 0x7F || ch < ' ') { // CHAR predicate
                 return false;
             }
             switch (ch) {
@@ -74,7 +73,9 @@ public class SimpleContentDisposition implements ContentDisposition {
                 case '}':
                 case ' ':
                 case '\t':
-                case '\u007F':
+                // should percent be a valid token???
+                // here we are different from the rfc
+                case '%':
                     return false;
             }
         }
@@ -85,7 +86,6 @@ public class SimpleContentDisposition implements ContentDisposition {
     static class Encoder {
 
         private static final BitSet dontNeedEncoding;
-        static final int caseDiff = ('a' - 'A');
         private static final char[] hexChars = "0123456789ABCDEF".toCharArray();
 
         static {
@@ -99,7 +99,8 @@ public class SimpleContentDisposition implements ContentDisposition {
             dontNeedEncoding.set('#');
             dontNeedEncoding.set('$');
             dontNeedEncoding.set('&');
-            // dontNeedEncoding.set('+'); // we will encoding +
+            // we will encoding + for some browser will decode + to a space
+            // dontNeedEncoding.set('+');
             dontNeedEncoding.set('-');
             dontNeedEncoding.set('.');
             dontNeedEncoding.set('^');
@@ -109,15 +110,23 @@ public class SimpleContentDisposition implements ContentDisposition {
             dontNeedEncoding.set('~');
         }
 
-        public static String encode(String s, String enc) {
+        /**
+         *
+         * @param s
+         * @param charset
+         * @return
+         * @throws IllegalArgumentException if the string s has surrogate char but not a valid surrogate pair
+         * @see Character#isHighSurrogate(char)
+         * @see Character#isLowSurrogate(char)
+         */
+        public static String encode(String s, Charset charset) {
             boolean needToChange = false;
-            StringBuilder out = new StringBuilder(s.length());
+            final int length = s.length();
+            StringBuilder out = new StringBuilder(length);
 
-            CharsetEncoder encoder = Charset.forName(enc).newEncoder()
-                    .onMalformedInput(CodingErrorAction.REPLACE)
-                    .onUnmappableCharacter(CodingErrorAction.REPLACE);
+            CharsetEncoder encoder = charset.newEncoder();
 
-            for (int cur = 0, length = s.length(); cur < length;) {
+            for (int cur = 0; cur < length;) {
                 int start = cur;
                 while (cur < length && dontNeedEncoding.get(s.charAt(cur))) {
                     ++cur;
@@ -126,20 +135,21 @@ public class SimpleContentDisposition implements ContentDisposition {
                     out.append(s, start, cur);
                     start = cur;
                 }
-                // convert to external encoding before hex conversion
                 while (cur < length && !dontNeedEncoding.get((s.charAt(cur)))) {
                     ++cur;
                 }
                 if (start != cur) {
+                    // convert to external encoding before hex conversion
                     ByteBuffer buffer;
                     try {
                         buffer = encoder.encode(CharBuffer.wrap(s, start, cur));
                     } catch (CharacterCodingException ex) {
-                        throw new Error(ex);
+                        throw new IllegalArgumentException(s, ex);
                     }
-                    byte[] ba = buffer.array();
-                    for (int bs = buffer.arrayOffset(), be = buffer.remaining() + buffer.arrayOffset(); bs < be; bs++) {
-                        out.append('%').append(hexChars[ba[bs] >> 4 & 15]).append(hexChars[ba[bs] & 15]);
+                    int j = buffer.position(), limit = buffer.limit();
+                    for (; j < limit; ++j) {
+                        byte b = buffer.get(j);
+                        out.append('%').append(hexChars[b >> 4 & 15]).append(hexChars[b & 15]);
                     }
                     needToChange = true;
                 }

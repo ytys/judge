@@ -37,22 +37,22 @@ public class SimpleContentDispositionTest {
     /**
      *
      * @param s
-     * @param enc
+     * @param charset
      * @return
      * @see SimpleContentDisposition.Encoder#encode(String, String)
      */
-    public String encode(String s, String enc) {
-        return SimpleContentDisposition.Encoder.encode(s, enc);
+    public String encode(String s, Charset charset) {
+        return SimpleContentDisposition.Encoder.encode(s, charset);
     }
 
     /**
-     * Test of setContentDisposition method, of class SimpleContentDisposition.
+     * Test of encode method, of class SimpleContentDisposition.Encoder.
      *
      * @throws java.io.UnsupportedEncodingException
      */
     @Test
     public void testEncoder() throws UnsupportedEncodingException {
-        Charset UTF_8 = Charset.forName("UTF-8");
+        Charset charset = Charset.forName("UTF-8");
 
         int len = 128;
         StringBuilder sb = new StringBuilder(len);
@@ -70,17 +70,16 @@ public class SimpleContentDispositionTest {
 
         String s = sb.toString();
 
-        String enc = UTF_8.name();
-        String encoded = encode(s, enc);
+        String encoded = encode(s, charset);
 
         for (char ch : encoded.toCharArray()) {
             assertTrue(32 < ch && ch < 127);
         }
 
-        String decode = URLDecoder.decode(encoded, enc);
-        assertEquals(s, decode);
+        String decoded = URLDecoder.decode(encoded, charset.name());
+        assertEquals(s, decoded);
 
-        char[] arr = encoded.replaceAll("%[a-z0-9]{2}", "").toCharArray();
+        char[] arr = encoded.replaceAll("%[a-zA-Z0-9]{2}", "").toCharArray();
         BitSet test = new BitSet(128);
         for (char b : arr) {
             test.set(b);
