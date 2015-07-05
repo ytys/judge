@@ -6,16 +6,18 @@
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
     <properties>
-        <maven.compiler.source>1.6</maven.compiler.source>
-        <maven.compiler.target>1.6</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
         <!--<maven.test.failure.ignore>true</maven.test.failure.ignore>-->
         <!--<maven.test.skip>true</maven.test.skip>-->
+        <slf4j.version>1.7.12</slf4j.version>
     </properties>
     <dependencies>
         <dependency>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging</artifactId>
-            <version>1.2</version>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+            <version>${slf4j.version}</version>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>javax</groupId>
@@ -27,12 +29,6 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.12</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.sourceforge.jwebunit</groupId>
-            <artifactId>jwebunit-htmlunit-plugin</artifactId>
-            <version>3.2</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -60,9 +56,23 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.1</version>
+                <executions>
+                    <execution>
+                        <id>default-compile</id>
+                        <phase>process-sources</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                            <fork>true</fork>
+                            <executable>D:\Program Files\Java\jdk1.6.0_45/bin/javac</executable>
+                            <source>1.6</source>
+                            <target>1.6</target>
+                        </configuration>
+                    </execution>
+                </executions>
                 <configuration>
                     <debug>false</debug>
                 </configuration>

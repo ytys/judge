@@ -597,7 +597,6 @@
                 <configuration>
                     <argLine>-Dfile.encoding=UTF8</argLine>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
-                    <packagingExcludes>WEB-INF/lib/tomcat-*.jar</packagingExcludes>
                 </configuration>
             </plugin>
             <plugin>
@@ -639,9 +638,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <argLine>-Dfile.encoding=UTF8</argLine>
-                </configuration>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -650,6 +646,10 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <argLine>-Dfile.encoding=UTF8</argLine>
+                    <excludeArtifactIds>codegen,lombok,querydsl-apt,querydsl-codegen</excludeArtifactIds>
+                </configuration>
             </plugin>
         </plugins>
     </build>

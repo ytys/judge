@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  *
  * @author zhanhb
- * @see https://tools.ietf.org/html/rfc6266#page-4
+ * @see https://tools.ietf.org/html/rfc6266#section-4.1
  */
 public class SimpleContentDisposition implements ContentDisposition {
 

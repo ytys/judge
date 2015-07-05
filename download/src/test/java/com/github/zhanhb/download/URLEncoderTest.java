@@ -16,10 +16,13 @@
 package com.github.zhanhb.download;
 
 import java.io.UnsupportedEncodingException;
+import static java.lang.Character.MAX_SURROGATE;
+import static java.lang.Character.MIN_SURROGATE;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.util.BitSet;
 import java.util.Random;
+import java.util.stream.IntStream;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
@@ -30,8 +33,14 @@ import org.junit.Test;
  */
 public class URLEncoderTest {
 
+    private static final int SURROGATE_DIFF = MAX_SURROGATE + 1 - MIN_SURROGATE;
+
     public static boolean isSurrogate(int ch) {
-        return (ch >= 55296) && (ch < 57344);
+        return ch >= MIN_SURROGATE && ch < (MAX_SURROGATE + 1);
+    }
+
+    private static int addSurrogate(int x) {
+        return x >= MIN_SURROGATE ? x + SURROGATE_DIFF : x;
     }
 
     /**
@@ -45,34 +54,34 @@ public class URLEncoderTest {
 
         int len = 128;
         StringBuilder sb = new StringBuilder(len);
-        for (int i = 0; i < len; ++i) {
-            sb.append((char) i);
-        }
-        Random random = new Random();
-        for (int i = 0; i < 10000000; ++i) {
-            int ch = random.nextInt(10 * 65536 - 128) + 128;
-            if (isSurrogate(ch)) {
-                continue;
-            }
-            sb.append(Character.toChars(ch));
-        }
+        IntStream.range(0, len).forEach(i -> sb.append((char) i));
+
+        int cpStart = 128;
+        int maxcodepoint = 10 * 65536;
+        new Random().ints(cpStart, maxcodepoint - SURROGATE_DIFF)
+                .map(x -> addSurrogate(x))
+                .map(x -> {
+                    assertTrue(x + " >= " + (int) MAX_SURROGATE
+                            + " || " + x + "<=" + (int) MIN_SURROGATE + " failed", !isSurrogate(x));
+                    assertTrue(x >= cpStart);
+                    assertTrue(x < maxcodepoint);
+                    return x;
+                })
+                .mapToObj(Character::toChars)
+                .limit(1000000)
+                .forEach(sb::append);
 
         String s = sb.toString();
 
         String encoded = URLEncoder.CONTENT_DISPOSITION.encode(s, charset);
 
-        for (char ch : encoded.toCharArray()) {
-            assertTrue(32 < ch && ch < 127);
-        }
+        encoded.chars().forEach(ch -> assertTrue(32 < ch && ch < 127));
 
         String decoded = URLDecoder.decode(encoded, charset.name());
         assertEquals(s, decoded);
 
-        char[] arr = encoded.replaceAll("%[a-zA-Z0-9]{2}", "").toCharArray();
         BitSet test = new BitSet(128);
-        for (char b : arr) {
-            test.set(b);
-        }
+        encoded.replaceAll("%[a-zA-Z0-9]{2}", "").chars().forEach(test::set);
 
         BitSet tmp = new BitSet(128);
         tmp.set('a', 'z' + 1); // 26
