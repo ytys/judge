@@ -228,7 +228,7 @@ public class Downloader {
 
         ContentDisposition cd = this.contentDisposition;
         if (cd != null) {
-            cd.setContentDisposition(response, resource.getName());
+            cd.setContentDisposition(request, response, resource.getName());
         }
 
         // Check to see if a Filter, Valve of wrapper has written some content.

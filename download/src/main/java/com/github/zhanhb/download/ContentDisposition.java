@@ -15,6 +15,7 @@
  */
 package com.github.zhanhb.download;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
@@ -23,5 +24,6 @@ import javax.servlet.http.HttpServletResponse;
  */
 public interface ContentDisposition {
 
-    void setContentDisposition(HttpServletResponse response, String filename);
+    void setContentDisposition(HttpServletRequest request, HttpServletResponse response, String filename);
+
 }
