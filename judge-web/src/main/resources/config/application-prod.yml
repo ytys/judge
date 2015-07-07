@@ -104,3 +104,12 @@ spring.http:
     encoding.enabled: false # enable http encoding support
     converters.preferred-json-mapper: gson
 
+multipart:
+    enabled: true
+    # Threshold after which files will be written to disk.
+    file-size-threshold: 0
+    # Intermediate location of uploaded files.
+    # location:
+    # Max file size.
+    max-file-size: 50Mb
+    max-request-size: 200Mb

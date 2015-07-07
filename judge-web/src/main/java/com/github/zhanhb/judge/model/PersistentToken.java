@@ -17,6 +17,7 @@ package com.github.zhanhb.judge.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -39,7 +40,7 @@ public class PersistentToken {
     @Column(name = "id")
     private Long id;
 
-    @JoinColumn(name = "userprofile")
+    @JoinColumn(name = "userprofile", foreignKey = @ForeignKey(name = "FK_persistent_token_userprofile"))
     @ManyToOne
     private Userprofile userprofile;
 

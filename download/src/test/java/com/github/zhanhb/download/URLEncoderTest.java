@@ -22,6 +22,8 @@ import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.util.BitSet;
 import java.util.Random;
+import java.util.function.IntPredicate;
+import java.util.function.IntUnaryOperator;
 import java.util.stream.IntStream;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -35,14 +37,6 @@ public class URLEncoderTest {
 
     private static final int SURROGATE_DIFF = MAX_SURROGATE + 1 - MIN_SURROGATE;
 
-    public static boolean isSurrogate(int ch) {
-        return ch >= MIN_SURROGATE && ch < (MAX_SURROGATE + 1);
-    }
-
-    private static int addSurrogate(int x) {
-        return x >= MIN_SURROGATE ? x + SURROGATE_DIFF : x;
-    }
-
     /**
      * Test of encode method, of class URLEncoder.
      *
@@ -50,25 +44,32 @@ public class URLEncoderTest {
      */
     @Test
     public void testEncoder() throws UnsupportedEncodingException {
+        IntPredicate isSurrogate = (int ch) -> {
+            return ch >= MIN_SURROGATE && ch < (MAX_SURROGATE + 1);
+        };
+        IntUnaryOperator addSurrogate = x
+                -> x >= MIN_SURROGATE ? x + SURROGATE_DIFF : x;
+
         Charset charset = Charset.forName("UTF-8");
 
         int len = 128;
-        StringBuilder sb = new StringBuilder(len);
+        int num2 = 1000000;
+        StringBuilder sb = new StringBuilder(len + num2 * 2);
         IntStream.range(0, len).forEach(i -> sb.append((char) i));
 
         int cpStart = 128;
         int maxcodepoint = 10 * 65536;
         new Random().ints(cpStart, maxcodepoint - SURROGATE_DIFF)
-                .map(x -> addSurrogate(x))
+                .map(addSurrogate)
                 .map(x -> {
                     assertTrue(x + " >= " + (int) MAX_SURROGATE
-                            + " || " + x + "<=" + (int) MIN_SURROGATE + " failed", !isSurrogate(x));
+                            + " || " + x + "<=" + (int) MIN_SURROGATE + " failed", !isSurrogate.test(x));
                     assertTrue(x >= cpStart);
                     assertTrue(x < maxcodepoint);
                     return x;
                 })
                 .mapToObj(Character::toChars)
-                .limit(1000000)
+                .limit(num2)
                 .forEach(sb::append);
 
         String s = sb.toString();

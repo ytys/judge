@@ -3,7 +3,7 @@ spring:
         active: prod
 
     datasource:
-        url: jdbc:mariadb:///oj?zeroDateTimeBehavior=convertToNull&characterEncoding=UTF-8
+        url: jdbc:mariadb:///oj?zeroDateTimeBehavior=convertToNull&characterEncoding=UTF-8&allowMultiQueries=true
         username: root
         password: root
 

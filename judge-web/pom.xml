@@ -29,7 +29,7 @@
         <hikaricp.version>2.3.8</hikaricp.version>
         <jackson.version>2.5.4</jackson.version>
         <java.version>1.8</java.version>
-        <javassist.version>3.19.0-GA</javassist.version>
+        <javassist.version>3.20.0-GA</javassist.version>
         <liquibase-hibernate4.version>3.5</liquibase-hibernate4.version>
         <liquibase.version>3.4.0</liquibase.version>
         <lombok.version>1.16.4</lombok.version>
@@ -115,6 +115,11 @@
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+            <version>3.0.0</version>
         </dependency>
         <dependency>
             <groupId>org.glassfish.web</groupId>
@@ -268,25 +273,19 @@
             <version>1.4.01</version>
         </dependency>
         <dependency>
-            <groupId>javax</groupId>
-            <artifactId>javaee-api</artifactId>
-            <version>7.0</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.mysema.querydsl</groupId>
-            <artifactId>querydsl-apt</artifactId>
-            <version>${querydsl.version}</version>
-            <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-jasper</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -312,6 +311,11 @@
                     <groupId>javax.el</groupId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.javassist</groupId>
@@ -353,12 +357,6 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.tomcat</groupId>
-            <artifactId>tomcat-servlet-api</artifactId>
-            <version>${tomcat.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -428,15 +426,15 @@
             </plugin>
             <plugin>
                 <groupId>com.mysema.maven</groupId>
-                <artifactId>maven-apt-plugin</artifactId>
-                <version>1.0</version>
+                <artifactId>apt-maven-plugin</artifactId>
+                <version>1.1.3</version>
                 <executions>
                     <execution>
                         <goals>
                             <goal>process</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>target/generated-sources/java</outputDirectory>
+                            <outputDirectory>${project.build.directory}/generated-sources/java</outputDirectory>
                             <processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor>
                             <options>
                                 <querydsl.entityAccessors>true</querydsl.entityAccessors>
@@ -444,6 +442,13 @@
                         </configuration>
                     </execution>
                 </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.mysema.querydsl</groupId>
+                        <artifactId>querydsl-apt</artifactId>
+                        <version>${querydsl.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
             <!--<plugin>
                 <groupId>com.samaxes.maven</groupId>
@@ -492,12 +497,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <!--
-                integrating with hibernate-jpamodelgen,
-                3.2+ will case an error,
-                java.lang.IllegalStateException: endPosTable already set,
-                here we use 3.1 -->
-                <version>3.1</version>
+                <version>3.3</version>
                 <configuration>
                     <argLine>-Dfile.encoding=UTF8</argLine>
                     <compilerArguments>
@@ -558,7 +558,7 @@
                     <rules>
                         <requireMavenVersion>
                             <message>You are running an older version of Maven. JHipster requires at least Maven 3.0</message>
-                            <version>[3.0.0,)</version>
+                            <version>[3.0.2,)</version>
                         </requireMavenVersion>
                         <requireJavaVersion>
                             <message>You are running an older version of Java. JHipster requires at least JDK ${java.version}</message>
@@ -648,7 +648,6 @@
                 </executions>
                 <configuration>
                     <argLine>-Dfile.encoding=UTF8</argLine>
-                    <excludeArtifactIds>codegen,lombok,querydsl-apt,querydsl-codegen</excludeArtifactIds>
                 </configuration>
             </plugin>
         </plugins>

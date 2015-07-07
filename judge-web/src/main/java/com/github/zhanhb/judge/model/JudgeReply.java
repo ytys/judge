@@ -79,12 +79,12 @@ public class JudgeReply implements Serializable {
     private short committed;
 
     @CreatedBy
-    @JoinColumn(name = "creation_user", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_judge_reply_creation_user"))
+    @JoinColumn(name = "creation_user", foreignKey = @ForeignKey(name = "FK_judge_reply_creation_user"))
     @JsonIgnore
     @ManyToOne
     private Userprofile creationUser;
 
-    @JoinColumn(name = "last_update_user", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_judge_reply_last_update_user"))
+    @JoinColumn(name = "last_update_user", foreignKey = @ForeignKey(name = "FK_judge_reply_last_update_user"))
     @ManyToOne
     private Userprofile lastUpdateUser;
 
