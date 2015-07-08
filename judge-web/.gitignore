@@ -2,7 +2,6 @@
 /.settings/
 /.svn/
 /pom.xml.bak
-*.sql
 /*.zip
 /.classpath
 /.project
