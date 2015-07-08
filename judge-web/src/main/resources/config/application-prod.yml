@@ -25,13 +25,12 @@ swagger:
     license: Apache 2.0
     licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.html
 
-server:
-    port: 8080
+server.port: 8080
 
 # @see org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfiguration
 # @see org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties
 liquibase:
-    enabled: false
+    enabled: true
     contexts: prod, test
     changeLog: classpath:config/liquibase/master.xml
 
@@ -46,7 +45,7 @@ spring:
     datasource:
         # populate using data.sql
         initialize: false
-        jmx-enabled: true
+        jmx-enabled: false
         # tomcat pool
         validation-query: select 1
         # Hikari
@@ -56,6 +55,7 @@ spring:
     jpa:
 #        show-sql: true
         hibernate:
+            hbm2ddl: none
             naming-strategy: org.hibernate.cfg.EJB3NamingStrategy
         properties:
             javax.persistence.jdbc.validation.mode: none
@@ -71,11 +71,6 @@ spring:
                     region.factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
 
                 generate_statistics: false
-
-                hbm2ddl:
-                    auto: update
-                    import_files: /data.sql
-                    import_files_sql_extractor: org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor
 
     thymeleaf:
         mode: XHTML

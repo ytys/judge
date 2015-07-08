@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
-    <changeSet author="Administrator (generated)" id="1436250536624-1">
+    <changeSet author="system" id="0000000000000-1">
         <createTable tableName="access_log">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="access_logPK"/>
@@ -19,7 +19,7 @@
             <column name="userprofile" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="Administrator (generated)" id="1436250536624-2">
+    <changeSet author="system" id="0000000000000-2">
         <createTable tableName="contest">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="contestPK"/>
@@ -47,7 +47,7 @@
             <column name="last_update_user" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="Administrator (generated)" id="1436250536624-3">
+    <changeSet author="system" id="0000000000000-3">
         <createTable tableName="contest_language">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="contest_languagePK"/>
@@ -60,7 +60,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="Administrator (generated)" id="1436250536624-4">
+    <changeSet author="system" id="0000000000000-4">
         <createTable tableName="contest_problem">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="contest_problemPK"/>
@@ -77,7 +77,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="Administrator (generated)" id="1436250536624-5">
+    <changeSet author="system" id="0000000000000-5">
         <createTable tableName="contest_problem_statistics">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="contest_problem_statisticsPK"/>
@@ -99,7 +99,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="Administrator (generated)" id="1436250536624-6">
+    <changeSet author="system" id="0000000000000-6">
         <createTable tableName="contest_userprofile_statistics">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="contest_userprofile_statisticsPK"/>
@@ -112,7 +112,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="Administrator (generated)" id="1436250536624-7">
+    <changeSet author="system" id="0000000000000-7">
         <createTable tableName="judge_reply">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="judge_replyPK"/>
@@ -129,7 +129,7 @@
             <column name="last_update_user" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="Administrator (generated)" id="1436250536624-8">
+    <changeSet author="system" id="0000000000000-8">
         <createTable tableName="language">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="languagePK"/>
@@ -150,7 +150,7 @@
             <column name="creation_user" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="Administrator (generated)" id="1436250536624-9">
+    <changeSet author="system" id="0000000000000-9">
         <createTable tableName="limits">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="limitsPK"/>
@@ -166,7 +166,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="Administrator (generated)" id="1436250536624-10">
+    <changeSet author="system" id="0000000000000-10">
         <createTable tableName="persistent_token">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="persistent_tokenPK"/>
@@ -174,7 +174,7 @@
             <column name="userprofile" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="Administrator (generated)" id="1436250536624-11">
+    <changeSet author="system" id="0000000000000-11">
         <createTable tableName="problem">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="problemPK"/>
@@ -193,7 +193,7 @@
             <column name="limits" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="Administrator (generated)" id="1436250536624-12">
+    <changeSet author="system" id="0000000000000-12">
         <createTable tableName="role">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="rolePK"/>
@@ -206,7 +206,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="Administrator (generated)" id="1436250536624-13">
+    <changeSet author="system" id="0000000000000-13">
         <createTable tableName="submission">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="submissionPK"/>
@@ -231,7 +231,7 @@
             <column name="userprofile" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="Administrator (generated)" id="1436250536624-14">
+    <changeSet author="system" id="0000000000000-14">
         <createTable tableName="upload">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="uploadPK"/>
@@ -242,7 +242,7 @@
             <column name="orign_name" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="Administrator (generated)" id="1436250536624-15">
+    <changeSet author="system" id="0000000000000-15">
         <createTable tableName="usergroup">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="usergroupPK"/>
@@ -259,7 +259,7 @@
             <column name="owner" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="Administrator (generated)" id="1436250536624-16">
+    <changeSet author="system" id="0000000000000-16">
         <createTable tableName="usergroup_userprofile">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="usergroup_userprofilePK"/>
@@ -272,7 +272,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="Administrator (generated)" id="1436250536624-17">
+    <changeSet author="system" id="0000000000000-17">
         <createTable tableName="userprofile">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="userprofilePK"/>
@@ -292,7 +292,7 @@
             <column name="creation_user" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="Administrator (generated)" id="1436250536624-18">
+    <changeSet author="system" id="0000000000000-18">
         <createTable tableName="userprofile_role">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="userprofile_rolePK"/>
@@ -305,115 +305,115 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="Administrator (generated)" id="1436250536624-19">
+    <changeSet author="system" id="0000000000000-19">
         <addUniqueConstraint columnNames="name" tableName="contest"/>
     </changeSet>
-    <changeSet author="Administrator (generated)" id="1436250536624-20">
+    <changeSet author="system" id="0000000000000-20">
         <addUniqueConstraint columnNames="contest, language" tableName="contest_language"/>
     </changeSet>
-    <changeSet author="Administrator (generated)" id="1436250536624-21">
+    <changeSet author="system" id="0000000000000-21">
         <addUniqueConstraint columnNames="contest, contest_order" tableName="contest_problem"/>
     </changeSet>
-    <changeSet author="Administrator (generated)" id="1436250536624-22">
+    <changeSet author="system" id="0000000000000-22">
         <addUniqueConstraint columnNames="contest, problem" tableName="contest_problem"/>
     </changeSet>
-    <changeSet author="Administrator (generated)" id="1436250536624-23">
+    <changeSet author="system" id="0000000000000-23">
         <addUniqueConstraint columnNames="contest_problem" tableName="contest_problem_statistics"/>
     </changeSet>
-    <changeSet author="Administrator (generated)" id="1436250536624-24">
+    <changeSet author="system" id="0000000000000-24">
         <addUniqueConstraint columnNames="contest, userprofile" tableName="contest_userprofile_statistics"/>
     </changeSet>
-    <changeSet author="Administrator (generated)" id="1436250536624-25">
+    <changeSet author="system" id="0000000000000-25">
         <addUniqueConstraint columnNames="name" tableName="role"/>
     </changeSet>
-    <changeSet author="Administrator (generated)" id="1436250536624-26">
+    <changeSet author="system" id="0000000000000-26">
         <addUniqueConstraint columnNames="owner, group_order" tableName="usergroup"/>
     </changeSet>
-    <changeSet author="Administrator (generated)" id="1436250536624-27">
+    <changeSet author="system" id="0000000000000-27">
         <addUniqueConstraint columnNames="email" tableName="userprofile"/>
     </changeSet>
-    <changeSet author="Administrator (generated)" id="1436250536624-28">
+    <changeSet author="system" id="0000000000000-28">
         <addUniqueConstraint columnNames="handle" tableName="userprofile"/>
     </changeSet>
-    <changeSet author="Administrator (generated)" id="1436250536624-29">
+    <changeSet author="system" id="0000000000000-29">
         <addForeignKeyConstraint baseColumnNames="userprofile" baseTableName="access_log" constraintName="FK_access_log_userprofile" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="userprofile"/>
     </changeSet>
-    <changeSet author="Administrator (generated)" id="1436250536624-30">
+    <changeSet author="system" id="0000000000000-30">
         <addForeignKeyConstraint baseColumnNames="creation_user" baseTableName="contest" constraintName="FK_contest_creation_user" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="userprofile"/>
     </changeSet>
-    <changeSet author="Administrator (generated)" id="1436250536624-31">
+    <changeSet author="system" id="0000000000000-31">
         <addForeignKeyConstraint baseColumnNames="contest" baseTableName="contest_language" constraintName="FK_contest_language_contest" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="contest"/>
     </changeSet>
-    <changeSet author="Administrator (generated)" id="1436250536624-32">
+    <changeSet author="system" id="0000000000000-32">
         <addForeignKeyConstraint baseColumnNames="language" baseTableName="contest_language" constraintName="FK_contest_language_language" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="language"/>
     </changeSet>
-    <changeSet author="Administrator (generated)" id="1436250536624-33">
+    <changeSet author="system" id="0000000000000-33">
         <addForeignKeyConstraint baseColumnNames="last_update_user" baseTableName="contest" constraintName="FK_contest_last_update_user" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="userprofile"/>
     </changeSet>
-    <changeSet author="Administrator (generated)" id="1436250536624-34">
+    <changeSet author="system" id="0000000000000-34">
         <addForeignKeyConstraint baseColumnNames="contest" baseTableName="contest_problem" constraintName="FK_contest_problem_contest" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="contest"/>
     </changeSet>
-    <changeSet author="Administrator (generated)" id="1436250536624-35">
+    <changeSet author="system" id="0000000000000-35">
         <addForeignKeyConstraint baseColumnNames="problem" baseTableName="contest_problem" constraintName="FK_contest_problem_problem" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="problem"/>
     </changeSet>
-    <changeSet author="Administrator (generated)" id="1436250536624-36">
+    <changeSet author="system" id="0000000000000-36">
         <addForeignKeyConstraint baseColumnNames="contest_problem" baseTableName="contest_problem_statistics" constraintName="FK_contest_problem_statistics_contest_problem" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="contest_problem"/>
     </changeSet>
-    <changeSet author="Administrator (generated)" id="1436250536624-37">
+    <changeSet author="system" id="0000000000000-37">
         <addForeignKeyConstraint baseColumnNames="contest" baseTableName="contest_userprofile_statistics" constraintName="FK_contest_userprofile_statistics_contest" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="contest"/>
     </changeSet>
-    <changeSet author="Administrator (generated)" id="1436250536624-38">
+    <changeSet author="system" id="0000000000000-38">
         <addForeignKeyConstraint baseColumnNames="userprofile" baseTableName="contest_userprofile_statistics" constraintName="FK_contest_userprofile_statistics_userprofile" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="userprofile"/>
     </changeSet>
-    <changeSet author="Administrator (generated)" id="1436250536624-39">
+    <changeSet author="system" id="0000000000000-39">
         <addForeignKeyConstraint baseColumnNames="creation_user" baseTableName="judge_reply" constraintName="FK_judge_reply_creation_user" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="userprofile"/>
     </changeSet>
-    <changeSet author="Administrator (generated)" id="1436250536624-40">
+    <changeSet author="system" id="0000000000000-40">
         <addForeignKeyConstraint baseColumnNames="last_update_user" baseTableName="judge_reply" constraintName="FK_judge_reply_last_update_user" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="userprofile"/>
     </changeSet>
-    <changeSet author="Administrator (generated)" id="1436250536624-41">
+    <changeSet author="system" id="0000000000000-41">
         <addForeignKeyConstraint baseColumnNames="creation_user" baseTableName="language" constraintName="FK_language_creation_user" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="userprofile"/>
     </changeSet>
-    <changeSet author="Administrator (generated)" id="1436250536624-42">
+    <changeSet author="system" id="0000000000000-42">
         <addForeignKeyConstraint baseColumnNames="userprofile" baseTableName="persistent_token" constraintName="FK_persistent_token_userprofile" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="userprofile"/>
     </changeSet>
-    <changeSet author="Administrator (generated)" id="1436250536624-43">
+    <changeSet author="system" id="0000000000000-43">
         <addForeignKeyConstraint baseColumnNames="creation_user" baseTableName="problem" constraintName="FK_problem_creation_user" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="userprofile"/>
     </changeSet>
-    <changeSet author="Administrator (generated)" id="1436250536624-44">
+    <changeSet author="system" id="0000000000000-44">
         <addForeignKeyConstraint baseColumnNames="limits" baseTableName="problem" constraintName="FK_problem_limits" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="limits"/>
     </changeSet>
-    <changeSet author="Administrator (generated)" id="1436250536624-45">
+    <changeSet author="system" id="0000000000000-45">
         <addForeignKeyConstraint baseColumnNames="contest" baseTableName="submission" constraintName="FK_submission_contest" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="contest"/>
     </changeSet>
-    <changeSet author="Administrator (generated)" id="1436250536624-46">
+    <changeSet author="system" id="0000000000000-46">
         <addForeignKeyConstraint baseColumnNames="judge_reply" baseTableName="submission" constraintName="FK_submission_judge_reply" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="judge_reply"/>
     </changeSet>
-    <changeSet author="Administrator (generated)" id="1436250536624-47">
+    <changeSet author="system" id="0000000000000-47">
         <addForeignKeyConstraint baseColumnNames="language" baseTableName="submission" constraintName="FK_submission_language" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="language"/>
     </changeSet>
-    <changeSet author="Administrator (generated)" id="1436250536624-48">
+    <changeSet author="system" id="0000000000000-48">
         <addForeignKeyConstraint baseColumnNames="problem" baseTableName="submission" constraintName="FK_submission_problem" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="problem"/>
     </changeSet>
-    <changeSet author="Administrator (generated)" id="1436250536624-49">
+    <changeSet author="system" id="0000000000000-49">
         <addForeignKeyConstraint baseColumnNames="userprofile" baseTableName="submission" constraintName="FK_submission_userprofile" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="userprofile"/>
     </changeSet>
-    <changeSet author="Administrator (generated)" id="1436250536624-50">
+    <changeSet author="system" id="0000000000000-50">
         <addForeignKeyConstraint baseColumnNames="owner" baseTableName="usergroup" constraintName="FK_usergroup_owner" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="userprofile"/>
     </changeSet>
-    <changeSet author="Administrator (generated)" id="1436250536624-51">
+    <changeSet author="system" id="0000000000000-51">
         <addForeignKeyConstraint baseColumnNames="usergroup" baseTableName="usergroup_userprofile" constraintName="FK_usergroup_userprofile_usergroup" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="usergroup"/>
     </changeSet>
-    <changeSet author="Administrator (generated)" id="1436250536624-52">
+    <changeSet author="system" id="0000000000000-52">
         <addForeignKeyConstraint baseColumnNames="userprofile" baseTableName="usergroup_userprofile" constraintName="FK_usergroup_userprofile_userprofile" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="userprofile"/>
     </changeSet>
-    <changeSet author="Administrator (generated)" id="1436250536624-53">
+    <changeSet author="system" id="0000000000000-53">
         <addForeignKeyConstraint baseColumnNames="creation_user" baseTableName="userprofile" constraintName="FK_userprofile_creation_user" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="userprofile"/>
     </changeSet>
-    <changeSet author="Administrator (generated)" id="1436250536624-54">
+    <changeSet author="system" id="0000000000000-54">
         <addForeignKeyConstraint baseColumnNames="role" baseTableName="userprofile_role" constraintName="FK_userprofile_role_role" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="role"/>
     </changeSet>
-    <changeSet author="Administrator (generated)" id="1436250536624-55">
+    <changeSet author="system" id="0000000000000-55">
         <addForeignKeyConstraint baseColumnNames="userprofile" baseTableName="userprofile_role" constraintName="FK_userprofile_role_userprofile" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="userprofile"/>
     </changeSet>
 </databaseChangeLog>
