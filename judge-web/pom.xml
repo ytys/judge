@@ -365,6 +365,10 @@
             <id>zjnu-acm</id>
             <url>http://10.7.88.2:8081/nexus/content/groups/public/</url>
         </repository>
+        <repository>
+            <id>sonatype-nexus-snapshots</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        </repository>
     </repositories>
     <pluginRepositories>
         <pluginRepository>
