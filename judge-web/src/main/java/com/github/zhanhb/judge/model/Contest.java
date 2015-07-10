@@ -61,6 +61,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EntityListeners(AuditingEntityListener.class)
 @EqualsAndHashCode(of = "id")
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
+@SuppressWarnings("PersistenceUnitPresent")
 @Table(name = "contest", uniqueConstraints = {
     @UniqueConstraint(name = "UK_name", columnNames = "name")
 })

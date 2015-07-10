@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>spring-boot-parent</artifactId>
+        <artifactId>spring-boot-dependencies</artifactId>
         <groupId>org.springframework.boot</groupId>
         <version>1.2.5.RELEASE</version>
         <relativePath />
@@ -362,20 +362,10 @@
     </dependencies>
     <repositories>
         <repository>
-            <id>zjnu-acm</id>
-            <url>http://10.7.88.2:8081/nexus/content/groups/public/</url>
-        </repository>
-        <repository>
             <id>sonatype-nexus-snapshots</id>
             <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
         </repository>
     </repositories>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>zjnu-acm</id>
-            <url>http://10.7.88.2:8081/nexus/content/groups/public/</url>
-        </pluginRepository>
-    </pluginRepositories>
     <build>
         <pluginManagement>
             <plugins>

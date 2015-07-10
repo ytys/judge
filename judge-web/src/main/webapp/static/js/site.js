@@ -44,7 +44,7 @@
         var selector;
 
         if (placeholder) {
-            if (placeholder.input || placeholder.textarea) {
+            if (placeholder.input && placeholder.textarea) {
 
             } else {
                 selector = placeholder.input ? "textarea" : ":input";

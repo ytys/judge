@@ -62,10 +62,10 @@ spring:
 
             hibernate:
 #                dialect:
-                cache.provider_class: org.hibernate.cache.NoCacheProvider
                 query.substitutions: true '1', false '0'
 
                 cache:
+#                    provider_class: org.hibernate.cache.NoCacheProvider
                     use_second_level_cache: true
                     use_query_cache: false
                     region.factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory

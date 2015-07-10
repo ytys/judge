@@ -68,7 +68,7 @@
         </packagings>
         <goals>
             <goal>clean</goal>
-            <goal>install</goal>
+            <goal>package</goal>
         </goals>
         <properties>
             <maven.tesk.skip>true</maven.tesk.skip>
@@ -81,7 +81,7 @@
             <packaging>*</packaging>
         </packagings>
         <goals>
-            <goal>install</goal>
+            <goal>package</goal>
         </goals>
         <properties>
             <maven.test.skip>true</maven.test.skip>
@@ -93,7 +93,7 @@
             <packaging>*</packaging>
         </packagings>
         <goals>
-            <goal>install</goal>
+            <goal>package</goal>
         </goals>
         <properties>
             <maven.test.skip>true</maven.test.skip>
