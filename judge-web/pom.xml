@@ -45,7 +45,7 @@
         <spring-hateoas.version>0.17.0.RELEASE</spring-hateoas.version>
         <spring-plugin.version>1.2.0.RELEASE</spring-plugin.version>
         <spring-security.version>4.0.1.RELEASE</spring-security.version>
-        <tomcat.version>7.0.62</tomcat.version>
+        <tomcat.version>7.0.63</tomcat.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -551,11 +551,11 @@
                     <argLine>-Dfile.encoding=UTF8</argLine>
                     <rules>
                         <requireMavenVersion>
-                            <message>You are running an older version of Maven. JHipster requires at least Maven 3.0</message>
+                            <message>You are running an older version of Maven. ${project.name} requires at least Maven 3.0</message>
                             <version>[3.0.2,)</version>
                         </requireMavenVersion>
                         <requireJavaVersion>
-                            <message>You are running an older version of Java. JHipster requires at least JDK ${java.version}</message>
+                            <message>You are running an older version of Java. ${project.name} requires at least JDK ${java.version}</message>
                             <version>[${java.version}.0,)</version>
                         </requireJavaVersion>
                     </rules>
