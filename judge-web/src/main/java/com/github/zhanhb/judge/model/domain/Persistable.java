@@ -25,13 +25,14 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author zhanhb
  * @param <ID>
  */
-public interface Persistable<ID extends Serializable> extends Serializable {
+public interface Persistable<ID extends Serializable> extends org.springframework.data.domain.Persistable<ID>, Serializable {
 
     /**
      * Returns the id of the entity.
      *
      * @return the id
      */
+    @Override
     ID getId();
 
     /**
@@ -40,6 +41,7 @@ public interface Persistable<ID extends Serializable> extends Serializable {
      * @return if the object is new
      */
     @JsonIgnore
+    @Override
     @Transient
     @XmlTransient
     default boolean isNew() {

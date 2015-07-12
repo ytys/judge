@@ -59,7 +59,7 @@ public class PagesTest {
 
     @Test
     public void test() throws IOException {
-        log.info("{0}", collect);
+        log.info("{}", collect);
         Predicate<String> pattern = Pattern.compile("(?i)\\.(?:jsp|tag)x").asPredicate();
         Files.walk(Paths.get("src"))
                 .filter(path -> pattern.test(path.toString()))

@@ -67,7 +67,6 @@ public class Submission implements Serializable {
     private Long id;
 
     @Column(name = "code_len", nullable = false)
-
     @NotNull
     private long codeLen;
 

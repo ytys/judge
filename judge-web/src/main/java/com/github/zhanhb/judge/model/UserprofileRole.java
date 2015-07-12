@@ -15,7 +15,7 @@
  */
 package com.github.zhanhb.judge.model;
 
-import java.io.Serializable;
+import com.github.zhanhb.judge.model.domain.Persistable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -48,7 +48,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "userprofile_role")
 @XmlRootElement
-public class UserprofileRole implements Serializable {
+public class UserprofileRole implements Persistable<Long> {
 
     private static final long serialVersionUID = 1L;
 

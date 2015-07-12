@@ -92,10 +92,6 @@
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-entitymanager</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
         </dependency>
         <!-- required, convert object to json and xml -->
@@ -551,7 +547,7 @@
                     <argLine>-Dfile.encoding=UTF8</argLine>
                     <rules>
                         <requireMavenVersion>
-                            <message>You are running an older version of Maven. ${project.name} requires at least Maven 3.0</message>
+                            <message>You are running an older version of Maven. ${project.name} requires at least Maven 3.0.2</message>
                             <version>[3.0.2,)</version>
                         </requireMavenVersion>
                         <requireJavaVersion>
