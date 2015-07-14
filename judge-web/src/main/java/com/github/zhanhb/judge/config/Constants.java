@@ -22,7 +22,6 @@ package com.github.zhanhb.judge.config;
 public interface Constants {
 
     // Spring profile for development, production and "fast", see http://jhipster.github.io/profiles.html
-
     String SPRING_PROFILE_DEVELOPMENT = "dev";
     String SPRING_PROFILE_PRODUCTION = "prod";
     String SPRING_PROFILE_FAST = "fast";

@@ -25,7 +25,8 @@ public class LoggingAspect {
     private Environment env;
 
     @Pointcut("within(com.github.zhanhb.judge.repository..*) || within(com.github.zhanhb.judge.service..*) || within(com.github.zhanhb.judge.web.rest..*)")
-    public void loggingPointcut() {}
+    public void loggingPointcut() {
+    }
 
     @AfterThrowing(pointcut = "loggingPointcut()", throwing = "e")
     public void logAfterThrowing(JoinPoint joinPoint, Throwable e) {

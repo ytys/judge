@@ -258,7 +258,7 @@ insert into oj.contest (
     contest_id,
     NULL,
     title,
-    1, /* OJ */
+    2, /* CONTEST */
     1, /* system user */
     1, /* system user */
     description,
@@ -283,7 +283,7 @@ select
     code_length
 from clanguage.solution;
 
-ALTER TABLE `solution_clanguage`
+ALTER TABLE oj_temp_schema.solution_clanguage
     ADD INDEX `solution_id` (`solution_id`);
 
 ALTER TABLE oj_temp_schema.solution_clanguage
@@ -326,6 +326,9 @@ select * from solution_clanguage
 where char_length(source_code) <> code_length;
 */
 
+select * from oj_temp_schema.solution_clanguage
+	where instr(source_code,'??')>0
+	order by solution_id desc;
 
 
 

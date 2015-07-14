@@ -101,6 +101,7 @@ public class Contest implements Auditable<Userprofile, Long, LocalDateTime> {
     private LocalDateTime finishTime;
 
     @JoinColumn(name = "parent", foreignKey = @ForeignKey(name = "FK_contest_parent"))
+    @JsonIgnore
     @ManyToOne
     private Contest parent;
 

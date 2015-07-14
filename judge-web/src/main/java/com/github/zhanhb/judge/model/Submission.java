@@ -88,11 +88,11 @@ public class Submission implements Serializable {
     @ManyToOne
     private JudgeReply judgeReply;
 
-    @JoinColumn(name = "language", nullable = false, foreignKey = @ForeignKey(name = "FK_submission_language"))
+    @JoinColumn(name = "language", foreignKey = @ForeignKey(name = "FK_submission_language"))
     @ManyToOne(optional = false)
     private Language language;
 
-    @JoinColumn(name = "problem", nullable = false, foreignKey = @ForeignKey(name = "FK_submission_problem"))
+    @JoinColumn(name = "problem", foreignKey = @ForeignKey(name = "FK_submission_problem"))
     @ManyToOne(optional = false)
     private Problem problem;
 

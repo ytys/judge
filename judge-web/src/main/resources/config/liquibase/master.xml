@@ -8,7 +8,5 @@
 
     <include file="changelog/0000000000000_initial_schema.xml" relativeToChangelogFile="true"/>
     <include file="changelog/0000000000000_initial_data.sql" relativeToChangelogFile="true"/>
-    <include file="changelog/20150714-1502_changelog.xml" relativeToChangelogFile="true"/>
-    <include file="changelog/20150714-1529_changelog.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>
