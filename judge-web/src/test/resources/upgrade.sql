@@ -1,78 +1,78 @@
 use oj;
-ALTER TABLE `access_log`
-    DROP FOREIGN KEY IF EXISTS `FK_access_log_userprofile`;
-ALTER TABLE `access_log`
-    ADD CONSTRAINT `FK_access_log_userprofile` FOREIGN KEY (`userprofile`) REFERENCES `userprofile` (`id`) ON UPDATE CASCADE;
+ALTER TABLE access_log
+    DROP FOREIGN KEY IF EXISTS FK_access_log_userprofile;
+ALTER TABLE access_log
+    ADD CONSTRAINT FK_access_log_userprofile FOREIGN KEY (userprofile) REFERENCES userprofile (id) ON UPDATE CASCADE;
 
-ALTER TABLE `contest`
-    DROP FOREIGN KEY IF EXISTS `FK_contest_creation_user`,
-    DROP FOREIGN KEY IF EXISTS `FK_contest_last_update_user`;
-ALTER TABLE `contest`
-    ADD CONSTRAINT `FK_contest_creation_user` FOREIGN KEY (`creation_user`) REFERENCES `userprofile` (`id`) ON UPDATE CASCADE,
-    ADD CONSTRAINT `FK_contest_last_update_user` FOREIGN KEY (`last_update_user`) REFERENCES `userprofile` (`id`);
+ALTER TABLE contest
+    DROP FOREIGN KEY IF EXISTS FK_contest_creation_user,
+    DROP FOREIGN KEY IF EXISTS FK_contest_last_update_user;
+ALTER TABLE contest
+    ADD CONSTRAINT FK_contest_creation_user FOREIGN KEY (creation_user) REFERENCES userprofile (id) ON UPDATE CASCADE,
+    ADD CONSTRAINT FK_contest_last_update_user FOREIGN KEY (last_update_user) REFERENCES userprofile (id);
 
-ALTER TABLE `contest_userprofile_statistics`
-    DROP FOREIGN KEY IF EXISTS `FK_contest_userprofile_statistics_contest`,
-    DROP FOREIGN KEY IF EXISTS `FK_contest_userprofile_statistics_userprofile`;
-ALTER TABLE `contest_userprofile_statistics`
-    ADD CONSTRAINT `FK_contest_userprofile_statistics_contest` FOREIGN KEY (`contest`) REFERENCES `contest` (`id`) ON UPDATE CASCADE,
-    ADD CONSTRAINT `FK_contest_userprofile_statistics_userprofile` FOREIGN KEY (`userprofile`) REFERENCES `userprofile` (`id`) ON UPDATE CASCADE;
+ALTER TABLE contest_userprofile_statistics
+    DROP FOREIGN KEY IF EXISTS FK_contest_userprofile_statistics_contest,
+    DROP FOREIGN KEY IF EXISTS FK_contest_userprofile_statistics_userprofile;
+ALTER TABLE contest_userprofile_statistics
+    ADD CONSTRAINT FK_contest_userprofile_statistics_contest FOREIGN KEY (contest) REFERENCES contest (id) ON UPDATE CASCADE,
+    ADD CONSTRAINT FK_contest_userprofile_statistics_userprofile FOREIGN KEY (userprofile) REFERENCES userprofile (id) ON UPDATE CASCADE;
 
-ALTER TABLE `judge_reply`
-    DROP FOREIGN KEY IF EXISTS `FK_judge_reply_creation_user`,
-    DROP FOREIGN KEY IF EXISTS `FK_judge_reply_last_update_user`;
-ALTER TABLE `judge_reply`
-    ADD CONSTRAINT `FK_judge_reply_creation_user` FOREIGN KEY (`creation_user`) REFERENCES `userprofile` (`id`) ON UPDATE CASCADE,
-    ADD CONSTRAINT `FK_judge_reply_last_update_user` FOREIGN KEY (`last_update_user`) REFERENCES `userprofile` (`id`) ON UPDATE CASCADE;
+ALTER TABLE judge_reply
+    DROP FOREIGN KEY IF EXISTS FK_judge_reply_creation_user,
+    DROP FOREIGN KEY IF EXISTS FK_judge_reply_last_update_user;
+ALTER TABLE judge_reply
+    ADD CONSTRAINT FK_judge_reply_creation_user FOREIGN KEY (creation_user) REFERENCES userprofile (id) ON UPDATE CASCADE,
+    ADD CONSTRAINT FK_judge_reply_last_update_user FOREIGN KEY (last_update_user) REFERENCES userprofile (id) ON UPDATE CASCADE;
 
-ALTER TABLE `language`
-    DROP FOREIGN KEY IF EXISTS `FK_language_creation_user`;
-ALTER TABLE `language`
-    ADD CONSTRAINT `FK_language_creation_user` FOREIGN KEY (`creation_user`) REFERENCES `userprofile` (`id`) ON UPDATE CASCADE;
+ALTER TABLE language
+    DROP FOREIGN KEY IF EXISTS FK_language_creation_user;
+ALTER TABLE language
+    ADD CONSTRAINT FK_language_creation_user FOREIGN KEY (creation_user) REFERENCES userprofile (id) ON UPDATE CASCADE;
 
-ALTER TABLE `problem`
-    DROP FOREIGN KEY IF EXISTS `FK_problem_creation_user`,
-    DROP FOREIGN KEY IF EXISTS `FK_problem_limits`;
-ALTER TABLE `problem`
-    ADD CONSTRAINT `FK_problem_creation_user` FOREIGN KEY (`creation_user`) REFERENCES `userprofile` (`id`) ON UPDATE CASCADE,
-    ADD CONSTRAINT `FK_problem_limits` FOREIGN KEY (`limits`) REFERENCES `limits` (`id`) ON UPDATE CASCADE;
+ALTER TABLE problem
+    DROP FOREIGN KEY IF EXISTS FK_problem_creation_user,
+    DROP FOREIGN KEY IF EXISTS FK_problem_limits;
+ALTER TABLE problem
+    ADD CONSTRAINT FK_problem_creation_user FOREIGN KEY (creation_user) REFERENCES userprofile (id) ON UPDATE CASCADE,
+    ADD CONSTRAINT FK_problem_limits FOREIGN KEY (limits) REFERENCES limits (id) ON UPDATE CASCADE;
 
-ALTER TABLE `submission`
-    DROP FOREIGN KEY IF EXISTS `FK_submission_contest`,
-    DROP FOREIGN KEY IF EXISTS `FK_submission_judge_reply`,
-    DROP FOREIGN KEY IF EXISTS `FK_submission_language`,
-    DROP FOREIGN KEY IF EXISTS `FK_submission_problem`,
-    DROP FOREIGN KEY IF EXISTS `FK_submission_userprofile`;
-ALTER TABLE `submission`
-    ADD CONSTRAINT `FK_submission_contest` FOREIGN KEY (`contest`) REFERENCES `contest` (`id`) ON UPDATE CASCADE,
-    ADD CONSTRAINT `FK_submission_judge_reply` FOREIGN KEY (`judge_reply`) REFERENCES `judge_reply` (`id`) ON UPDATE CASCADE,
-    ADD CONSTRAINT `FK_submission_language` FOREIGN KEY (`language`) REFERENCES `language` (`id`) ON UPDATE CASCADE,
-    ADD CONSTRAINT `FK_submission_problem` FOREIGN KEY (`problem`) REFERENCES `problem` (`id`) ON UPDATE CASCADE,
-    ADD CONSTRAINT `FK_submission_userprofile` FOREIGN KEY (`userprofile`) REFERENCES `userprofile` (`id`);
+ALTER TABLE submission
+    DROP FOREIGN KEY IF EXISTS FK_submission_contest,
+    DROP FOREIGN KEY IF EXISTS FK_submission_judge_reply,
+    DROP FOREIGN KEY IF EXISTS FK_submission_language,
+    DROP FOREIGN KEY IF EXISTS FK_submission_problem,
+    DROP FOREIGN KEY IF EXISTS FK_submission_userprofile;
+ALTER TABLE submission
+    ADD CONSTRAINT FK_submission_contest FOREIGN KEY (contest) REFERENCES contest (id) ON UPDATE CASCADE,
+    ADD CONSTRAINT FK_submission_judge_reply FOREIGN KEY (judge_reply) REFERENCES judge_reply (id) ON UPDATE CASCADE,
+    ADD CONSTRAINT FK_submission_language FOREIGN KEY (language) REFERENCES language (id) ON UPDATE CASCADE,
+    ADD CONSTRAINT FK_submission_problem FOREIGN KEY (problem) REFERENCES problem (id) ON UPDATE CASCADE,
+    ADD CONSTRAINT FK_submission_userprofile FOREIGN KEY (userprofile) REFERENCES userprofile (id);
 
-ALTER TABLE `usergroup`
-    DROP FOREIGN KEY IF EXISTS `FK_usergroup_owner`;
-ALTER TABLE `usergroup`
-    ADD CONSTRAINT `FK_usergroup_owner` FOREIGN KEY (`owner`) REFERENCES `userprofile` (`id`) ON UPDATE CASCADE;
+ALTER TABLE usergroup
+    DROP FOREIGN KEY IF EXISTS FK_usergroup_owner;
+ALTER TABLE usergroup
+    ADD CONSTRAINT FK_usergroup_owner FOREIGN KEY (owner) REFERENCES userprofile (id) ON UPDATE CASCADE;
 
-ALTER TABLE `usergroup_userprofile`
-    DROP FOREIGN KEY IF EXISTS `FK_usergroup_userprofile_usergroup`,
-    DROP FOREIGN KEY IF EXISTS `FK_usergroup_userprofile_userprofile`;
-ALTER TABLE `usergroup_userprofile`
-    ADD CONSTRAINT `FK_usergroup_userprofile_usergroup` FOREIGN KEY (`usergroup`) REFERENCES `usergroup` (`id`) ON UPDATE CASCADE,
-    ADD CONSTRAINT `FK_usergroup_userprofile_userprofile` FOREIGN KEY (`userprofile`) REFERENCES `userprofile` (`id`) ON UPDATE CASCADE;
+ALTER TABLE usergroup_userprofile
+    DROP FOREIGN KEY IF EXISTS FK_usergroup_userprofile_usergroup,
+    DROP FOREIGN KEY IF EXISTS FK_usergroup_userprofile_userprofile;
+ALTER TABLE usergroup_userprofile
+    ADD CONSTRAINT FK_usergroup_userprofile_usergroup FOREIGN KEY (usergroup) REFERENCES usergroup (id) ON UPDATE CASCADE,
+    ADD CONSTRAINT FK_usergroup_userprofile_userprofile FOREIGN KEY (userprofile) REFERENCES userprofile (id) ON UPDATE CASCADE;
 
-ALTER TABLE `userprofile`
-    DROP FOREIGN KEY IF EXISTS `FK_userprofile_creation_user`;
-ALTER TABLE `userprofile`
-    ADD CONSTRAINT `FK_userprofile_creation_user` FOREIGN KEY (`creation_user`) REFERENCES `userprofile` (`id`);
+ALTER TABLE userprofile
+    DROP FOREIGN KEY IF EXISTS FK_userprofile_creation_user;
+ALTER TABLE userprofile
+    ADD CONSTRAINT FK_userprofile_creation_user FOREIGN KEY (creation_user) REFERENCES userprofile (id);
 
-ALTER TABLE `userprofile_role`
-    DROP FOREIGN KEY IF EXISTS `FK_userprofile_role_role`,
-    DROP FOREIGN KEY IF EXISTS `FK_userprofile_role_userprofile`;
-ALTER TABLE `userprofile_role`
-    ADD CONSTRAINT `FK_userprofile_role_role` FOREIGN KEY (`role`) REFERENCES `role` (`id`) ON UPDATE CASCADE,
-    ADD CONSTRAINT `FK_userprofile_role_userprofile` FOREIGN KEY (`userprofile`) REFERENCES `userprofile` (`id`) ON UPDATE CASCADE;
+ALTER TABLE userprofile_role
+    DROP FOREIGN KEY IF EXISTS FK_userprofile_role_role,
+    DROP FOREIGN KEY IF EXISTS FK_userprofile_role_userprofile;
+ALTER TABLE userprofile_role
+    ADD CONSTRAINT FK_userprofile_role_role FOREIGN KEY (role) REFERENCES role (id) ON UPDATE CASCADE,
+    ADD CONSTRAINT FK_userprofile_role_userprofile FOREIGN KEY (userprofile) REFERENCES userprofile (id) ON UPDATE CASCADE;
 
 
 
@@ -119,8 +119,8 @@ create table oj_temp_schema.problem_clanguage
         CAST(NULL AS INT) AS new_id
     from clanguage.problem p
     where p.defunct='N';
-ALTER TABLE `oj_temp_schema`.`problem_clanguage`
-    CHANGE COLUMN `new_id` `new_id` BIGINT NULL DEFAULT NULL AFTER `case_time_limit`;
+ALTER TABLE oj_temp_schema.problem_clanguage
+    CHANGE COLUMN new_id new_id BIGINT NULL DEFAULT NULL AFTER case_time_limit;
 
 /* problem end */
 
@@ -136,12 +136,12 @@ set
 
 update userprofile_clanguage set email = null where email = '' or email='null' or length(email) < 2;
 
-ALTER TABLE `userprofile_clanguage`
-    ADD COLUMN `id` INT NOT NULL AUTO_INCREMENT FIRST,
-    ADD PRIMARY KEY (`id`);
+ALTER TABLE userprofile_clanguage
+    ADD COLUMN id INT NOT NULL AUTO_INCREMENT FIRST,
+    ADD PRIMARY KEY (id);
 
-ALTER TABLE `userprofile_clanguage`
-    ADD INDEX `KEY_email` (`email`);
+ALTER TABLE userprofile_clanguage
+    ADD INDEX KEY_email (email);
 
 UPDATE
     userprofile_clanguage AS t
@@ -159,9 +159,10 @@ where
     m.cnt is not null and
     t.email not like '$%';
 
-ALTER TABLE `userprofile_clanguage`
-    DROP COLUMN `id`;
-
+ALTER TABLE userprofile_clanguage
+    DROP COLUMN id;
+delete from oj_temp_schema.userprofile_clanguage
+    where handle in('admin', 'anonymousUser', 'system');
 insert into oj.userprofile (
     birth_date,
     creation_date,
@@ -188,7 +189,7 @@ insert into oj.userprofile (
     creation_user
     from oj_temp_schema.userprofile_clanguage;
 
-ALTER TABLE `oj`.`problem` AUTO_INCREMENT=0;
+ALTER TABLE oj.problem AUTO_INCREMENT=0;
 insert into oj.problem (
     id,
     creation_date,
@@ -219,6 +220,112 @@ insert into oj.problem (
     1
 from
     oj_temp_schema.problem_clanguage;
+
+use clanguage;
+drop table if exists oj_temp_schema.contest_clanguage;
+create table oj_temp_schema.contest_clanguage
+select 
+    contest_id,
+    title,
+    start_time,
+    end_time,
+    description,
+    IF(defunct='N',0,1) as disabled
+from contest;
+
+insert into oj.contest (
+    id,
+    begin_time,
+    creation_date,
+    disabled,
+    finish_time,
+    last_update_date,
+    name,
+    password,
+    title,
+    type,
+    creation_user,
+    last_update_user,
+    description,
+    parent
+) select 
+    contest_id,
+    start_time,
+    now(),
+    disabled,
+    end_time,
+    now(),
+    contest_id,
+    NULL,
+    title,
+    1, /* OJ */
+    1, /* system user */
+    1, /* system user */
+    description,
+    NULL
+from
+    oj_temp_schema.contest_clanguage;
+
+use oj_temp_schema;
+drop table if exists oj_temp_schema.solution_clanguage;
+create table oj_temp_schema.solution_clanguage
+select
+    solution_id,
+    problem_id,
+    user_id,
+    time,
+    memory,
+    in_date,
+    result,
+    language,
+    ip,
+    contest_id,
+    code_length
+from clanguage.solution;
+
+ALTER TABLE `solution_clanguage`
+    ADD INDEX `solution_id` (`solution_id`);
+
+ALTER TABLE oj_temp_schema.solution_clanguage
+    ADD COLUMN source_code LONGTEXT NULL AFTER code_length,
+    ADD COLUMN compile_info LONGTEXT NULL AFTER source_code;
+
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+update
+    oj_temp_schema.solution_clanguage as t
+    left join (
+        select
+            solution_id as id,
+            convert(uncompress(`source_code`.`source`) using 'utf8') AS `source`
+        from clanguage.source_code
+    ) as s on
+        t.solution_id = s.id
+set t.source_code = s.source;
+update
+    oj_temp_schema.solution_clanguage as t
+    left join (
+        select
+            solution_id as id,
+            convert(uncompress(`source_code`.`source`) using 'latin1') AS `source`
+        from clanguage.source_code
+    ) as s on
+        t.solution_id = s.id
+   left join (
+   	select
+   		solution_id as id,
+   		code_length as len
+   	from clanguage.solution
+   ) as r on
+   	r.id = s.id
+set t.source_code = s.source
+where t.code_length <> char_length(t.source_code);
+/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
+
+/*
+select * from solution_clanguage
+where char_length(source_code) <> code_length;
+*/
+
 
 
 
