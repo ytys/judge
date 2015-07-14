@@ -72,7 +72,7 @@ public class ContestProblemStatistics implements Serializable {
     @Column(nullable = false)
     private long solved;
 
-    @JoinColumn(name = "contest_problem", referencedColumnName = "id", nullable = false, foreignKey = @ForeignKey(name = "FK_contest_problem_statistics_contest_problem"))
+    @JoinColumn(name = "contest_problem", nullable = false, foreignKey = @ForeignKey(name = "FK_contest_problem_statistics_contest_problem"))
     @OneToOne(optional = false)
     private ContestProblem contestProblem;
 

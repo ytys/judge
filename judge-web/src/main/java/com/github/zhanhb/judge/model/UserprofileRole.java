@@ -57,11 +57,11 @@ public class UserprofileRole implements Persistable<Long> {
     @Id
     private Long id;
 
-    @JoinColumn(name = "role", referencedColumnName = "id", nullable = false, foreignKey = @ForeignKey(name = "FK_userprofile_role_role"))
+    @JoinColumn(name = "role", nullable = false, foreignKey = @ForeignKey(name = "FK_userprofile_role_role"))
     @ManyToOne(optional = false)
     private Role role;
 
-    @JoinColumn(name = "userprofile", referencedColumnName = "id", nullable = false, foreignKey = @ForeignKey(name = "FK_userprofile_role_userprofile"))
+    @JoinColumn(name = "userprofile", nullable = false, foreignKey = @ForeignKey(name = "FK_userprofile_role_userprofile"))
     @ManyToOne(optional = false)
     private Userprofile userprofile;
 

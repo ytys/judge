@@ -115,7 +115,7 @@ public class Problem implements Serializable {
     @Length(min = 0, max = Integer.MAX_VALUE)
     private String source;
 
-    @JoinColumn(name = "limits", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_problem_limits"))
+    @JoinColumn(name = "limits", foreignKey = @ForeignKey(name = "FK_problem_limits"))
     @ManyToOne
     @JsonUnwrapped
     private Limits limits;
@@ -127,7 +127,7 @@ public class Problem implements Serializable {
     private LocalDateTime creationDate;
 
     @CreatedBy
-    @JoinColumn(name = "creation_user", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_problem_creation_user"))
+    @JoinColumn(name = "creation_user", foreignKey = @ForeignKey(name = "FK_problem_creation_user"))
     @JsonIgnore
     @ManyToOne
     private Userprofile creationUser;

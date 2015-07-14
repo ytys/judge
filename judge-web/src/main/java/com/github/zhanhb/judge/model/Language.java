@@ -97,7 +97,7 @@ public class Language implements Serializable {
     private LocalDateTime creationDate;
 
     @CreatedBy
-    @JoinColumn(name = "creation_user", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_language_creation_user"))
+    @JoinColumn(name = "creation_user", foreignKey = @ForeignKey(name = "FK_language_creation_user"))
     @JsonIgnore
     @ManyToOne
     private Userprofile creationUser;

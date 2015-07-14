@@ -57,11 +57,11 @@ public class UsergroupUserprofile implements Serializable {
     @Id
     private Long id;
 
-    @JoinColumn(name = "usergroup", referencedColumnName = "id", nullable = false, foreignKey = @ForeignKey(name = "FK_usergroup_userprofile_usergroup"))
+    @JoinColumn(name = "usergroup", nullable = false, foreignKey = @ForeignKey(name = "FK_usergroup_userprofile_usergroup"))
     @ManyToOne(optional = false)
     private Usergroup usergroup;
 
-    @JoinColumn(name = "userprofile", referencedColumnName = "id", nullable = false, foreignKey = @ForeignKey(name = "FK_usergroup_userprofile_userprofile"))
+    @JoinColumn(name = "userprofile", nullable = false, foreignKey = @ForeignKey(name = "FK_usergroup_userprofile_userprofile"))
     @ManyToOne(optional = false)
     private Userprofile userprofile;
 

@@ -14,6 +14,14 @@
     <name>ZJNU Online Judge</name>
     <description>ZJNU Online Judge</description>
     <url>https://github.com/zhanhb/judge/</url>
+    <developers>
+        <developer>
+            <id>zhanhb</id>
+            <name>Huangbin Zhan</name>
+            <email>zhanhb88@gmail.com</email>
+            <organization>Zhejiang Normal University</organization>
+        </developer>
+    </developers>
     <scm>
         <connection>scm:git:git://github.com/zhanhb/judge.git</connection>
         <developerConnection>scm:git:ssh://git@github.com/zhanhb/judge.git</developerConnection>
@@ -89,6 +97,16 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-ehcache</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>jboss-transaction-api_1.2_spec</artifactId>
+                    <groupId>org.jboss.spec.javax.transaction</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>jboss-logging-annotations</artifactId>
+                    <groupId>org.jboss.logging</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -252,6 +270,11 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-taglibs</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.session</groupId>
+            <artifactId>spring-session</artifactId>
+            <version>1.0.1.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.apache.tiles</groupId>

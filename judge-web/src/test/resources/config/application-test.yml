@@ -1,5 +1,5 @@
 spring.jpa:
     show-sql: true
-    hibernate.hbm2ddl: none
+    hibernate.ddl-auto: none
 
 liquibase.enabled: true

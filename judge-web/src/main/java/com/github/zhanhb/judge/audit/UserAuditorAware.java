@@ -33,7 +33,7 @@ public class UserAuditorAware implements AuditorAware<Userprofile> {
 
     @Override
     public Userprofile getCurrentAuditor() {
-        return securityUtils.getCurrentLogin();
+        return securityUtils.getCurrentUserprofile();
     }
 
 }

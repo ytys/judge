@@ -21,6 +21,8 @@ import java.util.Scanner;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 
 /**
@@ -29,7 +31,7 @@ import org.springframework.context.ConfigurableApplicationContext;
  */
 @Slf4j
 @SpringBootApplication
-public class Application {
+public class Application extends SpringBootServletInitializer {
 
     public static void main(String[] args) throws IOException {
         ConfigurableApplicationContext ctx = SpringApplication.run(Application.class, args);
@@ -58,6 +60,14 @@ public class Application {
             String property = ctx.getEnvironment().getProperty(name);
             System.out.println(property);
         }
+    }
+
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.showBanner(false)
+                .addCommandLineProperties(false)
+                .logStartupInfo(true)
+                .sources(Application.class);
     }
 
 }

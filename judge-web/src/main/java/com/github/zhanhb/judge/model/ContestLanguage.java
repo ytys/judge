@@ -60,11 +60,11 @@ public class ContestLanguage implements Serializable {
     @Id
     private Long id;
 
-    @JoinColumn(name = "contest", referencedColumnName = "id", nullable = false, foreignKey = @ForeignKey(name = "FK_contest_language_contest"))
+    @JoinColumn(name = "contest", nullable = false, foreignKey = @ForeignKey(name = "FK_contest_language_contest"))
     @ManyToOne(optional = false)
     private Contest contest;
 
-    @JoinColumn(name = "language", referencedColumnName = "id", nullable = false, foreignKey = @ForeignKey(name = "FK_contest_language_language"))
+    @JoinColumn(name = "language", nullable = false, foreignKey = @ForeignKey(name = "FK_contest_language_language"))
     @ManyToOne(optional = false)
     private Language language;
 

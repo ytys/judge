@@ -81,7 +81,7 @@ public class Usergroup implements Serializable {
     private long groupOrder;
 
     @CreatedBy
-    @JoinColumn(name = "owner", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_usergroup_owner"))
+    @JoinColumn(name = "owner", foreignKey = @ForeignKey(name = "FK_usergroup_owner"))
     @JsonIgnore
     @ManyToOne
     private Userprofile owner;

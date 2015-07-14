@@ -1,10 +1,6 @@
 /target/
-/.settings/
 /.svn/
 /pom.xml.bak
 /*.zip
-/.classpath
-/.project
-/.tern-project
 *~
 _notes/

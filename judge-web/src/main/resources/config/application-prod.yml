@@ -55,7 +55,7 @@ spring:
     jpa:
 #        show-sql: true
         hibernate:
-            hbm2ddl: none
+            ddl-auto: none
             naming-strategy: org.hibernate.cfg.EJB3NamingStrategy
         properties:
             javax.persistence.jdbc.validation.mode: none

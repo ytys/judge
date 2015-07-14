@@ -100,6 +100,13 @@ public class Contest implements Auditable<Userprofile, Long, LocalDateTime> {
     @Type(type = "org.jadira.usertype.dateandtime.threeten.PersistentLocalDateTime")
     private LocalDateTime finishTime;
 
+    @JoinColumn(name = "parent", foreignKey = @ForeignKey(name = "FK_contest_parent"))
+    @ManyToOne
+    private Contest parent;
+
+    @Column(name = "description")
+    private String description;
+
     @Column(name = "disabled", nullable = false)
     @JsonIgnore
     private boolean disabled;
@@ -116,7 +123,7 @@ public class Contest implements Auditable<Userprofile, Long, LocalDateTime> {
     private LocalDateTime creationDate;
 
     @CreatedBy
-    @JoinColumn(name = "creation_user", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_contest_creation_user"))
+    @JoinColumn(name = "creation_user", foreignKey = @ForeignKey(name = "FK_contest_creation_user"))
     @JsonIgnore
     @ManyToOne
     private Userprofile createdBy;
@@ -128,7 +135,7 @@ public class Contest implements Auditable<Userprofile, Long, LocalDateTime> {
     private LocalDateTime lastModifiedDate;
 
     @LastModifiedBy
-    @JoinColumn(name = "last_update_user", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_contest_last_update_user"))
+    @JoinColumn(name = "last_update_user", foreignKey = @ForeignKey(name = "FK_contest_last_update_user"))
     @JsonIgnore
     @ManyToOne
     private Userprofile lastModifiedBy;

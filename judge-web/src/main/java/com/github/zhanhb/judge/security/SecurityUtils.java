@@ -25,7 +25,7 @@ public class SecurityUtils {
      *
      * @return
      */
-    public Userprofile getCurrentLogin() {
+    public Userprofile getCurrentUserprofile() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication == null || !authentication.isAuthenticated()) {
@@ -49,7 +49,7 @@ public class SecurityUtils {
      * @return true if the user is authenticated, false otherwise
      */
     public boolean isAuthenticated() {
-        return getCurrentLogin() != null;
+        return getCurrentUserprofile() != null;
     }
 
 }

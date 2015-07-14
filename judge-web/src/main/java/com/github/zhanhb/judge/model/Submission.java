@@ -80,24 +80,24 @@ public class Submission implements Serializable {
     @Type(type = "org.jadira.usertype.dateandtime.threeten.PersistentLocalDateTime")
     private LocalDateTime judgeTime;
 
-    @JoinColumn(name = "contest", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_submission_contest"))
+    @JoinColumn(name = "contest", foreignKey = @ForeignKey(name = "FK_submission_contest"))
     @ManyToOne
     private Contest contest;
 
-    @JoinColumn(name = "judge_reply", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_submission_judge_reply"))
+    @JoinColumn(name = "judge_reply", foreignKey = @ForeignKey(name = "FK_submission_judge_reply"))
     @ManyToOne
     private JudgeReply judgeReply;
 
-    @JoinColumn(name = "language", referencedColumnName = "id", nullable = false, foreignKey = @ForeignKey(name = "FK_submission_language"))
+    @JoinColumn(name = "language", nullable = false, foreignKey = @ForeignKey(name = "FK_submission_language"))
     @ManyToOne(optional = false)
     private Language language;
 
-    @JoinColumn(name = "problem", referencedColumnName = "id", nullable = false, foreignKey = @ForeignKey(name = "FK_submission_problem"))
+    @JoinColumn(name = "problem", nullable = false, foreignKey = @ForeignKey(name = "FK_submission_problem"))
     @ManyToOne(optional = false)
     private Problem problem;
 
     @CreatedBy
-    @JoinColumn(name = "userprofile", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_submission_userprofile"))
+    @JoinColumn(name = "userprofile", foreignKey = @ForeignKey(name = "FK_submission_userprofile"))
     @ManyToOne
     private Userprofile userprofile;
 

@@ -90,7 +90,7 @@ public class AccessLog implements Serializable {
     private LocalDateTime accessTime;
 
     @CreatedBy
-    @JoinColumn(name = "userprofile", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_access_log_userprofile"))
+    @JoinColumn(name = "userprofile", foreignKey = @ForeignKey(name = "FK_access_log_userprofile"))
     @JsonIgnore
     @ManyToOne
     private Userprofile userprofile;

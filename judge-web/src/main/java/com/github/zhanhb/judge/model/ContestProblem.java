@@ -71,11 +71,11 @@ public class ContestProblem implements Serializable {
     @Length(min = 0, max = Integer.MAX_VALUE)
     private String title;
 
-    @JoinColumn(name = "contest", referencedColumnName = "id", nullable = false, foreignKey = @ForeignKey(name = "FK_contest_problem_contest"))
+    @JoinColumn(name = "contest", nullable = false, foreignKey = @ForeignKey(name = "FK_contest_problem_contest"))
     @ManyToOne(optional = false)
     private Contest contest;
 
-    @JoinColumn(name = "problem", referencedColumnName = "id", nullable = false, foreignKey = @ForeignKey(name = "FK_contest_problem_problem"))
+    @JoinColumn(name = "problem", nullable = false, foreignKey = @ForeignKey(name = "FK_contest_problem_problem"))
     @ManyToOne(optional = false)
     private Problem problem;
 

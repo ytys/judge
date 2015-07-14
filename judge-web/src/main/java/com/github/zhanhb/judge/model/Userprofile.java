@@ -99,7 +99,7 @@ public class Userprofile implements Serializable {
     private boolean disabled;
 
     @CreatedBy
-    @JoinColumn(name = "creation_user", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_userprofile_creation_user"))
+    @JoinColumn(name = "creation_user", foreignKey = @ForeignKey(name = "FK_userprofile_creation_user"))
     @JsonIgnore
     @ManyToOne
     private Userprofile createdBy;

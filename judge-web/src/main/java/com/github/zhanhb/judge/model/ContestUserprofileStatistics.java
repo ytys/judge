@@ -60,11 +60,11 @@ public class ContestUserprofileStatistics implements Serializable {
     @Id
     private Long id;
 
-    @JoinColumn(name = "contest", referencedColumnName = "id", nullable = false, foreignKey = @ForeignKey(name = "FK_contest_userprofile_statistics_contest"))
+    @JoinColumn(name = "contest", nullable = false, foreignKey = @ForeignKey(name = "FK_contest_userprofile_statistics_contest"))
     @ManyToOne(optional = false)
     private Contest contest;
 
-    @JoinColumn(name = "userprofile", referencedColumnName = "id", nullable = false, foreignKey = @ForeignKey(name = "FK_contest_userprofile_statistics_userprofile"))
+    @JoinColumn(name = "userprofile", nullable = false, foreignKey = @ForeignKey(name = "FK_contest_userprofile_statistics_userprofile"))
     @ManyToOne(optional = false)
     private Userprofile userprofile;
 
