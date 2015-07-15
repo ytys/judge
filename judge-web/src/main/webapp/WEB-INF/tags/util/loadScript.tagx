@@ -40,7 +40,13 @@
     <html:script src="/static/commons/js/json2.min.js" type="text/javascript"/>
     <jsp:text>&lt;![endif]--&gt;</jsp:text>
 
+    <jsp:text>&lt;!--[if (!IE)|(gt IE 8)]&gt;&lt;!--&gt;</jsp:text>
+    <html:script src="/static/commons/js/jquery-2.1.4.min.js" type="text/javascript"/>
+    <jsp:text>&lt;!--&lt;![endif]--&gt;</jsp:text>
+
+    <jsp:text>&lt;!--[if lte IE 8]&gt;</jsp:text>
     <html:script src="/static/commons/js/jquery-1.11.3.min.js" type="text/javascript"/>
+    <jsp:text>&lt;![endif]--&gt;</jsp:text>
 
     <html:script src="/static/commons/js/jquery.placeholder.min.js" type="text/javascript"/>
 

@@ -95,7 +95,7 @@ create table oj_temp_schema.userprofile_clanguage
         password        as      password,
         school          as      school,
         NULL            as      creation_user
-    from users u1
+    from clanguage.users u1
     order by creation_date asc, handle asc;
 /* userprofile end */
 /* problem start */
@@ -127,27 +127,27 @@ ALTER TABLE oj_temp_schema.problem_clanguage
 
 use oj_temp_schema;
 
-update userprofile_clanguage
+update oj_temp_schema.userprofile_clanguage
 set
-        email = replace(trim(email),' ',''),
-        nickname = trim(nickname),
-        school = trim(school),
-        major = trim(major);
+    email = replace(trim(email),' ',''),
+    nickname = trim(nickname),
+    school = trim(school),
+    major = trim(major);
 
-update userprofile_clanguage set email = null where email = '' or email='null' or length(email) < 2;
+update oj_temp_schema.userprofile_clanguage set email = null where email = '' or email='null' or length(email) < 2;
 
-ALTER TABLE userprofile_clanguage
+ALTER TABLE oj_temp_schema.userprofile_clanguage
     ADD COLUMN id INT NOT NULL AUTO_INCREMENT FIRST,
     ADD PRIMARY KEY (id);
 
-ALTER TABLE userprofile_clanguage
+ALTER TABLE oj_temp_schema.userprofile_clanguage
     ADD INDEX KEY_email (email);
 
 UPDATE
-    userprofile_clanguage AS t
+    oj_temp_schema.userprofile_clanguage AS t
     LEFT JOIN (
         select tb.id, tb.email, count(rt.id) as cnt
-        from userprofile_clanguage tb, userprofile_clanguage rt
+        from oj_temp_schema.userprofile_clanguage tb, oj_temp_schema.userprofile_clanguage rt
         where rt.id < tb.id and rt.email = tb.email
         group by tb.id
         order by cnt desc
@@ -159,7 +159,7 @@ where
     m.cnt is not null and
     t.email not like '$%';
 
-ALTER TABLE userprofile_clanguage
+ALTER TABLE oj_temp_schema.userprofile_clanguage
     DROP COLUMN id;
 delete from oj_temp_schema.userprofile_clanguage
     where handle in('admin', 'anonymousUser', 'system');
@@ -224,14 +224,14 @@ from
 use clanguage;
 drop table if exists oj_temp_schema.contest_clanguage;
 create table oj_temp_schema.contest_clanguage
-select 
+select
     contest_id,
     title,
     start_time,
     end_time,
     description,
     IF(defunct='N',0,1) as disabled
-from contest;
+from clanguage.contest;
 
 insert into oj.contest (
     id,
@@ -248,7 +248,7 @@ insert into oj.contest (
     last_update_user,
     description,
     parent
-) select 
+) select
     contest_id,
     start_time,
     now(),
@@ -284,19 +284,19 @@ select
 from clanguage.solution;
 
 ALTER TABLE oj_temp_schema.solution_clanguage
-    ADD INDEX `solution_id` (`solution_id`);
+    ADD INDEX solution_id (solution_id);
 
 ALTER TABLE oj_temp_schema.solution_clanguage
     ADD COLUMN source_code LONGTEXT NULL AFTER code_length,
     ADD COLUMN compile_info LONGTEXT NULL AFTER source_code;
 
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO';
 update
     oj_temp_schema.solution_clanguage as t
     left join (
         select
             solution_id as id,
-            convert(uncompress(`source_code`.`source`) using 'utf8') AS `source`
+            convert(uncompress(source_code.source) using 'utf8') AS source
         from clanguage.source_code
     ) as s on
         t.solution_id = s.id
@@ -306,33 +306,34 @@ update
     left join (
         select
             solution_id as id,
-            convert(uncompress(`source_code`.`source`) using 'latin1') AS `source`
+            convert(uncompress(source_code.source) using 'latin1') AS source
         from clanguage.source_code
     ) as s on
         t.solution_id = s.id
    left join (
    	select
-   		solution_id as id,
-   		code_length as len
+            solution_id as id,
+            code_length as len
    	from clanguage.solution
    ) as r on
    	r.id = s.id
 set t.source_code = s.source
 where t.code_length <> char_length(t.source_code);
-/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
+SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '');
 
 /*
 select * from solution_clanguage
 where char_length(source_code) <> code_length;
 */
-
+/*
 select * from oj_temp_schema.solution_clanguage
 	where instr(source_code,'??')>0
 	order by solution_id desc;
+*/
 
 
 
-
+/*
 use oj_temp_schema;
 
 create table oj_temp_schema.userprofile
@@ -341,7 +342,7 @@ create table oj_temp_schema.userprofile
 
 drop table oj_temp_schema.userprofile_clanguage;
 drop table oj_temp_schema.userprofile_java;
-
+*/
 /* select * from userprofile tb where (select count(1) from userprofile where handle=tb.handle)>=2; */
 
 /*
