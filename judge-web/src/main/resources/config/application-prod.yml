@@ -18,7 +18,7 @@ mail:
     from: judge@localhost
 
 swagger:
-    title: judge API
+    title: ZJNU Judge Online
     description: judge applications and beyond!
     termsOfServiceUrl: http://github.com/zhanhb/
     contact:
@@ -53,10 +53,9 @@ spring:
 
 # @see org.springframework.boot.autoconfigure.orm.jpa.JpaProperties
     jpa:
-#        show-sql: true
-        hibernate:
-            ddl-auto: none
-            naming-strategy: org.hibernate.cfg.EJB3NamingStrategy
+        show-sql: true
+        hibernate.ddl-auto: none
+        #hibernate.naming-strategy: org.hibernate.cfg.EJB3NamingStrategy
         properties:
             javax.persistence.jdbc.validation.mode: none
 
@@ -79,24 +78,26 @@ spring:
     hateoas.apply-to-primary-object-mapper: true
 
 metrics:
-    jmx.enabled: true
+    jmx.enabled: false
     graphite:
         enabled: false
         host: localhost
         port: 2003
         prefix: judge
 
-http:
-    cache:
-        timeToLiveInDays: 31
+http.cache.timeToLiveInDays: 31
 
 cache:
     timeToLiveSeconds: 3600
-    ehcache:
-        maxBytesLocalHeap: 256M
+    ehcache.maxBytesLocalHeap: 256M
 
+# encoding will be filtered by this filter
+# see com.github.zhanhb.judge.config.EncodingFilterInitializer
+# see https://github.com/zhanhb/character-encoding-filter/
+server.tomcat.uri-encoding: ISO-8859-1
 spring.http:
-    encoding.enabled: false # enable http encoding support
+# enable http encoding support
+    encoding.enabled: false
     converters.preferred-json-mapper: gson
 
 multipart:
