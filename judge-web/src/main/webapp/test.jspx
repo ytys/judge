@@ -46,7 +46,7 @@
                     <input type="submit"/>
                 </form:form>
             </pre>
-            <script>/*<![CDATA[<![CDATA[/**/jQuery("<div>").qrcode("http://localhost/judge").appendTo("body");//]]>]]&gt;</script>
+            <script>/*<![CDATA[<![CDATA[/**/jQuery("<div>").qrcode(location.href).appendTo("body");//]]>]]&gt;</script>
 
             <input type="text" style="display: inline-block" />
             <input type="text" style="display: inline-block" />

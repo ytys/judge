@@ -26,6 +26,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -46,7 +47,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EntityListeners(AuditingEntityListener.class)
 @EqualsAndHashCode(of = "id")
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "userprofile_role")
+@Table(name = "userprofile_role", uniqueConstraints = {
+    @UniqueConstraint(name = "UQ_userprofile_role", columnNames = {"userprofile", "role"})
+})
 @XmlRootElement
 public class UserprofileRole implements Persistable<Long> {
 

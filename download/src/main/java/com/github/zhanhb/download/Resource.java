@@ -41,10 +41,6 @@ public abstract class Resource {
     private String lastModifiedHttp;
     private String weakETag;
 
-    public Resource getResource() {
-        return this;
-    }
-
     public abstract boolean exists();
 
     public abstract String getName();

@@ -32,19 +32,25 @@
         <url>https://github.com/zhanhb/judge/issues</url>
     </issueManagement>
     <properties>
+        <commons-compress.version>1.9</commons-compress.version>
         <commons-dbcp2.version>2.1</commons-dbcp2.version>
+        <commons-pool2.version>2.4.1</commons-pool2.version>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <hikaricp.version>2.3.8</hikaricp.version>
+        <httpclient.version>4.5</httpclient.version>
         <jackson.version>2.5.4</jackson.version>
         <java.version>1.8</java.version>
         <javassist.version>3.20.0-GA</javassist.version>
+        <joda-time.version>2.8.1</joda-time.version>
         <liquibase-hibernate4.version>3.5</liquibase-hibernate4.version>
         <liquibase.version>3.4.0</liquibase.version>
         <lombok.version>1.16.4</lombok.version>
+        <maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <!--<maven.test.failure.ignore>true</maven.test.failure.ignore>-->
         <!--<maven.test.skip>true</maven.test.skip>-->
+        <maven.version>3.3.3</maven.version>
         <metrics-spring.version>3.1.0</metrics-spring.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <querydsl.version>3.6.4</querydsl.version>
@@ -54,6 +60,7 @@
         <spring-plugin.version>1.2.0.RELEASE</spring-plugin.version>
         <spring-security.version>4.0.1.RELEASE</spring-security.version>
         <tomcat.version>7.0.63</tomcat.version>
+        <usertype.version>4.0.0.GA</usertype.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -73,7 +80,7 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-compress</artifactId>
-            <version>1.9</version>
+            <version>${commons-compress.version}</version>
         </dependency>
         <dependency>
             <groupId>net.sf.ehcache</groupId>
@@ -365,7 +372,7 @@
         <dependency>
             <groupId>org.jadira.usertype</groupId>
             <artifactId>usertype.extended</artifactId>
-            <version>3.2.0.GA</version>
+            <version>${usertype.version}</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
@@ -512,11 +519,11 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.3</version>
                 <configuration>
-                    <argLine>-Dfile.encoding=UTF8</argLine>
                     <compilerArguments>
                         <endorseddirs>${endorsed.dir}</endorseddirs>
                     </compilerArguments>
                     <debug>false</debug>
+                    <showDeprecation>true</showDeprecation>
                 </configuration>
             </plugin>
             <plugin>
@@ -530,7 +537,6 @@
                             <goal>copy</goal>
                         </goals>
                         <configuration>
-                            <argLine>-Dfile.encoding=UTF8</argLine>
                             <outputDirectory>${endorsed.dir}</outputDirectory>
                             <silent>true</silent>
                             <artifactItems>
@@ -549,7 +555,6 @@
                 <artifactId>maven-eclipse-plugin</artifactId>
                 <version>2.10</version>
                 <configuration>
-                    <argLine>-Dfile.encoding=UTF8</argLine>
                     <downloadSources>true</downloadSources>
                     <downloadJavadocs>true</downloadJavadocs>
                 </configuration>
@@ -567,7 +572,6 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <argLine>-Dfile.encoding=UTF8</argLine>
                     <rules>
                         <requireMavenVersion>
                             <message>You are running an older version of Maven. ${project.name} requires at least Maven 3.0.2</message>
@@ -582,18 +586,9 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>2.7</version>
-                <configuration>
-                    <argLine>-Dfile.encoding=UTF8</argLine>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.18.1</version>
                 <configuration>
-                    <argLine>-Dfile.encoding=UTF8</argLine>
                     <includes>
                         <include>**/*Tests.java</include>
                         <include>**/*Test.java</include>
@@ -607,10 +602,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>2.6</version>
-                <configuration>
-                    <argLine>-Dfile.encoding=UTF8</argLine>
-                    <failOnMissingWebXml>false</failOnMissingWebXml>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.liquibase</groupId>
@@ -634,7 +625,6 @@
                     </dependency>
                 </dependencies>
                 <configuration>
-                    <argLine>-Dfile.encoding=UTF8</argLine>
                     <changeLogFile>src/main/resources/config/liquibase/master.xml</changeLogFile>
                     <diffChangeLogFile>src/main/resources/config/liquibase/changelog/${maven.build.timestamp}_changelog.xml</diffChangeLogFile>
                     <driver>org.mariadb.jdbc.Driver</driver>
@@ -659,9 +649,6 @@
                         </goals>
                     </execution>
                 </executions>
-                <configuration>
-                    <argLine>-Dfile.encoding=UTF8</argLine>
-                </configuration>
             </plugin>
         </plugins>
     </build>

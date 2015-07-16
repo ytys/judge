@@ -1,6 +1,7 @@
 package com.github.zhanhb.judge.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.github.zhanhb.judge.exception.UserprofileNotExistException;
 import com.github.zhanhb.judge.model.Userprofile;
 import com.github.zhanhb.judge.repository.UserprofileRepository;
 import com.github.zhanhb.judge.security.AuthoritiesConstants;
@@ -34,10 +35,11 @@ public class UserprofileResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @RolesAllowed(AuthoritiesConstants.ADMIN)
-    ResponseEntity<Userprofile> getUserprofile(@PathVariable String login) {
+    @SuppressWarnings("ThrowableInstanceNotThrown")
+    ResponseEntity<Userprofile> getUserprofile(@PathVariable("login") String login) {
         log.debug("REST request to get User : {}", login);
         return userRepository.findByHandleIgnoreCase(login)
                 .map(user -> new ResponseEntity<>(user, HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new UserprofileNotExistException(login));
     }
 }

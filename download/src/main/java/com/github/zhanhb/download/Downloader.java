@@ -243,7 +243,7 @@ public class Downloader {
                 }
                 response.setContentType(contentType);
             }
-            if ((resource.getResource() != null) && (contentLength >= 0) && (!serveContent || ostream != null)) {
+            if ((contentLength >= 0) && (!serveContent || ostream != null)) {
                 if (log.isDebugEnabled()) {
                     log.debug("DefaultServlet.serveFile:  contentLength=" + contentLength);
                 }
