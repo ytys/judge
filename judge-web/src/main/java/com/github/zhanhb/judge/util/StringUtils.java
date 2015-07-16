@@ -49,4 +49,25 @@ public class StringUtils {
         }
         return str;
     }
+
+    public static String slice(String string, int beginIndex) throws NullPointerException {
+        return string.substring(fixIndex(string, beginIndex));
+    }
+
+    public static String slice(String string, int beginIndex, int endIndex) throws NullPointerException {
+        int fixedBeginIndex = fixIndex(string, beginIndex);
+        int fixedEndIndex = fixIndex(string, endIndex);
+        if (fixedBeginIndex >= fixedEndIndex) {
+            return "";
+        }
+        return string.substring(fixedBeginIndex, fixedEndIndex);
+    }
+
+    private static int fixIndex(String str, int index) {
+        int len = str.length();
+        return (index >= 0)
+                ? Math.min(len, index)
+                : Math.max(0, len + index);
+    }
+
 }

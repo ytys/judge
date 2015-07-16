@@ -1,81 +1,3 @@
-use oj;
-ALTER TABLE access_log
-    DROP FOREIGN KEY IF EXISTS FK_access_log_userprofile;
-ALTER TABLE access_log
-    ADD CONSTRAINT FK_access_log_userprofile FOREIGN KEY (userprofile) REFERENCES userprofile (id) ON UPDATE CASCADE;
-
-ALTER TABLE contest
-    DROP FOREIGN KEY IF EXISTS FK_contest_creation_user,
-    DROP FOREIGN KEY IF EXISTS FK_contest_last_update_user;
-ALTER TABLE contest
-    ADD CONSTRAINT FK_contest_creation_user FOREIGN KEY (creation_user) REFERENCES userprofile (id) ON UPDATE CASCADE,
-    ADD CONSTRAINT FK_contest_last_update_user FOREIGN KEY (last_update_user) REFERENCES userprofile (id);
-
-ALTER TABLE contest_userprofile_statistics
-    DROP FOREIGN KEY IF EXISTS FK_contest_userprofile_statistics_contest,
-    DROP FOREIGN KEY IF EXISTS FK_contest_userprofile_statistics_userprofile;
-ALTER TABLE contest_userprofile_statistics
-    ADD CONSTRAINT FK_contest_userprofile_statistics_contest FOREIGN KEY (contest) REFERENCES contest (id) ON UPDATE CASCADE,
-    ADD CONSTRAINT FK_contest_userprofile_statistics_userprofile FOREIGN KEY (userprofile) REFERENCES userprofile (id) ON UPDATE CASCADE;
-
-ALTER TABLE judge_reply
-    DROP FOREIGN KEY IF EXISTS FK_judge_reply_creation_user,
-    DROP FOREIGN KEY IF EXISTS FK_judge_reply_last_update_user;
-ALTER TABLE judge_reply
-    ADD CONSTRAINT FK_judge_reply_creation_user FOREIGN KEY (creation_user) REFERENCES userprofile (id) ON UPDATE CASCADE,
-    ADD CONSTRAINT FK_judge_reply_last_update_user FOREIGN KEY (last_update_user) REFERENCES userprofile (id) ON UPDATE CASCADE;
-
-ALTER TABLE language
-    DROP FOREIGN KEY IF EXISTS FK_language_creation_user;
-ALTER TABLE language
-    ADD CONSTRAINT FK_language_creation_user FOREIGN KEY (creation_user) REFERENCES userprofile (id) ON UPDATE CASCADE;
-
-ALTER TABLE problem
-    DROP FOREIGN KEY IF EXISTS FK_problem_creation_user,
-    DROP FOREIGN KEY IF EXISTS FK_problem_limits;
-ALTER TABLE problem
-    ADD CONSTRAINT FK_problem_creation_user FOREIGN KEY (creation_user) REFERENCES userprofile (id) ON UPDATE CASCADE,
-    ADD CONSTRAINT FK_problem_limits FOREIGN KEY (limits) REFERENCES limits (id) ON UPDATE CASCADE;
-
-ALTER TABLE submission
-    DROP FOREIGN KEY IF EXISTS FK_submission_contest,
-    DROP FOREIGN KEY IF EXISTS FK_submission_judge_reply,
-    DROP FOREIGN KEY IF EXISTS FK_submission_language,
-    DROP FOREIGN KEY IF EXISTS FK_submission_problem,
-    DROP FOREIGN KEY IF EXISTS FK_submission_userprofile;
-ALTER TABLE submission
-    ADD CONSTRAINT FK_submission_contest FOREIGN KEY (contest) REFERENCES contest (id) ON UPDATE CASCADE,
-    ADD CONSTRAINT FK_submission_judge_reply FOREIGN KEY (judge_reply) REFERENCES judge_reply (id) ON UPDATE CASCADE,
-    ADD CONSTRAINT FK_submission_language FOREIGN KEY (language) REFERENCES language (id) ON UPDATE CASCADE,
-    ADD CONSTRAINT FK_submission_problem FOREIGN KEY (problem) REFERENCES problem (id) ON UPDATE CASCADE,
-    ADD CONSTRAINT FK_submission_userprofile FOREIGN KEY (userprofile) REFERENCES userprofile (id);
-
-ALTER TABLE usergroup
-    DROP FOREIGN KEY IF EXISTS FK_usergroup_owner;
-ALTER TABLE usergroup
-    ADD CONSTRAINT FK_usergroup_owner FOREIGN KEY (owner) REFERENCES userprofile (id) ON UPDATE CASCADE;
-
-ALTER TABLE usergroup_userprofile
-    DROP FOREIGN KEY IF EXISTS FK_usergroup_userprofile_usergroup,
-    DROP FOREIGN KEY IF EXISTS FK_usergroup_userprofile_userprofile;
-ALTER TABLE usergroup_userprofile
-    ADD CONSTRAINT FK_usergroup_userprofile_usergroup FOREIGN KEY (usergroup) REFERENCES usergroup (id) ON UPDATE CASCADE,
-    ADD CONSTRAINT FK_usergroup_userprofile_userprofile FOREIGN KEY (userprofile) REFERENCES userprofile (id) ON UPDATE CASCADE;
-
-ALTER TABLE userprofile
-    DROP FOREIGN KEY IF EXISTS FK_userprofile_creation_user;
-ALTER TABLE userprofile
-    ADD CONSTRAINT FK_userprofile_creation_user FOREIGN KEY (creation_user) REFERENCES userprofile (id);
-
-ALTER TABLE userprofile_role
-    DROP FOREIGN KEY IF EXISTS FK_userprofile_role_role,
-    DROP FOREIGN KEY IF EXISTS FK_userprofile_role_userprofile;
-ALTER TABLE userprofile_role
-    ADD CONSTRAINT FK_userprofile_role_role FOREIGN KEY (role) REFERENCES role (id) ON UPDATE CASCADE,
-    ADD CONSTRAINT FK_userprofile_role_userprofile FOREIGN KEY (userprofile) REFERENCES userprofile (id) ON UPDATE CASCADE;
-
-
-
 use clanguage;
 
 create database if not exists oj_temp_schema COLLATE 'utf8_general_ci';
@@ -320,6 +242,30 @@ update
 set t.source_code = s.source
 where t.code_length <> char_length(t.source_code);
 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '');
+
+INSERT INTO oj.contest(
+    id,
+    creation_date,
+    description,
+    disabled,
+    last_update_date,
+    name,
+    title,
+    type,
+    creation_user,
+    last_update_user
+) VALUES (
+    1,
+    now(),
+    'clanguage',
+    0,
+    now(),
+    'clanguage',
+    'clanguage',
+    1,
+    1,
+    1
+);
 
 /*
 select * from solution_clanguage
