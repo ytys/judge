@@ -42,12 +42,10 @@ public class UserprofileDetailsService implements UserDetailsService {
             throw new IllegalArgumentException("login");
         }
 
-        Optional<Userprofile> optional;
-        if (username.contains("@")) {
-            optional = ur.findByEmail(username);
-        } else {
-            optional = ur.findByHandleIgnoreCase(username);
-        }
+        Optional<Userprofile> optional = username.contains("@")
+                ? ur.findByEmail(username)
+                : ur.findByHandleIgnoreCase(username);
+
         @SuppressWarnings("ThrowableInstanceNotThrown")
         Userprofile userprofile = optional.orElseThrow(() -> new UsernameNotFoundException(username));
 

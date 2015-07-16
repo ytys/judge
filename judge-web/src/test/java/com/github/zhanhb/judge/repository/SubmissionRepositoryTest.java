@@ -48,22 +48,22 @@ public class SubmissionRepositoryTest {
 
     @Test
     public void testFindAllByContestName() {
-        System.out.println("findAllByContestName");
-        String contestName = "name";
+        log.info("findAllByContestName");
+        String contestName = "test_contest_name";
 
-        Contest contest = Contest.builder()
+        Contest contest = cr.save(Contest.builder()
                 .beginTime(LocalDateTime.now())
                 .finishTime(LocalDateTime.now())
                 .type(ContestType.OJ)
                 .title("title")
                 .name(contestName)
-                .build();
-        cr.save(contest);
+                .build());
 
         Submission.builder().contest(contest);
         Pageable pageable = new PageRequest(0, 20);
         Page<Submission> page = repository.findAllByContestName(contestName, pageable);
         log.debug("{}", page);
+        cr.delete(contest);
     }
 
 }

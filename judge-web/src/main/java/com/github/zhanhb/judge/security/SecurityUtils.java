@@ -1,5 +1,6 @@
 package com.github.zhanhb.judge.security;
 
+import com.github.zhanhb.judge.audit.CustomUserDetails;
 import com.github.zhanhb.judge.model.Userprofile;
 import com.github.zhanhb.judge.repository.UserprofileRepository;
 import com.github.zhanhb.judge.util.Utility;
@@ -33,6 +34,11 @@ public class SecurityUtils {
         }
 
         Object principal = authentication.getPrincipal();
+
+        if (principal instanceof CustomUserDetails) {
+            return ((CustomUserDetails) principal).getUserprofile();
+        }
+
         String username = null;
 
         if (principal instanceof String) {

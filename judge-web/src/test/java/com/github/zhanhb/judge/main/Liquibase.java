@@ -32,10 +32,10 @@ import java.util.regex.Pattern;
 public class Liquibase {
 
     public static void main(String[] args) throws IOException {
-        Path initSchema = Paths.get("src/main/resources/config/liquibase/changelog/20150716154013_changelog.xml");
+        Path initSchema = Paths.get("src/main/resources/config/liquibase/changelog/20150716231647_changelog.xml");
         String[][] replaces = {
             {"author=\"[^\"]+\"", "author=\"system\""},
-            {"<addForeignKeyConstraint(.+?)\\s*/>", "<addForeignKeyConstraint$1 onUpdate=\"CASCADE\"/>"}
+            {"(?<prefix><addForeignKeyConstraint[^>]+?\")(?<space>\\s*)(?<suffix>referencedColumnNames=[^>]+?/>)", "${prefix} onUpdate=\"CASCADE\" ${suffix}"}
         };
         Charset charset = StandardCharsets.ISO_8859_1;
         String str = new String(Files.readAllBytes(initSchema), charset);
@@ -43,7 +43,7 @@ public class Liquibase {
             str = str.replaceAll(replace[0], replace[1]);
         }
         str = new MatcherWrapper(Pattern.compile("id=\"\\d+-(\\d+)\""), str).replaceAll(matcher -> {
-            String t = StringUtils.slice("00000000000000000" + matcher.group(1), -14);
+            String t = StringUtils.slice("0000000000000" + matcher.group(1), -14);
             return "id=\"" + t + "\"";
         });
         Files.write(initSchema, str.getBytes(charset));

@@ -19,6 +19,7 @@ import java.util.Random;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
+import lombok.extern.slf4j.Slf4j;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
@@ -26,6 +27,7 @@ import org.junit.Test;
  *
  * @author zhanhb
  */
+@Slf4j
 public class StringUtilsTest {
 
     private StringBuilder merge(StringBuilder a, StringBuilder b) {
@@ -39,7 +41,7 @@ public class StringUtilsTest {
      */
     @Test
     public void testSlice_String_int() throws ScriptException {
-        System.out.println("slice");
+        log.info("slice");
         Random random = new Random();
         ScriptEngine javascript = new ScriptEngineManager().getEngineByName("javascript");
 
@@ -68,7 +70,7 @@ public class StringUtilsTest {
      */
     @Test
     public void testSlice_3args() throws ScriptException {
-        System.out.println("slice");
+        log.info("slice");
         Random random = new Random();
         ScriptEngine javascript = new ScriptEngineManager().getEngineByName("javascript");
 

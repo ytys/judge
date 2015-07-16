@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 zhanhb.
+ * Copyright 2015 Pivotal Software, Inc..
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,16 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.zhanhb.judge.auditing;
+package com.github.zhanhb.judge;
 
-import com.github.zhanhb.judge.Application;
-import com.github.zhanhb.judge.audit.UserAuditorAware;
-import com.github.zhanhb.judge.model.Userprofile;
-import lombok.extern.slf4j.Slf4j;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -32,22 +28,16 @@ import org.springframework.test.context.web.WebAppConfiguration;
  * @author zhanhb
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@Slf4j
 @SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
-public class UserAuditorAwareTest {
+public class ConfigureTest {
 
-    @Autowired
-    private UserAuditorAware instance;
+    @Value("${liquibase.contexts}")
+    private String context;
 
-    /**
-     * Test of getCurrentAuditor method, of class UserAuditorAware.
-     */
     @Test
-    public void testGetCurrentAuditor() {
-        log.info("getCurrentAuditor");
-        Userprofile result = instance.getCurrentAuditor();
-        assertNull(result);
+    public void test() {
+        assertEquals("test", context);
     }
 
 }

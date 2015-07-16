@@ -15,6 +15,7 @@
  */
 package com.github.zhanhb.judge.security.password;
 
+import java.util.StringTokenizer;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
@@ -29,8 +30,9 @@ public class MutiPasswordSupport extends PasswordEncoderWrapper {
 
     @Override
     public boolean matches(CharSequence rawPassword, String encodedPassword) {
-        for (String split : encodedPassword.split(",")) {
-            if (super.matches(rawPassword, split)) {
+        for (StringTokenizer tokenizer = new StringTokenizer(encodedPassword, ",");
+                tokenizer.hasMoreElements();) {
+            if (super.matches(rawPassword, tokenizer.nextToken().trim())) {
                 return true;
             }
         }

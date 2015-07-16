@@ -44,13 +44,9 @@ import org.junit.Test;
 @Slf4j
 public class PagesTest {
 
-    private static final Set<String> collect;
-
-    static {
-        collect = Collections.unmodifiableSet(
-                Arrays.asList("a,abbr,address,area,article,aside,audio,b,base,bb,bdo,blockquote,body,br,button,canvas,caption,cite,code,col,colgroup,command,datagrid,datalist,dd,del,details,dfn,dialog,div,dl,dt,em,embed,fieldset,figure,footer,form,h1,h2,h3,h4,h5,h6,head,header,hr,html,i,iframe,img,input,ins,kbd,label,legend,li,link,map,mark,menu,meta,meter,nav,noscript,object,ol,optgroup,option,output,p,param,pre,progress,q,rp,rt,ruby,samp,script,section,select,small,source,span,strong,style,sub,sup,table,tbody,td,textarea,tfoot,th,thead,time,title,tr,ul,var,video".split(","))
-                .stream().collect(Collectors.toSet()));
-    }
+    private static final Set<String> collect = Collections.unmodifiableSet(
+            Arrays.asList("a,abbr,address,area,article,aside,audio,b,base,bb,bdo,blockquote,body,br,button,canvas,caption,cite,code,col,colgroup,command,datagrid,datalist,dd,del,details,dfn,dialog,div,dl,dt,em,embed,fieldset,figure,footer,form,h1,h2,h3,h4,h5,h6,head,header,hr,html,i,iframe,img,input,ins,kbd,label,legend,li,link,map,mark,menu,meta,meter,nav,noscript,object,ol,optgroup,option,output,p,param,pre,progress,q,rp,rt,ruby,samp,script,section,select,small,source,span,strong,style,sub,sup,table,tbody,td,textarea,tfoot,th,thead,time,title,tr,ul,var,video".split(","))
+            .stream().collect(Collectors.toSet()));
 
     private Path current;
     private final Set<String> namespaces = new HashSet<>(10);
@@ -65,7 +61,7 @@ public class PagesTest {
                 .filter(path -> pattern.test(path.toString()))
                 .forEach(this::check);
 
-        System.out.println(namespaces);
+        log.debug("{}", namespaces);
     }
 
     private void check(Path path) {

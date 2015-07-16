@@ -19,6 +19,7 @@ import com.github.zhanhb.judge.model.Contest;
 import com.github.zhanhb.judge.model.enums.ContestType;
 import com.github.zhanhb.judge.repository.ContestRepository;
 import com.github.zhanhb.judge.testenv.AbstractMockMvcTests;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
  *
  * @author zhanhb
  */
+@Slf4j
 public class ContestControllerTest extends AbstractMockMvcTests {
 
     private static final String contestName = "testcontest1";
@@ -58,7 +60,7 @@ public class ContestControllerTest extends AbstractMockMvcTests {
      */
     @Test
     public void testListAsJson() throws Exception {
-        System.out.println("listAsJson");
+        log.info("listAsJson");
         mockMvc.perform(get("/contest").accept(APPLICATION_JSON))
                 .andExpect(content().contentType(APPLICATION_JSON));
     }

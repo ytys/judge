@@ -16,6 +16,8 @@
 package com.github.zhanhb.judge.util;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import org.apache.commons.compress.archivers.ArchiveException;
 import org.junit.Test;
@@ -26,11 +28,12 @@ import org.junit.Test;
  */
 public class ZipTest {
 
-    private Zip zip = new Zip();
-
     @Test
     public void test() throws IOException, ArchiveException {
-        zip.zip(Paths.get("target/test.zip"), Paths.get("src"));
+        Zip zip = new Zip();
+        Path zipfile = Paths.get("target/test.zip");
+        zip.zip(zipfile, Paths.get("src"));
+        Files.delete(zipfile);
     }
 
 }
