@@ -42,6 +42,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
     WithSecurityContextTestExecutionListener.class
 })
 @WebAppConfiguration
-public abstract class ListenerTests {
+public abstract class AbstractListenerTests {
 
 }

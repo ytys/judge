@@ -91,13 +91,10 @@ cache:
     timeToLiveSeconds: 3600
     ehcache.maxBytesLocalHeap: 256M
 
-# encoding will be filtered by this filter
-# see com.github.zhanhb.judge.config.EncodingFilterInitializer
-# see https://github.com/zhanhb/character-encoding-filter/
-server.tomcat.uri-encoding: ISO-8859-1
+server.tomcat.uri-encoding: UTF-8
 spring.http:
 # enable http encoding support
-    encoding.enabled: false
+    encoding.enabled: true
     converters.preferred-json-mapper: gson
 
 multipart:

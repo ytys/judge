@@ -36,7 +36,7 @@
         <commons-dbcp2.version>2.1</commons-dbcp2.version>
         <commons-pool2.version>2.4.1</commons-pool2.version>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
-        <hikaricp.version>2.3.8</hikaricp.version>
+        <hikaricp.version>2.3.9</hikaricp.version>
         <httpclient.version>4.5</httpclient.version>
         <jackson.version>2.5.4</jackson.version>
         <java.version>1.8</java.version>
@@ -246,10 +246,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-rest</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-hateoas</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -607,6 +603,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
+                <version>1.4.0</version>
             </plugin>
             <plugin>
                 <groupId>org.liquibase</groupId>

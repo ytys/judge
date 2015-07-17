@@ -15,10 +15,8 @@
  */
 package com.github.zhanhb.judge.config;
 
-import com.github.zhanhb.judge.repository.BaseRepository;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 /**
  *
@@ -26,7 +24,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
  */
 @Configuration
 @EnableJpaAuditing
-@EnableJpaRepositories(basePackageClasses = BaseRepository.class)
 public class JpaConfig {
 
 }

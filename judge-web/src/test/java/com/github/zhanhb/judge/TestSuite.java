@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 zhanhb.
+ * Copyright 2015 Pivotal Software, Inc..
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,24 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.zhanhb.judge.util;
+package com.github.zhanhb.judge;
 
-import java.lang.annotation.Documented;
-import static java.lang.annotation.ElementType.CONSTRUCTOR;
-import static java.lang.annotation.ElementType.FIELD;
-import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.ElementType.TYPE;
-import java.lang.annotation.Retention;
-import static java.lang.annotation.RetentionPolicy.SOURCE;
-import java.lang.annotation.Target;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
 /**
  *
  * @author zhanhb
  */
-@Retention(SOURCE)
-@Target({FIELD, METHOD, CONSTRUCTOR, TYPE})
-@Documented
-public @interface RequireServlet30 {
+@RunWith(Suite.class)
+@Suite.SuiteClasses({
+    ConfigureTest.class,
+    LocaleTest.class,
+    JSPXCloseTagTest.class,
+    PagesTest.class,
+    LocaleTest.class
+})
+public class TestSuite {
 
 }

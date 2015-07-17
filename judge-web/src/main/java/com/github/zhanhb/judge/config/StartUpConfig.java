@@ -17,6 +17,7 @@ package com.github.zhanhb.judge.config;
 
 import javax.servlet.ServletContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 
@@ -24,6 +25,10 @@ import org.springframework.context.annotation.Configuration;
  *
  * @author zhanhb
  */
+@ConditionalOnBean({
+    ServletContext.class,
+    ApplicationContext.class
+})
 @Configuration
 public class StartUpConfig {
 

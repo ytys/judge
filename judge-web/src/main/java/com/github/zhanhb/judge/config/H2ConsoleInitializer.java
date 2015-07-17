@@ -15,7 +15,6 @@
  */
 package com.github.zhanhb.judge.config;
 
-import com.github.zhanhb.judge.util.RequireServlet30;
 import com.github.zhanhb.judge.util.Standalone;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -27,7 +26,6 @@ import org.springframework.web.WebApplicationInitializer;
  *
  * @author zhanhb
  */
-@RequireServlet30
 @Slf4j
 @Standalone
 public class H2ConsoleInitializer implements WebApplicationInitializer {

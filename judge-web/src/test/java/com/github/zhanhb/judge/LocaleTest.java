@@ -15,52 +15,62 @@
  */
 package com.github.zhanhb.judge;
 
-import org.junit.Before;
+import lombok.extern.slf4j.Slf4j;
+import static org.hamcrest.Matchers.containsString;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.TestRestTemplate;
+import org.springframework.boot.test.WebIntegrationTest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.test.web.servlet.MockMvc;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.cookie;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
-import org.springframework.web.context.WebApplicationContext;
 
 /**
  *
  * @author zhanhb
  */
+@DirtiesContext
 @RunWith(SpringJUnit4ClassRunner.class)
+@Slf4j
 @SpringApplicationConfiguration(classes = Application.class)
-@WebAppConfiguration
+@WebIntegrationTest(value = "server.context-path=" + LocaleTest.CONTEXT_PATH, randomPort = true)
 public class LocaleTest {
 
-    @Autowired
-    private WebApplicationContext wac;
-    private MockMvc mockMvc;
+    // TODO
+    static final String CONTEXT_PATH = "/znoj";
 
-    @Before
-    public void setUp() {
-        mockMvc = webAppContextSetup(wac)
-                .alwaysExpect(status().isOk())
-                // TODO
-                .alwaysExpect(cookie().path("locale", "/"))
-                .build();
-    }
+    @Value("${local.server.port}")
+    private int port;
 
     @Test
     public void testChangeLocale() throws Exception {
-        mockMvc.perform(get("/?lang=en")).andExpect(cookie().value("locale", "en"));
-        mockMvc.perform(get("/?lang=zh")).andExpect(cookie().value("locale", "zh"));
+        String url = String.format("http://localhost:%d%s%s", port, CONTEXT_PATH, "/?lang=en");
+        ResponseEntity<String> entity = new TestRestTemplate().getForEntity(url, String.class);
+        String cookie = entity.getHeaders().getFirst("set-cookie");
+        log.debug(entity.getBody());
+        assertEquals(url, HttpStatus.OK, entity.getStatusCode());
+        assertThat("cookie set error", cookie, containsString("locale=en"));
+
+        url = String.format("http://localhost:%d%s%s", port, CONTEXT_PATH, "/?lang=zh");
+        entity = new TestRestTemplate().getForEntity(url, String.class);
+        cookie = entity.getHeaders().getFirst("set-cookie");
+        assertEquals(url, HttpStatus.OK, entity.getStatusCode());
+        assertThat("cookie set error", cookie, containsString("locale=zh"));
     }
 
     @Ignore
     @Test
     public void testChangeLocaleDash() throws Exception {
-        mockMvc.perform(get("/?lang=en-US")).andExpect(cookie().value("locale", "en_US"));
+        String url = String.format("http://localhost:%d%s%s", port, CONTEXT_PATH, "/?lang=en_US");
+        ResponseEntity<String> entity = new TestRestTemplate().getForEntity(url, String.class);
+        String cookie = entity.getHeaders().getFirst("set-cookie");
+        assertEquals(url, HttpStatus.OK, entity.getStatusCode());
+        assertThat("cookie set error", cookie, containsString("locale=en_US"));
     }
 }

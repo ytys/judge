@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-(function (window, $, undefined) {
+(function (window, undefined) {
+    var $ = window.jQuery;
     $(function () {
         var offset = 220;
         var duration = 500;
@@ -57,9 +58,17 @@
     $.extend($.fn.bootstrapTable.defaults, {
         undefinedText: "N/A",
         responseHandler: function (res) {
+            var rows = res.content, k;
+            if (!rows) {
+                rows = res._embedded;
+                for (k in rows) {
+                    rows = rows[k];
+                    break;
+                }
+            }
             return $.extend(res, {
-                rows: res.content,
-                total: res.page && +res.page.totalElements || res.totalElements || 0
+                rows: rows,
+                total: res.page && +res.page.totalElements || res.totalElements
             });
         }, queryParams: function (params) {
             return {
@@ -80,4 +89,4 @@
         });
         return this;
     });
-})(this, jQuery);
+})(this);
