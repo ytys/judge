@@ -20,6 +20,7 @@ import com.github.zhanhb.judge.model.Userprofile;
 import com.github.zhanhb.judge.repository.ProblemRepository;
 import com.github.zhanhb.judge.repository.UserprofileRepository;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -69,7 +70,9 @@ public class TestController {
     public void upload(@RequestParam("file") MultipartFile file, Model model,
             HttpServletResponse response) throws IOException {
         response.setContentType(file.getContentType());
-        IOUtils.copy(file.getInputStream(), response.getOutputStream());
+        try (InputStream inputStream = file.getInputStream()) {
+            IOUtils.copy(inputStream, response.getOutputStream());
+        }
     }
 
     @RequestMapping(value = "tt/{id}")
@@ -81,5 +84,4 @@ public class TestController {
             out.println(id);
         }
     }
-
 }

@@ -57,9 +57,10 @@
         <snakeyaml.version>1.15</snakeyaml.version>
         <spring-data-releasetrain.version>Fowler-RELEASE</spring-data-releasetrain.version>
         <spring-hateoas.version>0.17.0.RELEASE</spring-hateoas.version>
+        <spring-integration.version>4.1.6.RELEASE</spring-integration.version>
         <spring-plugin.version>1.2.0.RELEASE</spring-plugin.version>
         <spring-security.version>4.0.1.RELEASE</spring-security.version>
-        <tomcat.version>7.0.63</tomcat.version>
+        <tomcat.version>8.0.24</tomcat.version>
         <usertype.version>4.0.0.GA</usertype.version>
     </properties>
     <dependencyManagement>
@@ -156,10 +157,6 @@
                     <groupId>javax.servlet</groupId>
                 </exclusion>
             </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.liquibase</groupId>
-            <artifactId>liquibase-core</artifactId>
         </dependency>
         <dependency>
             <groupId>io.dropwizard.metrics</groupId>
@@ -354,6 +351,11 @@
             <scope>runtime</scope>
         </dependency>
         <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
             <groupId>org.mariadb.jdbc</groupId>
             <artifactId>mariadb-java-client</artifactId>
             <version>1.1.9</version>
@@ -522,7 +524,6 @@
                     <compilerArguments>
                         <endorseddirs>${endorsed.dir}</endorseddirs>
                     </compilerArguments>
-                    <debug>false</debug>
                     <showDeprecation>true</showDeprecation>
                 </configuration>
             </plugin>
@@ -602,6 +603,10 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>2.6</version>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
             </plugin>
             <plugin>
                 <groupId>org.liquibase</groupId>

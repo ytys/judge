@@ -9,7 +9,6 @@
 <configuration scan="true">
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <charset>utf-8</charset>
             <pattern>[%p] %d{yyyy-M-d H:mm:ss} %c %m%n</pattern>
         </encoder>
     </appender>

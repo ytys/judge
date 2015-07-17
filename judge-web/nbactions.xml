@@ -62,44 +62,6 @@
         </properties>
     </action>
     <action>
-        <actionName>rebuild</actionName>
-        <packagings>
-            <packaging>*</packaging>
-        </packagings>
-        <goals>
-            <goal>clean</goal>
-            <goal>package</goal>
-        </goals>
-        <properties>
-            <maven.tesk.skip>true</maven.tesk.skip>
-        </properties>
-    </action>
-    <action>
-        <actionName>build-with-dependencies</actionName>
-        <reactor>also-make</reactor>
-        <packagings>
-            <packaging>*</packaging>
-        </packagings>
-        <goals>
-            <goal>package</goal>
-        </goals>
-        <properties>
-            <maven.test.skip>true</maven.test.skip>
-        </properties>
-    </action>
-    <action>
-        <actionName>build</actionName>
-        <packagings>
-            <packaging>*</packaging>
-        </packagings>
-        <goals>
-            <goal>package</goal>
-        </goals>
-        <properties>
-            <maven.test.skip>true</maven.test.skip>
-        </properties>
-    </action>
-    <action>
         <actionName>CUSTOM-generate-sources</actionName>
         <displayName>generate-sources</displayName>
         <goals>
@@ -107,43 +69,31 @@
         </goals>
     </action>
     <action>
-        <actionName>test</actionName>
+        <actionName>run</actionName>
         <packagings>
             <packaging>*</packaging>
         </packagings>
         <goals>
-            <goal>test</goal>
+            <goal>process-classes</goal>
+            <goal>spring-boot:run</goal>
         </goals>
         <properties>
-            <maven.test.skip>false</maven.test.skip>
+            <server.port>81</server.port>
         </properties>
     </action>
     <action>
-        <actionName>test.single</actionName>
+        <actionName>debug</actionName>
         <packagings>
             <packaging>*</packaging>
         </packagings>
         <goals>
-            <goal>test-compile</goal>
-            <goal>surefire:test</goal>
+            <goal>process-classes</goal>
+            <goal>spring-boot:run</goal>
         </goals>
         <properties>
-            <maven.test.skip>false</maven.test.skip>
-            <test>${packageClassName}</test>
-        </properties>
-    </action>
-    <action>
-        <actionName>run.single.deploy</actionName>
-        <packagings>
-            <packaging>war</packaging>
-        </packagings>
-        <goals>
-            <goal>package</goal>
-        </goals>
-        <properties>
-            <maven.test.skip>true</maven.test.skip>
-            <netbeans.deploy>true</netbeans.deploy>
-            <netbeans.deploy.clientUrlPart>${webpagePath}</netbeans.deploy.clientUrlPart>
+            <debug></debug>
+            <server.port>81</server.port>
+            <jpda.listen>maven</jpda.listen>
         </properties>
     </action>
 </actions>

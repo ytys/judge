@@ -17,7 +17,6 @@ package com.github.zhanhb.judge;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.util.Scanner;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -44,13 +43,15 @@ public class Application extends SpringBootServletInitializer {
                 InetAddress.getLocalHost().getHostAddress(),
                 port);
 
-        Scanner scanner = new Scanner(System.in);
+        java.util.Scanner scanner = new java.util.Scanner(System.in);
         while (scanner.hasNext()) {
             String name = scanner.next();
             switch (name) {
                 case "exit":
                 case "quit":
                     SpringApplication.exit(ctx);
+                    return;
+                case "break":
                     return;
                 case "reload":
                     SpringApplication.exit(ctx);
