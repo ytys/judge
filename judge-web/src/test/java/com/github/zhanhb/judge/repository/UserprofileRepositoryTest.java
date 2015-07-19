@@ -16,7 +16,7 @@
 package com.github.zhanhb.judge.repository;
 
 import com.github.zhanhb.judge.Application;
-import com.github.zhanhb.judge.model.Userprofile;
+import com.github.zhanhb.judge.domain.Userprofile;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.util.Date;

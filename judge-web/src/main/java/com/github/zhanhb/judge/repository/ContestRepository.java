@@ -15,8 +15,8 @@
  */
 package com.github.zhanhb.judge.repository;
 
-import com.github.zhanhb.judge.model.Contest;
-import com.github.zhanhb.judge.model.enums.ContestType;
+import com.github.zhanhb.judge.domain.Contest;
+import com.github.zhanhb.judge.domain.ContestType;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

@@ -15,8 +15,8 @@
  */
 package com.github.zhanhb.judge.web;
 
-import com.github.zhanhb.judge.model.Contest;
-import com.github.zhanhb.judge.model.enums.ContestType;
+import com.github.zhanhb.judge.domain.Contest;
+import com.github.zhanhb.judge.domain.ContestType;
 import com.github.zhanhb.judge.repository.ContestRepository;
 import com.github.zhanhb.judge.testenv.AbstractMockMvcTests;
 import lombok.extern.slf4j.Slf4j;

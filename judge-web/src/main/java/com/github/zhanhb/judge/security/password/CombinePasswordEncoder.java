@@ -29,8 +29,8 @@ public class CombinePasswordEncoder extends PasswordEncoderWrapper {
 
     public CombinePasswordEncoder(PasswordEncoder... passwordEncoders) {
         super(passwordEncoders[0]);
-        // null check
         PasswordEncoder[] clone = passwordEncoders.clone();
+        // null check
         for (PasswordEncoder encoder : clone) {
             Objects.requireNonNull(encoder);
         }

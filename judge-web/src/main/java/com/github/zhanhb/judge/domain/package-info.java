@@ -13,18 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.zhanhb.judge.repository;
-
-import com.github.zhanhb.judge.domain.Submission;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-
 /**
- *
- * @author zhanhb
+ * JPA domain objects.
  */
-public interface SubmissionRepository extends BaseRepository<Submission, Long> {
-
-    Page<Submission> findAllByContestName(String contestName, Pageable pageable);
-
-}
+package com.github.zhanhb.judge.domain;

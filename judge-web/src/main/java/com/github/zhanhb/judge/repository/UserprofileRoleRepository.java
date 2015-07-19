@@ -15,9 +15,9 @@
  */
 package com.github.zhanhb.judge.repository;
 
-import com.github.zhanhb.judge.model.Role;
-import com.github.zhanhb.judge.model.Userprofile;
-import com.github.zhanhb.judge.model.UserprofileRole;
+import com.github.zhanhb.judge.domain.Role;
+import com.github.zhanhb.judge.domain.Userprofile;
+import com.github.zhanhb.judge.domain.UserprofileRole;
 import java.util.Collection;
 
 /**

@@ -1,31 +1,11 @@
 # http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 
-#cache:
-#    timeToLiveSeconds: 3600
-#    ehcache.maxBytesLocalHeap: 256M
-
-# Disable Jolokia - An http/json bridge for remote JMX access
-endpoints.jolokia.enabled: true
-
-#http.cache.timeToLiveInDays: 31
-
 # @see org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfiguration
 # @see org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties
 liquibase:
     enabled: true
     contexts: prod
     changeLog: classpath:config/liquibase/master.xml
-
-# Disable the spring security default configuration from spring-boot-actuator
-management.security.enabled: true
-
-metrics:
-    jmx.enabled: false
-    graphite:
-        enabled: false
-        host: localhost
-        port: 2003
-        prefix: judge
 
 multipart:
     enabled: true
@@ -46,6 +26,7 @@ server:
 spring:
     application.admin.enabled: true
 
+    data.jpa.repositories.enabled: true
     data.rest:
         basePath: /rest
         pageParamName: page
@@ -72,8 +53,6 @@ spring:
         # Hikari
         connectionTestQuery: select 1
 
-    hateoas.apply-to-primary-object-mapper: true
-
     http:
         # enable http encoding support
         encoding.enabled: true
@@ -95,10 +74,8 @@ spring:
         hibernate.ddl-auto: none
         #hibernate.naming-strategy: org.hibernate.cfg.EJB3NamingStrategy
         properties:
-
             hibernate:
                 cache:
-#                    provider_class: org.hibernate.cache.NoCacheProvider
                     region.factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
                     use_query_cache: false
                     use_second_level_cache: true
@@ -116,11 +93,3 @@ spring:
         prefix: /WEB-INF/templates/
         suffix: .xhtml
         cache: false
-
-swagger:
-    title: ZJNU Judge Online
-    description: judge applications and beyond!
-    termsOfServiceUrl: http://github.com/zhanhb/
-    contact:
-    license: Apache 2.0
-    licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.html

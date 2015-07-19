@@ -15,7 +15,7 @@
  */
 package com.github.zhanhb.judge.audit;
 
-import com.github.zhanhb.judge.model.Userprofile;
+import com.github.zhanhb.judge.domain.Userprofile;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Objects;

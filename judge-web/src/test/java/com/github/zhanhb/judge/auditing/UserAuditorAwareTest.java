@@ -17,7 +17,7 @@ package com.github.zhanhb.judge.auditing;
 
 import com.github.zhanhb.judge.Application;
 import com.github.zhanhb.judge.audit.UserAuditorAware;
-import com.github.zhanhb.judge.model.Userprofile;
+import com.github.zhanhb.judge.domain.Userprofile;
 import lombok.extern.slf4j.Slf4j;
 import static org.junit.Assert.assertNull;
 import org.junit.Test;

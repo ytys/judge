@@ -15,7 +15,7 @@
  */
 package com.github.zhanhb.judge.repository;
 
-import com.github.zhanhb.judge.model.AccessLog;
+import com.github.zhanhb.judge.domain.AccessLog;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

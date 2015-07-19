@@ -16,11 +16,11 @@
 package com.github.zhanhb.judge.dsl;
 
 import com.github.zhanhb.judge.Application;
+import com.github.zhanhb.judge.domain.Contest;
+import com.github.zhanhb.judge.domain.ContestType;
 import static com.github.zhanhb.judge.dsl.ContestDsl.ended;
 import static com.github.zhanhb.judge.dsl.ContestDsl.running;
 import static com.github.zhanhb.judge.dsl.ContestDsl.scheduling;
-import com.github.zhanhb.judge.model.Contest;
-import com.github.zhanhb.judge.model.enums.ContestType;
 import com.github.zhanhb.judge.repository.ContestRepository;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;

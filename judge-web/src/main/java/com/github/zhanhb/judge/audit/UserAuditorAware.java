@@ -15,7 +15,7 @@
  */
 package com.github.zhanhb.judge.audit;
 
-import com.github.zhanhb.judge.model.Userprofile;
+import com.github.zhanhb.judge.domain.Userprofile;
 import com.github.zhanhb.judge.security.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.AuditorAware;

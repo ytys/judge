@@ -15,7 +15,7 @@
  */
 package com.github.zhanhb.judge.repository;
 
-import com.github.zhanhb.judge.model.Problem;
+import com.github.zhanhb.judge.domain.Problem;
 
 /**
  *

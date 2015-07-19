@@ -1,6 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <actions>
     <action>
+        <actionName>clean</actionName>
+        <packagings>
+            <packaging>*</packaging>
+        </packagings>
+        <goals>
+            <goal>clean</goal>
+            <goal>generate-sources</goal>
+        </goals>
+    </action>
+    <action>
+        <actionName>run</actionName>
+        <packagings>
+            <packaging>*</packaging>
+        </packagings>
+        <goals>
+            <goal>process-classes</goal>
+            <goal>spring-boot:run</goal>
+        </goals>
+        <properties>
+            <server.port>0</server.port>
+            <server.context-path>/znoj</server.context-path>
+        </properties>
+    </action>
+    <action>
+        <actionName>debug</actionName>
+        <packagings>
+            <packaging>*</packaging>
+        </packagings>
+        <goals>
+            <goal>process-classes</goal>
+            <goal>spring-boot:run</goal>
+        </goals>
+        <properties>
+            <debug></debug>
+            <server.port>0</server.port>
+            <server.context-path>/znoj</server.context-path>
+            <jpda.listen>maven</jpda.listen>
+        </properties>
+    </action>
+    <action>
         <actionName>CUSTOM-clean test</actionName>
         <displayName>clean test</displayName>
         <goals>
@@ -67,36 +107,6 @@
         <goals>
             <goal>generate-sources</goal>
         </goals>
-    </action>
-    <action>
-        <actionName>run</actionName>
-        <packagings>
-            <packaging>*</packaging>
-        </packagings>
-        <goals>
-            <goal>process-classes</goal>
-            <goal>spring-boot:run</goal>
-        </goals>
-        <properties>
-            <server.port>0</server.port>
-            <server.context-path>/znoj</server.context-path>
-        </properties>
-    </action>
-    <action>
-        <actionName>debug</actionName>
-        <packagings>
-            <packaging>*</packaging>
-        </packagings>
-        <goals>
-            <goal>process-classes</goal>
-            <goal>spring-boot:run</goal>
-        </goals>
-        <properties>
-            <debug></debug>
-            <server.port>0</server.port>
-            <server.context-path>/znoj</server.context-path>
-            <jpda.listen>maven</jpda.listen>
-        </properties>
     </action>
     <action>
         <actionName>CUSTOM-test-compile surefire:test</actionName>

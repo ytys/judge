@@ -16,7 +16,7 @@
 package com.github.zhanhb.judge.web;
 
 import com.github.zhanhb.judge.exception.UserprofileNotExistException;
-import com.github.zhanhb.judge.model.Userprofile;
+import com.github.zhanhb.judge.domain.Userprofile;
 import com.github.zhanhb.judge.repository.UserprofileRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

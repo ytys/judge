@@ -15,7 +15,7 @@
  */
 package com.github.zhanhb.judge.web;
 
-import com.github.zhanhb.judge.model.Problem;
+import com.github.zhanhb.judge.domain.Problem;
 import com.github.zhanhb.judge.repository.ProblemRepository;
 import com.github.zhanhb.judge.testenv.AbstractMockMvcTests;
 import org.junit.Before;

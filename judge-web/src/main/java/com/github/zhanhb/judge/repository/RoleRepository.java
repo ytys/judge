@@ -15,7 +15,7 @@
  */
 package com.github.zhanhb.judge.repository;
 
-import com.github.zhanhb.judge.model.Role;
+import com.github.zhanhb.judge.domain.Role;
 import java.util.Optional;
 
 /**

@@ -16,7 +16,7 @@
 package com.github.zhanhb.judge.repository;
 
 import com.github.zhanhb.judge.Application;
-import com.github.zhanhb.judge.model.AccessLog;
+import com.github.zhanhb.judge.domain.AccessLog;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;

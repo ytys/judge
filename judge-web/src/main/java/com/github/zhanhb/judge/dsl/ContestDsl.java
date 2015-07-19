@@ -15,7 +15,7 @@
  */
 package com.github.zhanhb.judge.dsl;
 
-import static com.github.zhanhb.judge.model.QContest.contest;
+import static com.github.zhanhb.judge.domain.QContest.contest;
 import com.mysema.query.types.Predicate;
 import java.time.LocalDateTime;
 

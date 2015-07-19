@@ -22,11 +22,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  *
  * @author zhanhb
  */
-public abstract class PasswordEncoderWrapper implements PasswordEncoder {
+abstract class PasswordEncoderWrapper implements PasswordEncoder {
 
     private final PasswordEncoder encoder;
 
-    public PasswordEncoderWrapper(PasswordEncoder parent) {
+    PasswordEncoderWrapper(PasswordEncoder parent) {
         this.encoder = Objects.requireNonNull(parent);
     }
 

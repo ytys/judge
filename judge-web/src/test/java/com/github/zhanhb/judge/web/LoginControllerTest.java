@@ -1,6 +1,6 @@
 package com.github.zhanhb.judge.web;
 
-import com.github.zhanhb.judge.model.Userprofile;
+import com.github.zhanhb.judge.domain.Userprofile;
 import com.github.zhanhb.judge.repository.UserprofileRepository;
 import com.github.zhanhb.judge.testenv.AbstractMockMvcTests;
 import javax.annotation.Resource;

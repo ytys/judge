@@ -16,9 +16,9 @@
 package com.github.zhanhb.judge.repository;
 
 import com.github.zhanhb.judge.Application;
-import com.github.zhanhb.judge.model.Contest;
-import com.github.zhanhb.judge.model.Submission;
-import com.github.zhanhb.judge.model.enums.ContestType;
+import com.github.zhanhb.judge.domain.Contest;
+import com.github.zhanhb.judge.domain.Submission;
+import com.github.zhanhb.judge.domain.ContestType;
 import java.time.LocalDateTime;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;

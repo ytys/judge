@@ -2,7 +2,6 @@ package com.github.zhanhb.judge.web.rest;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.LoggerContext;
-import com.codahale.metrics.annotation.Timed;
 import com.github.zhanhb.judge.web.rest.dto.LoggerDTO;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,7 +24,6 @@ public class LogsResource {
     @RequestMapping(value = "/logs",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    @Timed
     public List<LoggerDTO> getList() {
         LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
         return context
@@ -38,9 +36,9 @@ public class LogsResource {
     @RequestMapping(value = "/logs",
             method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @Timed
     public void changeLevel(@RequestBody LoggerDTO jsonLogger) {
         LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
         context.getLogger(jsonLogger.getName()).setLevel(Level.valueOf(jsonLogger.getLevel()));
     }
+
 }

@@ -1,8 +1,7 @@
 package com.github.zhanhb.judge.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
+import com.github.zhanhb.judge.domain.Userprofile;
 import com.github.zhanhb.judge.exception.UserprofileNotExistException;
-import com.github.zhanhb.judge.model.Userprofile;
 import com.github.zhanhb.judge.repository.UserprofileRepository;
 import com.github.zhanhb.judge.security.AuthoritiesConstants;
 import javax.annotation.security.RolesAllowed;
@@ -33,7 +32,6 @@ public class UserprofileResource {
     @RequestMapping(value = "/rest/users/{login}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    @Timed
     @RolesAllowed(AuthoritiesConstants.ADMIN)
     @SuppressWarnings("ThrowableInstanceNotThrown")
     ResponseEntity<Userprofile> getUserprofile(@PathVariable("login") String login) {

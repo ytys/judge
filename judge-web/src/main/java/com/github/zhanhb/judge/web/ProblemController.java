@@ -16,7 +16,7 @@
 package com.github.zhanhb.judge.web;
 
 import com.github.zhanhb.judge.exception.ProblemNotExistException;
-import com.github.zhanhb.judge.model.Problem;
+import com.github.zhanhb.judge.domain.Problem;
 import com.github.zhanhb.judge.repository.ProblemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;

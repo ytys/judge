@@ -15,7 +15,7 @@
  */
 package com.github.zhanhb.judge.web;
 
-import com.github.zhanhb.judge.model.Role;
+import com.github.zhanhb.judge.domain.Role;
 import com.github.zhanhb.judge.repository.RoleRepository;
 import com.github.zhanhb.judge.security.AuthoritiesConstants;
 import org.springframework.beans.factory.annotation.Autowired;

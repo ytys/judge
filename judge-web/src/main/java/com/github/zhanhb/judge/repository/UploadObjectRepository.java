@@ -15,7 +15,7 @@
  */
 package com.github.zhanhb.judge.repository;
 
-import com.github.zhanhb.judge.model.UploadObject;
+import com.github.zhanhb.judge.domain.UploadObject;
 
 /**
  *

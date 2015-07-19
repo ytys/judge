@@ -16,7 +16,7 @@
 package com.github.zhanhb.judge.service;
 
 import com.github.zhanhb.judge.audit.CustomUserDetails;
-import com.github.zhanhb.judge.model.Userprofile;
+import com.github.zhanhb.judge.domain.Userprofile;
 import com.github.zhanhb.judge.repository.UserprofileRepository;
 import com.github.zhanhb.judge.repository.UserprofileRoleRepository;
 import java.util.Optional;
