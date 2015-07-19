@@ -17,7 +17,6 @@ package com.github.zhanhb.judge.web;
 
 import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -30,8 +29,8 @@ import org.springframework.web.servlet.ModelAndView;
 public class LoginController extends BaseController {
 
     @RequestMapping(value = "login", method = RequestMethod.GET, produces = TEXT_HTML_VALUE)
-    public ModelAndView login(ModelMap model) {
-        return new ModelAndView("login", model);
+    public ModelAndView login() {
+        return new ModelAndView("login");
     }
 
     @RequestMapping(value = "password", method = RequestMethod.GET, produces = TEXT_HTML_VALUE)

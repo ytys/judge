@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 zhanhb.
+ * Copyright 2015 Pivotal Software, Inc..
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,20 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/**
- *
- * A place holder to search this package.
- */
-package com.github.zhanhb.judge.model;
+package com.github.zhanhb.judge.repository;
+
+import com.github.zhanhb.judge.model.Role;
+import java.util.Optional;
 
 /**
  *
  * @author zhanhb
  */
-public final class ModelInfo {
+public interface RoleRepository extends BaseRepository<Role, Long> {
 
-    private ModelInfo() {
-        throw new AssertionError("No " + getClass().getName() + " instances for you!");
-    }
+    Optional<Role> findByName(String name);
 
 }

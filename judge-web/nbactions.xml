@@ -78,7 +78,8 @@
             <goal>spring-boot:run</goal>
         </goals>
         <properties>
-            <server.port>81</server.port>
+            <server.port>0</server.port>
+            <server.context-path>/znoj</server.context-path>
         </properties>
     </action>
     <action>
@@ -92,7 +93,8 @@
         </goals>
         <properties>
             <debug></debug>
-            <server.port>81</server.port>
+            <server.port>0</server.port>
+            <server.context-path>/znoj</server.context-path>
             <jpda.listen>maven</jpda.listen>
         </properties>
     </action>
@@ -103,5 +105,20 @@
             <goal>test-compile</goal>
             <goal>surefire:test</goal>
         </goals>
+    </action>
+    <action>
+        <actionName>CUSTOM-deploy</actionName>
+        <displayName>deploy</displayName>
+        <packagings>
+            <packaging>war</packaging>
+            <packaging>ear</packaging>
+            <packaging>ejb</packaging>
+        </packagings>
+        <goals>
+            <goal>package</goal>
+        </goals>
+        <properties>
+            <netbeans.deploy>true</netbeans.deploy>
+        </properties>
     </action>
 </actions>

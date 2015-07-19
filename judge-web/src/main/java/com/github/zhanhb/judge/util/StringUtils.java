@@ -21,33 +21,50 @@ package com.github.zhanhb.judge.util;
  */
 public class StringUtils {
 
-    public static String trimToNull(String str) {
-        String trim = trim(str);
-        if (trim == null || trim.length() == 0) {
-            return null;
-        }
-        return trim;
-    }
-
-    public static String trimToEmpty(String str) {
-        String trim = trim(str);
-        return trim == null ? "" : trim;
-    }
-
-    public static String trim(String str) {
+    public static String trimLeft(String str) {
         if (str != null) {
             int len = str.length();
             int st = 0;
 
-            while ((st < len) && Character.isWhitespace(str.charAt(st))) {
+            while ((st < len) && (str.charAt(st) <= ' ')) {
                 st++;
             }
-            while ((st < len) && Character.isWhitespace(str.charAt(len - 1))) {
-                len--;
+            if (st > 0) {
+                return str.substring(st, len);
             }
-            return (st > 0 || len < str.length()) ? str.substring(st, len) : str;
         }
         return str;
+    }
+
+    public static String trimRight(String str) {
+        if (str != null) {
+            int len = str.length();
+
+            while (0 < len && str.charAt(len - 1) <= ' ') {
+                len--;
+            }
+            if (len < str.length()) {
+                return str.substring(0, len);
+            }
+        }
+        return str;
+    }
+
+    public static String trimToNull(String str) {
+        final String ts = trim(str);
+        return isEmpty(ts) ? null : ts;
+    }
+
+    public static boolean isEmpty(final CharSequence cs) {
+        return cs == null || cs.length() == 0;
+    }
+
+    public static String trimToEmpty(String str) {
+        return str == null ? "" : str.trim();
+    }
+
+    public static String trim(String str) {
+        return str != null ? str.trim() : null;
     }
 
     public static String slice(String string, int beginIndex) throws NullPointerException {
@@ -68,6 +85,9 @@ public class StringUtils {
         return (index >= 0)
                 ? Math.min(len, index)
                 : Math.max(0, len + index);
+    }
+
+    private StringUtils() {
     }
 
 }

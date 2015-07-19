@@ -6,7 +6,6 @@
 
 <jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:html="urn:jsptagdir:/WEB-INF/tags/html"
-          xmlns:util="urn:jsptagdir:/WEB-INF/tags/util"
           version="2.0">
 
     <jsp:directive.tag description="put the tag description here" />
@@ -21,10 +20,8 @@
     <!-- any content can be specified here e.g.: -->
     <html xmlns="http://www.w3.org/1999/xhtml">
         <head>
-            <util:meta/>
             <title><jsp:invoke fragment="title"/></title>
             <jsp:invoke fragment="headBefore"/>
-            <util:loadScript/>
             <jsp:invoke fragment="head"/>
         </head>
         <body>

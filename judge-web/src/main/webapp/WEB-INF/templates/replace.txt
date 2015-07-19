@@ -1,0 +1,2 @@
+(?<prefix>(?<name>href|src)=")[^"]*+(?<suffix>" th:\k<name>="@\{(?<href>/static/[^\}]+?)\}")
+${prefix}../..${href}${suffix}

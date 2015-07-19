@@ -15,6 +15,7 @@
  */
 package com.github.zhanhb.judge.main;
 
+import com.github.zhanhb.judge.util.StringUtils;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -63,7 +64,7 @@ public class LineStyle {
         long lastModified = Files.getLastModifiedTime(path).toMillis();
         Charset charset = StandardCharsets.ISO_8859_1;
         try {
-            String str = Files.readAllLines(path, charset).stream().map(s -> trimRight(s))
+            String str = Files.readAllLines(path, charset).stream().map(StringUtils::trimRight)
                     .collect(Collectors.joining(LINE_STYLE)) + LINE_STYLE;
             Files.write(path, str.getBytes(charset));
         } finally {
@@ -78,16 +79,6 @@ public class LineStyle {
         } catch (IOException ex) {
             throw new UncheckedIOException(ex);
         }
-    }
-
-    private static String trimRight(String str) {
-        int len = str.length();
-        int st = 0;
-
-        while (st < len && str.charAt(len - 1) <= ' ') {
-            len--;
-        }
-        return st > 0 || len < str.length() ? str.substring(st, len) : str;
     }
 
     @SuppressWarnings("AssignmentToMethodParameter")

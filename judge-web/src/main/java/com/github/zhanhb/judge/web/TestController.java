@@ -15,28 +15,16 @@
  */
 package com.github.zhanhb.judge.web;
 
-import com.github.zhanhb.judge.model.Problem;
-import com.github.zhanhb.judge.model.Userprofile;
-import com.github.zhanhb.judge.repository.ProblemRepository;
-import com.github.zhanhb.judge.repository.UserprofileRepository;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.h2.util.IOUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.data.web.PagedResourcesAssembler;
-import org.springframework.hateoas.PagedResources;
-import org.springframework.hateoas.Resource;
-import org.springframework.http.ResponseEntity;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -46,25 +34,6 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @Controller
 public class TestController {
-
-    @Autowired
-    private UserprofileRepository repository;
-    @Autowired
-    private ProblemRepository problemRepository;
-
-    @RequestMapping(value = "users", method = RequestMethod.GET)
-    ResponseEntity<PagedResources<Resource<Userprofile>>> persons(Pageable pageable,
-            PagedResourcesAssembler<Userprofile> assembler) {
-
-        return ResponseEntity.ok(assembler.toResource(repository.findAll(pageable)));
-    }
-
-    @RequestMapping(value = "problems", method = RequestMethod.GET)
-    ResponseEntity<PagedResources<Resource<Problem>>> problems(@PageableDefault(size = 100) Pageable pageable,
-            PagedResourcesAssembler<Problem> assembler) {
-
-        return ResponseEntity.ok(assembler.toResource(problemRepository.findAll(pageable)));
-    }
 
     @RequestMapping(value = "upload", consumes = "multipart/*")
     public void upload(@RequestParam("file") MultipartFile file, Model model,

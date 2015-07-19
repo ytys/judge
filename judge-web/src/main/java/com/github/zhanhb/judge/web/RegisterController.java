@@ -17,6 +17,7 @@ package com.github.zhanhb.judge.web;
 
 import com.github.zhanhb.judge.model.Userprofile;
 import com.github.zhanhb.judge.repository.UserprofileRepository;
+import com.github.zhanhb.judge.repository.UserprofileRoleRepository;
 import com.github.zhanhb.judge.util.StringUtils;
 import com.github.zhanhb.judge.web.form.UserRegisterForm;
 import java.util.function.Consumer;
@@ -42,6 +43,10 @@ public class RegisterController extends BaseController {
 
     @Autowired
     private UserprofileRepository repository;
+    @Autowired
+    private UserprofileRoleRepository urr;
+    @Autowired
+    private Roles roles;
     @Autowired
     private PasswordEncoder encoder;
 
@@ -86,7 +91,7 @@ public class RegisterController extends BaseController {
             return null;
         }
 
-        repository.save(Userprofile
+        Userprofile userprofile = repository.save(Userprofile
                 .builder()
                 .handle(userRegisterForm.getHandle())
                 .password(encoder.encode(userRegisterForm.getPassword()))
@@ -96,6 +101,7 @@ public class RegisterController extends BaseController {
                 .nickname(StringUtils.trimToNull(userRegisterForm.getNickname()))
                 .build()
         );
+        urr.findByUserprofileAndRole(userprofile, roles.user());
         String message = "success";
         if (ajaxRequest) {
 

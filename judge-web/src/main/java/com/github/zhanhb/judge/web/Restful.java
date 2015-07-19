@@ -15,17 +15,11 @@
  */
 package com.github.zhanhb.judge.web;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PagedResourcesAssembler;
 import static org.springframework.http.MediaType.ALL_VALUE;
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static org.springframework.http.MediaType.APPLICATION_XML_VALUE;
 import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
-import org.springframework.http.ResponseEntity;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -36,20 +30,8 @@ import org.springframework.web.servlet.ModelAndView;
  */
 public interface Restful<T, SEARCH> {
 
-    @ResponseBody
-    @RequestMapping(value = "{search}", produces = {APPLICATION_XML_VALUE, APPLICATION_JSON_VALUE})
-    T view(SEARCH search);
-
     @RequestMapping(value = "{search}", produces = {TEXT_HTML_VALUE, ALL_VALUE})
     ModelAndView view(SEARCH search, ModelMap model);
-
-    Page<T> list(Pageable pageable);
-
-    @ResponseBody
-    @RequestMapping(produces = {APPLICATION_XML_VALUE, APPLICATION_JSON_VALUE})
-    default ResponseEntity<?> findAll(Pageable pageable, PagedResourcesAssembler<T> assembler) {
-        return ResponseEntity.ok(assembler.toResource(list(pageable)));
-    }
 
     @RequestMapping(produces = {TEXT_HTML_VALUE, ALL_VALUE})
     ModelAndView findAll(Pageable pageable, ModelMap model);

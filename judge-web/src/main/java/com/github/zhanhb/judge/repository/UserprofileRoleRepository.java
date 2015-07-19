@@ -15,6 +15,7 @@
  */
 package com.github.zhanhb.judge.repository;
 
+import com.github.zhanhb.judge.model.Role;
 import com.github.zhanhb.judge.model.Userprofile;
 import com.github.zhanhb.judge.model.UserprofileRole;
 import java.util.Collection;
@@ -26,5 +27,7 @@ import java.util.Collection;
 public interface UserprofileRoleRepository extends BaseRepository<UserprofileRole, Long> {
 
     Collection<UserprofileRole> findAllByUserprofile(Userprofile userprofile);
+
+    public void findByUserprofileAndRole(Userprofile userprofile, Role system);
 
 }

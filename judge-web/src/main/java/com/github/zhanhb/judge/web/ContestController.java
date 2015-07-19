@@ -20,9 +20,7 @@ import com.github.zhanhb.judge.model.Contest;
 import com.github.zhanhb.judge.repository.ContestRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,7 +32,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @author zhanhb
  */
 @Controller
-@RequestMapping("contest")
+@RequestMapping("contests")
 @Slf4j
 public class ContestController extends BaseController implements Restful<Contest, String> {
 
@@ -42,25 +40,15 @@ public class ContestController extends BaseController implements Restful<Contest
     private ContestRepository repository;
 
     @Override
-    @SuppressWarnings("ThrowableInstanceNeverThrown")
-    public Contest view(@PathVariable("search") String search) {
-        return repository.findByNameIgnoreCase(search).orElseThrow(() -> new ContestNotExistException(search));
-    }
-
-    @Override
+    @SuppressWarnings("ThrowableInstanceNotThrown")
     public ModelAndView view(@PathVariable("search") String search, ModelMap model) {
-        model.addAttribute("contest", view(search));
-        return new ModelAndView("contest/view", model);
-    }
-
-    @Override
-    public Page<Contest> list(@PageableDefault(size = 100) Pageable pageable) {
-        return repository.findAll(pageable);
+        model.addAttribute("contest", repository.findByNameIgnoreCase(search).orElseThrow(() -> new ContestNotExistException(search)));
+        return new ModelAndView("contests/view", model);
     }
 
     @Override
     public ModelAndView findAll(Pageable pageable, ModelMap model) {
-        return new ModelAndView("contest/list", model);
+        return new ModelAndView("contests/list", model);
     }
 
 }

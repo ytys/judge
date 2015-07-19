@@ -1,31 +1,13 @@
 # http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 
-# Disable the spring security default configuration from spring-boot-actuator
-management.security.enabled: true
-security.basic.enabled: false
+#cache:
+#    timeToLiveSeconds: 3600
+#    ehcache.maxBytesLocalHeap: 256M
 
 # Disable Jolokia - An http/json bridge for remote JMX access
 endpoints.jolokia.enabled: true
 
-mail:
-    host: localhost
-    port: 25
-    username:
-    password:
-    protocol: smtp
-    tls: false
-    auth: false
-    from: judge@localhost
-
-swagger:
-    title: ZJNU Judge Online
-    description: judge applications and beyond!
-    termsOfServiceUrl: http://github.com/zhanhb/
-    contact:
-    license: Apache 2.0
-    licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.html
-
-server.port: 8080
+#http.cache.timeToLiveInDays: 31
 
 # @see org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfiguration
 # @see org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties
@@ -34,48 +16,8 @@ liquibase:
     contexts: prod
     changeLog: classpath:config/liquibase/master.xml
 
-spring:
-# @see org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
-# @see org.springframework.boot.autoconfigure.jdbc.DataSourceProperties
-# pool type
-# org.apache.tomcat.jdbc.pool.DataSource
-# com.zaxxer.hikari.HikariDataSource
-# org.apache.commons.dbcp.BasicDataSource
-# org.apache.commons.dbcp2.BasicDataSource
-    datasource:
-        # populate using data.sql
-        initialize: false
-        jmx-enabled: false
-        # tomcat pool
-        validation-query: select 1
-        # Hikari
-        connectionTestQuery: select 1
-
-# @see org.springframework.boot.autoconfigure.orm.jpa.JpaProperties
-    jpa:
-        show-sql: true
-        hibernate.ddl-auto: none
-        #hibernate.naming-strategy: org.hibernate.cfg.EJB3NamingStrategy
-        properties:
-            javax.persistence.jdbc.validation.mode: none
-
-            hibernate:
-#                dialect:
-                query.substitutions: true '1', false '0'
-
-                cache:
-#                    provider_class: org.hibernate.cache.NoCacheProvider
-                    use_second_level_cache: true
-                    use_query_cache: false
-                    region.factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
-
-                generate_statistics: false
-
-    thymeleaf:
-        mode: XHTML
-        cache: true
-    application.admin.enabled: true
-    hateoas.apply-to-primary-object-mapper: true
+# Disable the spring security default configuration from spring-boot-actuator
+management.security.enabled: true
 
 metrics:
     jmx.enabled: false
@@ -84,18 +26,6 @@ metrics:
         host: localhost
         port: 2003
         prefix: judge
-
-http.cache.timeToLiveInDays: 31
-
-cache:
-    timeToLiveSeconds: 3600
-    ehcache.maxBytesLocalHeap: 256M
-
-server.tomcat.uri-encoding: UTF-8
-spring.http:
-# enable http encoding support
-    encoding.enabled: true
-    converters.preferred-json-mapper: gson
 
 multipart:
     enabled: true
@@ -106,3 +36,91 @@ multipart:
     # Max file size.
     max-file-size: 50Mb
     max-request-size: 200Mb
+
+security.basic.enabled: false
+
+server:
+    port: 8080
+    tomcat.uri-encoding: UTF-8
+
+spring:
+    application.admin.enabled: true
+
+    data.rest:
+        basePath: /rest
+        pageParamName: page
+        limitParamName: size
+        sortParamName: sort
+        default-page-size: 100
+        max-page-size: 1000
+        return-body-on-create: false
+        return-body-on-update: false
+
+    # @see org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+    # @see org.springframework.boot.autoconfigure.jdbc.DataSourceProperties
+    # pool type
+    # org.apache.tomcat.jdbc.pool.DataSource
+    # com.zaxxer.hikari.HikariDataSource
+    # org.apache.commons.dbcp.BasicDataSource
+    # org.apache.commons.dbcp2.BasicDataSource
+    datasource:
+        # populate using data.sql
+        initialize: false
+        jmx-enabled: false
+        # tomcat pool
+        validation-query: select 1
+        # Hikari
+        connectionTestQuery: select 1
+
+    hateoas.apply-to-primary-object-mapper: true
+
+    http:
+        # enable http encoding support
+        encoding.enabled: true
+        converters.preferred-json-mapper: gson
+
+    mail:
+        host: localhost
+        port: 25
+        username:
+        password:
+        protocol: smtp
+        tls: false
+        auth: false
+        from: judge@localhost
+
+# @see org.springframework.boot.autoconfigure.orm.jpa.JpaProperties
+    jpa:
+        show-sql: true
+        hibernate.ddl-auto: none
+        #hibernate.naming-strategy: org.hibernate.cfg.EJB3NamingStrategy
+        properties:
+
+            hibernate:
+                cache:
+#                    provider_class: org.hibernate.cache.NoCacheProvider
+                    region.factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
+                    use_query_cache: false
+                    use_second_level_cache: true
+#                dialect:
+
+                generate_statistics: false
+
+                query.substitutions: true '1', false '0'
+
+            javax.persistence.jdbc.validation.mode: none
+
+    # THYMELEAF (org.springframework.boot.autoconfigure.thymeleaf.ThymeleafAutoConfiguration)
+    thymeleaf:
+        mode: XHTML
+        prefix: /WEB-INF/templates/
+        suffix: .xhtml
+        cache: false
+
+swagger:
+    title: ZJNU Judge Online
+    description: judge applications and beyond!
+    termsOfServiceUrl: http://github.com/zhanhb/
+    contact:
+    license: Apache 2.0
+    licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.html

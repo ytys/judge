@@ -49,7 +49,7 @@ public class AccessLogRepositoryTest {
                     .url(string)
                     .build());
             assertNotNull(accessLog.getAccessTime());
-            assertTrue(accessLogRepository.findOne(accessLog.getId()) == accessLog);
+            assertTrue(accessLogRepository.findById(accessLog.getId()).get() == accessLog);
         }
     }
 }

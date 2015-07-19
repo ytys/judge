@@ -31,7 +31,7 @@ public abstract class BaseController {
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
-        log.debug("A binder for object: " + binder.getObjectName());
+        log.debug("A binder for object: {}", binder.getObjectName());
     }
 
     @ModelAttribute(value = "ajaxRequest")

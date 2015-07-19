@@ -17,11 +17,9 @@ package com.github.zhanhb.judge.config;
  */
 import org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration.WebMvcAutoConfigurationAdapter;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
-import org.springframework.web.servlet.theme.ThemeChangeInterceptor;
 
 /**
  *
@@ -31,16 +29,8 @@ import org.springframework.web.servlet.theme.ThemeChangeInterceptor;
 public class WebMvcConfig extends WebMvcAutoConfigurationAdapter {
 
     @Override
-    public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
-        configurer.enable();
-    }
-
-    @Override
     public void addInterceptors(InterceptorRegistry registry) {
         super.addInterceptors(registry);
-        ThemeChangeInterceptor themeChangeInterceptor = new ThemeChangeInterceptor();
-        registry.addInterceptor(themeChangeInterceptor);
-
         LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
         localeChangeInterceptor.setParamName("lang");
         registry.addInterceptor(localeChangeInterceptor);
@@ -53,6 +43,7 @@ public class WebMvcConfig extends WebMvcAutoConfigurationAdapter {
         registry.addViewController("/faq").setViewName("faq");
         registry.addViewController("/forum").setViewName("forum");
         registry.addViewController("/test").setViewName("test");
+        registry.addViewController("/layout").setViewName("layout");
     }
 
 }

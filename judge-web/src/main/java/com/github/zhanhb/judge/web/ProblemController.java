@@ -19,7 +19,6 @@ import com.github.zhanhb.judge.exception.ProblemNotExistException;
 import com.github.zhanhb.judge.model.Problem;
 import com.github.zhanhb.judge.repository.ProblemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
@@ -46,20 +45,10 @@ public class ProblemController extends BaseController implements Restful<Problem
     }
 
     @Override
-    public Page<Problem> list(@PageableDefault(size = 100) Pageable pageable) {
-        return repository.findAll(pageable);
-    }
-
-    @Override
-    public ModelAndView view(@PathVariable("search") Long search, ModelMap model) {
-        model.addAttribute("problem", view(search));
-        return new ModelAndView("problem/view", model);
-    }
-
-    @Override
     @SuppressWarnings("ThrowableInstanceNotThrown")
-    public Problem view(@PathVariable("search") Long search) {
-        return repository.findById(search).orElseThrow(() -> new ProblemNotExistException(search));
+    public ModelAndView view(@PathVariable("search") Long search, ModelMap model) {
+        model.addAttribute("problem", repository.findById(search).orElseThrow(() -> new ProblemNotExistException(search)));
+        return new ModelAndView("problem/view", model);
     }
 
 }

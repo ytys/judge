@@ -16,13 +16,17 @@
 package com.github.zhanhb.judge;
 
 import java.io.IOException;
-import java.net.InetAddress;
+import java.util.Scanner;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.context.embedded.EmbeddedServletContainerInitializedEvent;
+import org.springframework.boot.context.embedded.EmbeddedWebApplicationContext;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
+import org.springframework.context.ApplicationListener;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.stereotype.Component;
 
 /**
  *
@@ -34,32 +38,31 @@ public class Application extends SpringBootServletInitializer {
 
     public static void main(String[] args) throws IOException {
         ConfigurableApplicationContext ctx = SpringApplication.run(Application.class, args);
-        String port = ctx.getEnvironment().getProperty("server.port");
-
-        log.info("Access URLs:\n----------------------------------------------------------\n\t"
-                + "Local: \t\thttp://127.0.0.1:{}\n\t"
-                + "External: \thttp://{}:{}\n----------------------------------------------------------",
-                port,
-                InetAddress.getLocalHost().getHostAddress(),
-                port);
-
-        java.util.Scanner scanner = new java.util.Scanner(System.in);
-        while (scanner.hasNext()) {
-            String name = scanner.next();
-            switch (name) {
-                case "exit":
-                case "quit":
-                    SpringApplication.exit(ctx);
-                    return;
-                case "break":
-                    return;
-                case "reload":
-                    SpringApplication.exit(ctx);
-                    ctx = SpringApplication.run(Application.class, args);
-                    continue;
+        String dashes = "----------------------------------------------------------------";
+        log.info("Access URLs:\n{}\n\t"
+                + "Local: \t\t{}"
+                + "\n{}",
+                dashes,
+                ctx.getBean(ServerInfo.class).url(),
+                dashes);
+        try (Scanner scanner = new Scanner(System.in)) {
+            while (scanner.hasNext()) {
+                String name = scanner.next();
+                switch (name) {
+                    case "exit":
+                    case "quit":
+                        SpringApplication.exit(ctx);
+                        return;
+                    case "break":
+                        return;
+                    case "reload":
+                        SpringApplication.exit(ctx);
+                        ctx = SpringApplication.run(Application.class, args);
+                        continue;
+                }
+                String property = ctx.getEnvironment().getProperty(name);
+                System.out.println(property);
             }
-            String property = ctx.getEnvironment().getProperty(name);
-            System.out.println(property);
         }
     }
 
@@ -71,4 +74,22 @@ public class Application extends SpringBootServletInitializer {
                 .sources(Application.class);
     }
 
+    @Component
+    private static class ServerInfo implements ApplicationListener<EmbeddedServletContainerInitializedEvent> {
+
+        private String url = "?";
+
+        @Override
+        public void onApplicationEvent(EmbeddedServletContainerInitializedEvent event) {
+            EmbeddedWebApplicationContext context = event.getApplicationContext();
+            int port = context.getEmbeddedServletContainer().getPort();
+            String contextPath = context.getApplicationName();
+            this.url = String.format("http://%s:%d%s", "localhost", port, contextPath);
+        }
+
+        public String url() {
+            return url;
+        }
+
+    }
 }
