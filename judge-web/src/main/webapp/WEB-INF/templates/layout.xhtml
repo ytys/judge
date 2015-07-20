@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Copyright 2015 Pivotal Software, Inc..
+Copyright 2015 zhanhb.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ limitations under the License.
         <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <title th:text="#{default_title}">Welcome to Judge Online</title>
-        <link th:href="@{/favicon.png}" href="../../favicon.png" rel="shortcut icon" type="image/png"/>
+        <!--<link th:href="@{/favicon.png}" href="../../favicon.png" rel="shortcut icon" type="image/png"/>-->
         <link th:href="@{/favicon.ico}" href="../../../resources/META-INF/resources/favicon.ico" rel="shortcut icon" type="image/x-icon"/>
         <!-- Latest compiled and minified CSS -->
         <link href="../../static/bootstrap/css/bootstrap.min.css" th:href="@{/static/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
@@ -81,10 +81,10 @@ limitations under the License.
                 </div> <!-- .navbar-header -->
                 <div id="navigation" class="collapse navbar-collapse" aria-expanded="true">
                     <ul class="nav navbar-nav">
-                        <li><a th:href="@{/rest/problems}">Problems</a></li>
-                        <li><a th:href="@{/rest/userprofiles}">Users</a></li>
-                        <li><a th:href="@{/rest/contests}">Contests</a></li>
-                        <li><a th:href="@{/faq}">FAQ</a></li>
+                        <li><a href="problems.xhtml" th:href="@{/problems}" th:text="#{header.problems}">Problems</a></li>
+                        <li><a href="users.xhtml" th:href="@{/userprofiles}" th:text="#{header.users}">Users</a></li>
+                        <li><a href="contests.xhtml" th:href="@{/contests}" th:text="#{header.contests}">Contests</a></li>
+                        <li><a href="faq.xhtml" th:href="@{/faq}">FAQ</a></li>
                         <!--<li><a th:href="@{/forum}">Forum</a></li>-->
                     </ul>
                     <ul class="nav navbar-nav pull-right nav-controls" th:if="true">
@@ -121,7 +121,7 @@ limitations under the License.
         </div>
 
         <footer class="footer text-center">
-            <p>Copyright &#169; <span th:text="${today}"></span> ZJNU ACM</p>
+            <p>Copyright &#169; <span th:text="${#calendars.format(execInfo.now,'yyyy')}">2014</span> ZJNU ACM</p>
         </footer>
         <span th:title="#{back_to_top}" class="back-to-top" id="back-to-top"></span>
     </body>

@@ -15,16 +15,15 @@
  */
 package com.github.zhanhb.judge.web;
 
-import com.github.zhanhb.judge.exception.UserprofileNotExistException;
 import com.github.zhanhb.judge.domain.Userprofile;
+import com.github.zhanhb.judge.exception.UserprofileNotExistException;
 import com.github.zhanhb.judge.repository.UserprofileRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 /**
  *
@@ -33,22 +32,20 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping("users")
 @Slf4j
-public class UserprofileController extends BaseController implements Restful<Userprofile, String> {
+public class UserprofileController extends BaseController {
 
     @Autowired
     private UserprofileRepository repository;
 
-    @Override
+    @RequestMapping("{search}")
     @SuppressWarnings("ThrowableInstanceNeverThrown")
-    public ModelAndView view(String search, ModelMap model) {
-        log.debug("handle = " + search);
-        model.addAttribute("userprofile", repository.findByHandleIgnoreCase(search).orElseThrow(() -> new UserprofileNotExistException(search)));
-        return new ModelAndView("users/view", model);
+    public Userprofile view(String search) {
+        return repository.findByHandleIgnoreCase(search).orElseThrow(() -> new UserprofileNotExistException(search));
     }
 
-    @Override
-    public ModelAndView findAll(Pageable pageable, ModelMap model) {
-        return new ModelAndView("users/list", model);
+    @RequestMapping
+    public Page<Userprofile> findAll(Pageable pageable) {
+        return repository.findAll(pageable);
     }
 
 }

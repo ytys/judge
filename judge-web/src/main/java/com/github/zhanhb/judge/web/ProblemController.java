@@ -19,13 +19,13 @@ import com.github.zhanhb.judge.domain.Problem;
 import com.github.zhanhb.judge.exception.ProblemNotExistException;
 import com.github.zhanhb.judge.repository.ProblemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 /**
  *
@@ -33,22 +33,22 @@ import org.springframework.web.servlet.ModelAndView;
  * @date May 26, 2015, 22:23:58
  */
 @Controller
-@RequestMapping("problem")
-public class ProblemController extends BaseController implements Restful<Problem, Long> {
+@RequestMapping("problems")
+public class ProblemController extends BaseController {
 
     @Autowired
     private ProblemRepository repository;
 
-    @Override
-    public ModelAndView findAll(@PageableDefault(size = 100) Pageable pageable, ModelMap model) {
-        return new ModelAndView("problem/list", model);
+    @RequestMapping
+    public Page<Problem> findAll(@PageableDefault(size = 100) Pageable pageable) {
+        return repository.findAll(pageable);
     }
 
-    @Override
+    @RequestMapping("{search}")
     @SuppressWarnings("ThrowableInstanceNotThrown")
-    public ModelAndView view(@PathVariable("search") Long search, ModelMap model) {
+    public String view(@PathVariable("search") Long search, ModelMap model) {
         model.addAttribute("problem", repository.findById(search).orElseThrow(() -> new ProblemNotExistException(search)));
-        return new ModelAndView("problem/view", model);
+        return "problems/view";
     }
 
 }

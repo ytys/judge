@@ -14,6 +14,16 @@
     <name>ZJNU Online Judge</name>
     <description>ZJNU Online Judge</description>
     <url>https://github.com/zhanhb/judge/</url>
+    <organization>
+        <name>zhanhb</name>
+        <url>http://github.com/zhanhb</url>
+    </organization>
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+        </license>
+    </licenses>
     <developers>
         <developer>
             <id>zhanhb</id>
@@ -441,50 +451,6 @@
                     </dependency>
                 </dependencies>
             </plugin>
-            <!--<plugin>
-                <groupId>com.samaxes.maven</groupId>
-                <artifactId>minify-maven-plugin</artifactId>
-                <version>1.7.4</version>
-                <executions>
-                    <execution>
-                        <id>default-minify</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>minify</goal>
-                        </goals>
-                        <configuration>
-                            <cssSourceDir>/</cssSourceDir>
-                            <cssSourceFiles>
-                                <cssSourceFile>static/css/site.css</cssSourceFile>
-                            </cssSourceFiles>
-                            <cssSourceIncludes>
-                                <cssSourceInclude>static/bootstrap/css/*.css</cssSourceInclude>
-                            </cssSourceIncludes>
-                            <cssSourceExcludes>
-                                <cssSourceExclude>**/*.min.css</cssSourceExclude>
-                                <cssSourceExclude>static/css/style.css</cssSourceExclude>
-                                <cssSourceExclude>static/css/style.min.css</cssSourceExclude>
-                            </cssSourceExcludes>
-                            <cssTargetDir>static/css</cssTargetDir>
-                            <jsSourceDir>/</jsSourceDir>
-                            <jsSourceFiles>
-                                <jsSourceFile>static/commons/js/jquery-1.11.3.js</jsSourceFile>
-                                <jsSourceFile>static/commons/js/jquery.placeholder.js</jsSourceFile>
-                                <jsSourceFile>static/commons/js/site.js</jsSourceFile>
-                            </jsSourceFiles>
-                            <jsSourceIncludes>
-                                <jsSourceInclude>static/shjs/lang/*.js</jsSourceInclude>
-                            </jsSourceIncludes>
-                            <jsSourceExcludes>
-                                <jsSourceExclude>**/*.min.js</jsSourceExclude>
-                            </jsSourceExcludes>
-                            <jsTargetDir>static/js</jsTargetDir>
-                            <jsEngine>YUI</jsEngine>
-                            <webappTargetDir>${basedir}/target/${project.artifactId}-${project.version}</webappTargetDir>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -603,15 +569,15 @@
                     </dependency>
                 </dependencies>
                 <configuration>
-                    <url>jdbc:mariadb:///oj?zeroDateTimeBehavior=convertToNull&amp;characterEncoding=UTF-8</url>
+                    <url>jdbc:mariadb://localhost:3306/oj?zeroDateTimeBehavior=convertToNull&amp;characterEncoding=UTF-8</url>
                     <username>root</username>
                     <password>root</password>
 
                     <!-- see liquibase.ext.hibernate.database.HibernateSpringDatabase -->
                     <referenceUrl>hibernate:spring:com.github.zhanhb.judge.domain?dialect=org.hibernate.dialect.MySQLInnoDBDialect</referenceUrl>
 
-                    <changeLogFile>src/main/resources/config/liquibase/master.xml</changeLogFile>
-                    <diffChangeLogFile>src/main/resources/config/liquibase/changelog/${maven.build.timestamp}_changelog.xml</diffChangeLogFile>
+                    <changeLogFile>${project.build.resources[0].directory}/config/liquibase/master.xml</changeLogFile>
+                    <diffChangeLogFile>${project.build.resources[0].directory}/config/liquibase/changelog/${maven.build.timestamp}_changelog.xml</diffChangeLogFile>
 
                     <logging>debug</logging>
                     <promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>

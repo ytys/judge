@@ -38,7 +38,7 @@ public class Application extends SpringBootServletInitializer {
 
     public static void main(String[] args) throws IOException {
         ConfigurableApplicationContext ctx = SpringApplication.run(Application.class, args);
-        String dashes = "------------------------------------------------------------------";
+        String dashes = "------------------------------------------------------------------------";
         String url = ctx.getBean(ServerInfo.class).url();
         log.info("Access URLs:\n{}\n\tLocal: \t\t{}\n{}", dashes, url, dashes);
         try (Scanner scanner = new Scanner(System.in)) {
@@ -54,6 +54,8 @@ public class Application extends SpringBootServletInitializer {
                     case "reload":
                         SpringApplication.exit(ctx);
                         ctx = SpringApplication.run(Application.class, args);
+                        url = ctx.getBean(ServerInfo.class).url();
+                        log.info("Access URLs:\n{}\n\tLocal: \t\t{}\n{}", dashes, url, dashes);
                         continue;
                 }
                 String property = ctx.getEnvironment().getProperty(name);
