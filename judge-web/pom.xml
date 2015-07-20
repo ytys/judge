@@ -126,7 +126,7 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-rest</artifactId>
+            <artifactId>spring-boot-starter-hateoas</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -143,6 +143,10 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context-support</artifactId>
         </dependency>
@@ -157,11 +161,6 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-taglibs</artifactId>
-        </dependency>
-        <!-- tomcat connection pool -->
-        <dependency>
-            <groupId>org.apache.tomcat</groupId>
-            <artifactId>tomcat-jdbc</artifactId>
         </dependency>
         <dependency>
             <groupId>xml-apis</groupId>
@@ -593,6 +592,7 @@
                     </dependency>
                     <dependency>
                         <groupId>org.liquibase.ext</groupId>
+                        <!-- hibernate 4.0-4.2 artifactId liquibase-hibernate4.2 -->
                         <artifactId>liquibase-hibernate4</artifactId>
                         <version>${liquibase-hibernate4.version}</version>
                     </dependency>
@@ -603,17 +603,19 @@
                     </dependency>
                 </dependencies>
                 <configuration>
-                    <changeLogFile>src/main/resources/config/liquibase/master.xml</changeLogFile>
-                    <diffChangeLogFile>src/main/resources/config/liquibase/changelog/${maven.build.timestamp}_changelog.xml</diffChangeLogFile>
-                    <driver>org.mariadb.jdbc.Driver</driver>
-                    <url>jdbc:mariadb://localhost/oj?zeroDateTimeBehavior=convertToNull&amp;characterEncoding=UTF-8</url>
-                    <defaultSchemaName>oj</defaultSchemaName>
+                    <url>jdbc:mariadb:///oj?zeroDateTimeBehavior=convertToNull&amp;characterEncoding=UTF-8</url>
                     <username>root</username>
                     <password>root</password>
-                    <referenceUrl>hibernate:spring:com.github.zhanhb.judge?dialect=org.hibernate.dialect.MySQLInnoDBDialect</referenceUrl>
-                    <verbose>true</verbose>
+
+                    <!-- see liquibase.ext.hibernate.database.HibernateSpringDatabase -->
+                    <referenceUrl>hibernate:spring:com.github.zhanhb.judge.domain?dialect=org.hibernate.dialect.MySQLInnoDBDialect</referenceUrl>
+
+                    <changeLogFile>src/main/resources/config/liquibase/master.xml</changeLogFile>
+                    <diffChangeLogFile>src/main/resources/config/liquibase/changelog/${maven.build.timestamp}_changelog.xml</diffChangeLogFile>
+
                     <logging>debug</logging>
-                    <tag>local</tag>
+                    <promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
+                    <verbose>true</verbose>
                 </configuration>
             </plugin>
             <plugin>

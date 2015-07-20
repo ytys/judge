@@ -2,12 +2,14 @@ package com.github.zhanhb.judge.web.rest;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.LoggerContext;
+import ch.qos.logback.classic.util.ContextSelectorStaticBinder;
 import com.github.zhanhb.judge.web.rest.dto.LoggerDTO;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.http.MediaType.APPLICATION_XML_VALUE;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,10 +25,12 @@ public class LogsResource {
 
     @RequestMapping(value = "/logs",
             method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+            produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
     public List<LoggerDTO> getList() {
-        LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
-        return context
+        return ContextSelectorStaticBinder
+                .getSingleton()
+                .getContextSelector()
+                .getLoggerContext()
                 .getLoggerList()
                 .stream()
                 .map(LoggerDTO::new)

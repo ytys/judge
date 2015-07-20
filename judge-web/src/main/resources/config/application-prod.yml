@@ -19,13 +19,7 @@ multipart:
 
 security.basic.enabled: false
 
-server:
-    port: 8080
-    tomcat.uri-encoding: UTF-8
-
 spring:
-    application.admin.enabled: true
-
     data.jpa.repositories.enabled: true
     data.rest:
         basePath: /rest

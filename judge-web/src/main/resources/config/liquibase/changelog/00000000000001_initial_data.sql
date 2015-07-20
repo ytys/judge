@@ -2,9 +2,9 @@
 
 --changeset system:00000000000001
 INSERT INTO userprofile (id, creation_date, disabled, email, handle, last_update_date, major, nickname, password, school, creation_user) VALUES
-    (1, now(), 0, 'system@localhost', 'system', now(), NULL, 'system', '$2a$10$mE.qmcV0mFU5NcKh73TZx.z4ueI/.bDWbj0T1BYyqP481kGGarKLG', NULL, 1),
-    (2, now(), 0, 'anonymous@localhost', 'anonymousUser', now(), NULL, 'anonymousUser', '$2a$10$j8S5d7Sr7.8VTOYNviDPOeWX8KcYILUVJBsYV83Y5NtECayypx9lO', NULL, 1),
-    (3, now(), 0, 'admin@localhost', 'admin', now(), NULL, 'admin', '$2a$10$gSAhZrxMllrbgj/kkK9UceBPpChGWJA7SYIb1Mqo.n5aNLq1/oRrC', NULL, 1);
+    (1, now(), 0, 'system@localhost', 'system', now(), NULL, 'system', '$2a$10$mE.qmcV0mFU5NcKh73TZx.z4ueI/.bDWbj0T1BYyqP481kGGarKLG', NULL, NULL),
+    (2, now(), 0, 'anonymous@localhost', 'anonymousUser', now(), NULL, 'anonymousUser', '$2a$10$j8S5d7Sr7.8VTOYNviDPOeWX8KcYILUVJBsYV83Y5NtECayypx9lO', NULL, NULL),
+    (3, now(), 0, 'admin@localhost', 'admin', now(), NULL, 'admin', '$2a$10$gSAhZrxMllrbgj/kkK9UceBPpChGWJA7SYIb1Mqo.n5aNLq1/oRrC', NULL, NULL);
 
 --changeset system:00000000000002
 INSERT INTO judge_reply (id, committed, description, name, style, creation_user, last_update_user) VALUES
@@ -32,11 +32,13 @@ INSERT INTO judge_reply (id, committed, description, name, style, creation_user,
     (101, 0, 'Aborted', 'Aborted', NULL, 1, 1);
 
 --changeset system:00000000000003
-INSERT INTO role (id, name, description) VALUES
-    (1, 'ROLE_USER', 'user'),
-    (2, 'ROLE_ADMIN', 'administrator'),
-    (3, 'ROLE_TEACHER', 'teacher'),
-    (4, 'ROLE_STUDENT', 'student');
+INSERT INTO role (id, description, name) VALUES
+    (1, 'system', 'ROLE_SYSTEM'),
+    (2, 'anonymous', 'ROLE_ANONYMOUS'),
+    (3, 'user', 'ROLE_USER'),
+    (4, 'administrator', 'ROLE_ADMIN'),
+    (5, 'teacher', 'ROLE_TEACHER'),
+    (6, 'student', 'ROLE_STUDENT');
 
 --changeset system:00000000000004
 INSERT INTO limits (id, memory_limit, output_limit, time_limit) VALUES

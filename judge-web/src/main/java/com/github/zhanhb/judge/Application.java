@@ -26,7 +26,7 @@ import org.springframework.boot.context.embedded.EmbeddedWebApplicationContext;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 
 /**
  *
@@ -38,13 +38,9 @@ public class Application extends SpringBootServletInitializer {
 
     public static void main(String[] args) throws IOException {
         ConfigurableApplicationContext ctx = SpringApplication.run(Application.class, args);
-        String dashes = "----------------------------------------------------------------";
-        log.info("Access URLs:\n{}\n\t"
-                + "Local: \t\t{}"
-                + "\n{}",
-                dashes,
-                ctx.getBean(ServerInfo.class).url(),
-                dashes);
+        String dashes = "------------------------------------------------------------------";
+        String url = ctx.getBean(ServerInfo.class).url();
+        log.info("Access URLs:\n{}\n\tLocal: \t\t{}\n{}", dashes, url, dashes);
         try (Scanner scanner = new Scanner(System.in)) {
             while (scanner.hasNext()) {
                 String name = scanner.next();
@@ -74,17 +70,21 @@ public class Application extends SpringBootServletInitializer {
                 .sources(Application.class);
     }
 
-    @Component
+    @Configuration
     private static class ServerInfo implements ApplicationListener<EmbeddedServletContainerInitializedEvent> {
 
         private String url = "?";
+
+        // this method must be specified, for spring can't access private constructors.
+        ServerInfo() {
+        }
 
         @Override
         public void onApplicationEvent(EmbeddedServletContainerInitializedEvent event) {
             EmbeddedWebApplicationContext context = event.getApplicationContext();
             int port = context.getEmbeddedServletContainer().getPort();
             String contextPath = context.getApplicationName();
-            this.url = String.format("http://%s:%d%s", "localhost", port, contextPath);
+            this.url = String.format("http://localhost:%d%s", port, contextPath);
         }
 
         public String url() {

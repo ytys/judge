@@ -19,13 +19,9 @@ import com.mysema.query.types.Predicate;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.querydsl.QueryDslPredicateExecutor;
 import org.springframework.data.repository.NoRepositoryBean;
-import org.springframework.data.repository.Repository;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
-import org.springframework.data.rest.core.annotation.RestResource;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
  *
@@ -34,25 +30,11 @@ import org.springframework.data.rest.core.annotation.RestResource;
  * @param <ID> id class of the entity, usually java.lang.Long
  */
 @NoRepositoryBean
-@RepositoryRestResource(exported = true)
 public interface BaseRepository<T, ID extends Serializable>
-        extends Repository<T, ID>,
+        extends PagingAndSortingRepository<T, ID>,
         QueryDslPredicateExecutor<T> {
 
-    @RestResource(exported = false)
-    <S extends T> S save(S entity);
-
-    @RestResource(exported = false)
-    void delete(T entity);
-
-    @RestResource(exported = false)
     Optional<T> findById(ID id);
-
-    @RestResource(exported = false)
-    Iterable<T> findAll();
-
-    @RestResource(exported = false)
-    Page<T> findAll(Pageable pageable);
 
     @Override
     List<T> findAll(Predicate predicate);
