@@ -42,8 +42,11 @@
         <url>https://github.com/zhanhb/judge/issues</url>
     </issueManagement>
     <properties>
+        <asm.version>5.0.4</asm.version>
+        <cglib.version>3.1</cglib.version>
         <commons-compress.version>1.9</commons-compress.version>
         <commons-dbcp2.version>2.1</commons-dbcp2.version>
+        <commons-lang3.version>3.4</commons-lang3.version>
         <commons-pool2.version>2.4.1</commons-pool2.version>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <guava.version>18.0</guava.version>
@@ -57,12 +60,14 @@
         <liquibase-hibernate4.version>3.5</liquibase-hibernate4.version>
         <liquibase.version>3.4.0</liquibase.version>
         <lombok.version>1.16.4</lombok.version>
+        <mariadb.version>1.1.9</mariadb.version>
         <maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <!--<maven.test.failure.ignore>true</maven.test.failure.ignore>-->
         <!--<maven.test.skip>true</maven.test.skip>-->
         <maven.version>3.3.3</maven.version>
+        <nekohtml.version>1.9.22</nekohtml.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <querydsl.version>3.6.4</querydsl.version>
         <snakeyaml.version>1.15</snakeyaml.version>
@@ -78,13 +83,13 @@
         <dependency>
             <groupId>org.ow2.asm</groupId>
             <artifactId>asm</artifactId>
-            <version>5.0.4</version>
+            <version>${asm.version}</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>cglib</groupId>
             <artifactId>cglib</artifactId>
-            <version>3.1</version>
+            <version>${cglib.version}</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
@@ -100,7 +105,7 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.4</version>
+            <version>${commons-lang3.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -233,7 +238,7 @@
         <dependency>
             <groupId>org.mariadb.jdbc</groupId>
             <artifactId>mariadb-java-client</artifactId>
-            <version>1.1.9</version>
+            <version>${mariadb.version}</version>
             <scope>runtime</scope>
             <exclusions>
                 <exclusion>
@@ -249,7 +254,7 @@
         <dependency>
             <groupId>net.sourceforge.nekohtml</groupId>
             <artifactId>nekohtml</artifactId>
-            <version>1.9.22</version>
+            <version>${nekohtml.version}</version>
         </dependency>
         <dependency>
             <groupId>com.mysema.querydsl</groupId>
@@ -357,11 +362,6 @@
             <groupId>xml-apis</groupId>
             <artifactId>xml-apis</artifactId>
             <version>1.4.01</version>
-        </dependency>
-        <dependency>
-            <groupId>org.liquibase.ext</groupId>
-            <artifactId>liquibase-hibernate4</artifactId>
-            <version>3.5</version>
         </dependency>
     </dependencies>
     <repositories>
