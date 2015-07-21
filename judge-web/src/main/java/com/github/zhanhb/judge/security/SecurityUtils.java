@@ -24,7 +24,8 @@ public class SecurityUtils {
     /**
      * Get the login of the current user.
      *
-     * @return
+     * @return current user profile.
+     * @see com.github.zhanhb.judge.audit.UserAuditorAware
      */
     public Userprofile getCurrentUserprofile() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

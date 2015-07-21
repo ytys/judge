@@ -30,7 +30,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 /**
  *
  * @author zhanhb
- * @date May 26, 2015, 22:23:58
  */
 @Controller
 @RequestMapping("problems")

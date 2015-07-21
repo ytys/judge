@@ -20,7 +20,6 @@ multipart:
 security.basic.enabled: false
 
 spring:
-    data.jpa.repositories.enabled: true
     data.rest:
         basePath: /rest
         pageParamName: page
@@ -62,7 +61,7 @@ spring:
         auth: false
         from: judge@localhost
 
-# @see org.springframework.boot.autoconfigure.orm.jpa.JpaProperties
+    # @see org.springframework.boot.autoconfigure.orm.jpa.JpaProperties
     jpa:
         show-sql: true
         hibernate.ddl-auto: none

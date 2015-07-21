@@ -25,8 +25,8 @@ import org.springframework.web.servlet.ModelAndView;
 /**
  *
  * @author zhanhb
- * @param <T>
- * @param <SEARCH>
+ * @param <T> entity type
+ * @param <SEARCH> search type of the class, may not be the id of the entity.
  */
 public interface Restful<T, SEARCH> {
 

@@ -15,6 +15,13 @@
  */
 /**
  * JPA domain objects.
+ *
+ * @author zhanhb
+ */
+/* (non-Javadoc)
+ *
+ * Global definition for hibernate jsr 310 date time type.
+ * It seems that liquibase doesn't work with this.
  */
 @org.hibernate.annotations.TypeDefs({
     @org.hibernate.annotations.TypeDef(name = "localDateType", typeClass = org.jadira.usertype.dateandtime.threeten.PersistentLocalDate.class, defaultForType = java.time.LocalDate.class),

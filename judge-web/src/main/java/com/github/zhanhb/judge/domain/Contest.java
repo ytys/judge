@@ -16,6 +16,7 @@
 package com.github.zhanhb.judge.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -63,7 +64,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
     @UniqueConstraint(name = "UK_contest_name", columnNames = "name")
 })
 @XmlRootElement
-public class Contest implements Auditable<Userprofile, Long, LocalDateTime> {
+public class Contest implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

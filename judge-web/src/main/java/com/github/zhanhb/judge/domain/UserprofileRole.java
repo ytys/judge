@@ -15,6 +15,7 @@
  */
 package com.github.zhanhb.judge.domain;
 
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -50,7 +51,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
     @UniqueConstraint(name = "UQ_userprofile_role", columnNames = {"userprofile", "role"})
 })
 @XmlRootElement
-public class UserprofileRole implements Persistable<Long> {
+public class UserprofileRole implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
