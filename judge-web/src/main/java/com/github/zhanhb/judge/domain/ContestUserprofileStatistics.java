@@ -48,7 +48,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EqualsAndHashCode(of = "id")
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "contest_userprofile_statistics", uniqueConstraints = {
-    @UniqueConstraint(name = "UK_contest_userprofile", columnNames = {"contest", "userprofile"})
+    @UniqueConstraint(name = "UK_contest_userprofile_statistics_contest_userprofile", columnNames = {"contest", "userprofile"})
 })
 @XmlRootElement
 public class ContestUserprofileStatistics implements Serializable {

@@ -18,6 +18,7 @@ package com.github.zhanhb.judge.main;
 import com.github.zhanhb.judge.util.MatcherWrapper;
 import com.github.zhanhb.judge.util.StringUtils;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -31,8 +32,9 @@ import java.util.regex.Pattern;
  */
 public class Liquibase {
 
-    public static void main(String[] args) throws IOException {
-        Path initSchema = Paths.get("src/main/resources/config/liquibase/changelog/20150716231647_changelog.xml");
+    public static void main(String[] args) throws IOException, URISyntaxException {
+        String resource = "config/liquibase/changelog/20150721174338_changelog.xml";
+        Path initSchema = Paths.get("src/main/resources", resource);
         String[][] replaces = {
             {"author=\"[^\"]+\"", "author=\"system\""},
             {"(?<prefix><addForeignKeyConstraint[^>]+?\")(?<space>\\s*)(?<suffix>referencedColumnNames=[^>]+?/>)", "${prefix} onUpdate=\"CASCADE\" ${suffix}"}

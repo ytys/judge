@@ -22,9 +22,9 @@ import static com.github.zhanhb.judge.dsl.ContestDsl.ended;
 import static com.github.zhanhb.judge.dsl.ContestDsl.running;
 import static com.github.zhanhb.judge.dsl.ContestDsl.scheduling;
 import com.github.zhanhb.judge.repository.ContestRepository;
+import static com.google.common.collect.Iterables.size;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
@@ -55,9 +55,9 @@ public class ContestDslTest {
     @Transactional(rollbackFor = Roolback.class)
     public void testFindAll() {
         LocalDateTime start = LocalDateTime.now().minusSeconds(5);
-        int schedulingSize = repository.findAll(scheduling()).size();
-        int runningSize = repository.findAll(running()).size();
-        int endedSize = repository.findAll(ended()).size();
+        int schedulingSize = size(repository.findAll(scheduling()));
+        int runningSize = size(repository.findAll(running()));
+        int endedSize = size(repository.findAll(ended()));
 
         long id = repository.save(Contest
                 .builder()
@@ -71,15 +71,15 @@ public class ContestDslTest {
         log.debug(String.valueOf(id));
 
         log.info("scheduling");
-        List<Contest> scheduling = repository.findAll(scheduling());
+        Iterable<Contest> scheduling = repository.findAll(scheduling());
         log.info("scheduling = " + scheduling);
-        List<Contest> running = repository.findAll(running());
-        assertEquals(schedulingSize, scheduling.size());
+        assertEquals(schedulingSize, size(scheduling));
+        Iterable<Contest> running = repository.findAll(running());
         log.info("running = " + running);
-        assertEquals(runningSize + 1, running.size());
-        List<Contest> ended = repository.findAll(ended());
+        assertEquals(runningSize + 1, size(running));
+        Iterable<Contest> ended = repository.findAll(ended());
         log.info("ended = " + ended);
-        assertEquals(endedSize, ended.size());
+        assertEquals(endedSize, size(ended));
         throw new Roolback();
     }
 

@@ -16,4 +16,9 @@
 /**
  * JPA domain objects.
  */
+@org.hibernate.annotations.TypeDefs({
+    @org.hibernate.annotations.TypeDef(name = "localDateType", typeClass = org.jadira.usertype.dateandtime.threeten.PersistentLocalDate.class, defaultForType = java.time.LocalDate.class),
+    @org.hibernate.annotations.TypeDef(name = "localDateTimeType", typeClass = org.jadira.usertype.dateandtime.threeten.PersistentLocalDateTime.class, defaultForType = java.time.LocalDateTime.class),
+    @org.hibernate.annotations.TypeDef(name = "localTimeType", typeClass = org.jadira.usertype.dateandtime.threeten.PersistentLocalTime.class, defaultForType = java.time.LocalTime.class)
+})
 package com.github.zhanhb.judge.domain;

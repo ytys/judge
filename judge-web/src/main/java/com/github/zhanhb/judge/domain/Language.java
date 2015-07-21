@@ -36,7 +36,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -93,7 +92,6 @@ public class Language implements Serializable {
     @Column(name = "creation_date", nullable = false)
     @CreatedDate
     @JsonIgnore
-    @Type(type = "org.jadira.usertype.dateandtime.threeten.PersistentLocalDateTime")
     private LocalDateTime creationDate;
 
     @CreatedBy

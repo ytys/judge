@@ -38,7 +38,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-import org.hibernate.annotations.Type;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -56,8 +55,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EqualsAndHashCode(of = "id")
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "userprofile", uniqueConstraints = {
-    @UniqueConstraint(name = "UK_handle", columnNames = "handle"),
-    @UniqueConstraint(name = "UK_email", columnNames = "email")
+    @UniqueConstraint(name = "UK_userprofile_handle", columnNames = "handle"),
+    @UniqueConstraint(name = "UK_userprofile_email", columnNames = "email")
 })
 @ToString(exclude = "password")
 @XmlRootElement
@@ -85,7 +84,6 @@ public class Userprofile implements Serializable {
     private String email;
 
     @Column(name = "birth_date")
-    @Type(type = "org.jadira.usertype.dateandtime.threeten.PersistentLocalDate")
     private LocalDate birthDate;
 
     @Column(name = "school")
@@ -107,13 +105,11 @@ public class Userprofile implements Serializable {
     @Column(name = "last_update_date")
     @JsonIgnore
     @LastModifiedDate
-    @Type(type = "org.jadira.usertype.dateandtime.threeten.PersistentLocalDateTime")
     private LocalDateTime lastUpdateDate;
 
     @Column(name = "creation_date", nullable = false)
     @CreatedDate
     @JsonIgnore
-    @Type(type = "org.jadira.usertype.dateandtime.threeten.PersistentLocalDateTime")
     private LocalDateTime creationDate;
 
 }

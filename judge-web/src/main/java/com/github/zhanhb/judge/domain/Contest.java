@@ -40,7 +40,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -61,7 +60,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 @SuppressWarnings("PersistenceUnitPresent")
 @Table(name = "contest", uniqueConstraints = {
-    @UniqueConstraint(name = "UK_name", columnNames = "name")
+    @UniqueConstraint(name = "UK_contest_name", columnNames = "name")
 })
 @XmlRootElement
 public class Contest implements Auditable<Userprofile, Long, LocalDateTime> {
@@ -91,11 +90,9 @@ public class Contest implements Auditable<Userprofile, Long, LocalDateTime> {
     private String password;
 
     @Column(name = "begin_time")
-    @Type(type = "org.jadira.usertype.dateandtime.threeten.PersistentLocalDateTime")
     private LocalDateTime beginTime;
 
     @Column(name = "finish_time")
-    @Type(type = "org.jadira.usertype.dateandtime.threeten.PersistentLocalDateTime")
     private LocalDateTime finishTime;
 
     @JoinColumn(name = "parent", foreignKey = @ForeignKey(name = "FK_contest_parent"))
@@ -118,7 +115,6 @@ public class Contest implements Auditable<Userprofile, Long, LocalDateTime> {
     @Column(name = "creation_date", nullable = false)
     @CreatedDate
     @JsonIgnore
-    @Type(type = "org.jadira.usertype.dateandtime.threeten.PersistentLocalDateTime")
     private LocalDateTime creationDate;
 
     @CreatedBy
@@ -130,7 +126,6 @@ public class Contest implements Auditable<Userprofile, Long, LocalDateTime> {
     @Column(name = "last_update_date", nullable = false)
     @LastModifiedDate
     @JsonIgnore
-    @Type(type = "org.jadira.usertype.dateandtime.threeten.PersistentLocalDateTime")
     private LocalDateTime lastModifiedDate;
 
     @LastModifiedBy

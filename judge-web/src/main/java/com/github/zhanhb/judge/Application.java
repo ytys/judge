@@ -78,6 +78,7 @@ public class Application extends SpringBootServletInitializer {
         private String url = "?";
 
         // this method must be specified, for spring can't access private constructors.
+        @SuppressWarnings("unused")
         ServerInfo() {
         }
 

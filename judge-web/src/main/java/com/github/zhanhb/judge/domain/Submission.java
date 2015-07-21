@@ -38,7 +38,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -73,11 +72,9 @@ public class Submission implements Serializable {
     @Column(name = "submit_time", nullable = false)
     @CreatedDate
     @NotNull
-    @Type(type = "org.jadira.usertype.dateandtime.threeten.PersistentLocalDateTime")
     private LocalDateTime submitTime;
 
     @Column(name = "judge_time")
-    @Type(type = "org.jadira.usertype.dateandtime.threeten.PersistentLocalDateTime")
     private LocalDateTime judgeTime;
 
     @JoinColumn(name = "contest", foreignKey = @ForeignKey(name = "FK_submission_contest"))

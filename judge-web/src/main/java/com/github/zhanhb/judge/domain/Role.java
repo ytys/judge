@@ -48,7 +48,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EqualsAndHashCode(of = "id")
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "role", uniqueConstraints = {
-    @UniqueConstraint(name = "UK_name", columnNames = "name")
+    @UniqueConstraint(name = "UK_role_name", columnNames = "name")
 })
 @XmlRootElement
 public class Role implements Serializable {

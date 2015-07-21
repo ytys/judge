@@ -15,9 +15,7 @@
  */
 package com.github.zhanhb.judge.repository;
 
-import com.mysema.query.types.Predicate;
 import java.io.Serializable;
-import java.util.List;
 import java.util.Optional;
 import org.springframework.data.querydsl.QueryDslPredicateExecutor;
 import org.springframework.data.repository.NoRepositoryBean;
@@ -30,13 +28,10 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  * @param <ID> id class of the entity, usually java.lang.Long
  */
 @NoRepositoryBean
-public interface BaseRepository<T, ID extends Serializable>
+interface BaseRepository<T, ID extends Serializable>
         extends PagingAndSortingRepository<T, ID>,
         QueryDslPredicateExecutor<T> {
 
     Optional<T> findById(ID id);
-
-    @Override
-    List<T> findAll(Predicate predicate);
 
 }

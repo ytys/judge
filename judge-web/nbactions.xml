@@ -80,6 +80,7 @@
         <actionName>CUSTOM-liquibase:update</actionName>
         <displayName>liquibase:update</displayName>
         <goals>
+            <goal>compile</goal>
             <goal>liquibase:update</goal>
         </goals>
     </action>
@@ -87,6 +88,7 @@
         <actionName>CUSTOM-liquibase:diff</actionName>
         <displayName>liquibase:diff</displayName>
         <goals>
+            <goal>compile</goal>
             <goal>liquibase:diff</goal>
         </goals>
     </action>

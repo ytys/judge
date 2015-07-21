@@ -53,7 +53,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EqualsAndHashCode(of = "id")
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "usergroup", uniqueConstraints = {
-    @UniqueConstraint(name = "UK_owner_group_order", columnNames = {"owner", "group_order"})
+    @UniqueConstraint(name = "UK_usergroup_owner_group_order", columnNames = {"owner", "group_order"})
 })
 @XmlRootElement
 public class Usergroup implements Serializable {
