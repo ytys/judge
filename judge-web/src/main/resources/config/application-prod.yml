@@ -17,8 +17,6 @@ multipart:
     max-file-size: 50Mb
     max-request-size: 200Mb
 
-security.basic.enabled: false
-
 spring:
     data.rest:
         basePath: /rest

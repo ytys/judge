@@ -13,28 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.zhanhb.judge.util;
-
-import java.lang.annotation.Documented;
-import static java.lang.annotation.ElementType.TYPE;
-import java.lang.annotation.Inherited;
-import java.lang.annotation.Retention;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
-import java.lang.annotation.Target;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Component;
-
 /**
- * A component
- * 
- * @author zhanhb
- * @see Component
+ * password encoder
+ * @see com.github.zhanhb.judge.config.PasswordEncoderConfig#passwordEncoder()
  */
-@Component
-@Documented
-@Inherited
-@Qualifier
-@Retention(RUNTIME)
-@Target(TYPE)
-public @interface Utility {
-}
+package com.github.zhanhb.judge.security.password;

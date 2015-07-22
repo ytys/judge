@@ -13,7 +13,7 @@
         </encoder>
     </appender>
 
-<!-- The FILE and ASYNC appenders are here as examples for a production configuration -->
+    <!-- The FILE and ASYNC appenders are here as examples for a production configuration -->
 <!--
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
@@ -26,11 +26,11 @@
         </encoder>
     </appender>
 
-        <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
-            <queueSize>512</queueSize>
-            <appender-ref ref="FILE"/>
-        </appender>
-    -->
+    <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+        <queueSize>512</queueSize>
+        <appender-ref ref="FILE"/>
+    </appender>
+-->
 
     <logger name="com.github.zhanhb.judge" level="${logback.loglevel}"/>
 

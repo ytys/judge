@@ -20,6 +20,10 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+/**
+ *
+ * @author zhanhb
+ */
 public class MessageDigestPasswordEncoder implements PasswordEncoder {
 
     private final char[] bytes = {

@@ -6,6 +6,10 @@ import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ *
+ * @author zhanhb
+ */
 @SuppressWarnings("FinalClass")
 public final class MatcherWrapper implements MatchResult {
 

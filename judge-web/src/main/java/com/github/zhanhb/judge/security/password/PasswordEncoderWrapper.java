@@ -22,7 +22,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  *
  * @author zhanhb
  */
-abstract class PasswordEncoderWrapper implements PasswordEncoder {
+/* (non-Javadoc)
+ * Class should be public for javadoc to access, link source option will generate link to source of this file.
+ */
+public abstract class PasswordEncoderWrapper implements PasswordEncoder {
 
     private final PasswordEncoder encoder;
 

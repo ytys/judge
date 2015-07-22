@@ -68,7 +68,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .sameOrigin()
                 .and()
             .authorizeRequests()
-                .antMatchers("/login").anonymous()
                 .antMatchers("/mappings/**").hasAuthority(AuthoritiesConstants.ADMIN)
                 .antMatchers("/metrics/**").hasAuthority(AuthoritiesConstants.ADMIN)
                 .antMatchers("/health/**").hasAuthority(AuthoritiesConstants.ADMIN)
@@ -79,7 +78,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/configprops/**").hasAuthority(AuthoritiesConstants.ADMIN)
                 .antMatchers("/info/**").hasAuthority(AuthoritiesConstants.ADMIN)
                 .antMatchers("/autoconfig/**").hasAuthority(AuthoritiesConstants.ADMIN)
-                .antMatchers("/env/**").hasAuthority(AuthoritiesConstants.ADMIN);
+                .antMatchers("/env/**").hasAuthority(AuthoritiesConstants.ADMIN)
+                .anyRequest().authenticated();
     }
     // @formatter:on
 

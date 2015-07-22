@@ -20,6 +20,7 @@ import com.github.zhanhb.judge.domain.Userprofile;
 import com.github.zhanhb.judge.repository.UserprofileRepository;
 import com.github.zhanhb.judge.repository.UserprofileRoleRepository;
 import java.util.Optional;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,6 +28,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+/**
+ *
+ * @author zhanhb
+ */
 @Service
 @Slf4j
 public class UserprofileDetailsService implements UserDetailsService {
@@ -37,11 +42,7 @@ public class UserprofileDetailsService implements UserDetailsService {
     private UserprofileRoleRepository urr;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        if (username == null) {
-            throw new IllegalArgumentException("login");
-        }
-
+    public UserDetails loadUserByUsername(@NonNull String username) throws UsernameNotFoundException {
         Optional<Userprofile> optional = username.contains("@")
                 ? ur.findByEmail(username)
                 : ur.findByHandleIgnoreCase(username);

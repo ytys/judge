@@ -24,6 +24,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerInitializedEvent;
 import org.springframework.boot.context.embedded.EmbeddedWebApplicationContext;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Configuration;
@@ -37,10 +38,7 @@ import org.springframework.context.annotation.Configuration;
 public class Application extends SpringBootServletInitializer {
 
     public static void main(String[] args) throws IOException {
-        ConfigurableApplicationContext ctx = SpringApplication.run(Application.class, args);
-        String dashes = "------------------------------------------------------------------------";
-        String url = ctx.getBean(ServerInfo.class).url();
-        log.info("Access URLs:\n{}\n\tLocal: \t\t{}\n{}", dashes, url, dashes);
+        ApplicationContext ctx = start(null, args);
         try (Scanner scanner = new Scanner(System.in)) {
             while (scanner.hasNext()) {
                 String name = scanner.next();
@@ -52,16 +50,24 @@ public class Application extends SpringBootServletInitializer {
                     case "break":
                         return;
                     case "reload":
-                        SpringApplication.exit(ctx);
-                        ctx = SpringApplication.run(Application.class, args);
-                        url = ctx.getBean(ServerInfo.class).url();
-                        log.info("Access URLs:\n{}\n\tLocal: \t\t{}\n{}", dashes, url, dashes);
+                        ctx = start(ctx, args);
                         continue;
                 }
                 String property = ctx.getEnvironment().getProperty(name);
                 System.out.println(property);
             }
         }
+    }
+
+    private static ApplicationContext start(ApplicationContext old, String[] args) {
+        if (old != null) {
+            SpringApplication.exit(old);
+        }
+        String dashes = "------------------------------------------------------------------------";
+        ConfigurableApplicationContext ctx = SpringApplication.run(Application.class, args);
+        String url = ctx.getBean(ServerInfo.class).url();
+        log.info("Access URLs:\n{}\n\tLocal: \t\t{}\n{}", dashes, url, dashes);
+        return ctx;
     }
 
     @Override

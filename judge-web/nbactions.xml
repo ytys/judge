@@ -1,6 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <actions>
     <action>
+        <actionName>build</actionName>
+        <packagings>
+            <packaging>*</packaging>
+        </packagings>
+        <goals>
+            <goal>package</goal>
+        </goals>
+    </action>
+    <action>
+        <actionName>rebuild</actionName>
+        <packagings>
+            <packaging>*</packaging>
+        </packagings>
+        <goals>
+            <goal>clean</goal>
+            <goal>package</goal>
+        </goals>
+    </action>
+    <action>
+        <actionName>build-with-dependencies</actionName>
+        <reactor>also-make</reactor>
+        <packagings>
+            <packaging>*</packaging>
+        </packagings>
+        <goals>
+            <goal>package</goal>
+        </goals>
+    </action>
+    <action>
         <actionName>clean</actionName>
         <packagings>
             <packaging>*</packaging>
@@ -41,25 +70,6 @@
         </properties>
     </action>
     <action>
-        <actionName>CUSTOM-clean test</actionName>
-        <displayName>clean test</displayName>
-        <goals>
-            <goal>clean</goal>
-            <goal>test</goal>
-        </goals>
-    </action>
-    <action>
-        <actionName>CUSTOM-spring-boot:run server.port=0</actionName>
-        <displayName>spring-boot:run server.port=0</displayName>
-        <goals>
-            <goal>spring-boot:run</goal>
-        </goals>
-        <properties>
-            <server.port>0</server.port>
-            <debug></debug>
-        </properties>
-    </action>
-    <action>
         <actionName>CUSTOM-sortpom:sort</actionName>
         <displayName>sortpom:sort</displayName>
         <goals>
@@ -67,22 +77,14 @@
         </goals>
     </action>
     <action>
-        <actionName>CUSTOM-pakckage skip test</actionName>
-        <displayName>pakckage skip test</displayName>
+        <actionName>CUSTOM-build skip test</actionName>
+        <displayName>build skip test</displayName>
         <goals>
             <goal>package</goal>
         </goals>
         <properties>
             <maven.test.skip>true</maven.test.skip>
         </properties>
-    </action>
-    <action>
-        <actionName>CUSTOM-liquibase:update</actionName>
-        <displayName>liquibase:update</displayName>
-        <goals>
-            <goal>compile</goal>
-            <goal>liquibase:update</goal>
-        </goals>
     </action>
     <action>
         <actionName>CUSTOM-liquibase:diff</actionName>
@@ -131,6 +133,20 @@
         </goals>
         <properties>
             <netbeans.deploy>true</netbeans.deploy>
+        </properties>
+    </action>
+    <action>
+        <actionName>test.single</actionName>
+        <packagings>
+            <packaging>*</packaging>
+        </packagings>
+        <goals>
+            <goal>compile</goal>
+            <goal>test-compile</goal>
+            <goal>surefire:test</goal>
+        </goals>
+        <properties>
+            <test>${packageClassName}</test>
         </properties>
     </action>
 </actions>
