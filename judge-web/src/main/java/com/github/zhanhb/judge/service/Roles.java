@@ -13,19 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.zhanhb.judge.web;
+package com.github.zhanhb.judge.service;
 
 import com.github.zhanhb.judge.domain.Role;
 import com.github.zhanhb.judge.repository.RoleRepository;
 import com.github.zhanhb.judge.security.AuthoritiesConstants;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author zhanhb
  */
-@Component
+@Service
 public class Roles {
 
     @Autowired

@@ -33,18 +33,15 @@ INSERT INTO judge_reply (id, committed, description, name, style, creation_user,
 
 --changeset system:00000000000003
 INSERT INTO role (id, description, name) VALUES
-    (1, 'system', 'ROLE_SYSTEM'),
-    (2, 'anonymous', 'ROLE_ANONYMOUS'),
-    (3, 'user', 'ROLE_USER'),
-    (4, 'administrator', 'ROLE_ADMIN'),
-    (5, 'teacher', 'ROLE_TEACHER'),
-    (6, 'student', 'ROLE_STUDENT');
+    (1, 'administrator', 'ROLE_ADMIN'),
+    (2, 'user', 'ROLE_USER'),
+    (3, 'teacher', 'ROLE_TEACHER');
 
 --changeset system:00000000000004
 INSERT INTO limits (id, memory_limit, output_limit, time_limit) VALUES
     (1, 134217728, 134217728, 2000);
 
 --changeset system:00000000000005
-INSERT INTO userprofile_role (role, userprofile) VALUES
-    (1, 3),
-    (2, 3);
+INSERT INTO userprofile_role (id, role, userprofile) VALUES
+    (1, 1, 3),
+    (2, 2, 3);

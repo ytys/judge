@@ -16,7 +16,7 @@
 package com.github.zhanhb.judge.main;
 
 import com.github.zhanhb.judge.util.MatcherWrapper;
-import com.github.zhanhb.judge.util.StringUtils;
+import com.github.zhanhb.judge.util.Strings;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
@@ -45,7 +45,7 @@ public class Liquibase {
             str = str.replaceAll(replace[0], replace[1]);
         }
         str = new MatcherWrapper(Pattern.compile("id=\"\\d+-(\\d+)\""), str).replaceAll(matcher -> {
-            String t = StringUtils.slice("0000000000000" + matcher.group(1), -14);
+            String t = Strings.slice("0000000000000" + matcher.group(1), -14);
             return "id=\"" + t + "\"";
         });
         Files.write(initSchema, str.getBytes(charset));

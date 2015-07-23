@@ -13,21 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.zhanhb.judge.repository;
+package com.github.zhanhb.judge.config.metrics;
 
 import com.github.zhanhb.judge.Application;
-import com.github.zhanhb.judge.domain.Contest;
-import com.github.zhanhb.judge.domain.ContestType;
-import com.github.zhanhb.judge.domain.Submission;
-import java.time.LocalDateTime;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.context.annotation.Bean;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
@@ -39,31 +34,22 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @Slf4j
 @SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
-public class SubmissionRepositoryTest {
+public class JavaMailHealthIndicatorTest {
 
     @Autowired
-    private SubmissionRepository repository;
-    @Autowired
-    private ContestRepository cr;
+    private JavaMailSenderImpl impl;
 
+    @Bean
+    public JavaMailHealthIndicator tt() {
+        return new JavaMailHealthIndicator(impl);
+    }
+
+    /**
+     * Test of doHealthCheck method, of class JavaMailHealthIndicator.
+     */
     @Test
-    public void testFindAllByContestName() {
-        log.info("findAllByContestName");
-        String contestName = "test_contest_name";
-
-        Contest contest = cr.save(Contest.builder()
-                .beginTime(LocalDateTime.now())
-                .finishTime(LocalDateTime.now())
-                .type(ContestType.OJ)
-                .title("title")
-                .name(contestName)
-                .build());
-
-        Submission.builder().contest(contest);
-        Pageable pageable = new PageRequest(0, 20);
-        Page<Submission> page = repository.findAllByContestName(contestName, pageable);
-        log.debug("{}", page);
-        cr.delete(contest);
+    public void testDoHealthCheck() {
+        log.info("{}", tt().health());
     }
 
 }

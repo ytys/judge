@@ -16,6 +16,7 @@
 package com.github.zhanhb.judge;
 
 import java.io.IOException;
+import java.util.Locale;
 import java.util.Scanner;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
@@ -93,7 +94,7 @@ public class Application extends SpringBootServletInitializer {
             EmbeddedWebApplicationContext context = event.getApplicationContext();
             int port = context.getEmbeddedServletContainer().getPort();
             String contextPath = context.getApplicationName();
-            this.url = String.format("http://localhost:%d%s", port, contextPath);
+            this.url = String.format(Locale.US, "http://localhost:%d%s", port, contextPath);
         }
 
         public String url() {

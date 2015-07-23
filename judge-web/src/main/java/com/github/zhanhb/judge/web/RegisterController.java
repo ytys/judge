@@ -15,10 +15,11 @@
  */
 package com.github.zhanhb.judge.web;
 
+import com.github.zhanhb.judge.service.Roles;
 import com.github.zhanhb.judge.domain.Userprofile;
 import com.github.zhanhb.judge.repository.UserprofileRepository;
 import com.github.zhanhb.judge.repository.UserprofileRoleRepository;
-import com.github.zhanhb.judge.util.StringUtils;
+import com.github.zhanhb.judge.util.Strings;
 import com.github.zhanhb.judge.web.form.UserRegisterForm;
 import java.util.function.Consumer;
 import javax.validation.Valid;
@@ -95,10 +96,10 @@ public class RegisterController extends BaseController {
                 .builder()
                 .handle(userRegisterForm.getHandle())
                 .password(encoder.encode(userRegisterForm.getPassword()))
-                .email(StringUtils.trimToNull(userRegisterForm.getEmail()))
-                .school(StringUtils.trimToNull(userRegisterForm.getSchool()))
-                .major(StringUtils.trimToNull(userRegisterForm.getMajor()))
-                .nickname(StringUtils.trimToNull(userRegisterForm.getNickname()))
+                .email(Strings.trimToNull(userRegisterForm.getEmail()))
+                .school(Strings.trimToNull(userRegisterForm.getSchool()))
+                .major(Strings.trimToNull(userRegisterForm.getMajor()))
+                .nickname(Strings.trimToNull(userRegisterForm.getNickname()))
                 .build()
         );
         urr.findByUserprofileAndRole(userprofile, roles.user());

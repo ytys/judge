@@ -16,11 +16,10 @@
 package com.github.zhanhb.judge.config;
 
 import com.github.zhanhb.judge.util.Standalone;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRegistration;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.WebApplicationInitializer;
+import org.springframework.boot.context.embedded.ServletRegistrationBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Controller;
 
 /**
  *
@@ -28,19 +27,15 @@ import org.springframework.web.WebApplicationInitializer;
  */
 @Slf4j
 @Standalone
-public class H2ConsoleInitializer implements WebApplicationInitializer {
+@Controller
+public class H2Console {
 
-    @Override
-    public void onStartup(ServletContext servletContext) throws ServletException {
-        initH2Console(servletContext);
-    }
-
-    private void initH2Console(ServletContext servletContext) {
+    @Bean(name = "h2console")
+    public ServletRegistrationBean console() {
         log.debug("Initialize H2 console");
-        ServletRegistration.Dynamic h2ConsoleServlet = servletContext.addServlet("H2Console", new org.h2.server.web.WebServlet());
-        h2ConsoleServlet.addMapping("/console/*");
-        h2ConsoleServlet.setInitParameter("-properties", "src/main/resources");
-        h2ConsoleServlet.setLoadOnStartup(1);
+        ServletRegistrationBean bean = new ServletRegistrationBean(new org.h2.server.web.WebServlet(), "/console/*");
+        bean.addInitParameter("-properties", "src/main/resources");
+        return bean;
     }
 
 }

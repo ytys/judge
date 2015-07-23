@@ -13,33 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.zhanhb.judge.exception;
+package com.github.zhanhb.judge.util;
 
-import com.github.zhanhb.judge.util.Strings;
+import lombok.experimental.UtilityClass;
 
 /**
  *
  * @author zhanhb
  */
-public class EntityNotExistException extends RuntimeException {
+@UtilityClass
+@SuppressWarnings("FinalClass")
+public class Ints {
 
-    private static final long serialVersionUID = 1L;
-
-    private static String defaultMessage() {
-        return "can't find the entity";
-    }
-
-    public EntityNotExistException() {
-        super(defaultMessage());
-    }
-
-    public EntityNotExistException(String message) {
-        super(Strings.isEmpty(message) ? defaultMessage() : message);
-    }
-
-    @Override
-    public Throwable fillInStackTrace() {
-        return this;
+    public int addIgnoreOverFlow(int x, int y) {
+        int r = x + y;
+        // HD 2-12 Overflow iff both arguments have the opposite sign of the result
+        if (((x ^ r) & (y ^ r)) < 0) {
+            return x < 0 ? Integer.MIN_VALUE : Integer.MAX_VALUE;
+        }
+        return r;
     }
 
 }

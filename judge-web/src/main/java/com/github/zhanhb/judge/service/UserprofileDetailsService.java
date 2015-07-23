@@ -43,9 +43,10 @@ public class UserprofileDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(@NonNull String username) throws UsernameNotFoundException {
-        Optional<Userprofile> optional = username.contains("@")
-                ? ur.findByEmail(username)
-                : ur.findByHandleIgnoreCase(username);
+        Optional<Userprofile> optional
+                = username.contains("@")
+                        ? ur.findByEmail(username)
+                        : ur.findByHandleIgnoreCase(username);
 
         @SuppressWarnings("ThrowableInstanceNotThrown")
         Userprofile userprofile = optional.orElseThrow(() -> new UsernameNotFoundException(username));

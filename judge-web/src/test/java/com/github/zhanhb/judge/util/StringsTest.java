@@ -28,7 +28,7 @@ import org.junit.Test;
  * @author zhanhb
  */
 @Slf4j
-public class StringUtilsTest {
+public class StringsTest {
 
     private StringBuilder merge(StringBuilder a, StringBuilder b) {
         throw new IllegalStateException();
@@ -55,7 +55,7 @@ public class StringUtilsTest {
 
             for (int j = 0; j < 30; ++j) {
                 int start = random.nextInt(length * 6) - length * 3;
-                String result = StringUtils.slice(randomString, start);
+                String result = Strings.slice(randomString, start);
 
                 String expResult = (String) javascript.eval("\'" + randomString + "\'.slice(" + start + ")");
                 assertEquals(expResult, result);
@@ -85,7 +85,7 @@ public class StringUtilsTest {
             for (int j = 0; j < 30; ++j) {
                 int start = random.nextInt(length * 6) - length * 3;
                 int end = random.nextInt(length * 6) - length * 3;
-                String result = StringUtils.slice(randomString, start, end);
+                String result = Strings.slice(randomString, start, end);
 
                 String expResult = (String) javascript.eval("\'" + randomString + "\'.slice(" + start + "," + end + ")");
                 assertEquals(expResult, result);

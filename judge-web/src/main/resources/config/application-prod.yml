@@ -44,6 +44,8 @@ spring:
         # Hikari
         connectionTestQuery: select 1
 
+    endpoints.jmx.uniqueNames: true
+
     http:
         # enable http encoding support
         encoding.enabled: true
@@ -77,6 +79,8 @@ spring:
                 query.substitutions: true '1', false '0'
 
             javax.persistence.jdbc.validation.mode: none
+
+    jmx.enabled: false
 
     # THYMELEAF (org.springframework.boot.autoconfigure.thymeleaf.ThymeleafAutoConfiguration)
     thymeleaf:

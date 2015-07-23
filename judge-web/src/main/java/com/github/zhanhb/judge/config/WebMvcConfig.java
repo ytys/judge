@@ -15,10 +15,10 @@ package com.github.zhanhb.judge.config;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration.WebMvcAutoConfigurationAdapter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
 /**
@@ -26,7 +26,7 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
  * @author zhanhb
  */
 @Configuration
-public class WebMvcConfig extends WebMvcAutoConfigurationAdapter {
+public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -43,7 +43,6 @@ public class WebMvcConfig extends WebMvcAutoConfigurationAdapter {
         registry.addViewController("/faq").setViewName("faq");
         registry.addViewController("/forum").setViewName("forum");
         registry.addViewController("/test").setViewName("test");
-        registry.addViewController("/layout").setViewName("layout");
     }
 
 }

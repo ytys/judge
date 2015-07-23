@@ -1,9 +1,1 @@
-spring:
-    profiles:
-        active: prod
-
-    datasource:
-        url: jdbc:mariadb:///oj?zeroDateTimeBehavior=convertToNull&characterEncoding=UTF-8
-        username: root
-        password: root
-
+spring.profiles.active: mysql

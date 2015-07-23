@@ -15,13 +15,17 @@
  */
 package com.github.zhanhb.judge.util;
 
+import lombok.experimental.UtilityClass;
+
 /**
  *
  * @author zhanhb
  */
-public class StringUtils {
+@UtilityClass
+@SuppressWarnings("FinalClass")
+public class Strings {
 
-    public static String trimLeft(String str) {
+    public String trimLeft(String str) {
         if (str != null) {
             int len = str.length();
             int st = 0;
@@ -36,7 +40,7 @@ public class StringUtils {
         return str;
     }
 
-    public static String trimRight(String str) {
+    public String trimRight(String str) {
         if (str != null) {
             int len = str.length();
 
@@ -50,28 +54,28 @@ public class StringUtils {
         return str;
     }
 
-    public static String trimToNull(String str) {
+    public String trimToNull(String str) {
         final String ts = trim(str);
         return isEmpty(ts) ? null : ts;
     }
 
-    public static boolean isEmpty(final CharSequence cs) {
+    public boolean isEmpty(final CharSequence cs) {
         return cs == null || cs.length() == 0;
     }
 
-    public static String trimToEmpty(String str) {
+    public String trimToEmpty(String str) {
         return str == null ? "" : str.trim();
     }
 
-    public static String trim(String str) {
+    public String trim(String str) {
         return str != null ? str.trim() : null;
     }
 
-    public static String slice(String string, int beginIndex) throws NullPointerException {
+    public String slice(String string, int beginIndex) throws NullPointerException {
         return string.substring(fixIndex(string, beginIndex));
     }
 
-    public static String slice(String string, int beginIndex, int endIndex) throws NullPointerException {
+    public String slice(String string, int beginIndex, int endIndex) throws NullPointerException {
         int fixedBeginIndex = fixIndex(string, beginIndex);
         int fixedEndIndex = fixIndex(string, endIndex);
         if (fixedBeginIndex >= fixedEndIndex) {
@@ -80,14 +84,11 @@ public class StringUtils {
         return string.substring(fixedBeginIndex, fixedEndIndex);
     }
 
-    private static int fixIndex(String str, int index) {
+    private int fixIndex(String str, int index) {
         int len = str.length();
         return (index >= 0)
                 ? Math.min(len, index)
                 : Math.max(0, len + index);
-    }
-
-    private StringUtils() {
     }
 
 }

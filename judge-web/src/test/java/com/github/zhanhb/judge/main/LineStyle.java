@@ -15,7 +15,7 @@
  */
 package com.github.zhanhb.judge.main;
 
-import com.github.zhanhb.judge.util.StringUtils;
+import com.github.zhanhb.judge.util.Strings;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -64,7 +64,7 @@ public class LineStyle {
         long lastModified = Files.getLastModifiedTime(path).toMillis();
         Charset charset = StandardCharsets.ISO_8859_1;
         try {
-            String str = Files.readAllLines(path, charset).stream().map(StringUtils::trimRight)
+            String str = Files.readAllLines(path, charset).stream().map(Strings::trimRight)
                     .collect(Collectors.joining(LINE_STYLE)) + LINE_STYLE;
             Files.write(path, str.getBytes(charset));
         } finally {

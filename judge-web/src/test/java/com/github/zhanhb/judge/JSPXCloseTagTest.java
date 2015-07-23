@@ -28,13 +28,16 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.fail;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
+ * we don't have jspx now.
  *
  * @author zhanhb
  * @date Jun 1, 2015, 14:15:38
  */
+@Ignore
 public class JSPXCloseTagTest {
 
     private Stream<Path> getStream() throws IOException {

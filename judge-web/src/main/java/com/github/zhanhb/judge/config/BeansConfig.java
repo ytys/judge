@@ -15,9 +15,9 @@
  */
 package com.github.zhanhb.judge.config;
 
-import javax.servlet.ServletContext;
 import org.hibernate.validator.HibernateValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -48,7 +48,7 @@ public class BeansConfig {
 
     /* Store preferred language configuration in a cookie */
     @Bean(name = "localeResolver")
-    public CookieLocaleResolver localeResolver(ServletContext container) {
+    public CookieLocaleResolver localeResolver(ApplicationContext container) {
         CookieLocaleResolver localeResolver = new CookieLocaleResolver();
         localeResolver.setCookieName("locale");
         localeResolver.setCookieMaxAge(3_600);
@@ -57,7 +57,7 @@ public class BeansConfig {
     }
 
     @Bean(name = "themeResolver")
-    public CookieThemeResolver themeResolver(ServletContext container) {
+    public CookieThemeResolver themeResolver(ApplicationContext container) {
         CookieThemeResolver themeResolver = new CookieThemeResolver();
         themeResolver.setCookieName("theme");
         themeResolver.setCookiePath(getCookiePath(container));
@@ -65,8 +65,8 @@ public class BeansConfig {
         return themeResolver;
     }
 
-    private String getCookiePath(ServletContext container) {
-        return container.getContextPath().replaceAll("/$", "") + '/';
+    private String getCookiePath(ApplicationContext container) {
+        return container.getApplicationName().replaceAll("/$", "") + '/';
     }
 
     @Autowired

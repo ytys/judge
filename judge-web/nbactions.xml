@@ -70,6 +70,32 @@
         </properties>
     </action>
     <action>
+        <actionName>test.single</actionName>
+        <packagings>
+            <packaging>*</packaging>
+        </packagings>
+        <goals>
+            <goal>test</goal>
+        </goals>
+        <properties>
+            <test>${packageClassName}</test>
+        </properties>
+    </action>
+    <action>
+        <actionName>debug.test.single</actionName>
+        <packagings>
+            <packaging>*</packaging>
+        </packagings>
+        <goals>
+            <goal>test</goal>
+        </goals>
+        <properties>
+            <test>${packageClassName}</test>
+            <forkMode>once</forkMode>
+            <jpda.listen>maven</jpda.listen>
+        </properties>
+    </action>
+    <action>
         <actionName>CUSTOM-sortpom:sort</actionName>
         <displayName>sortpom:sort</displayName>
         <goals>
@@ -136,17 +162,19 @@
         </properties>
     </action>
     <action>
-        <actionName>test.single</actionName>
+        <actionName>CUSTOM-deploy skip tests</actionName>
+        <displayName>deploy skip tests</displayName>
         <packagings>
-            <packaging>*</packaging>
+            <packaging>war</packaging>
+            <packaging>ear</packaging>
+            <packaging>ejb</packaging>
         </packagings>
         <goals>
-            <goal>compile</goal>
-            <goal>test-compile</goal>
-            <goal>surefire:test</goal>
+            <goal>package</goal>
         </goals>
         <properties>
-            <test>${packageClassName}</test>
+            <netbeans.deploy>true</netbeans.deploy>
+            <maven.test.skip>true</maven.test.skip>
         </properties>
     </action>
 </actions>
