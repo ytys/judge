@@ -30,10 +30,12 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class H2Console {
 
+    public static final String CONSOLE_URL_PREFIX = "/console/";
+
     @Bean(name = "h2console")
     public ServletRegistrationBean console() {
         log.debug("Initialize H2 console");
-        ServletRegistrationBean bean = new ServletRegistrationBean(new org.h2.server.web.WebServlet(), "/console/*");
+        ServletRegistrationBean bean = new ServletRegistrationBean(new org.h2.server.web.WebServlet(), CONSOLE_URL_PREFIX + "*");
         bean.addInitParameter("-properties", "src/main/resources");
         return bean;
     }

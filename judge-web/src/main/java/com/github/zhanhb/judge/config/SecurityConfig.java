@@ -48,7 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
             .formLogin()
-                .loginPage("/login")
+//                .loginPage("/login")
                 .usernameParameter("login")
                 .passwordParameter("password")
                 .successHandler(authenticationSuccessHandler())
@@ -67,8 +67,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .sameOrigin()
                 .and()
             .authorizeRequests()
-                .antMatchers("/", "/login", "/logout").permitAll()
-                .antMatchers("/**/favicon.*").permitAll()
+                .antMatchers("/", "/login", "/logout", "/static/**").permitAll()
+                .antMatchers("/**/favicon.ico").permitAll()
                 .antMatchers("/mappings/**").hasAuthority(AuthoritiesConstants.ADMIN)
                 .antMatchers("/metrics/**").hasAuthority(AuthoritiesConstants.ADMIN)
                 .antMatchers("/health/**").hasAuthority(AuthoritiesConstants.ADMIN)

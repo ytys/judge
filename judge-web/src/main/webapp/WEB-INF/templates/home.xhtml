@@ -17,11 +17,13 @@ limitations under the License.
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title th:text="#{home.title}"></title>
         <meta charset="UTF-8"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link th:replace="layouts/default :: meta" href="layouts/default.xhtml" rel=""/>
+        <title th:text="#{home.title}"></title>
+        <link th:replace="layouts/default :: scripts" href="layouts/default.xhtml" rel=""/>
     </head>
     <body>
+        <div th:replace="fragments/header :: header"></div>
         <div class="jumbotron masthead">
             <div class="container">
                 <h3 th:text="#{home.title}" class="text-center"></h3>

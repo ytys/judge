@@ -52,7 +52,7 @@
         <guava.version>18.0</guava.version>
         <hikaricp.version>2.3.9</hikaricp.version>
         <httpclient.version>4.5</httpclient.version>
-        <jackson.version>2.5.4</jackson.version>
+        <jackson.version>2.6.0</jackson.version>
         <java.version>1.8</java.version>
         <javassist.version>3.20.0-GA</javassist.version>
         <jetty.version>9.2.12.v20150709</jetty.version>
@@ -70,13 +70,14 @@
         <maven.version>3.3.3</maven.version>
         <nekohtml.version>1.9.22</nekohtml.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <querydsl.version>3.6.4</querydsl.version>
+        <querydsl.version>3.6.5</querydsl.version>
         <snakeyaml.version>1.15</snakeyaml.version>
         <spring-data-releasetrain.version>Fowler-RELEASE</spring-data-releasetrain.version>
         <spring-hateoas.version>0.17.0.RELEASE</spring-hateoas.version>
         <spring-integration.version>4.1.6.RELEASE</spring-integration.version>
         <spring-plugin.version>1.2.0.RELEASE</spring-plugin.version>
         <spring-security.version>4.0.1.RELEASE</spring-security.version>
+        <tiles.version>2.2.2</tiles.version>
         <tomcat.version>8.0.24</tomcat.version>
         <usertype.version>4.0.0.GA</usertype.version>
     </properties>
@@ -85,7 +86,6 @@
             <groupId>org.ow2.asm</groupId>
             <artifactId>asm</artifactId>
             <version>${asm.version}</version>
-            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>cglib</groupId>
@@ -301,6 +301,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                    <groupId>org.springframework.boot</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -332,6 +338,11 @@
             <groupId>com.github.mxab.thymeleaf.extras</groupId>
             <artifactId>thymeleaf-extras-data-attribute</artifactId>
             <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.thymeleaf.extras</groupId>
+            <artifactId>thymeleaf-extras-tiles2-spring4</artifactId>
+            <version>2.1.1.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>nz.net.ultraq.thymeleaf</groupId>
@@ -542,10 +553,17 @@
                     <!-- surefire doesn't support file.encoding in environment, -->
                     <!-- we must specify it using argLine -->
                     <argLine>-Dfile.encoding=${file.encoding}</argLine>
+                    <!-- includes of surefire -->
+                    <!-- http://maven.apache.org/surefire/maven-surefire-plugin/examples/inclusion-exclusion.html -->
                     <includes>
-                        <include>**/*Tests.java</include>
+                        <include>%regex[.*Test\d+\.class]</include>
                         <include>**/*Test.java</include>
+                        <include>**/*Tests.java</include>
                     </includes>
+                    <excludes>
+                        <exclude>**/TestSuite.java</exclude>
+                        <exclude>**/NewTestSuite.java</exclude>
+                    </excludes>
                 </configuration>
             </plugin>
             <plugin>
@@ -563,6 +581,11 @@
                 <artifactId>liquibase-maven-plugin</artifactId>
                 <version>${liquibase.version}</version>
                 <dependencies>
+                    <dependency>
+                        <groupId>org.javassist</groupId>
+                        <artifactId>javassist</artifactId>
+                        <version>${javassist.version}</version>
+                    </dependency>
                     <dependency>
                         <groupId>org.liquibase.ext</groupId>
                         <!-- hibernate 4.0-4.2 artifactId liquibase-hibernate4.2 -->

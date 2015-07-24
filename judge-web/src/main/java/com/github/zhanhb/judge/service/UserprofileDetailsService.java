@@ -19,8 +19,8 @@ import com.github.zhanhb.judge.audit.CustomUserDetails;
 import com.github.zhanhb.judge.domain.Userprofile;
 import com.github.zhanhb.judge.repository.UserprofileRepository;
 import com.github.zhanhb.judge.repository.UserprofileRoleRepository;
+import java.util.Objects;
 import java.util.Optional;
-import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -42,11 +42,11 @@ public class UserprofileDetailsService implements UserDetailsService {
     private UserprofileRoleRepository urr;
 
     @Override
-    public UserDetails loadUserByUsername(@NonNull String username) throws UsernameNotFoundException {
-        Optional<Userprofile> optional
-                = username.contains("@")
-                        ? ur.findByEmail(username)
-                        : ur.findByHandleIgnoreCase(username);
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Objects.requireNonNull(username, "username");
+        Optional<Userprofile> optional = username.contains("@")
+                ? ur.findByEmail(username)
+                : ur.findByHandleIgnoreCase(username);
 
         @SuppressWarnings("ThrowableInstanceNotThrown")
         Userprofile userprofile = optional.orElseThrow(() -> new UsernameNotFoundException(username));

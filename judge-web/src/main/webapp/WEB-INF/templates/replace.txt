@@ -1,2 +1,6 @@
 (?<prefix>(?<name>href|src)=")[^"]*+(?<suffix>" th:\k<name>="@\{(?<href>/static/[^\}]+?)\}")
 ${prefix}../..${href}${suffix}
+
+
+<!--(?=[\00-\uffff]+?zhanhb\p{all}*?)[\00-\uffff]+?--> *\r?\n?
+^(?!replace.txt).+$

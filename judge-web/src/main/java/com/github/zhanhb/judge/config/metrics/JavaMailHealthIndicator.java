@@ -1,5 +1,6 @@
 package com.github.zhanhb.judge.config.metrics;
 
+import java.util.Objects;
 import javax.mail.MessagingException;
 import javax.mail.Transport;
 import lombok.NonNull;
@@ -17,7 +18,7 @@ public class JavaMailHealthIndicator extends AbstractHealthIndicator {
     private final JavaMailSenderImpl javaMailSender;
 
     public JavaMailHealthIndicator(@NonNull JavaMailSenderImpl javaMailSender) {
-        this.javaMailSender = javaMailSender;
+        this.javaMailSender = Objects.requireNonNull(javaMailSender, "mailSender");
     }
 
     @Override

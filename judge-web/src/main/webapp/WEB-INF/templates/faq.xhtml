@@ -15,13 +15,16 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head>
         <title>TODO supply a title</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <!-- /* --><style>
+            .q .a .sh_c .container .faq{}
+        </style><!-- */ -->
     </head>
     <body>
-        <div class="container faq">
+        <div class="container faq" th:fragment="">
             <p><span class="q">Q</span>: Where are the input and the output?</p>
             <p><span class="a">A</span>: Your program shall always read input from stdin (Standard Input) and write output to stdout (Standard Output). For example, you can use 'scanf' in C or 'cin' in C++ to read from stdin, and use 'printf' in C or 'cout' in C++ to write to stdout.</p>
             <p>User programs are not allowed to open and read from/write to files. You will get a '<span style="color: green">Runtime Error</span>' or a '<span style="color: green">Wrong Answer</span>' if you try to do so. </p>
@@ -43,7 +46,7 @@ limitations under the License.
                 <span style="color: #FF0000">Old program for jdk 1.4</span></p>
             <pre class="sh_java">import java.io.*;<br/>import java.util.*;<br/><br/>public class Main {<br/>    public static void main(String args[]) throws Exception {<br/>        BufferedReader stdin<br/>                = new BufferedReader(<br/>                        new InputStreamReader(System.in));<br/><br/>        String line = stdin.readLine();<br/>        StringTokenizer st = new StringTokenizer(line);<br/>        int a = Integer.parseInt(st.nextToken());<br/>        int b = Integer.parseInt(st.nextToken());<br/>        System.out.println(a + b);<br/>    }<br/>}</pre>
             <p><span class="q">Q</span>: How to submit java program?</p>
-            <p><span class="a">A</span>: The Java programs submitted must be in a single source code (not .class) file.&nbsp; They must read and write the standard input/output, as the other languages. All programs must begin in a static main method in a Main class.&nbsp; However, you can add and instance as many classes as needed.</p>
+            <p><span class="a">A</span>: The Java programs submitted must be in a single source code (not .class) file. They must read and write the standard input/output, as the other languages. All programs must begin in a static main method in a Main class. However, you can add and instance as many classes as needed.</p>
             <p><span class="q">Q</span>: <span style="font-size: 3">Can I use shortcut key when submitting?</span></p>
             <p><span class="a">A</span>: Here are shortcut keys defined in the submit page</p>
             <p><span style="font-size: 3"><span style="color:#FF00FF"><b>ALT+s</b></span> :Submit button</span></p>
