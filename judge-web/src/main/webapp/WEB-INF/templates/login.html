@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
 <!--
 Copyright 2015 zhanhb.
 
@@ -14,11 +14,12 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title>TODO supply a title</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta charset="UTF-8"/>
+        <link th:replace="layouts/default :: metadata" href="layouts/default.html" rel=""/>
+        <title th:text="#{Login}"></title>
+        <link th:replace="layouts/default :: scripts" href="layouts/default.html" rel=""/>
     </head>
     <body>
         <div class="container">

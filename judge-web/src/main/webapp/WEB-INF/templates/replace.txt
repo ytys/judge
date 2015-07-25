@@ -4,3 +4,7 @@ ${prefix}../..${href}${suffix}
 
 <!--(?=[\00-\uffff]+?zhanhb\p{all}*?)[\00-\uffff]+?--> *\r?\n?
 ^(?!replace.txt).+$
+
+
+<\?xml version="1.0" encoding="UTF-8"\?>(?<comment>\r?\n?<!--(?=[\00-\uffff]+?zhanhb\p{all}*?)[\00-\uffff]+?--> *\r?\n?)<!DOCTYPE html>
+<!DOCTYPE html>${comment}

@@ -67,7 +67,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .sameOrigin()
                 .and()
             .authorizeRequests()
-                .antMatchers("/", "/login", "/logout", "/static/**").permitAll()
+                .antMatchers("/", "/login", "/logout", "/static/**", "/faq").permitAll()
                 .antMatchers("/**/favicon.ico").permitAll()
                 .antMatchers("/mappings/**").hasAuthority(AuthoritiesConstants.ADMIN)
                 .antMatchers("/metrics/**").hasAuthority(AuthoritiesConstants.ADMIN)

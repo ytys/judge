@@ -58,24 +58,26 @@
     $.extend($.fn.bootstrapTable.defaults, {
         undefinedText: "N/A",
         responseHandler: function (res) {
-            var rows = res.content, k;
+            var rows = res.content, page = res.page || res, k;
             if (!rows) {
                 rows = res._embedded;
-                for (k in rows) {
-                    rows = rows[k];
-                    break;
+                if (rows) {
+                    for (k in rows) {
+                        rows = rows[k];
+                        break;
+                    }
                 }
             }
             return $.extend(res, {
                 rows: rows,
-                total: res.page && +res.page.totalElements || res.totalElements
+                total: page.totalElements
             });
         }, queryParams: function (params) {
-            return {
-                sort: params.sort && (params.sort + "," + params.order) || params.sortName && (params.sortName + "," + params.sortOrder),
+            return $.extend(params, {
+                sort: params.sort && (params.sort + "," + params.order) || params.sortName && (params.sortName + "," + params.sortOrder) || undefined,
                 size: +params.limit || +params.pageSize || undefined,
-                page: ((params.offset / params.limit + 1) || +params.pageNumber || 1) - 1
-            };
+                page: (((params.offset / params.limit + 1) || +params.pageNumber || 1) - 1) || undefined
+            });
         }
     });
 

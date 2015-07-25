@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<!--
+Copyright 2015 zhanhb.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8"/>
+        <link th:replace="layouts/default :: metadata" href="layouts/default.html" rel=""/>
+        <title th:text="#{home.title}"></title>
+        <link th:replace="layouts/default :: scripts" href="layouts/default.html" rel=""/>
+        <!--/*-->
+        <link href="../../static/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+        <link href="../../static/bootstrap/css/bootstrap-theme.css" rel="stylesheet" type="text/css"/>
+        <script src="../../static/bootstrap/js/bootstrap.js" type="text/javascript"></script>
+        <!--*/-->
+    </head>
+    <body>
+        <div th:replace="fragments/header :: header"></div>
+        <div class="jumbotron masthead">
+            <div class="container">
+                <h3 th:text="#{home.title}" class="text-center"></h3>
+                <p>第一次使用，请阅读<a href="faq" th:href="@{/faq}">常见问题</a>。然后，选择题目，编程并提交程序。</p>
+                <p>若想发布你的题目或建立考试，请联系我们。</p>
+                <p>下载: C-Free <a href="/download/cfree4_0_std_setup_ch.exe">4.0</a> <a href="/download/cfree5_0_pro_setup_ch.exe">5.0</a>(<a href="/download/program/cfree/cfree5_0_pro_setup_ch.txt">注册码</a>)</p>
+                <p><a href="/download/vc6_cn_14m.exe">VC++精简版</a></p>
+                <p><a href="/download/program/jdk/">JDK</a> 1.8.0_51(<a href="/download/program/jdk/jdk-8u51-windows-i586.exe">32</a>/<a href="/download/program/jdk/jdk-8u51-windows-x64.exe">64</a>)</p>
+                <p></p>
+                <p><a href="document.doc" th:href="@{/document.doc}">在线评测网站使用说明及要求</a></p>
+                <p><span style="color:red">如遇题目数据、描述有误等问题，请在<a href="forum" th:href="@{/forum}">讨论版</a>反映，我们将及时处理！(有关题目解法等问题将不予回答)</span></p>
+            </div>
+        </div>
+        <div th:replace="fragments/footer :: footer"></div>
+    </body>
+</html>
