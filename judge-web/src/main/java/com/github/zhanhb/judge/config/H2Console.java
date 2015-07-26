@@ -36,7 +36,8 @@ public class H2Console {
     public ServletRegistrationBean console() {
         log.debug("Initialize H2 console");
         ServletRegistrationBean bean = new ServletRegistrationBean(new org.h2.server.web.WebServlet(), CONSOLE_URL_PREFIX + "*");
-        bean.addInitParameter("-properties", "src/main/resources");
+        // don't load properties from file.
+        bean.addInitParameter("-properties", "null");
         return bean;
     }
 

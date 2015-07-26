@@ -7,6 +7,9 @@ liquibase:
     contexts: prod
     changeLog: classpath:config/liquibase/master.xml
 
+# default value if true, set to false when no need or security cause.
+endpoints.autoconfig.enabled: true
+
 multipart:
     enabled: true
     # Threshold after which files will be written to disk.
@@ -63,7 +66,7 @@ spring:
 
     # @see org.springframework.boot.autoconfigure.orm.jpa.JpaProperties
     jpa:
-        show-sql: true
+        show-sql: false
         hibernate.ddl-auto: none
         #hibernate.naming-strategy: org.hibernate.cfg.EJB3NamingStrategy
         properties:

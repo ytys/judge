@@ -15,6 +15,7 @@
  */
 package com.github.zhanhb.judge.config;
 
+import com.github.zhanhb.judge.util.Standalone;
 import com.jolbox.bonecp.BoneCPDataSource;
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,7 @@ import org.springframework.context.annotation.Configuration;
  * @author zhanhb
  */
 @Configuration
+@Standalone(optional = true)
 public class CustomDataSourcePool {
 
     @Autowired

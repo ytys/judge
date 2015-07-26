@@ -22,13 +22,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.context.embedded.EmbeddedServletContainerInitializedEvent;
 import org.springframework.boot.context.embedded.EmbeddedWebApplicationContext;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationListener;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.Configuration;
 
 /**
  *
@@ -66,8 +63,13 @@ public class Application extends SpringBootServletInitializer {
         }
         String dashes = "------------------------------------------------------------------------";
         ConfigurableApplicationContext ctx = SpringApplication.run(Application.class, args);
-        String url = ctx.getBean(ServerInfo.class).url();
-        log.info("Access URLs:\n{}\n\tLocal: \t\t{}\n{}", dashes, url, dashes);
+        if (log.isInfoEnabled() && ctx instanceof EmbeddedWebApplicationContext) {
+            EmbeddedWebApplicationContext context = (EmbeddedWebApplicationContext) ctx;
+            int port = context.getEmbeddedServletContainer().getPort();
+            String contextPath = context.getApplicationName();
+            String url = String.format(Locale.US, "http://localhost:%d%s", port, contextPath);
+            log.info("Access URLs:\n{}\n\tLocal: \t\t{}\n{}", dashes, url, dashes);
+        }
         return ctx;
     }
 
@@ -79,27 +81,4 @@ public class Application extends SpringBootServletInitializer {
                 .sources(Application.class);
     }
 
-    @Configuration
-    private static class ServerInfo implements ApplicationListener<EmbeddedServletContainerInitializedEvent> {
-
-        private String url = "?";
-
-        // this method must be specified, for spring can't access private constructors.
-        @SuppressWarnings("unused")
-        ServerInfo() {
-        }
-
-        @Override
-        public void onApplicationEvent(EmbeddedServletContainerInitializedEvent event) {
-            EmbeddedWebApplicationContext context = event.getApplicationContext();
-            int port = context.getEmbeddedServletContainer().getPort();
-            String contextPath = context.getApplicationName();
-            this.url = String.format(Locale.US, "http://localhost:%d%s", port, contextPath);
-        }
-
-        public String url() {
-            return url;
-        }
-
-    }
 }

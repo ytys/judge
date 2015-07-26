@@ -17,14 +17,11 @@ limitations under the License.
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head>
         <!--/*--><meta charset="UTF-8"/><!--*/-->
-        <title>TODO supply a title</title>
+        <th:block th:replace="layouts/default :: metadata" th:fragment="metadata"/>
+        <title></title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
     <body>
-        <table>
-            <tr th:each="problem: ${content}">
-                <td th:text="${problem.title}"></td>
-            </tr>
-        </table>
+        <div>TODO write content</div>
     </body>
 </html>

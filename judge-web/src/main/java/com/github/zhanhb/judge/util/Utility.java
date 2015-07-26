@@ -26,7 +26,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * A component
- * 
+ *
  * @author zhanhb
  * @see Component
  */

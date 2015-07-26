@@ -15,6 +15,10 @@
  */
 package com.github.zhanhb.judge.util;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import lombok.experimental.UtilityClass;
 
 /**
@@ -23,15 +27,20 @@ import lombok.experimental.UtilityClass;
  */
 @UtilityClass
 @SuppressWarnings({"FinalClass", "ClassWithoutLogger"})
-public class Longs {
+public class Calendars {
 
-    public long addIgnoreOverFlow(long x, long y) {
-        long r = x + y;
-        // HD 2-12 Overflow iff both arguments have the opposite sign of the result
-        if (((x ^ r) & (y ^ r)) < 0) {
-            return x < 0 ? Long.MIN_VALUE : Long.MAX_VALUE;
+    public GregorianCalendar toCalendar(LocalDateTime datetime) {
+        return datetime == null ? null
+                : GregorianCalendar.from(datetime.atZone(ZoneId.systemDefault()));
+    }
+
+    public Date toDate(LocalDateTime datetime) {
+        try {
+            return datetime == null ? null
+                    : new Date(datetime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
+        } catch (ArithmeticException ex) {
+            throw new IllegalArgumentException(ex);
         }
-        return r;
     }
 
 }

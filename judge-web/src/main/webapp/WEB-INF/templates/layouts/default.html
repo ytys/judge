@@ -19,8 +19,8 @@ limitations under the License.
         <!--/*/<th:block th:fragment="metadata">/*/-->
         <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <!--/*/</th:block>/*/-->
         <meta charset="UTF-8"/>
+        <!--/*/</th:block>/*/--> <!--/* end of meta data */-->
 
         <title th:text="#{default_title}">Welcome to Judge Online</title>
 
@@ -70,7 +70,7 @@ limitations under the License.
         <script src="../../../static/commons/js/qrcode.min.js" th:src="@{/static/commons/js/qrcode.min.js}"></script>
 
         <script src="../../../static/js/site.js" th:src="@{/static/js/site.js}"></script>
-        <!--/*/</th:block>/*/--> <!--/* ends of th:fragment="scripts" */-->
+        <!--/*/</th:block>/*/--> <!--/* ends of fragment="scripts" */-->
     </head>
     <body>
         <th:block th:fragment="header">
@@ -94,7 +94,7 @@ limitations under the License.
                             <!--<li><a th:href="@{/forum}">Forum</a></li>-->
                         </ul>
                         <ul class="nav navbar-nav pull-right nav-controls" th:if="true">
-                            <li><a href="../login.html" target="_blank" th:href="@{/login}">Login</a></li>
+                            <li><a href="../login.html" th:target="_blank" th:href="@{/login}">Login</a></li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right" th:if="false">
                             <li><a href="../user/10210124" title="10210124">10210124</a></li>
@@ -115,7 +115,7 @@ limitations under the License.
             <div class="navigation-placeholder"></div>
         </th:block>
 
-        <div class="container content">
+        <div class="container content" th:fragment="content">
             <div>
                 put html body here.
             </div>

@@ -15,23 +15,34 @@
  */
 package com.github.zhanhb.judge.util;
 
-import lombok.experimental.UtilityClass;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.Objects;
 
 /**
  *
  * @author zhanhb
+ * @param <T>
  */
-@UtilityClass
-@SuppressWarnings({"FinalClass", "ClassWithoutLogger"})
-public class Longs {
+public class EnumerationIterator<T> implements Iterator<T> {
 
-    public long addIgnoreOverFlow(long x, long y) {
-        long r = x + y;
-        // HD 2-12 Overflow iff both arguments have the opposite sign of the result
-        if (((x ^ r) & (y ^ r)) < 0) {
-            return x < 0 ? Long.MIN_VALUE : Long.MAX_VALUE;
-        }
-        return r;
+    public static <T> Iterator<T> of(Enumeration<T> e) {
+        return new EnumerationIterator<>(e);
     }
 
+    private final Enumeration<T> e;
+
+    private EnumerationIterator(Enumeration<T> e) {
+        this.e = Objects.requireNonNull(e, "enumeration");
+    }
+
+    @Override
+    public boolean hasNext() {
+        return e.hasMoreElements();
+    }
+
+    @Override
+    public T next() {
+        return e.nextElement();
+    }
 }

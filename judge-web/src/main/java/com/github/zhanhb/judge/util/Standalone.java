@@ -30,4 +30,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface Standalone {
 
+    boolean optional() default true;
+
 }

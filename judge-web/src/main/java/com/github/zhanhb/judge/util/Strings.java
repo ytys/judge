@@ -22,7 +22,7 @@ import lombok.experimental.UtilityClass;
  * @author zhanhb
  */
 @UtilityClass
-@SuppressWarnings("FinalClass")
+@SuppressWarnings({"FinalClass", "ClassWithoutLogger"})
 public class Strings {
 
     public String trimLeft(String str) {

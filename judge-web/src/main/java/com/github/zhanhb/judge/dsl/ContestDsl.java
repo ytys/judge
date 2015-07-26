@@ -23,7 +23,7 @@ import java.time.LocalDateTime;
  *
  * @author zhanhb
  */
-@SuppressWarnings("UtilityClassWithoutPrivateConstructor")
+@SuppressWarnings({"UtilityClassWithoutPrivateConstructor", "ClassWithoutLogger"})
 public class ContestDsl {
 
     public static Predicate ended() {

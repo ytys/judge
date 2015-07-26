@@ -22,7 +22,7 @@ import lombok.experimental.UtilityClass;
  * @author zhanhb
  */
 @UtilityClass
-@SuppressWarnings("FinalClass")
+@SuppressWarnings({"FinalClass", "ClassWithoutLogger"})
 public class Ints {
 
     public int addIgnoreOverFlow(int x, int y) {

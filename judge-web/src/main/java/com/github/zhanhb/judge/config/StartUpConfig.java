@@ -16,8 +16,9 @@
 package com.github.zhanhb.judge.config;
 
 import javax.servlet.ServletContext;
+import static javax.servlet.ServletContext.TEMPDIR;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 
@@ -25,16 +26,16 @@ import org.springframework.context.annotation.Configuration;
  *
  * @author zhanhb
  */
-@ConditionalOnBean({
-    ServletContext.class,
-    ApplicationContext.class
-})
 @Configuration
+@Slf4j
 public class StartUpConfig {
 
     @Autowired
-    public void setStartupDate(ServletContext servlet, ApplicationContext application) {
+    public void setStartUpDate(ServletContext servlet, ApplicationContext application) {
         servlet.setAttribute("startUpDate", application.getStartupDate());
+        if (log.isDebugEnabled()) {
+            log.debug("{}: {}", TEMPDIR, servlet.getAttribute(TEMPDIR));
+        }
     }
 
 }

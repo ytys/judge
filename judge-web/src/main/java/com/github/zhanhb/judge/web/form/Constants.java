@@ -21,7 +21,7 @@ package com.github.zhanhb.judge.web.form;
  */
 interface Constants {
 
-    @SuppressWarnings({"PublicInnerClass", "UtilityClassWithoutPrivateConstructor"})
+    @SuppressWarnings({"PackageVisibleInnerClass", "UtilityClassWithoutPrivateConstructor"})
     abstract class Patterns {
 
         private static final String userNameField = "[a-z0-9!#$%&'*+/=?^_`{|}~-]";
