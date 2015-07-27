@@ -92,7 +92,7 @@ public class Userprofile implements Serializable {
     @Column(name = "major")
     private String major;
 
-    @Column(name = "disabled")
+    @Column(name = "disabled", nullable = false)
     @JsonIgnore
     private boolean disabled;
 

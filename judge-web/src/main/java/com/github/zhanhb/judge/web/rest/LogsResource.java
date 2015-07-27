@@ -6,7 +6,6 @@ import ch.qos.logback.classic.util.ContextSelectorStaticBinder;
 import com.github.zhanhb.judge.web.rest.dto.LoggerDTO;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_XML_VALUE;
@@ -27,10 +26,7 @@ public class LogsResource {
             method = RequestMethod.GET,
             produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
     public List<LoggerDTO> getList() {
-        return ContextSelectorStaticBinder
-                .getSingleton()
-                .getContextSelector()
-                .getLoggerContext()
+        return getLoggerContext()
                 .getLoggerList()
                 .stream()
                 .map(LoggerDTO::new)
@@ -41,8 +37,15 @@ public class LogsResource {
             method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void changeLevel(@RequestBody LoggerDTO jsonLogger) {
-        LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
+        LoggerContext context = getLoggerContext();
         context.getLogger(jsonLogger.getName()).setLevel(Level.valueOf(jsonLogger.getLevel()));
+    }
+
+    private LoggerContext getLoggerContext() {
+        return ContextSelectorStaticBinder
+                .getSingleton()
+                .getContextSelector()
+                .getLoggerContext();
     }
 
 }

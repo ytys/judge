@@ -283,7 +283,9 @@
             <column name="creation_date" type="datetime">
                 <constraints nullable="false"/>
             </column>
-            <column name="disabled" type="BOOLEAN"/>
+            <column name="disabled" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
             <column name="email" type="VARCHAR(255)"/>
             <column name="handle" type="VARCHAR(255)"/>
             <column name="last_update_date" type="datetime"/>
