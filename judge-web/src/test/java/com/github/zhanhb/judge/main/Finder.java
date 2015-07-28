@@ -15,11 +15,13 @@
  */
 package com.github.zhanhb.judge.main;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import com.github.zhanhb.judge.util.EnumerationIterator;
+import java.io.IOException;
+import java.net.URL;
+import java.util.Enumeration;
+import java.util.Optional;
+import java.util.function.Consumer;
+import javax.activation.ActivationDataFlavor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -31,14 +33,13 @@ import lombok.extern.slf4j.Slf4j;
 public class Finder {
 
     public static void main(String[] args) throws Throwable {
-        log.info("stream.count() = " + getStream().count());
-        String str = getStream().map(Object::toString).collect(Collectors.joining("\n"));
-        log.info(str);
+        consume(ActivationDataFlavor.class, System.out::println);
     }
 
-    private static Stream<Path> getStream() throws Throwable {
-        return Files.walk(Paths.get("src"))
-                .filter(Files::isRegularFile)
-                .filter(path -> path.toString().matches("(?i).+\\.(?:jsp|tag)$"));
+    public static void consume(Class<?> cl, Consumer<URL> consumer) throws IOException {
+        Enumeration<URL> e = Optional.ofNullable(cl.getClassLoader())
+                .orElseGet(Thread.currentThread()::getContextClassLoader)
+                .getResources(cl.getName().replace('.', '/').concat(".class"));
+        EnumerationIterator.of(e).forEachRemaining(consumer);
     }
 }

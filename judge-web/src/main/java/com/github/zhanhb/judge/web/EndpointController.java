@@ -13,29 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.zhanhb.judge.repository;
+package com.github.zhanhb.judge.web;
 
-import com.github.zhanhb.judge.Application;
-import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
+import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 /**
  *
  * @author zhanhb
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@Slf4j
-@SpringApplicationConfiguration(classes = Application.class)
-@WebAppConfiguration
-public class RepositoriesTest {
+@Controller
+@RequestMapping("endpoint")
+public class EndpointController {
 
-    @Test
-    public void testAll() {
-
+    @RequestMapping(value = "beans", produces = TEXT_HTML_VALUE, method = GET)
+    public String beans() {
+        return "beans";
     }
 
 }

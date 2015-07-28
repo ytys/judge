@@ -17,12 +17,15 @@ package com.github.zhanhb.judge.repository;
 
 import com.github.zhanhb.judge.Application;
 import com.github.zhanhb.judge.domain.AccessLog;
+import lombok.extern.slf4j.Slf4j;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author zhanhb
  */
 @RunWith(SpringJUnit4ClassRunner.class)
+@Slf4j
 @SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
 public class AccessLogRepositoryTest {
@@ -42,6 +46,7 @@ public class AccessLogRepositoryTest {
     @Test
     @Transactional
     public void testSomeMethod() {
+        log.info("someMethod");
         for (String string : new String[]{"/", "/faq", "/login", "/problem/list", "/problem/1"}) {
             AccessLog accessLog = accessLogRepository.save(AccessLog.builder()
                     .behaviour("test")
@@ -52,4 +57,17 @@ public class AccessLogRepositoryTest {
             assertTrue(accessLogRepository.findById(accessLog.getId()).get() == accessLog);
         }
     }
+
+    /**
+     * Test of findAllByUserprofileHandleIgnoreCase method, of class
+     * AccessLogRepository.
+     */
+    @Test
+    public void testFindAllByUserprofileHandleIgnoreCase() {
+        log.info("findAllByUserprofileHandleIgnoreCase");
+        String userprofileHandle = "admin";
+        Pageable pageable = new PageRequest(0, 100);
+        accessLogRepository.findAllByUserprofileHandleIgnoreCase(userprofileHandle, pageable);
+    }
+
 }

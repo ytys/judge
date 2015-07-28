@@ -43,6 +43,8 @@
     </issueManagement>
     <properties>
         <asm.version>5.0.4</asm.version>
+        <attoparser.version>1.4.0.RELEASE</attoparser.version>
+        <bonecp.version>0.8.0.RELEASE</bonecp.version>
         <cglib.version>3.1</cglib.version>
         <commons-compress.version>1.9</commons-compress.version>
         <commons-dbcp2.version>2.1</commons-dbcp2.version>
@@ -84,6 +86,20 @@
         <usertype.version>4.0.0.GA</usertype.version>
         <woodstox.version>4.4.1</woodstox.version>
     </properties>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.attoparser</groupId>
+                <artifactId>attoparser</artifactId>
+                <version>${attoparser.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.jolbox</groupId>
+                <artifactId>bonecp</artifactId>
+                <version>${bonecp.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
     <dependencies>
         <dependency>
             <groupId>org.ow2.asm</groupId>
@@ -94,7 +110,6 @@
         <dependency>
             <groupId>com.jolbox</groupId>
             <artifactId>bonecp</artifactId>
-            <version>0.8.0.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>cglib</groupId>
@@ -317,8 +332,20 @@
         </dependency>
         <dependency>
             <groupId>org.thymeleaf.extras</groupId>
+            <artifactId>thymeleaf-extras-java8time</artifactId>
+            <version>2.1.0.RELEASE</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.thymeleaf.extras</groupId>
+            <artifactId>thymeleaf-extras-springsecurity4</artifactId>
+            <version>2.1.2.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.thymeleaf.extras</groupId>
             <artifactId>thymeleaf-extras-tiles2-spring4</artifactId>
             <version>2.1.1.RELEASE</version>
+            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>nz.net.ultraq.thymeleaf</groupId>
@@ -332,8 +359,12 @@
             <scope>test</scope>
             <exclusions>
                 <exclusion>
-                    <groupId>javax.servlet</groupId>
+                    <artifactId>attoparser</artifactId>
+                    <groupId>org.attoparser</groupId>
+                </exclusion>
+                <exclusion>
                     <artifactId>servlet-api</artifactId>
+                    <groupId>javax.servlet</groupId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -499,9 +530,7 @@
                             <version>[${java.version}.0,)</version>
                         </requireJavaVersion>
                         <requireNoRepositories>
-                            <message>Best Practice is to never define repositories in pom.xml (use a repository
-                                manager instead).
-                            </message>
+                            <message>Best Practice is to never define repositories in pom.xml (use a repository manager instead).</message>
                         </requireNoRepositories>
                         <requireReleaseDeps>
                             <message>No Snapshots Dependencies Allowed!</message>
@@ -636,10 +665,10 @@
             </dependencies>
         </profile>
         <profile>
+            <id>tomcat8</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
-            <id>tomcat8</id>
             <properties>
                 <tomcat.version>8.0.24</tomcat.version>
             </properties>

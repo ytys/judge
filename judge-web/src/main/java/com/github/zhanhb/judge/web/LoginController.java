@@ -15,11 +15,14 @@
  */
 package com.github.zhanhb.judge.web;
 
+import com.github.zhanhb.judge.config.SecurityConfig;
+import java.util.Optional;
 import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.context.request.WebRequest;
 
 /**
  *
@@ -29,8 +32,14 @@ import org.springframework.web.servlet.ModelAndView;
 public class LoginController extends BaseController {
 
     @RequestMapping(value = "login", method = RequestMethod.GET, produces = TEXT_HTML_VALUE)
-    public ModelAndView login() {
-        return new ModelAndView("login");
+    public String login(WebRequest request, Model model) {
+        String url = Optional.ofNullable(request.getParameter(SecurityConfig.TARGET_URL_PARAMETER))
+                .orElseGet(
+                        () -> Optional.ofNullable(request.getHeader("referer"))
+                        .orElseGet(request::getContextPath)
+                );
+        model.addAttribute("url", url);
+        return "login";
     }
 
     @RequestMapping(value = "password", method = RequestMethod.GET, produces = TEXT_HTML_VALUE)

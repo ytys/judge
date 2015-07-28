@@ -56,7 +56,7 @@ public class SpringSource {
         }
 
         list.stream()
-                .filter(cl -> cl instanceof URLClassLoader)
+                .filter(URLClassLoader.class::isInstance)
                 .map(URLClassLoader.class::cast)
                 .flatMap(cl -> Arrays.stream(cl.getURLs()))
                 .forEach((URL url) -> {

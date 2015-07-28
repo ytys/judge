@@ -38,6 +38,8 @@ import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuc
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    public static final String TARGET_URL_PARAMETER = "url";
+
     @Autowired
     private UserDetailsService userDetailsService;
     @Autowired
@@ -67,19 +69,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .sameOrigin()
                 .and()
             .authorizeRequests()
-                .antMatchers("/", "/login", "/logout", "/static/**", "/faq").permitAll()
+                .antMatchers("/", "/login", "/logout", "/static/**", "/faq", "/password", "/register").permitAll()
                 .antMatchers("/**/favicon.*").permitAll()
-                .antMatchers("/mappings/**").hasAuthority(AuthoritiesConstants.ADMIN)
-                .antMatchers("/metrics/**").hasAuthority(AuthoritiesConstants.ADMIN)
-                .antMatchers("/health/**").hasAuthority(AuthoritiesConstants.ADMIN)
-                .antMatchers("/trace/**").hasAuthority(AuthoritiesConstants.ADMIN)
-                .antMatchers("/dump/**").hasAuthority(AuthoritiesConstants.ADMIN)
-                .antMatchers("/shutdown/**").hasAuthority(AuthoritiesConstants.ADMIN)
+                .antMatchers("/api/**").hasAnyAuthority(AuthoritiesConstants.ADMIN)
+                .antMatchers("/autoconfig").hasAnyAuthority(AuthoritiesConstants.ADMIN)
                 .antMatchers("/beans/**").hasAuthority(AuthoritiesConstants.ADMIN)
                 .antMatchers("/configprops/**").hasAuthority(AuthoritiesConstants.ADMIN)
-                .antMatchers("/info/**").hasAuthority(AuthoritiesConstants.ADMIN)
-                .antMatchers("/autoconfig/**").hasAuthority(AuthoritiesConstants.ADMIN)
+                .antMatchers("/dump/**").hasAuthority(AuthoritiesConstants.ADMIN)
                 .antMatchers("/env/**").hasAuthority(AuthoritiesConstants.ADMIN)
+                .antMatchers("/health/**").hasAuthority(AuthoritiesConstants.ADMIN)
+                .antMatchers("/info/**").hasAuthority(AuthoritiesConstants.ADMIN)
+                .antMatchers("/mappings/**").hasAuthority(AuthoritiesConstants.ADMIN)
+                .antMatchers("/metrics/**").hasAuthority(AuthoritiesConstants.ADMIN)
+                .antMatchers("/trace/**").hasAuthority(AuthoritiesConstants.ADMIN)
+                .antMatchers("/shutdown/**").hasAuthority(AuthoritiesConstants.ADMIN)
+                .antMatchers("/autoconfig/**").hasAuthority(AuthoritiesConstants.ADMIN)
                 .anyRequest().authenticated();
     }
     // @formatter:on
@@ -94,6 +98,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         SavedRequestAwareAuthenticationSuccessHandler sraash = new SavedRequestAwareAuthenticationSuccessHandler();
         sraash.setUseReferer(true);
         sraash.setDefaultTargetUrl("/");
+        sraash.setTargetUrlParameter(TARGET_URL_PARAMETER);
         return sraash;
     }
 
@@ -102,6 +107,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         SimpleUrlLogoutSuccessHandler sulsh = new SimpleUrlLogoutSuccessHandler();
         sulsh.setUseReferer(true);
         sulsh.setDefaultTargetUrl("/");
+        sulsh.setTargetUrlParameter(TARGET_URL_PARAMETER);
         return sulsh;
     }
 

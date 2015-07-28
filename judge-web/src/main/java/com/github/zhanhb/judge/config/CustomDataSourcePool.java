@@ -35,7 +35,7 @@ public class CustomDataSourcePool {
     private DataSourceProperties p;
 
     @Bean
-    public DataSource datasource() {
+    public DataSource dataSource() {
         String url = p.getUrl();
         String username = p.getUsername();
         String password = p.getPassword();

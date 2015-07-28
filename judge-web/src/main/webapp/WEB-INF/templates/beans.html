@@ -18,19 +18,18 @@ limitations under the License.
     <head>
         <!--/*--><meta charset="UTF-8"/><!--*/-->
         <link th:replace="layouts/default :: metadata" href="layouts/default.html" rel=""/>
-        <title>TODO supply a title</title>
+        <title>Beans</title>
         <link th:replace="layouts/default :: scripts" href="layouts/default.html" rel=""/>
+        <script src="../../static/commons/js/angular.js" th:href="@{/static/commons/js/angular.min.js}" type="text/javascript"></script>
+        <!--/*-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <!--*/-->
     </head>
     <body>
         <div th:replace="fragments/header :: header"></div>
         <div class="container">
-            <form th:action="@{/upload}" role="form" enctype="multipart/form-data" method="POST">
-                <input type="file" name="file"/>
-                <input type="submit"/>
-            </form>
-            <div id="qrcode"></div>
+
         </div>
-        <script>/*<![CDATA[/**/jQuery("#qrcode").qrcode(location.href);//]]>;</script>
         <div th:replace="fragments/footer :: footer"></div>
     </body>
 </html>

@@ -18,6 +18,8 @@ package com.github.zhanhb.judge.audit;
 import com.github.zhanhb.judge.domain.Userprofile;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -31,11 +33,11 @@ public class CustomUserDetails implements UserDetails, Serializable {
 
     private static final long serialVersionUID = 1L;
     private final Userprofile userprofile;
-    private final String[] authorities;
+    private final List<GrantedAuthority> authorities;
 
     public CustomUserDetails(Userprofile userprofile, String[] authorities) {
         this.userprofile = Objects.requireNonNull(userprofile, "userprofile");
-        this.authorities = authorities;
+        this.authorities = AuthorityUtils.createAuthorityList(authorities);
     }
 
     public Userprofile getUserprofile() {
@@ -44,7 +46,7 @@ public class CustomUserDetails implements UserDetails, Serializable {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return AuthorityUtils.createAuthorityList(authorities);
+        return Collections.unmodifiableList(authorities);
     }
 
     @Override

@@ -45,9 +45,9 @@ limitations under the License.
                             <form:input class="form-control middle" placeholder="Major" path="major" type="text"/>
                             <input class="btn btn-lg btn-primary btn-block" type="submit" value="Register"/>
                             <p class="text-center" style="margin-top:10px;">OR</p>
-                            <a class="btn btn-lg btn-default btn-block" href="${pageContext.request.contextPath}/login/github"><i class="icon-github"><jsp:text/></i> Register with Github</a>
+                            <a class="btn btn-lg btn-default btn-block" th:href="@{/login/github}"><i class="icon-github"><jsp:text/></i> Register with Github</a>
                             <br/>
-                            <p class="text-center"><a href="${pageContext.request.contextPath}/login">Already have an account?</a></p>
+                            <p class="text-center"><a th:href="@{/login}">Already have an account?</a></p>
                         </fieldset>
                         <script>//<![CDATA[
                             jQuery(function ($) {

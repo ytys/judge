@@ -25,7 +25,6 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.embedded.EmbeddedWebApplicationContext;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ConfigurableApplicationContext;
 
 /**
  *
@@ -36,7 +35,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 public class Application extends SpringBootServletInitializer {
 
     public static void main(String[] args) throws IOException {
-        ApplicationContext ctx = start(null, args);
+        ApplicationContext ctx = start(args);
         try (Scanner scanner = new Scanner(System.in)) {
             while (scanner.hasNext()) {
                 String name = scanner.next();
@@ -44,11 +43,12 @@ public class Application extends SpringBootServletInitializer {
                     case "exit":
                     case "quit":
                         SpringApplication.exit(ctx);
-                        return;
+                        break;
                     case "break":
-                        return;
+                        break;
                     case "reload":
-                        ctx = start(ctx, args);
+                        SpringApplication.exit(ctx);
+                        ctx = start(args);
                         continue;
                 }
                 String property = ctx.getEnvironment().getProperty(name);
@@ -57,20 +57,16 @@ public class Application extends SpringBootServletInitializer {
         }
     }
 
-    private static ApplicationContext start(ApplicationContext old, String[] args) {
-        if (old != null) {
-            SpringApplication.exit(old);
-        }
-        String dashes = "------------------------------------------------------------------------";
-        ConfigurableApplicationContext ctx = SpringApplication.run(Application.class, args);
-        if (log.isInfoEnabled() && ctx instanceof EmbeddedWebApplicationContext) {
-            EmbeddedWebApplicationContext context = (EmbeddedWebApplicationContext) ctx;
-            int port = context.getEmbeddedServletContainer().getPort();
+    private static ApplicationContext start(String[] args) {
+        ApplicationContext context = SpringApplication.run(Application.class, args);
+        if (log.isInfoEnabled() && context instanceof EmbeddedWebApplicationContext) {
+            int port = ((EmbeddedWebApplicationContext) context).getEmbeddedServletContainer().getPort();
             String contextPath = context.getApplicationName();
             String url = String.format(Locale.US, "http://localhost:%d%s", port, contextPath);
+            String dashes = "------------------------------------------------------------------------";
             log.info("Access URLs:\n{}\n\tLocal: \t\t{}\n{}", dashes, url, dashes);
         }
-        return ctx;
+        return context;
     }
 
     @Override

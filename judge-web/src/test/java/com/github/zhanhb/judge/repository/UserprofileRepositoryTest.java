@@ -18,6 +18,7 @@ package com.github.zhanhb.judge.repository;
 import com.github.zhanhb.judge.Application;
 import com.github.zhanhb.judge.domain.Userprofile;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import javax.annotation.Resource;
@@ -100,7 +101,8 @@ public class UserprofileRepositoryTest {
         long now = System.currentTimeMillis() - 1_000; // substract one second to avoid the error
         Userprofile userprofile = userprofileRepository.findByHandleIgnoreCase(handle).get();
         userprofile.setPassword(passwordEncoder.encode(password));
-        long modifiedTime = Date.from(userprofileRepository.save(userprofile).getLastUpdateDate().atZone(ZoneId.systemDefault()).toInstant()).getTime();
+        LocalDateTime lastUpdateDate = userprofileRepository.save(userprofile).getLastUpdateDate();
+        long modifiedTime = Date.from(lastUpdateDate.atZone(ZoneId.systemDefault()).toInstant()).getTime();
         assertTrue(Instant.ofEpochMilli(now) + " <= " + Instant.ofEpochMilli(modifiedTime), now <= modifiedTime);
         assertTrue(Instant.ofEpochMilli(modifiedTime) + " <= " + Instant.ofEpochMilli(now + 30_000), modifiedTime <= now + 30_000);
     }

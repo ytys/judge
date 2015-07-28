@@ -19,10 +19,10 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import javax.sql.DataSource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.stereotype.Component;
 
 /**
@@ -33,17 +33,18 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class DatabaseInfo {
 
+    /**
+     *
+     * @see DataSourceAutoConfiguration.JdbcTemplateConfiguration#jdbcTemplate()
+     */
     @Autowired
-    private DataSource dataSource;
+    private JdbcOperations jdbcOperations;
 
     @PostConstruct
     public void init() {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-
-        String product = jdbcTemplate.execute((Connection connection)
+        log.info("product = " + jdbcOperations.execute((Connection connection)
                 -> connection.getMetaData().getDatabaseProductName() + ' '
-                + connection.getMetaData().getDatabaseProductVersion());
-        log.info("product = " + product);
+                + connection.getMetaData().getDatabaseProductVersion()));
     }
 
     @PreDestroy
