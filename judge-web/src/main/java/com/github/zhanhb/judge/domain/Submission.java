@@ -38,6 +38,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -47,13 +48,14 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
  *
  * @author zhanhb
  */
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
 @Builder
 @Data
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @EqualsAndHashCode(of = "id")
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
+@Setter(AccessLevel.PACKAGE)
 @Table(name = "submission")
 @XmlRootElement
 public class Submission implements Serializable {

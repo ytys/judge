@@ -21,7 +21,6 @@ import java.io.OutputStream;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
-import java.util.Arrays;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -44,16 +43,6 @@ public final class MultipartFileBlob implements Blob {
 
     @Override
     public byte[] getBytes(long pos, int length) throws SQLException {
-        if (pos == 0) {
-            try {
-                if (length < 0 || length >= file.getSize()) {
-                    return file.getBytes();
-                }
-                return Arrays.copyOf(file.getBytes(), length);
-            } catch (IOException ex) {
-                throw new SQLException(ex);
-            }
-        }
         throw new SQLFeatureNotSupportedException("Not supported yet.");
     }
 

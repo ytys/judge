@@ -24,14 +24,21 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.Setter;
 
 /**
  *
  * @author zhanhb
  */
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
+@Builder
 @Data
 @Entity
+@Setter(AccessLevel.PACKAGE)
 @Table(name = "upload")
 public class UploadObject {
 

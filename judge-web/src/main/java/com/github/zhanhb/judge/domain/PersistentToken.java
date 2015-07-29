@@ -24,14 +24,21 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.Setter;
 
 /**
  *
  * @author zhanhb
  */
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
+@Builder
 @Data
 @Entity
+@Setter(AccessLevel.PACKAGE)
 @Table(name = "persistent_token")
 public class PersistentToken {
 
