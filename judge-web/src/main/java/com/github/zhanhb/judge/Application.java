@@ -43,9 +43,10 @@ public class Application extends SpringBootServletInitializer {
                     case "exit":
                     case "quit":
                         SpringApplication.exit(ctx);
-                        break;
+                        // break will only break the switch block.
+                        return;
                     case "break":
-                        break;
+                        return;
                     case "reload":
                         SpringApplication.exit(ctx);
                         ctx = start(args);

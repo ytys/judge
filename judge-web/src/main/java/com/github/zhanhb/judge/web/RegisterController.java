@@ -15,12 +15,15 @@
  */
 package com.github.zhanhb.judge.web;
 
-import com.github.zhanhb.judge.service.Roles;
+import com.github.zhanhb.judge.domain.Role;
 import com.github.zhanhb.judge.domain.Userprofile;
+import com.github.zhanhb.judge.domain.UserprofileRole;
 import com.github.zhanhb.judge.repository.UserprofileRepository;
 import com.github.zhanhb.judge.repository.UserprofileRoleRepository;
+import com.github.zhanhb.judge.service.Roles;
 import com.github.zhanhb.judge.util.Strings;
 import com.github.zhanhb.judge.web.form.UserRegisterForm;
+import com.google.common.base.Objects;
 import java.util.function.Consumer;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,7 +75,7 @@ public class RegisterController extends BaseController {
             RedirectAttributes redirectAttrs) {
 
         Consumer<Object> rptPasswordAction = rejectValue(result, "rptPassword", "NotSame");
-        if (!userRegisterForm.getPassword().equals(userRegisterForm.getRptPassword())) {
+        if (!Objects.equal(userRegisterForm.getPassword(), userRegisterForm.getRptPassword())) {
             rptPasswordAction.accept(this);
         }
         Consumer<Object> handleAction = rejectValue(result, "handle", "Exists");
@@ -89,7 +92,7 @@ public class RegisterController extends BaseController {
         }
 
         if (result.hasErrors()) {
-            return null;
+            return "register";
         }
 
         Userprofile userprofile = repository.save(Userprofile
@@ -102,14 +105,18 @@ public class RegisterController extends BaseController {
                 .nickname(Strings.trimToNull(userRegisterForm.getNickname()))
                 .build()
         );
-        urr.findByUserprofileAndRole(userprofile, roles.user());
+        Role roleUser = roles.user();
+        urr.findByUserprofileAndRole(userprofile, roleUser).orElseGet(
+                () -> urr.save(UserprofileRole.builder()
+                        .userprofile(userprofile)
+                        .role(roleUser).build())
+        );
         String message = "success";
         if (ajaxRequest) {
-
             return null;
         }
         redirectAttrs.addFlashAttribute("message", message);
-        return "redirect:register";
+        return "redirect:/";
     }
 
 }

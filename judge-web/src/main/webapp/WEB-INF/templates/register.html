@@ -14,40 +14,48 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head>
         <!--/*--><meta charset="UTF-8"/><!--*/-->
-        <title>TODO supply a title</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link th:replace="layouts/default :: metadata" href="layouts/default.html" rel=""/>
+        <title th:text="#{Register}"></title>
+        <link th:replace="layouts/default :: scripts" href="layouts/default.html" rel=""/>
+        <!--/*-->
+        <link href="../../static/bootstrap/css/bootstrap-theme.css" rel="stylesheet" type="text/css"/>
+        <link href="../../static/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+        <!--*/-->
     </head>
     <body>
+        <div th:replace="fragments/header :: header"></div>
         <div class="container">
             <div class="row" style="margin-top:40px;">
                 <div class="col-md-4 col-md-offset-4">
-                    <form accept-charset="UTF-8" role="form" class="form-signin">
+                    <form id="register" accept-charset="UTF-8" role="form" class="form-signup" method="POST" th:object="${userRegisterForm}">
                         <h3 style="color:dimgray; text-align: center">Register now to create and fork snippets</h3>
 
                         <hr class="colorgraph"/>
                         <fieldset>
-                            <form:errors path="handle" cssClass="error"/>
-                            <form:input class="form-control" placeholder="Username" path="handle" type="text"/>
-                            <form:errors path="email" cssClass="error" delimiter=", " />
-                            <form:input class="form-control middle" placeholder="E-mail" path="email" type="text"/>
-                            <form:errors path="password" cssClass="error" delimiter=", " element="span"/>
-                            <form:input class="form-control middle" placeholder="Password" path="password" type="password"/>
-                            <form:errors path="rptPassword" cssClass="error" delimiter=", " element="span"/>
-                            <form:input class="form-control bottom" placeholder="Confirm Password" path="rptPassword" type="password"/>
-                            <form:errors path="realname" cssClass="error" delimiter=", " element="span"/>
-                            <form:input class="form-control middle" placeholder="Real name" path="realname" type="text"/>
-                            <form:errors path="school" cssClass="error" delimiter=", " element="span"/>
-                            <form:input class="form-control middle" placeholder="School" path="school" type="text"/>
-                            <form:errors path="major" cssClass="error" delimiter=", " element="span"/>
-                            <form:input class="form-control middle" placeholder="Major" path="major" type="text"/>
+                            <span th:errors="${userRegisterForm.handle}" class="error">...</span>
+                            <input class="form-control" placeholder="Username" th:field="*{handle}" type="text"/>
+                            <span th:errors="${userRegisterForm.email}" class="error">...</span>
+                            <input class="form-control middle" placeholder="E-mail" th:field="*{email}" type="text"/>
+                            <span th:errors="${userRegisterForm.password}" class="error">...</span>
+                            <input class="form-control middle" placeholder="Password" th:field="*{password}" type="password"/>
+                            <span th:errors="${userRegisterForm.rptPassword}" class="error">...</span>
+                            <input class="form-control bottom" placeholder="Confirm Password" th:field="*{rptPassword}" type="password"/>
+
+                            <span th:errors="${userRegisterForm.realname}" class="error">...</span>
+                            <input class="form-control middle" placeholder="Real name" th:field="*{realname}" type="text"/>
+                            <span th:errors="${userRegisterForm.school}" class="error">...</span>
+                            <input class="form-control middle" placeholder="School" th:field="*{school}" type="text"/>
+                            
+                            <span th:errors="${userRegisterForm.major}" class="error">...</span>
+                            <input class="form-control middle" placeholder="Major" th:field="*{major}" type="text"/>
                             <input class="btn btn-lg btn-primary btn-block" type="submit" value="Register"/>
-                            <p class="text-center" style="margin-top:10px;">OR</p>
+                            <!--/*--><p class="text-center" style="margin-top:10px;">OR</p>
                             <a class="btn btn-lg btn-default btn-block" th:href="@{/login/github}"><i class="icon-github"><jsp:text/></i> Register with Github</a>
                             <br/>
-                            <p class="text-center"><a th:href="@{/login}">Already have an account?</a></p>
+                            <p class="text-center"><a th:href="@{/login}">Already have an account?</a></p><!--*/-->
                         </fieldset>
                         <script>//<![CDATA[
                             jQuery(function ($) {
@@ -69,11 +77,12 @@ limitations under the License.
                                     });
                                     return false;
                                 }
-                                $("form#userRegisterForm").submit(submit);
+                                $("form.form-signup").submit(submit);
                             });//]]></script>
                     </form>
                 </div>
             </div>
         </div>
+        <div th:replace="fragments/footer :: footer"></div>
     </body>
 </html>

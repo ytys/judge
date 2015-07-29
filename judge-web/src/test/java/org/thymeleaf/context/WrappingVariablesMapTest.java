@@ -13,22 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.zhanhb.judge.repository;
-
-import com.github.zhanhb.judge.domain.Role;
-import com.github.zhanhb.judge.domain.Userprofile;
-import com.github.zhanhb.judge.domain.UserprofileRole;
-import java.util.Collection;
-import java.util.Optional;
+package org.thymeleaf.context;
 
 /**
  *
  * @author zhanhb
  */
-public interface UserprofileRoleRepository extends BaseRepository<UserprofileRole, Long> {
-
-    Collection<UserprofileRole> findAllByUserprofile(Userprofile userprofile);
-
-    Optional<UserprofileRole> findByUserprofileAndRole(Userprofile userprofile, Role system);
-
+public class WrappingVariablesMapTest {
+    public static void main(String[] args) {
+        org.thymeleaf.context.WrappingVariablesMap map;
+        org.thymeleaf.spring4.context.Beans beans;
+    }
 }

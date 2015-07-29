@@ -31,12 +31,12 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Downloader {
 
-    private static final Log log = LogFactory.getLog(Downloader.class);
+    private static final Logger log = LoggerFactory.getLogger(Downloader.class);
 
     /**
      * Full range marker.
@@ -47,7 +47,7 @@ public class Downloader {
     /**
      * MIME multipart separation string
      */
-    private static final String mimeSeparation = "CATALINA_MIME_BOUNDARY";
+    private static final String mimeSeparation = "DOWNLOADER_MIME_BOUNDARY";
 
     // ----------------------------------------------------- Instance Variables
     /**
@@ -165,7 +165,7 @@ public class Downloader {
             } else {
                 // We're included
                 // SRV.9.3 says we must throw a FNFE
-                throw new FileNotFoundException("defaultServlet.missingResource=The requested resource (" + requestUri + ") is not available");
+                throw new FileNotFoundException("The requested resource (" + requestUri + ") is not available");
             }
             response.sendError(HttpServletResponse.SC_NOT_FOUND, requestUri);
             return;
@@ -238,15 +238,11 @@ public class Downloader {
                 || ranges == FULL) {
             // Set the appropriate output headers
             if (contentType != null) {
-                if (log.isDebugEnabled()) {
-                    log.debug("DefaultServlet.serveFile:  contentType='" + contentType + "'");
-                }
+                log.debug("serveFile:  contentType='{}'", contentType);
                 response.setContentType(contentType);
             }
             if ((contentLength >= 0) && (!serveContent || ostream != null)) {
-                if (log.isDebugEnabled()) {
-                    log.debug("DefaultServlet.serveFile:  contentLength=" + contentLength);
-                }
+                log.debug("serveFile:  contentLength={}", contentLength);
                 // Don't set a content length if something else has already
                 // written to the response.
                 if (contentLength < Integer.MAX_VALUE) {
@@ -286,10 +282,7 @@ public class Downloader {
                     response.setHeader("content-length", "" + length);
                 }
                 if (contentType != null) {
-                    if (log.isDebugEnabled()) {
-                        log.debug("DefaultServlet.serveFile:  contentType='"
-                                + contentType + "'");
-                    }
+                    log.debug("serveFile:  contentType='{}'", contentType);
                     response.setContentType(contentType);
                 }
                 if (serveContent) {
@@ -787,9 +780,8 @@ public class Downloader {
     private IOException copyRange(InputStream istream,
             ServletOutputStream ostream,
             long start, long end) {
-        if (log.isTraceEnabled()) {
-            log.trace("Serving bytes:" + start + "-" + end);
-        }
+        log.trace("Serving bytes:{}-{}", start, end);
+
         long skipped;
         try {
             skipped = istream.skip(start);

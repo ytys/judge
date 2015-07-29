@@ -16,11 +16,12 @@
 package com.github.zhanhb.judge.exception;
 
 import org.springframework.data.mapping.PropertyReferenceException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  *
@@ -29,16 +30,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @ControllerAdvice
 public class DefaultExceptionHandler {
 
-    @ResponseBody
     @ExceptionHandler(PropertyReferenceException.class)
-    public ResponseEntity<String> handleException(PropertyReferenceException ex) {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ex.getMessage());
+    @ResponseBody
+    @ResponseStatus(FORBIDDEN)
+    public String handleException(PropertyReferenceException ex) {
+        return ex.getMessage();
     }
 
     @ResponseBody
+    @ResponseStatus(NOT_FOUND)
     @ExceptionHandler(EntityNotExistException.class)
-    public ResponseEntity<String> handleException(EntityNotExistException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    public String handleException(EntityNotExistException ex) {
+        return ex.getMessage();
     }
 
 }
