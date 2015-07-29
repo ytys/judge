@@ -73,6 +73,7 @@
         <!--<maven.test.failure.ignore>true</maven.test.failure.ignore>-->
         <!--<maven.test.skip>true</maven.test.skip>-->
         <maven.version>3.3.3</maven.version>
+        <mockito.version>1.10.19</mockito.version>
         <nekohtml.version>1.9.22</nekohtml.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <querydsl.version>3.6.5</querydsl.version>
@@ -607,6 +608,7 @@
 
                     <!-- see liquibase.ext.hibernate.database.HibernateSpringDatabase -->
                     <!-- see org.springframework.orm.jpa.persistenceunit.DefaultPersistenceUnitManager -->
+                    <!-- we use package to scan. -->
                     <referenceUrl>hibernate:spring:com.github.zhanhb.judge.domain?dialect=org.hibernate.dialect.MySQLInnoDBDialect</referenceUrl>
 
                     <changeLogFile>${project.build.resources[0].directory}/config/liquibase/master.xml</changeLogFile>

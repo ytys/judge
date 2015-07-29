@@ -29,6 +29,6 @@ public interface UserprofileRoleRepository extends BaseRepository<UserprofileRol
 
     Collection<UserprofileRole> findAllByUserprofile(Userprofile userprofile);
 
-    Optional<UserprofileRole> findByUserprofileAndRole(Userprofile userprofile, Role system);
+    Optional<UserprofileRole> findByUserprofileAndRole(Userprofile userprofile, Role role);
 
 }

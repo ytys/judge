@@ -18,8 +18,6 @@ package com.github.zhanhb.judge.main;
 import com.github.zhanhb.judge.util.Strings;
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.io.UncheckedIOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -38,16 +36,8 @@ import java.util.stream.Collectors;
  */
 public class LineStyle {
 
-    private static final String LINE_STYLE;
+    private static final String LINE_STYLE = "\n";
     private static final Set<String> acceptsuffix = new HashSet<>(Arrays.asList("java,xml,jspx,tagx,css,js,jsp,tag,yml".split("[^a-z]+")));
-
-    static {
-        StringWriter sw = new StringWriter(4);
-        PrintWriter pw = new PrintWriter(sw);
-        pw.println();
-        pw.close();
-        LINE_STYLE = sw.toString();
-    }
 
     public static void main(String[] args) throws IOException {
         Files.walk(Paths.get("."))
