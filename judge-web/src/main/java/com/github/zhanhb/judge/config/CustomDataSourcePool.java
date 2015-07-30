@@ -16,10 +16,12 @@
 package com.github.zhanhb.judge.config;
 
 import com.github.zhanhb.judge.util.Standalone;
-import com.jolbox.bonecp.BoneCPDataSource;
+import com.zaxxer.hikari.HikariDataSource;
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -32,20 +34,19 @@ import org.springframework.context.annotation.Configuration;
 public class CustomDataSourcePool {
 
     @Autowired
-    private DataSourceProperties p;
+    private DataSourceProperties properties;
 
     @Bean
+    @ConfigurationProperties(prefix = DataSourceProperties.PREFIX)
     public DataSource dataSource() {
-        String url = p.getUrl();
-        String username = p.getUsername();
-        String password = p.getPassword();
-        BoneCPDataSource bonecp = new BoneCPDataSource();
-        bonecp.setJdbcUrl(url);
-        bonecp.setUsername(username);
-        bonecp.setPassword(password);
-        bonecp.setLogStatementsEnabled(true);
-        bonecp.setConnectionTestStatement("select 1");
-        return bonecp;
+        return DataSourceBuilder
+                .create()
+                .type(HikariDataSource.class)
+                .url(properties.getUrl())
+                .username(properties.getUsername())
+                .password(properties.getPassword())
+                .driverClassName(properties.getDriverClassName())
+                .build();
     }
 
 }

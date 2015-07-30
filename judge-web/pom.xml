@@ -44,7 +44,6 @@
     <properties>
         <asm.version>5.0.4</asm.version>
         <attoparser.version>1.4.0.RELEASE</attoparser.version>
-        <bonecp.version>0.8.0.RELEASE</bonecp.version>
         <cglib.version>3.1</cglib.version>
         <commons-compress.version>1.9</commons-compress.version>
         <commons-dbcp2.version>2.1</commons-dbcp2.version>
@@ -55,7 +54,7 @@
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <findbugs-jsr305.version>3.0.0</findbugs-jsr305.version>
         <guava.version>18.0</guava.version>
-        <hikaricp.version>2.3.9</hikaricp.version>
+        <hikaricp.version>2.4.0</hikaricp.version>
         <httpclient.version>4.5</httpclient.version>
         <jackson.version>2.6.0</jackson.version>
         <java.version>1.8</java.version>
@@ -65,7 +64,7 @@
         <liquibase-hibernate4.version>3.5</liquibase-hibernate4.version>
         <liquibase.version>3.4.0</liquibase.version>
         <lombok.version>1.16.4</lombok.version>
-        <mariadb.version>1.1.9</mariadb.version>
+        <mariadb.version>1.2.0</mariadb.version>
         <!-- for liquibase-maven-plugin -->
         <maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
         <maven.compiler.source>${java.version}</maven.compiler.source>
@@ -94,11 +93,6 @@
                 <artifactId>attoparser</artifactId>
                 <version>${attoparser.version}</version>
             </dependency>
-            <dependency>
-                <groupId>com.jolbox</groupId>
-                <artifactId>bonecp</artifactId>
-                <version>${bonecp.version}</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
     <dependencies>
@@ -107,10 +101,6 @@
             <artifactId>asm</artifactId>
             <version>${asm.version}</version>
             <!-- if asm.scope declared, the version of other asm components will be confused. -->
-        </dependency>
-        <dependency>
-            <groupId>com.jolbox</groupId>
-            <artifactId>bonecp</artifactId>
         </dependency>
         <dependency>
             <groupId>cglib</groupId>
@@ -167,6 +157,10 @@
             <artifactId>hibernate-ehcache</artifactId>
             <scope>runtime</scope>
         </dependency>
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+        </dependency>
         <!-- required, convert object to json and xml -->
         <dependency>
             <groupId>com.fasterxml.jackson.dataformat</groupId>
@@ -187,6 +181,12 @@
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
             <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.googlecode.usc</groupId>
+            <artifactId>jdbcdslog</artifactId>
+            <version>1.0.6.2</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.glassfish.web</groupId>
