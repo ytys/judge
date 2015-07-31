@@ -53,6 +53,7 @@
         <ehcache.version>2.10.0</ehcache.version>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <findbugs-jsr305.version>3.0.0</findbugs-jsr305.version>
+        <freemarker.version>2.3.23</freemarker.version>
         <guava.version>18.0</guava.version>
         <hikaricp.version>2.4.0</hikaricp.version>
         <httpclient.version>4.5</httpclient.version>
@@ -85,7 +86,7 @@
         <spring-hateoas.version>0.17.0.RELEASE</spring-hateoas.version>
         <spring-integration.version>4.1.6.RELEASE</spring-integration.version>
         <spring-plugin.version>1.2.0.RELEASE</spring-plugin.version>
-        <spring-security.version>4.0.1.RELEASE</spring-security.version>
+        <spring-security.version>4.0.2.RELEASE</spring-security.version>
         <start-class>com.github.zhanhb.judge.Application</start-class>
         <usertype.version>4.0.0.GA</usertype.version>
         <woodstox.version>4.4.1</woodstox.version>
@@ -96,6 +97,29 @@
                 <groupId>org.attoparser</groupId>
                 <artifactId>attoparser</artifactId>
                 <version>${attoparser.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-core</artifactId>
+                <exclusions>
+                    <!-- org.hibernate.javax.persistence:hibernate-jpa-2.0-api is deprecated due to the use of a version number in its artifact ID -->
+                    <!-- org.eclipse.persistence:javax.persistence is its preferred replacement -->
+                    <!-- see http://docs.spring.io/platform/docs/current/reference/htmlsingle/#_org_hibernate_javax_persistence_hibernate_jpa_2_0_api -->
+                    <exclusion>
+                        <artifactId>hibernate-jpa-2.1-api</artifactId>
+                        <groupId>org.hibernate.javax.persistence</groupId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-entitymanager</artifactId>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>hibernate-jpa-2.1-api</artifactId>
+                        <groupId>org.hibernate.javax.persistence</groupId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.jboss.logging</groupId>
@@ -112,21 +136,14 @@
                 <artifactId>ognl</artifactId>
                 <version>${ognl3.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.apache.tiles</groupId>
+                <artifactId>tiles-template</artifactId>
+                <version>${tiles.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <dependencies>
-        <dependency>
-            <groupId>org.ow2.asm</groupId>
-            <artifactId>asm</artifactId>
-            <version>${asm.version}</version>
-            <!-- if asm.scope declared, the version of other asm components will be confused. -->
-        </dependency>
-        <dependency>
-            <groupId>cglib</groupId>
-            <artifactId>cglib</artifactId>
-            <version>${cglib.version}</version>
-            <scope>runtime</scope>
-        </dependency>
         <dependency>
             <groupId>com.github.zhanhb</groupId>
             <artifactId>character-encoding-filter</artifactId>
@@ -202,6 +219,15 @@
             <scope>runtime</scope>
         </dependency>
         <dependency>
+            <groupId>org.eclipse.persistence</groupId>
+            <artifactId>javax.persistence</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet.jsp.jstl</groupId>
+            <artifactId>javax.servlet.jsp.jstl-api</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
             <groupId>com.googlecode.usc</groupId>
             <artifactId>jdbcdslog</artifactId>
             <version>1.0.6.2</version>
@@ -220,6 +246,10 @@
                 <exclusion>
                     <artifactId>servlet-api</artifactId>
                     <groupId>javax.servlet</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>jstl-api</artifactId>
+                    <groupId>javax.servlet.jsp.jstl</groupId>
                 </exclusion>
             </exclusions>
         </dependency>

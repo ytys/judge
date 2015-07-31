@@ -13,16 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.zhanhb.judge.repository;
-
-import com.github.zhanhb.judge.domain.Problem;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
-
 /**
+ * JPA domain objects.
  *
  * @author zhanhb
  */
-@RepositoryRestResource(excerptProjection = ProblemProjection.class)
-public interface ProblemRepository extends BaseRepository<Problem, Long> {
-
-}
+package com.github.zhanhb.judge.domain;

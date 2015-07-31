@@ -40,7 +40,8 @@ public interface BaseRepository<T, ID extends Serializable> extends Repository<T
 
     <S extends T> Iterable<S> save(Iterable<S> entities);
 
-    // Optional<T> findOne(ID id);
+    Optional<T> findOne(ID id);
+
     boolean exists(ID id);
 
     Iterable<T> findAll();

@@ -16,13 +16,19 @@
 package com.github.zhanhb.judge.repository;
 
 import com.github.zhanhb.judge.domain.Problem;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.data.rest.core.config.Projection;
 
 /**
  *
  * @author zhanhb
  */
-@RepositoryRestResource(excerptProjection = ProblemProjection.class)
-public interface ProblemRepository extends BaseRepository<Problem, Long> {
+@Projection(types = Problem.class)
+public interface ProblemProjection {
+
+    Long getId();
+
+    String getTitle();
+
+    String getSource();
 
 }
