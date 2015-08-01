@@ -36,7 +36,7 @@
         </packagings>
         <goals>
             <goal>clean</goal>
-            <goal>generate-sources</goal>
+            <goal>test-compile</goal>
         </goals>
     </action>
     <action>

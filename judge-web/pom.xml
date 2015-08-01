@@ -101,6 +101,7 @@
             <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-core</artifactId>
+                <version>${hibernate.version}</version>
                 <exclusions>
                     <!-- org.hibernate.javax.persistence:hibernate-jpa-2.0-api is deprecated due to the use of a version number in its artifact ID -->
                     <!-- org.eclipse.persistence:javax.persistence is its preferred replacement -->
@@ -114,6 +115,7 @@
             <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-entitymanager</artifactId>
+                <version>${hibernate-entitymanager.version}</version>
                 <exclusions>
                     <exclusion>
                         <artifactId>hibernate-jpa-2.1-api</artifactId>

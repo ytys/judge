@@ -21,7 +21,6 @@ import java.net.URL;
 import java.util.Enumeration;
 import java.util.Optional;
 import java.util.function.Consumer;
-import javax.activation.ActivationDataFlavor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -33,7 +32,15 @@ import lombok.extern.slf4j.Slf4j;
 public class Finder {
 
     public static void main(String[] args) throws Throwable {
-        consume(ActivationDataFlavor.class, System.out::println);
+        Consumer<URL> c = System.out::println;
+        consume(aj.org.objectweb.asm.ClassVisitor.class, c);
+        //consume(com.sun.xml.internal.ws.org.objectweb.asm.ClassVisitor.class, c);
+        consume(org.springframework.asm.ClassVisitor.class, c);
+        //consume(jdk.internal.org.objectweb.asm.ClassVisitor.class, c);
+        consume(org.mockito.asm.ClassVisitor.class, c);
+
+        consume(org.mockito.cglib.util.StringSwitcher.class, c);
+        consume(org.springframework.cglib.util.StringSwitcher.class, c);
     }
 
     public static void consume(Class<?> cl, Consumer<URL> consumer) throws IOException {
