@@ -146,14 +146,6 @@
         </goals>
     </action>
     <action>
-        <actionName>CUSTOM-test-compile surefire:test</actionName>
-        <displayName>test-compile surefire:test</displayName>
-        <goals>
-            <goal>test-compile</goal>
-            <goal>surefire:test</goal>
-        </goals>
-    </action>
-    <action>
         <actionName>CUSTOM-deploy</actionName>
         <displayName>deploy</displayName>
         <packagings>

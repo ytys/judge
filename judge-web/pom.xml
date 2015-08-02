@@ -49,9 +49,10 @@
         <commons-dbcp2.version>2.1</commons-dbcp2.version>
         <commons-lang3.version>3.4</commons-lang3.version>
         <commons-pool2.version>2.4.1</commons-pool2.version>
-        <ehcache-core.version>2.6.11</ehcache-core.version>
+        <ehcache-core.version>ehcache-core is deprecated, use ehcache instead.</ehcache-core.version>
         <ehcache.version>2.10.0</ehcache.version>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
+        <evo-inflector.version>1.2.1</evo-inflector.version>
         <findbugs-jsr305.version>3.0.0</findbugs-jsr305.version>
         <freemarker.version>2.3.23</freemarker.version>
         <guava.version>18.0</guava.version>
@@ -71,15 +72,12 @@
         <mariadb.version>1.2.0</mariadb.version>
         <!-- for liquibase-maven-plugin -->
         <maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
-        <maven.compiler.source>${java.version}</maven.compiler.source>
-        <maven.compiler.target>${java.version}</maven.compiler.target>
         <!--<maven.test.failure.ignore>true</maven.test.failure.ignore>-->
         <!--<maven.test.skip>true</maven.test.skip>-->
         <maven.version>3.3.3</maven.version>
         <mockito.version>1.10.19</mockito.version>
         <nekohtml.version>1.9.22</nekohtml.version>
         <ognl3.version>3.0.11</ognl3.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <querydsl.version>3.6.5</querydsl.version>
         <snakeyaml.version>1.15</snakeyaml.version>
         <spring-data-releasetrain.version>Fowler-SR1</spring-data-releasetrain.version>
@@ -110,16 +108,9 @@
                         <artifactId>hibernate-jpa-2.1-api</artifactId>
                         <groupId>org.hibernate.javax.persistence</groupId>
                     </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>org.hibernate</groupId>
-                <artifactId>hibernate-entitymanager</artifactId>
-                <version>${hibernate-entitymanager.version}</version>
-                <exclusions>
                     <exclusion>
-                        <artifactId>hibernate-jpa-2.1-api</artifactId>
-                        <groupId>org.hibernate.javax.persistence</groupId>
+                        <artifactId>jboss-transaction-api_1.2_spec</artifactId>
+                        <groupId>org.jboss.spec.javax.transaction</groupId>
                     </exclusion>
                 </exclusions>
             </dependency>
@@ -164,22 +155,7 @@
         <dependency>
             <groupId>net.sf.ehcache</groupId>
             <artifactId>ehcache</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>net.sf.ehcache</groupId>
-            <artifactId>ehcache-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.glassfish.web</groupId>
-            <artifactId>el-impl</artifactId>
-            <version>2.2</version>
             <scope>runtime</scope>
-            <exclusions>
-                <exclusion>
-                    <artifactId>el-api</artifactId>
-                    <groupId>javax.el</groupId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
@@ -194,6 +170,16 @@
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-ehcache</artifactId>
             <scope>runtime</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>hibernate-core</artifactId>
+                    <groupId>org.hibernate</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>ehcache-core</artifactId>
+                    <groupId>net.sf.ehcache</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.zaxxer</groupId>
@@ -225,35 +211,10 @@
             <artifactId>javax.persistence</artifactId>
         </dependency>
         <dependency>
-            <groupId>javax.servlet.jsp.jstl</groupId>
-            <artifactId>javax.servlet.jsp.jstl-api</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
             <groupId>com.googlecode.usc</groupId>
             <artifactId>jdbcdslog</artifactId>
             <version>1.0.6.2</version>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.glassfish.web</groupId>
-            <artifactId>jstl-impl</artifactId>
-            <version>1.2</version>
-            <scope>runtime</scope>
-            <exclusions>
-                <exclusion>
-                    <artifactId>jsp-api</artifactId>
-                    <groupId>javax.servlet.jsp</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>servlet-api</artifactId>
-                    <groupId>javax.servlet</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>jstl-api</artifactId>
-                    <groupId>javax.servlet.jsp.jstl</groupId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.liquibase</groupId>
@@ -302,6 +263,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>hibernate-jpa-2.1-api</artifactId>
+                    <groupId>org.hibernate.javax.persistence</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
