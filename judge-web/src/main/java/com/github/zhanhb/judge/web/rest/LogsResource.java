@@ -37,8 +37,7 @@ public class LogsResource {
             method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void changeLevel(@RequestBody LoggerDTO jsonLogger) {
-        LoggerContext context = getLoggerContext();
-        context.getLogger(jsonLogger.getName()).setLevel(Level.valueOf(jsonLogger.getLevel()));
+        getLoggerContext().getLogger(jsonLogger.getName()).setLevel(Level.valueOf(jsonLogger.getLevel()));
     }
 
     private LoggerContext getLoggerContext() {

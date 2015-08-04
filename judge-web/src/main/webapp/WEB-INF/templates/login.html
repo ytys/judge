@@ -32,9 +32,13 @@ limitations under the License.
                     <form method="POST" th:action="@{/login}" accept-charset="UTF-8" role="form" id="loginform" class="form-signin">
                         <fieldset>
                             <h3 class="sign-up-title" style="color:dimgray; text-align: center">Welcome back! Please sign in</h3>
-                            <div class="alert bs-callout bs-callout-danger alert-dismissible" role="alert">
+
+                            <div class="alert bs-callout bs-callout-danger alert-dismissible" role="alert" th:if="${param.error}">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                <h5>E-mail or password was incorrect, please try again</h5>
+                                <h5 th:text="${session.SPRING_SECURITY_LAST_EXCEPTION == null} ? #{unknown_error} : ${session.SPRING_SECURITY_LAST_EXCEPTION.message}">E-mail or password was incorrect, please try again</h5>
+                            </div>
+                            <div class="alert bs-callout bs-callout-danger alert-dismissible" role="alert" th:if="${param.logout}" th:text="prompt_logout">
+                                You have been logged out.
                             </div>
 
                             <hr class="colorgraph"/>

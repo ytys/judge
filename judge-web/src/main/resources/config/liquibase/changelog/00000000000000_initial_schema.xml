@@ -153,22 +153,6 @@
         </createTable>
     </changeSet>
     <changeSet author="system" id="00000000000009">
-        <createTable tableName="limits">
-            <column autoIncrement="true" name="id" type="BIGINT">
-                <constraints primaryKey="true" primaryKeyName="limitsPK"/>
-            </column>
-            <column name="memory_limit" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="output_limit" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="time_limit" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-    </changeSet>
-    <changeSet author="system" id="00000000000010">
         <createTable tableName="persistent_token">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="persistent_tokenPK"/>
@@ -176,7 +160,7 @@
             <column name="userprofile" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="system" id="00000000000011">
+    <changeSet author="system" id="00000000000010">
         <createTable tableName="problem">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="problemPK"/>
@@ -186,16 +170,24 @@
             <column name="hint" type="CLOB"/>
             <column name="input" type="CLOB"/>
             <column name="last_update_date" type="datetime"/>
+            <column name="memory_limit" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
             <column name="output" type="CLOB"/>
+            <column name="output_limit" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
             <column name="sample_input" type="CLOB"/>
             <column name="sample_output" type="CLOB"/>
             <column name="source" type="CLOB"/>
+            <column name="time_limit" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
             <column name="title" type="CLOB"/>
             <column name="creation_user" type="BIGINT"/>
-            <column name="limits" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="system" id="00000000000012">
+    <changeSet author="system" id="00000000000011">
         <createTable tableName="role">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="rolePK"/>
@@ -208,7 +200,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="system" id="00000000000013">
+    <changeSet author="system" id="00000000000012">
         <createTable tableName="submission">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="submissionPK"/>
@@ -233,7 +225,7 @@
             <column name="userprofile" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="system" id="00000000000014">
+    <changeSet author="system" id="00000000000013">
         <createTable tableName="upload">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="uploadPK"/>
@@ -244,7 +236,7 @@
             <column name="orign_name" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="system" id="00000000000015">
+    <changeSet author="system" id="00000000000014">
         <createTable tableName="usergroup">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="usergroupPK"/>
@@ -261,7 +253,7 @@
             <column name="owner" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="system" id="00000000000016">
+    <changeSet author="system" id="00000000000015">
         <createTable tableName="usergroup_userprofile">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="usergroup_userprofilePK"/>
@@ -274,12 +266,12 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="system" id="00000000000017">
+    <changeSet author="system" id="00000000000016">
         <createTable tableName="userprofile">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="userprofilePK"/>
             </column>
-            <column name="birth_date" type="date"/>
+            <column name="birth_date" type="datetime"/>
             <column name="creation_date" type="datetime">
                 <constraints nullable="false"/>
             </column>
@@ -296,7 +288,7 @@
             <column name="creation_user" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="system" id="00000000000018">
+    <changeSet author="system" id="00000000000017">
         <createTable tableName="userprofile_role">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="userprofile_rolePK"/>
@@ -309,121 +301,118 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="system" id="00000000000019">
+    <changeSet author="system" id="00000000000018">
         <addUniqueConstraint columnNames="name" tableName="contest"/>
     </changeSet>
-    <changeSet author="system" id="00000000000020">
+    <changeSet author="system" id="00000000000019">
         <addUniqueConstraint columnNames="contest, language" tableName="contest_language"/>
     </changeSet>
-    <changeSet author="system" id="00000000000021">
+    <changeSet author="system" id="00000000000020">
         <addUniqueConstraint columnNames="contest, contest_order" tableName="contest_problem"/>
     </changeSet>
-    <changeSet author="system" id="00000000000022">
+    <changeSet author="system" id="00000000000021">
         <addUniqueConstraint columnNames="contest, problem" tableName="contest_problem"/>
     </changeSet>
-    <changeSet author="system" id="00000000000023">
+    <changeSet author="system" id="00000000000022">
         <addUniqueConstraint columnNames="contest_problem" tableName="contest_problem_statistics"/>
     </changeSet>
-    <changeSet author="system" id="00000000000024">
+    <changeSet author="system" id="00000000000023">
         <addUniqueConstraint columnNames="contest, userprofile" tableName="contest_userprofile_statistics"/>
     </changeSet>
-    <changeSet author="system" id="00000000000025">
+    <changeSet author="system" id="00000000000024">
         <addUniqueConstraint columnNames="name" tableName="role"/>
     </changeSet>
-    <changeSet author="system" id="00000000000026">
+    <changeSet author="system" id="00000000000025">
         <addUniqueConstraint columnNames="owner, group_order" tableName="usergroup"/>
     </changeSet>
-    <changeSet author="system" id="00000000000027">
+    <changeSet author="system" id="00000000000026">
         <addUniqueConstraint columnNames="email" tableName="userprofile"/>
     </changeSet>
-    <changeSet author="system" id="00000000000028">
+    <changeSet author="system" id="00000000000027">
         <addUniqueConstraint columnNames="handle" tableName="userprofile"/>
     </changeSet>
-    <changeSet author="system" id="00000000000029">
+    <changeSet author="system" id="00000000000028">
         <addUniqueConstraint columnNames="userprofile, role" tableName="userprofile_role"/>
     </changeSet>
-    <changeSet author="system" id="00000000000030">
+    <changeSet author="system" id="00000000000029">
         <addForeignKeyConstraint baseColumnNames="userprofile" baseTableName="access_log" constraintName="FK_access_log_userprofile" deferrable="false" initiallyDeferred="false" onUpdate="CASCADE" referencedColumnNames="id" referencedTableName="userprofile"/>
     </changeSet>
-    <changeSet author="system" id="00000000000031">
+    <changeSet author="system" id="00000000000030">
         <addForeignKeyConstraint baseColumnNames="creation_user" baseTableName="contest" constraintName="FK_contest_creation_user" deferrable="false" initiallyDeferred="false" onUpdate="CASCADE" referencedColumnNames="id" referencedTableName="userprofile"/>
     </changeSet>
-    <changeSet author="system" id="00000000000032">
+    <changeSet author="system" id="00000000000031">
         <addForeignKeyConstraint baseColumnNames="contest" baseTableName="contest_language" constraintName="FK_contest_language_contest" deferrable="false" initiallyDeferred="false" onUpdate="CASCADE" referencedColumnNames="id" referencedTableName="contest"/>
     </changeSet>
-    <changeSet author="system" id="00000000000033">
+    <changeSet author="system" id="00000000000032">
         <addForeignKeyConstraint baseColumnNames="language" baseTableName="contest_language" constraintName="FK_contest_language_language" deferrable="false" initiallyDeferred="false" onUpdate="CASCADE" referencedColumnNames="id" referencedTableName="language"/>
     </changeSet>
-    <changeSet author="system" id="00000000000034">
+    <changeSet author="system" id="00000000000033">
         <addForeignKeyConstraint baseColumnNames="last_update_user" baseTableName="contest" constraintName="FK_contest_last_update_user" deferrable="false" initiallyDeferred="false" onUpdate="CASCADE" referencedColumnNames="id" referencedTableName="userprofile"/>
     </changeSet>
-    <changeSet author="system" id="00000000000035">
+    <changeSet author="system" id="00000000000034">
         <addForeignKeyConstraint baseColumnNames="parent" baseTableName="contest" constraintName="FK_contest_parent" deferrable="false" initiallyDeferred="false" onUpdate="CASCADE" referencedColumnNames="id" referencedTableName="contest"/>
     </changeSet>
-    <changeSet author="system" id="00000000000036">
+    <changeSet author="system" id="00000000000035">
         <addForeignKeyConstraint baseColumnNames="contest" baseTableName="contest_problem" constraintName="FK_contest_problem_contest" deferrable="false" initiallyDeferred="false" onUpdate="CASCADE" referencedColumnNames="id" referencedTableName="contest"/>
     </changeSet>
-    <changeSet author="system" id="00000000000037">
+    <changeSet author="system" id="00000000000036">
         <addForeignKeyConstraint baseColumnNames="problem" baseTableName="contest_problem" constraintName="FK_contest_problem_problem" deferrable="false" initiallyDeferred="false" onUpdate="CASCADE" referencedColumnNames="id" referencedTableName="problem"/>
     </changeSet>
-    <changeSet author="system" id="00000000000038">
+    <changeSet author="system" id="00000000000037">
         <addForeignKeyConstraint baseColumnNames="contest_problem" baseTableName="contest_problem_statistics" constraintName="FK_contest_problem_statistics_contest_problem" deferrable="false" initiallyDeferred="false" onUpdate="CASCADE" referencedColumnNames="id" referencedTableName="contest_problem"/>
     </changeSet>
-    <changeSet author="system" id="00000000000039">
+    <changeSet author="system" id="00000000000038">
         <addForeignKeyConstraint baseColumnNames="contest" baseTableName="contest_userprofile_statistics" constraintName="FK_contest_userprofile_statistics_contest" deferrable="false" initiallyDeferred="false" onUpdate="CASCADE" referencedColumnNames="id" referencedTableName="contest"/>
     </changeSet>
-    <changeSet author="system" id="00000000000040">
+    <changeSet author="system" id="00000000000039">
         <addForeignKeyConstraint baseColumnNames="userprofile" baseTableName="contest_userprofile_statistics" constraintName="FK_contest_userprofile_statistics_userprofile" deferrable="false" initiallyDeferred="false" onUpdate="CASCADE" referencedColumnNames="id" referencedTableName="userprofile"/>
     </changeSet>
-    <changeSet author="system" id="00000000000041">
+    <changeSet author="system" id="00000000000040">
         <addForeignKeyConstraint baseColumnNames="creation_user" baseTableName="judge_reply" constraintName="FK_judge_reply_creation_user" deferrable="false" initiallyDeferred="false" onUpdate="CASCADE" referencedColumnNames="id" referencedTableName="userprofile"/>
     </changeSet>
-    <changeSet author="system" id="00000000000042">
+    <changeSet author="system" id="00000000000041">
         <addForeignKeyConstraint baseColumnNames="last_update_user" baseTableName="judge_reply" constraintName="FK_judge_reply_last_update_user" deferrable="false" initiallyDeferred="false" onUpdate="CASCADE" referencedColumnNames="id" referencedTableName="userprofile"/>
     </changeSet>
-    <changeSet author="system" id="00000000000043">
+    <changeSet author="system" id="00000000000042">
         <addForeignKeyConstraint baseColumnNames="creation_user" baseTableName="language" constraintName="FK_language_creation_user" deferrable="false" initiallyDeferred="false" onUpdate="CASCADE" referencedColumnNames="id" referencedTableName="userprofile"/>
     </changeSet>
-    <changeSet author="system" id="00000000000044">
+    <changeSet author="system" id="00000000000043">
         <addForeignKeyConstraint baseColumnNames="userprofile" baseTableName="persistent_token" constraintName="FK_persistent_token_userprofile" deferrable="false" initiallyDeferred="false" onUpdate="CASCADE" referencedColumnNames="id" referencedTableName="userprofile"/>
     </changeSet>
-    <changeSet author="system" id="00000000000045">
+    <changeSet author="system" id="00000000000044">
         <addForeignKeyConstraint baseColumnNames="creation_user" baseTableName="problem" constraintName="FK_problem_creation_user" deferrable="false" initiallyDeferred="false" onUpdate="CASCADE" referencedColumnNames="id" referencedTableName="userprofile"/>
     </changeSet>
-    <changeSet author="system" id="00000000000046">
-        <addForeignKeyConstraint baseColumnNames="limits" baseTableName="problem" constraintName="FK_problem_limits" deferrable="false" initiallyDeferred="false" onUpdate="CASCADE" referencedColumnNames="id" referencedTableName="limits"/>
-    </changeSet>
-    <changeSet author="system" id="00000000000047">
+    <changeSet author="system" id="00000000000045">
         <addForeignKeyConstraint baseColumnNames="contest" baseTableName="submission" constraintName="FK_submission_contest" deferrable="false" initiallyDeferred="false" onUpdate="CASCADE" referencedColumnNames="id" referencedTableName="contest"/>
     </changeSet>
-    <changeSet author="system" id="00000000000048">
+    <changeSet author="system" id="00000000000046">
         <addForeignKeyConstraint baseColumnNames="judge_reply" baseTableName="submission" constraintName="FK_submission_judge_reply" deferrable="false" initiallyDeferred="false" onUpdate="CASCADE" referencedColumnNames="id" referencedTableName="judge_reply"/>
     </changeSet>
-    <changeSet author="system" id="00000000000049">
+    <changeSet author="system" id="00000000000047">
         <addForeignKeyConstraint baseColumnNames="language" baseTableName="submission" constraintName="FK_submission_language" deferrable="false" initiallyDeferred="false" onUpdate="CASCADE" referencedColumnNames="id" referencedTableName="language"/>
     </changeSet>
-    <changeSet author="system" id="00000000000050">
+    <changeSet author="system" id="00000000000048">
         <addForeignKeyConstraint baseColumnNames="problem" baseTableName="submission" constraintName="FK_submission_problem" deferrable="false" initiallyDeferred="false" onUpdate="CASCADE" referencedColumnNames="id" referencedTableName="problem"/>
     </changeSet>
-    <changeSet author="system" id="00000000000051">
+    <changeSet author="system" id="00000000000049">
         <addForeignKeyConstraint baseColumnNames="userprofile" baseTableName="submission" constraintName="FK_submission_userprofile" deferrable="false" initiallyDeferred="false" onUpdate="CASCADE" referencedColumnNames="id" referencedTableName="userprofile"/>
     </changeSet>
-    <changeSet author="system" id="00000000000052">
+    <changeSet author="system" id="00000000000050">
         <addForeignKeyConstraint baseColumnNames="owner" baseTableName="usergroup" constraintName="FK_usergroup_owner" deferrable="false" initiallyDeferred="false" onUpdate="CASCADE" referencedColumnNames="id" referencedTableName="userprofile"/>
     </changeSet>
-    <changeSet author="system" id="00000000000053">
+    <changeSet author="system" id="00000000000051">
         <addForeignKeyConstraint baseColumnNames="usergroup" baseTableName="usergroup_userprofile" constraintName="FK_usergroup_userprofile_usergroup" deferrable="false" initiallyDeferred="false" onUpdate="CASCADE" referencedColumnNames="id" referencedTableName="usergroup"/>
     </changeSet>
-    <changeSet author="system" id="00000000000054">
+    <changeSet author="system" id="00000000000052">
         <addForeignKeyConstraint baseColumnNames="userprofile" baseTableName="usergroup_userprofile" constraintName="FK_usergroup_userprofile_userprofile" deferrable="false" initiallyDeferred="false" onUpdate="CASCADE" referencedColumnNames="id" referencedTableName="userprofile"/>
     </changeSet>
-    <changeSet author="system" id="00000000000055">
+    <changeSet author="system" id="00000000000053">
         <addForeignKeyConstraint baseColumnNames="creation_user" baseTableName="userprofile" constraintName="FK_userprofile_creation_user" deferrable="false" initiallyDeferred="false" onUpdate="CASCADE" referencedColumnNames="id" referencedTableName="userprofile"/>
     </changeSet>
-    <changeSet author="system" id="00000000000056">
+    <changeSet author="system" id="00000000000054">
         <addForeignKeyConstraint baseColumnNames="role" baseTableName="userprofile_role" constraintName="FK_userprofile_role_role" deferrable="false" initiallyDeferred="false" onUpdate="CASCADE" referencedColumnNames="id" referencedTableName="role"/>
     </changeSet>
-    <changeSet author="system" id="00000000000057">
+    <changeSet author="system" id="00000000000055">
         <addForeignKeyConstraint baseColumnNames="userprofile" baseTableName="userprofile_role" constraintName="FK_userprofile_role_userprofile" deferrable="false" initiallyDeferred="false" onUpdate="CASCADE" referencedColumnNames="id" referencedTableName="userprofile"/>
     </changeSet>
 </databaseChangeLog>

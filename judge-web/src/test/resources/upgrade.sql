@@ -2,88 +2,238 @@ use clanguage;
 
 create database if not exists oj_temp_schema COLLATE 'utf8_general_ci';
 
+CREATE TABLE IF NOT EXISTS oj_temp_schema.contest_temp (
+  orign_oj varchar(255) NOT NULL,
+  orign_id bigint(20) NOT NULL,
+  title longtext,
+  start_time datetime DEFAULT NULL,
+  end_time datetime DEFAULT NULL,
+  description longtext,
+  disabled bit(1) NOT NULL DEFAULT b'0',
+  new_id bigint(20) DEFAULT NULL,
+  PRIMARY KEY (orign_oj,orign_id)
+);
+
+CREATE TABLE IF NOT EXISTS oj_temp_schema.problem_temp (
+  orign_oj varchar(255) NOT NULL,
+  orign_id bigint(20) NOT NULL,
+  title varchar(255) DEFAULT NULL,
+  description longtext,
+  input longtext,
+  output longtext,
+  sample_input longtext,
+  sample_output longtext,
+  hint longtext,
+  source varchar(100) DEFAULT NULL,
+  sample_Program varchar(255) DEFAULT NULL,
+  creation_date datetime DEFAULT NULL,
+  time_limit int(11) DEFAULT NULL,
+  memory_limit int(11) DEFAULT NULL,
+  case_time_limit int(11) DEFAULT NULL,
+  disabled bit(1) DEFAULT b'0',
+  new_id bigint(20) DEFAULT NULL,
+  PRIMARY KEY (orign_oj,orign_id)
+);
+
+CREATE TABLE IF NOT EXISTS oj_temp_schema.solution_temp (
+  orign_oj varchar(255) NOT NULL,
+  orign_id bigint(20) NOT NULL,
+  orign_problem_id bigint(11) NOT NULL,
+  orign_user_handle varchar(255) NOT NULL DEFAULT '',
+  orign_contest_id bigint(20) DEFAULT NULL,
+  time int(11) NOT NULL DEFAULT '0',
+  memory int(11) NOT NULL DEFAULT '0',
+  in_date datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  result smallint(6) NOT NULL DEFAULT '0',
+  language tinyint(4) NOT NULL DEFAULT '0',
+  ip varchar(32) NOT NULL DEFAULT '',
+  code_length int(11) NOT NULL DEFAULT '0',
+  source_code longtext,
+  compile_info longtext,
+  PRIMARY KEY (orign_oj,orign_id)
+);
+
+CREATE TABLE IF NOT EXISTS oj_temp_schema.userprofile_temp (
+  orign_oj varchar(255) NOT NULL,
+  handle varchar(255) NOT NULL,
+  birth_date datetime DEFAULT NULL,
+  creation_date datetime DEFAULT NULL,
+  disabled bit(1) NOT NULL DEFAULT b'0',
+  email longtext,
+  last_update_date datetime DEFAULT NULL,
+  major longtext,
+  nickname longtext,
+  password longtext,
+  school longtext,
+  PRIMARY KEY (orign_oj,handle),
+  KEY KEY_email (email(100)) USING HASH
+);
+
+set @oj_name = DATABASE();
 /* userprofile start */
-drop table if exists oj_temp_schema.userprofile_clanguage;
-create table oj_temp_schema.userprofile_clanguage
-    select
-        null            as      birth_date,
-        reg_time        as      creation_date,
-        IF(defunct='Y',1,0)  as disabled,
-        email           as      email,
-        user_id         as      handle,
-        accesstime      as      last_update_date,
-        school          as      major,
-        nick            as      nickname,
-        password        as      password,
-        school          as      school,
-        NULL            as      creation_user
-    from clanguage.users u1
-    order by creation_date asc, handle asc;
+INSERT IGNORE INTO oj_temp_schema.userprofile_temp (
+    orign_oj,
+    handle,
+    creation_date,
+    disabled,
+    email,
+    last_update_date,
+    nickname,
+    password,
+    school
+) select
+    @oj_name,
+    user_id,
+    reg_time,
+    IF(defunct='Y',1,0),
+    replace(trim(email),' ',''),
+    accesstime,
+    trim(nick),
+    password,
+    trim(school)
+from
+    users u1;
 /* userprofile end */
 /* problem start */
-drop table if exists oj_temp_schema.problem_clanguage;
-create table oj_temp_schema.problem_clanguage
-    select
-        problem_id as orign_id,
-        title,
-        description,
-        input,
-        output,
-        sample_input,
-        sample_output,
-        hint,
-        source,
-        sample_Program,
-        in_date as creation_date,
-        time_limit,
-        memory_limit,
-        case_time_limit,
-        CAST(NULL AS INT) AS new_id
-    from clanguage.problem p
-    where p.defunct='N';
-ALTER TABLE oj_temp_schema.problem_clanguage
-    CHANGE COLUMN new_id new_id BIGINT NULL DEFAULT NULL AFTER case_time_limit;
-
+INSERT IGNORE INTO oj_temp_schema.problem_temp (
+    orign_oj,
+    orign_id,
+    title,
+    description,
+    input,
+    output,
+    sample_input,
+    sample_output,
+    hint,
+    source,
+    sample_Program,
+    creation_date,
+    time_limit,
+    memory_limit,
+    case_time_limit,
+    disabled
+) select
+    @oj_name,
+    problem_id,
+    title,
+    description,
+    input,
+    output,
+    sample_input,
+    sample_output,
+    hint,
+    source,
+    sample_Program,
+    in_date,
+    time_limit,
+    memory_limit,
+    case_time_limit,
+    IF(defunct='N' or defunct is null,0,1)
+from
+    problem p;
 /* problem end */
+/* contest start */
+INSERT IGNORE INTO oj_temp_schema.contest_temp (
+    orign_oj,
+    orign_id,
+    title,
+    start_time,
+    end_time,
+    description,
+    disabled
+) select
+    @oj_name,
+    contest_id,
+    title,
+    start_time,
+    end_time,
+    description,
+    IF(defunct='N',0,1)
+from contest;
+/* contest end */
 
+/* solution start */
+INSERT IGNORE INTO oj_temp_schema.solution_temp (
+    orign_oj,
+    orign_id,
+    orign_problem_id,
+    orign_user_handle,
+    orign_contest_id,
+    time,
+    memory,
+    in_date,
+    result,
+    language,
+    ip,
+    code_length
+) select
+    @oj_name,
+    solution_id,
+    problem_id,
+    user_id,
+    contest_id,
+    time,
+    memory,
+    in_date,
+    result,
+    language,
+    ip,
+    code_length
+from solution;
+/* solution end */
 
-use oj_temp_schema;
+update oj_temp_schema.userprofile_temp set email = null where email = '' or email='null' or length(email) < 2;
 
-update oj_temp_schema.userprofile_clanguage
-set
-    email = replace(trim(email),' ',''),
-    nickname = trim(nickname),
-    school = trim(school),
-    major = trim(major);
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO';
+update
+    oj_temp_schema.solution_temp as t
+    left join (
+        select
+            solution_id as id,
+            convert(uncompress(source_code.source) using 'utf8') AS source
+        from source_code
+    ) as s on
+        t.orign_id = s.id
+set t.source_code = s.source
+where t.orign_oj=@oj_name;
 
-update oj_temp_schema.userprofile_clanguage set email = null where email = '' or email='null' or length(email) < 2;
-
-ALTER TABLE oj_temp_schema.userprofile_clanguage
-    ADD COLUMN id INT NOT NULL AUTO_INCREMENT FIRST,
-    ADD PRIMARY KEY (id);
-
-ALTER TABLE oj_temp_schema.userprofile_clanguage
-    ADD INDEX KEY_email (email);
+update
+    oj_temp_schema.solution_temp as t
+    left join (
+        select
+            solution_id as id,
+            convert(uncompress(source_code.source) using 'latin1') AS source
+        from source_code
+    ) as s on
+        t.orign_id = s.id
+   left join (
+       select
+            solution_id as id,
+            code_length as len
+       from solution
+   ) as r on
+       r.id = s.id
+set t.source_code = s.source
+where t.code_length <> char_length(t.source_code) and t.orign_oj=@oj_name;
+SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '');
 
 UPDATE
-    oj_temp_schema.userprofile_clanguage AS t
-    LEFT JOIN (
-        select tb.id, tb.email, count(rt.id) as cnt
-        from oj_temp_schema.userprofile_clanguage tb, oj_temp_schema.userprofile_clanguage rt
-        where rt.id < tb.id and rt.email = tb.email
-        group by tb.id
+    oj_temp_schema.userprofile_temp AS t
+    JOIN (
+        select tb.handle, tb.email, count(rt.handle) as cnt
+        from oj_temp_schema.userprofile_temp tb, oj_temp_schema.userprofile_temp rt
+        where rt.handle < tb.handle and rt.email = tb.email
+        group by tb.handle
         order by cnt desc
     ) as m on
-        m.id = t.id
+        m.handle = t.handle
 set
     t.email = CONCAT('$', m.cnt, '$', t.email)
 where
-    m.cnt is not null and
     t.email not like '$%';
 
-ALTER TABLE oj_temp_schema.userprofile_clanguage
-    DROP COLUMN id;
-delete from oj_temp_schema.userprofile_clanguage
+/*
+delete from oj_temp_schema.userprofile_temp
     where handle in('admin', 'anonymousUser', 'system');
 insert into oj.userprofile (
     birth_date,
@@ -109,9 +259,35 @@ insert into oj.userprofile (
     password,
     school,
     creation_user
-    from oj_temp_schema.userprofile_clanguage;
+    from oj_temp_schema.userprofile_temp;
+*/
+set @output_limit = 16 * 1024 * 1024;
+set @next = (
+    select IFNULL(max(id), 0) + 1 as next from problem
+);
 
-ALTER TABLE oj.problem AUTO_INCREMENT=0;
+update
+    oj.problem p
+    left join (
+        select *
+        from oj_temp_schema.problem_temp q
+        where q.new_id is not null
+    ) as q on p.id = q.new_id
+set
+    p.creation_date = q.creation_date,
+    p.hint = q.hint,
+    p.input = q.input,
+    p.last_update_date = q.creation_date,
+    p.memory_limit = q.memory_limit,
+    p.output = q.output,
+    p.output_limit = 16777216,
+    p.sample_input = q.sample_input,
+    p.sample_output = q.sample_output,
+    p.source = q.source,
+    p.time_limit = q.time_limit,
+    p.title = q.title
+;
+
 insert into oj.problem (
     id,
     creation_date,
@@ -119,41 +295,29 @@ insert into oj.problem (
     hint,
     input,
     last_update_date,
+    memory_limit,
     output,
+    output_limit,
     sample_input,
     sample_output,
     source,
-    title,
-    creation_user,
-    limits
+    time_limit,
+    title
 ) select
-    orign_id,
+    new_id,
     creation_date,
     description,
     hint,
     input,
     creation_date,
+    memory_limit,
     output,
-    sample_input,
-    sample_output,
-    source,
-    title,
-    NULL,
-    1
-from
-    oj_temp_schema.problem_clanguage;
+    @output_limit,
 
-use clanguage;
-drop table if exists oj_temp_schema.contest_clanguage;
-create table oj_temp_schema.contest_clanguage
-select
-    contest_id,
-    title,
-    start_time,
-    end_time,
-    description,
-    IF(defunct='N',0,1) as disabled
-from clanguage.contest;
+from oj_temp_schema.problem_temp q
+where q.new_id is not in (
+    select id from oj.problem
+);
 
 insert into oj.contest (
     id,
@@ -171,7 +335,7 @@ insert into oj.contest (
     description,
     parent
 ) select
-    contest_id,
+    orign_id,
     start_time,
     now(),
     disabled,
@@ -186,62 +350,8 @@ insert into oj.contest (
     description,
     NULL
 from
-    oj_temp_schema.contest_clanguage;
+    oj_temp_schema.contest_temp;
 
-use oj_temp_schema;
-drop table if exists oj_temp_schema.solution_clanguage;
-create table oj_temp_schema.solution_clanguage
-select
-    solution_id,
-    problem_id,
-    user_id,
-    time,
-    memory,
-    in_date,
-    result,
-    language,
-    ip,
-    contest_id,
-    code_length
-from clanguage.solution;
-
-ALTER TABLE oj_temp_schema.solution_clanguage
-    ADD INDEX solution_id (solution_id);
-
-ALTER TABLE oj_temp_schema.solution_clanguage
-    ADD COLUMN source_code LONGTEXT NULL AFTER code_length,
-    ADD COLUMN compile_info LONGTEXT NULL AFTER source_code;
-
-SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO';
-update
-    oj_temp_schema.solution_clanguage as t
-    left join (
-        select
-            solution_id as id,
-            convert(uncompress(source_code.source) using 'utf8') AS source
-        from clanguage.source_code
-    ) as s on
-        t.solution_id = s.id
-set t.source_code = s.source;
-update
-    oj_temp_schema.solution_clanguage as t
-    left join (
-        select
-            solution_id as id,
-            convert(uncompress(source_code.source) using 'latin1') AS source
-        from clanguage.source_code
-    ) as s on
-        t.solution_id = s.id
-   left join (
-   	select
-            solution_id as id,
-            code_length as len
-   	from clanguage.solution
-   ) as r on
-   	r.id = s.id
-set t.source_code = s.source
-where t.code_length <> char_length(t.source_code);
-SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '');
 
 INSERT INTO oj.contest(
     id,
@@ -257,37 +367,33 @@ INSERT INTO oj.contest(
 ) VALUES (
     1,
     now(),
-    'clanguage',
+    'temp',
     0,
     now(),
-    'clanguage',
-    'clanguage',
+    'temp',
+    'temp',
     1,
     1,
     1
 );
 
 /*
-select * from solution_clanguage
+select * from solution_temp
 where char_length(source_code) <> code_length;
 */
 /*
-select * from oj_temp_schema.solution_clanguage
-	where instr(source_code,'??')>0
-	order by solution_id desc;
+select * from oj_temp_schema.solution_temp
+    where instr(source_code,'??')>0
+    order by solution_id desc;
 */
-
-
 
 /*
 use oj_temp_schema;
 
 create table oj_temp_schema.userprofile
-    select * from oj_temp_schema.userprofile_clanguage union
+    select * from oj_temp_schema.userprofile_temp union
     select * from oj_temp_schema.userprofile_java;
 
-drop table oj_temp_schema.userprofile_clanguage;
-drop table oj_temp_schema.userprofile_java;
 */
 /* select * from userprofile tb where (select count(1) from userprofile where handle=tb.handle)>=2; */
 

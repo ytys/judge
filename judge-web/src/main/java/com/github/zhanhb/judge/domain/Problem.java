@@ -16,7 +16,6 @@
 package com.github.zhanhb.judge.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
@@ -116,10 +115,17 @@ public class Problem implements Serializable {
     @Length(min = 0, max = Integer.MAX_VALUE)
     private String source;
 
-    @JoinColumn(name = "limits", foreignKey = @ForeignKey(name = "FK_problem_limits"))
-    @ManyToOne
-    @JsonUnwrapped
-    private Limits limits;
+    @Column(name = "time_limit", nullable = false)
+    @NotNull
+    private long timeLimit;
+
+    @Column(name = "memory_limit", nullable = false)
+    @NotNull
+    private long memoryLimit;
+
+    @Column(name = "output_limit", nullable = false)
+    @NotNull
+    private long outputLimit;
 
     @Column(name = "creation_date")
     @CreatedDate

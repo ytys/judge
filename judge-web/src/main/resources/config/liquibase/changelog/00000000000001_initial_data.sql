@@ -38,10 +38,6 @@ INSERT INTO role (id, description, name) VALUES
     (3, 'teacher', 'ROLE_TEACHER');
 
 --changeset system:00000000000004
-INSERT INTO limits (id, memory_limit, output_limit, time_limit) VALUES
-    (1, 134217728, 134217728, 2000);
-
---changeset system:00000000000005
 INSERT INTO userprofile_role (id, role, userprofile) VALUES
     (1, 1, 3),
     (2, 2, 3);
