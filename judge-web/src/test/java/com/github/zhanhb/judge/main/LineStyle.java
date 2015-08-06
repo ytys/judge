@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
 public class LineStyle {
 
     private static final String LINE_STYLE = "\n";
-    private static final Set<String> acceptsuffix = new HashSet<>(Arrays.asList("java,xml,jspx,tagx,css,js,jsp,tag,yml,properties,sql".split("[^a-z]+")));
+    private static final Set<String> acceptsuffix = new HashSet<>(Arrays.asList("java,xml,jspx,tagx,css,js,jsp,tag,yml,properties,sql,txt,html".split("[^a-z]+")));
 
     public static void main(String[] args) throws IOException {
         Files.walk(Paths.get("."))

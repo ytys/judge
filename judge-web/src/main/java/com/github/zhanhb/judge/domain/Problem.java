@@ -119,6 +119,10 @@ public class Problem implements Serializable {
     @NotNull
     private long timeLimit;
 
+    // from old system, it's of no use now.
+    @Column(name = "case_time_limit")
+    private Long caseTimeLimit;
+
     @Column(name = "memory_limit", nullable = false)
     @NotNull
     private long memoryLimit;

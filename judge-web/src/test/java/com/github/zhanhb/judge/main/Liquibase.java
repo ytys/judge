@@ -33,12 +33,12 @@ import java.util.regex.Pattern;
 public class Liquibase {
 
     public static void main(String[] args) throws IOException, URISyntaxException {
-        String resource = "config/liquibase/changelog/20150804221428_changelog.xml";
+        String resource = "config/liquibase/changelog/20150806131402_changelog.xml";
         Path initSchema = Paths.get("src/main/resources", resource);
         String[][] replaces = {
             {"author=\"[^\"]+\"", "author=\"system\""},
-            {"(?<prefix><addForeignKeyConstraint[^>]+?\")(?<space>\\s*)(?<suffix>referencedColumnNames=[^>]+?/>)", "${prefix} onUpdate=\"CASCADE\" ${suffix}"},
-            {"(?<prefix><column name=\"[\\w\\d_-]+(?<=[_-](date|time))\" type=\")BLOB(?<suffix>\"\\s*/?>)","${prefix}datetime${suffix}"}
+            {"(?<prefix><addForeignKeyConstraint[^>]+?\")(?<space>\\s+)(?<suffix>referencedColumnNames=[^>]+?/?>)", "${prefix}${space}onUpdate=\"CASCADE\"${space}${suffix}"},
+            {"(?<prefix><column name=\"[\\w\\d_-]++(?<=[_-](date|time))\" type=\")BLOB(?<suffix>\"\\s*/?>)","${prefix}datetime${suffix}"}
         };
         Charset charset = StandardCharsets.ISO_8859_1;
         String str = new String(Files.readAllBytes(initSchema), charset);

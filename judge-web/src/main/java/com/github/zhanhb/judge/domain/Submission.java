@@ -111,4 +111,13 @@ public class Submission implements Serializable {
     @Length(min = 50, max = 128 * 1024)
     private String sourceCode;
 
+    @Column(name = "time")
+    private Long time;
+
+    @Column(name = "memory")
+    private Long memory;
+
+    @Column(name = "ip", length = 40)
+    private String ip;
+
 }

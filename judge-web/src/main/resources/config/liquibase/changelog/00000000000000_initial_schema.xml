@@ -165,6 +165,7 @@
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="problemPK"/>
             </column>
+            <column name="case_time_limit" type="BIGINT"/>
             <column name="creation_date" type="datetime"/>
             <column name="description" type="CLOB"/>
             <column name="hint" type="CLOB"/>
@@ -209,11 +210,14 @@
                 <constraints nullable="false"/>
             </column>
             <column name="compile_info" type="CLOB"/>
+            <column name="ip" type="VARCHAR(40)"/>
             <column name="judge_time" type="datetime"/>
+            <column name="memory" type="BIGINT"/>
             <column name="source_code" type="CLOB"/>
             <column name="submit_time" type="datetime">
                 <constraints nullable="false"/>
             </column>
+            <column name="time" type="BIGINT"/>
             <column name="contest" type="BIGINT"/>
             <column name="judge_reply" type="BIGINT"/>
             <column name="language" type="BIGINT">

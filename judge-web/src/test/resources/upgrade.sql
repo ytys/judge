@@ -3,70 +3,72 @@ use clanguage;
 create database if not exists oj_temp_schema COLLATE 'utf8_general_ci';
 
 CREATE TABLE IF NOT EXISTS oj_temp_schema.contest_temp (
-  orign_oj varchar(255) NOT NULL,
-  orign_id bigint(20) NOT NULL,
-  title longtext,
-  start_time datetime DEFAULT NULL,
-  end_time datetime DEFAULT NULL,
-  description longtext,
-  disabled bit(1) NOT NULL DEFAULT b'0',
-  new_id bigint(20) DEFAULT NULL,
-  PRIMARY KEY (orign_oj,orign_id)
+    orign_oj varchar(255) NOT NULL,
+    orign_id bigint(20) NOT NULL,
+    title longtext,
+    start_time datetime DEFAULT NULL,
+    end_time datetime DEFAULT NULL,
+    description longtext,
+    disabled bit(1) NOT NULL DEFAULT b'0',
+    new_id bigint(20) DEFAULT NULL,
+    PRIMARY KEY (orign_oj,orign_id)
 );
 
 CREATE TABLE IF NOT EXISTS oj_temp_schema.problem_temp (
-  orign_oj varchar(255) NOT NULL,
-  orign_id bigint(20) NOT NULL,
-  title varchar(255) DEFAULT NULL,
-  description longtext,
-  input longtext,
-  output longtext,
-  sample_input longtext,
-  sample_output longtext,
-  hint longtext,
-  source varchar(100) DEFAULT NULL,
-  sample_Program varchar(255) DEFAULT NULL,
-  creation_date datetime DEFAULT NULL,
-  time_limit int(11) DEFAULT NULL,
-  memory_limit int(11) DEFAULT NULL,
-  case_time_limit int(11) DEFAULT NULL,
-  disabled bit(1) DEFAULT b'0',
-  new_id bigint(20) DEFAULT NULL,
-  PRIMARY KEY (orign_oj,orign_id)
+    orign_oj varchar(255) NOT NULL,
+    orign_id bigint(20) NOT NULL,
+    title varchar(255) DEFAULT NULL,
+    description longtext,
+    input longtext,
+    output longtext,
+    sample_input longtext,
+    sample_output longtext,
+    hint longtext,
+    source varchar(100) DEFAULT NULL,
+    sample_Program varchar(255) DEFAULT NULL,
+    creation_date datetime DEFAULT NULL,
+    time_limit int(11) DEFAULT NULL,
+    memory_limit int(11) DEFAULT NULL,
+    case_time_limit int(11) DEFAULT NULL,
+    disabled bit(1) DEFAULT b'0',
+    new_id bigint(20) DEFAULT NULL,
+    PRIMARY KEY (orign_oj,orign_id)
 );
 
 CREATE TABLE IF NOT EXISTS oj_temp_schema.solution_temp (
-  orign_oj varchar(255) NOT NULL,
-  orign_id bigint(20) NOT NULL,
-  orign_problem_id bigint(11) NOT NULL,
-  orign_user_handle varchar(255) NOT NULL DEFAULT '',
-  orign_contest_id bigint(20) DEFAULT NULL,
-  time int(11) NOT NULL DEFAULT '0',
-  memory int(11) NOT NULL DEFAULT '0',
-  in_date datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  result smallint(6) NOT NULL DEFAULT '0',
-  language tinyint(4) NOT NULL DEFAULT '0',
-  ip varchar(32) NOT NULL DEFAULT '',
-  code_length int(11) NOT NULL DEFAULT '0',
-  source_code longtext,
-  compile_info longtext,
+    orign_oj varchar(255) NOT NULL,
+    orign_id bigint(20) NOT NULL,
+    orign_problem_id bigint(11) NOT NULL,
+    orign_user_handle varchar(255) NOT NULL DEFAULT '',
+    orign_contest_id bigint(20) DEFAULT NULL,
+    time int(11) NOT NULL DEFAULT '0',
+    memory int(11) NOT NULL DEFAULT '0',
+    in_date datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+    result smallint(6) NOT NULL DEFAULT '0',
+    language tinyint(4) NOT NULL DEFAULT '0',
+    ip varchar(32) NOT NULL DEFAULT '',
+    code_length int(11) NOT NULL DEFAULT '0',
+    source_code longtext,
+    compile_info longtext,
+    new_id BIGINT(20) NULL DEFAULT NULL,
   PRIMARY KEY (orign_oj,orign_id)
 );
 
 CREATE TABLE IF NOT EXISTS oj_temp_schema.userprofile_temp (
-  orign_oj varchar(255) NOT NULL,
-  handle varchar(255) NOT NULL,
-  birth_date datetime DEFAULT NULL,
-  creation_date datetime DEFAULT NULL,
-  disabled bit(1) NOT NULL DEFAULT b'0',
-  email longtext,
-  last_update_date datetime DEFAULT NULL,
-  major longtext,
-  nickname longtext,
-  password longtext,
-  school longtext,
-  PRIMARY KEY (orign_oj,handle),
-  KEY KEY_email (email(100)) USING HASH
+    orign_oj varchar(255) NOT NULL,
+    handle varchar(255) NOT NULL,
+    birth_date datetime DEFAULT NULL,
+    creation_date datetime DEFAULT NULL,
+    disabled bit(1) NOT NULL DEFAULT b'0',
+    email longtext,
+    last_update_date datetime DEFAULT NULL,
+    major longtext,
+    nickname longtext,
+    password longtext,
+    school longtext,
+    new_id bigint NULL DEFAULT NULL,
+    PRIMARY KEY (orign_oj,handle),
+    KEY KEY_email (email(100)) USING HASH
 );
 
 set @oj_name = DATABASE();
@@ -182,6 +184,25 @@ INSERT IGNORE INTO oj_temp_schema.solution_temp (
 from solution;
 /* solution end */
 
+/* OJ */
+insert ignore into oj.contest (
+    creation_date,
+    description,
+    disabled,
+    last_update_date,
+    name,
+    title,
+    type
+) select
+    now(),
+    @oj_name,
+    0,
+    now(),
+    @oj_name,
+    @oj_name,
+    1 /* OJ */
+;
+
 update oj_temp_schema.userprofile_temp set email = null where email = '' or email='null' or length(email) < 2;
 
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO';
@@ -217,62 +238,15 @@ set t.source_code = s.source
 where t.code_length <> char_length(t.source_code) and t.orign_oj=@oj_name;
 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '');
 
-UPDATE
-    oj_temp_schema.userprofile_temp AS t
-    JOIN (
-        select tb.handle, tb.email, count(rt.handle) as cnt
-        from oj_temp_schema.userprofile_temp tb, oj_temp_schema.userprofile_temp rt
-        where rt.handle < tb.handle and rt.email = tb.email
-        group by tb.handle
-        order by cnt desc
-    ) as m on
-        m.handle = t.handle
-set
-    t.email = CONCAT('$', m.cnt, '$', t.email)
-where
-    t.email not like '$%';
-
-/*
-delete from oj_temp_schema.userprofile_temp
-    where handle in('admin', 'anonymousUser', 'system');
-insert into oj.userprofile (
-    birth_date,
-    creation_date,
-    disabled,
-    email,
-    handle,
-    last_update_date,
-    major,
-    nickname,
-    password,
-    school,
-    creation_user
-) select
-    birth_date,
-    if(creation_date is null, if(last_update_date is null,now(),last_update_date), creation_date),
-    disabled,
-    email,
-    handle,
-    last_update_date,
-    major,
-    nickname,
-    password,
-    school,
-    creation_user
-    from oj_temp_schema.userprofile_temp;
-*/
 set @output_limit = 16 * 1024 * 1024;
-set @next = (
-    select IFNULL(max(id), 0) + 1 as next from problem
-);
+ALTER TABLE oj.problem AUTO_INCREMENT=0;
 
 update
     oj.problem p
-    left join (
-        select *
-        from oj_temp_schema.problem_temp q
-        where q.new_id is not null
-    ) as q on p.id = q.new_id
+left join
+    oj_temp_schema.problem_temp q
+on
+    p.id = q.new_id
 set
     p.creation_date = q.creation_date,
     p.hint = q.hint,
@@ -280,7 +254,7 @@ set
     p.last_update_date = q.creation_date,
     p.memory_limit = q.memory_limit,
     p.output = q.output,
-    p.output_limit = 16777216,
+    p.output_limit = @output_limit,
     p.sample_input = q.sample_input,
     p.sample_output = q.sample_output,
     p.source = q.source,
@@ -288,8 +262,18 @@ set
     p.title = q.title
 ;
 
+ALTER TABLE oj.problem
+    DROP COLUMN IF EXISTS orign_oj,
+    DROP COLUMN IF EXISTS orign_id;
+ALTER TABLE oj.problem
+    ADD COLUMN orign_oj VARCHAR(255) NULL DEFAULT NULL FIRST,
+    ADD COLUMN orign_id BIGINT(20) NULL DEFAULT NULL AFTER orign_oj;
+UPDATE oj_temp_schema.problem_temp q SET q.new_id = null WHERE q.new_id not in (
+    select id from oj.problem
+);
 insert into oj.problem (
-    id,
+    orign_oj,
+    orign_id,
     creation_date,
     description,
     hint,
@@ -302,9 +286,11 @@ insert into oj.problem (
     sample_output,
     source,
     time_limit,
+    case_time_limit,
     title
 ) select
-    new_id,
+    orign_oj,
+    orign_id,
     creation_date,
     description,
     hint,
@@ -313,14 +299,49 @@ insert into oj.problem (
     memory_limit,
     output,
     @output_limit,
+    sample_input,
+    sample_output,
+    source,
+    time_limit,
+    case_time_limit,
+    title
+from
+    oj_temp_schema.problem_temp q
+where q.new_id IS NULL;
 
-from oj_temp_schema.problem_temp q
-where q.new_id is not in (
-    select id from oj.problem
+update
+    oj_temp_schema.problem_temp p
+left join
+    oj.problem q
+on
+    p.orign_oj = q.orign_oj and p.orign_id = q.orign_id
+set
+    p.new_id = q.id
+where p.new_id is null;
+ALTER TABLE oj.problem
+    DROP COLUMN orign_oj,
+    DROP COLUMN orign_id;
+
+/* contests */
+ALTER TABLE oj.contest
+    DROP COLUMN IF EXISTS orign_oj,
+    DROP COLUMN IF EXISTS orign_id;
+
+ALTER TABLE oj.contest
+    ADD COLUMN orign_oj VARCHAR(255) NULL DEFAULT NULL FIRST,
+    ADD COLUMN orign_id BIGINT(20) NULL DEFAULT NULL AFTER orign_oj;
+
+update oj_temp_schema.contest_temp q
+set q.new_id = null
+where q.new_id not in (
+    select id from oj.contest
 );
 
-insert into oj.contest (
-    id,
+ALTER TABLE oj.contest AUTO_INCREMENT=0;
+
+insert IGNORE into oj.contest (
+    orign_oj,
+    orign_id,
     begin_time,
     creation_date,
     disabled,
@@ -335,13 +356,14 @@ insert into oj.contest (
     description,
     parent
 ) select
+    orign_oj,
     orign_id,
     start_time,
     now(),
     disabled,
     end_time,
     now(),
-    contest_id,
+    concat(orign_oj, '_', orign_id),
     NULL,
     title,
     2, /* CONTEST */
@@ -350,32 +372,200 @@ insert into oj.contest (
     description,
     NULL
 from
-    oj_temp_schema.contest_temp;
+    oj_temp_schema.contest_temp q
+where q.new_id IS NULL;
+
+update oj_temp_schema.contest_temp p
+left join oj.contest q
+on p.orign_oj = q.orign_oj and p.orign_id = q.orign_id
+set new_id = q.id
+where new_id is null;
+
+ALTER TABLE oj.contest
+    DROP COLUMN IF EXISTS orign_oj,
+    DROP COLUMN IF EXISTS orign_id;
 
 
-INSERT INTO oj.contest(
-    id,
-    creation_date,
-    description,
-    disabled,
-    last_update_date,
-    name,
-    title,
-    type,
-    creation_user,
-    last_update_user
-) VALUES (
-    1,
-    now(),
-    'temp',
-    0,
-    now(),
-    'temp',
-    'temp',
-    1,
-    1,
-    1
+update oj_temp_schema.userprofile_temp
+set new_id = null
+where new_id not in (
+	select id from oj.userprofile
 );
+
+insert ignore into oj.userprofile (
+    birth_date,
+    creation_date,
+    disabled,
+    email,
+    handle,
+    last_update_date,
+    nickname,
+    password,
+    school
+) select
+    birth_date,
+    ifnull(creation_date, ifnull(last_update_date,now())),
+    disabled,
+    email,
+    handle,
+    last_update_date,
+    nickname,
+    password,
+    school
+    from oj_temp_schema.userprofile_temp;
+
+update oj_temp_schema.userprofile_temp p
+left join oj.userprofile q
+on p.handle = q.handle
+set p.new_id = q.id
+where p.new_id is null;
+
+update oj_temp_schema.userprofile_temp p
+left join oj.userprofile q
+on p.email = q.email
+set p.new_id = q.id
+where p.new_id is null;
+
+update oj.userprofile p
+right join(
+    select * from oj_temp_schema.userprofile_temp
+    where disabled = 0
+) q on q.new_id = p.id
+set p.disabled = 0;
+
+update oj_temp_schema.solution_temp
+set new_id = null
+where new_id not in (
+    select id from oj.submission
+);
+
+update oj.submission p
+left join (
+    select * from oj_temp_schema.solution_temp s
+    left join (
+         select new_id as contest, orign_id cid, orign_oj coj
+         from oj_temp_schema.contest_temp
+    ) c on s.orign_contest_id = c.cid and s.orign_oj = c.coj
+    left join (
+         select new_id as userprofile, handle uh, orign_oj uoj
+         from oj_temp_schema.userprofile_temp
+    ) u on s.orign_user_handle = u.uh and s.orign_oj = u.uoj
+    left join (
+        select new_id as problem, orign_id pid, orign_oj poj
+        from oj_temp_schema.problem_temp
+    ) p on s.orign_problem_id = p.pid and s.orign_oj = p.poj
+) s on s.new_id = p.id
+set
+    p.problem = s.problem,
+    p.contest = IFNULL(s.contest, p.contest),
+    p.userprofile = s.userprofile,
+    p.code_len = s.code_length,
+    p.source_code = s.source_code,
+    p.compile_info = s.compile_info,
+    p.language = s.language,
+    p.submit_time = s.in_date
+;
+
+ALTER TABLE oj.submission
+    DROP COLUMN IF EXISTS orign_oj,
+    DROP COLUMN IF EXISTS orign_id;
+
+ALTER TABLE oj.submission
+    ADD COLUMN orign_oj VARCHAR(255) NULL DEFAULT NULL FIRST,
+    ADD COLUMN orign_id BIGINT(20) NULL DEFAULT NULL AFTER orign_oj;
+
+ALTER TABLE oj.submission AUTO_INCREMENT=0;
+
+insert into oj.submission (
+    orign_oj,
+    orign_id,
+    problem,
+    userprofile,
+    contest,
+    time,
+    memory,
+    submit_time,
+    language,
+    ip,
+    code_len,
+    compile_info,
+    source_code
+) select
+    orign_oj,
+    orign_id,
+    problem,
+    userprofile,
+    contest,
+    time,
+    memory,
+    in_date,
+    language,
+    ip,
+    code_length,
+    compile_info,
+    source_code
+from (
+    select * from oj_temp_schema.solution_temp s
+    left join (
+        select new_id as contest, orign_id cid, orign_oj coj
+        from oj_temp_schema.contest_temp
+    ) c on s.orign_contest_id = c.cid and s.orign_oj = c.coj
+    left join (
+        select new_id as userprofile, handle uh, orign_oj uoj
+        from oj_temp_schema.userprofile_temp
+    ) u on s.orign_user_handle = u.uh and s.orign_oj = u.uoj
+    left join (
+        select new_id as problem, orign_id pid, orign_oj poj
+        from oj_temp_schema.problem_temp
+    ) p on s.orign_problem_id = p.pid and s.orign_oj = p.poj
+) s
+where
+    s.new_id is null
+;
+
+update oj_temp_schema.solution_temp p
+left join (
+    select id, orign_oj, orign_id
+    from oj.submission
+) q on p.orign_oj = q.orign_oj and p.orign_id = q.orign_id
+set p.new_id = q.id
+where p.new_id is null;
+
+ALTER TABLE oj.submission
+    DROP COLUMN IF EXISTS orign_oj,
+    DROP COLUMN IF EXISTS orign_id;
+
+select
+    orign_oj,
+    orign_id,
+    problem,
+    userprofile,
+    contest,
+    time,
+    memory,
+    in_date,
+    result,
+    language,
+    ip,
+    code_length,
+    compile_info,
+    new_id
+from (
+    select * from oj_temp_schema.solution_temp s
+    left join (
+        select new_id as contest, orign_id cid, orign_oj coj
+        from oj_temp_schema.contest_temp
+    ) c on s.orign_contest_id = c.cid and s.orign_oj = c.coj
+    left join (
+        select new_id as userprofile, handle uh, orign_oj uoj
+        from oj_temp_schema.userprofile_temp
+    ) u on s.orign_user_handle = u.uh and s.orign_oj = u.uoj
+    left join (
+        select new_id as problem, orign_id pid, orign_oj poj
+        from oj_temp_schema.problem_temp
+    ) p on s.orign_problem_id = p.pid and s.orign_oj = p.poj
+) s
+;
 
 /*
 select * from solution_temp
