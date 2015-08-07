@@ -3,72 +3,75 @@ use clanguage;
 create database if not exists oj_temp_schema COLLATE 'utf8_general_ci';
 
 CREATE TABLE IF NOT EXISTS oj_temp_schema.contest_temp (
-    orign_oj varchar(255) NOT NULL,
-    orign_id bigint(20) NOT NULL,
-    title longtext,
-    start_time datetime DEFAULT NULL,
-    end_time datetime DEFAULT NULL,
-    description longtext,
-    disabled bit(1) NOT NULL DEFAULT b'0',
-    new_id bigint(20) DEFAULT NULL,
-    PRIMARY KEY (orign_oj,orign_id)
+    orign_oj VARCHAR(255) NOT NULL,
+    orign_id BIGINT(20) NOT NULL,
+    title LONGTEXT NULL,
+    start_time DATETIME NULL DEFAULT NULL,
+    end_time DATETIME NULL DEFAULT NULL,
+    description LONGTEXT NULL,
+    disabled BIT(1) NOT NULL DEFAULT b'0',
+    new_id BIGINT(20) NULL DEFAULT NULL,
+    PRIMARY KEY (orign_oj, orign_id),
+    UNIQUE INDEX new_id (new_id)
 );
 
 CREATE TABLE IF NOT EXISTS oj_temp_schema.problem_temp (
-    orign_oj varchar(255) NOT NULL,
-    orign_id bigint(20) NOT NULL,
-    title varchar(255) DEFAULT NULL,
-    description longtext,
-    input longtext,
-    output longtext,
-    sample_input longtext,
-    sample_output longtext,
-    hint longtext,
-    source varchar(100) DEFAULT NULL,
-    sample_Program varchar(255) DEFAULT NULL,
-    creation_date datetime DEFAULT NULL,
-    time_limit int(11) DEFAULT NULL,
-    memory_limit int(11) DEFAULT NULL,
-    case_time_limit int(11) DEFAULT NULL,
-    disabled bit(1) DEFAULT b'0',
-    new_id bigint(20) DEFAULT NULL,
-    PRIMARY KEY (orign_oj,orign_id)
+    orign_oj VARCHAR(255) NOT NULL,
+    orign_id BIGINT(20) NOT NULL,
+    title VARCHAR(255) NULL DEFAULT NULL,
+    description LONGTEXT NULL,
+    input LONGTEXT NULL,
+    output LONGTEXT NULL,
+    sample_input LONGTEXT NULL,
+    sample_output LONGTEXT NULL,
+    hint LONGTEXT NULL,
+    source VARCHAR(100) NULL DEFAULT NULL,
+    sample_Program VARCHAR(255) NULL DEFAULT NULL,
+    creation_date DATETIME NULL DEFAULT NULL,
+    time_limit INT(11) NULL DEFAULT NULL,
+    memory_limit INT(11) NULL DEFAULT NULL,
+    case_time_limit INT(11) NULL DEFAULT NULL,
+    disabled BIT(1) NULL DEFAULT b'0',
+    new_id BIGINT(20) NULL DEFAULT NULL,
+    PRIMARY KEY (orign_oj, orign_id),
+    UNIQUE INDEX new_id (new_id)
 );
 
 CREATE TABLE IF NOT EXISTS oj_temp_schema.solution_temp (
-    orign_oj varchar(255) NOT NULL,
-    orign_id bigint(20) NOT NULL,
-    orign_problem_id bigint(11) NOT NULL,
-    orign_user_handle varchar(255) NOT NULL DEFAULT '',
-    orign_contest_id bigint(20) DEFAULT NULL,
-    time int(11) NOT NULL DEFAULT '0',
-    memory int(11) NOT NULL DEFAULT '0',
-    in_date datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-    result smallint(6) NOT NULL DEFAULT '0',
-    language tinyint(4) NOT NULL DEFAULT '0',
-    ip varchar(32) NOT NULL DEFAULT '',
-    code_length int(11) NOT NULL DEFAULT '0',
-    source_code longtext,
-    compile_info longtext,
+    orign_oj VARCHAR(255) NOT NULL,
+    orign_id BIGINT(20) NOT NULL,
+    orign_problem_id BIGINT(11) NOT NULL,
+    orign_user_handle VARCHAR(255) NOT NULL DEFAULT '',
+    orign_contest_id BIGINT(20) NULL DEFAULT NULL,
+    time INT(11) NOT NULL DEFAULT '0',
+    memory INT(11) NOT NULL DEFAULT '0',
+    in_date DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+    result SMALLINT(6) NOT NULL DEFAULT '0',
+    language TINYINT(4) NOT NULL DEFAULT '0',
+    ip VARCHAR(32) NOT NULL DEFAULT '',
+    code_length INT(11) NOT NULL DEFAULT '0',
+    source_code LONGTEXT NULL,
+    compile_info LONGTEXT NULL,
     new_id BIGINT(20) NULL DEFAULT NULL,
-  PRIMARY KEY (orign_oj,orign_id)
+    PRIMARY KEY (orign_oj, orign_id),
+    UNIQUE INDEX new_id (new_id)
 );
 
 CREATE TABLE IF NOT EXISTS oj_temp_schema.userprofile_temp (
-    orign_oj varchar(255) NOT NULL,
-    handle varchar(255) NOT NULL,
-    birth_date datetime DEFAULT NULL,
-    creation_date datetime DEFAULT NULL,
-    disabled bit(1) NOT NULL DEFAULT b'0',
-    email longtext,
-    last_update_date datetime DEFAULT NULL,
-    major longtext,
-    nickname longtext,
-    password longtext,
-    school longtext,
-    new_id bigint NULL DEFAULT NULL,
-    PRIMARY KEY (orign_oj,handle),
-    KEY KEY_email (email(100)) USING HASH
+    orign_oj VARCHAR(255) NOT NULL,
+    handle VARCHAR(255) NOT NULL,
+    birth_date DATETIME NULL DEFAULT NULL,
+    creation_date DATETIME NULL DEFAULT NULL,
+    disabled BIT(1) NOT NULL DEFAULT b'0',
+    email LONGTEXT NULL,
+    last_update_date DATETIME NULL DEFAULT NULL,
+    major LONGTEXT NULL,
+    nickname LONGTEXT NULL,
+    password LONGTEXT NULL,
+    school LONGTEXT NULL,
+    new_id BIGINT(20) NULL DEFAULT NULL,
+    PRIMARY KEY (orign_oj, handle),
+    INDEX KEY_email (email(100)) USING HASH
 );
 
 set @oj_name = DATABASE();
@@ -220,7 +223,7 @@ update
     ) as s on
         t.orign_id = s.id
 set t.source_code = s.source
-where t.orign_oj=@oj_name;
+where t.source_code is null and t.orign_oj=@oj_name;
 
 update
     oj_temp_schema.solution_temp as t
@@ -244,27 +247,6 @@ SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '');
 
 set @output_limit = 16 * 1024 * 1024;
 ALTER TABLE oj.problem AUTO_INCREMENT=0;
-
-update
-    oj.problem p
-left join
-    oj_temp_schema.problem_temp q
-on
-    p.id = q.new_id
-set
-    p.creation_date = q.creation_date,
-    p.hint = q.hint,
-    p.input = q.input,
-    p.last_update_date = q.creation_date,
-    p.memory_limit = q.memory_limit,
-    p.output = q.output,
-    p.output_limit = @output_limit,
-    p.sample_input = q.sample_input,
-    p.sample_output = q.sample_output,
-    p.source = q.source,
-    p.time_limit = q.time_limit,
-    p.title = q.title
-;
 
 ALTER TABLE oj.problem
     DROP COLUMN IF EXISTS orign_oj,
@@ -343,7 +325,7 @@ where q.new_id not in (
 
 ALTER TABLE oj.contest AUTO_INCREMENT=0;
 
-insert IGNORE into oj.contest (
+insert into oj.contest (
     orign_oj,
     orign_id,
     begin_time,
@@ -374,7 +356,7 @@ insert IGNORE into oj.contest (
     1, /* system user */
     1, /* system user */
     description,
-    NULL
+    @oj_id
 from
     oj_temp_schema.contest_temp q
 where q.new_id IS NULL;
@@ -553,6 +535,7 @@ where
 ;
 
 /* contest problem start */
+ALTER TABLE contest_problem AUTO_INCREMENT=0;
 replace into oj.contest_problem (
     id,
     contest_order,
@@ -640,5 +623,14 @@ update users set submit = (
 select * from users tb where (
     select count(1) from users where email = tb.email
 ) >= 2 and email is not null and trim(email) <>'' and email<>'null' order by email asc;
+
+INSERT INTO oj.language (id, compiler, creation_date, description, executable_extension, executor, language_extension, name, creation_user) VALUES
+    (1, '"D:\\MinGW\\bin\\g++.exe" -fno-asm -s -w -O2 -DONLINE_JUDGE -o "%PATH%%NAME%" "%PATH%%NAME%.%EXT%"', '2015-08-06 13:17:44', 'GNU C++', 'exe', NULL, 'cpp', 'GNU C++', 1),
+    (2, '"D:\\MinGW\\bin\\gcc.exe" -fno-asm -s -w -O2 -DONLINE_JUDGE -o "%PATH%%NAME%" "%PATH%%NAME%.%EXT%"', '2015-08-06 13:18:59', 'GNU C', 'exe', NULL, 'c', 'GNU C', 1),
+    (3, '"C:\\JudgeOnline\\bin\\fpc\\fpc.exe" -Sg -dONLINE_JUDGE "%PATH%%NAME%.%EXT%"', '2015-08-06 13:19:35', 'Pascal', 'exe', NULL, 'pas', 'Pascal', 1),
+    (4, '"D:\\Program Files\\Java\\jdk1.7.0_79\\bin\\javac.exe" "%PATH%%NAME%.%EXT%"', '2015-08-06 13:20:20', 'Java 7', 'class', '"D:\\Program Files\\Java\\jdk1.7.0_79\\bin\\java.exe" -Djava.security.manager -Djava.security.policy=file:/C:/JudgeOnline/bin/judge.policy -classpath "%PATH%" %NAME%', 'java', 'Java', 1),
+    (5, '"C:\\JudgeOnline\\bin\\vc6CompilerAdapter.bat" "D:\\Program Files\\Microsoft Visual Studio" CL.EXE /nologo /ML /W3 /GX /O2 -DONLINE_JUDGE -o %PATH%%NAME% %PATH%%NAME%.%EXT%', '2015-08-06 13:21:10', 'VC++ 6.0', 'exe', NULL, 'cpp', 'VC++', 1);
+update language set id = id - 1;
+
 
 */

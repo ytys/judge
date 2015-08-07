@@ -17,7 +17,9 @@ package com.github.zhanhb.judge.repository;
 
 import com.github.zhanhb.judge.Application;
 import com.github.zhanhb.judge.domain.Problem;
+import com.github.zhanhb.judge.domain.ProblemStatistics;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -59,7 +61,9 @@ public class ProblemStatisticsRepositoryTest {
                 .title("title")
                 .build());
         assertThat(problems.findOne(problem.getId()).get(), is(problem));
-        assertTrue("problem " + problem.getId() + " not exists", repository.findOne(problem.getId()).isPresent());
+        Optional<ProblemStatistics> problemStatistics = repository.findOne(problem.getId());
+        assertTrue("problem " + problem.getId() + " not exists", problemStatistics.isPresent());
+        repository.save(problemStatistics.get());
         problems.delete(problem);
     }
 
