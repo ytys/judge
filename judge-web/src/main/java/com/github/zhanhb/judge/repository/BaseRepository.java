@@ -56,6 +56,4 @@ public interface BaseRepository<T, ID extends Serializable> extends Repository<T
     // Iterable<T> findAll(Sort sort);
     Page<T> findAll(Pageable pageable);
 
-    Optional<T> findById(ID id);
-
 }

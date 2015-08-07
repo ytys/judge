@@ -93,7 +93,7 @@ public class UserprofileRepositoryTest {
 
     @Test
     public void testFindById() {
-        assertTrue(userprofileRepository.findById(id).isPresent());
+        assertTrue(userprofileRepository.findOne(id).isPresent());
     }
 
     @Test

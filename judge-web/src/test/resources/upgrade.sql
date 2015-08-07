@@ -203,6 +203,10 @@ insert ignore into oj.contest (
     1 /* OJ */
 ;
 
+set @oj_id = (
+    select id from oj.contest where name = @oj_name
+);
+
 update oj_temp_schema.userprofile_temp set email = null where email = '' or email='null' or length(email) < 2;
 
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO';
@@ -389,7 +393,7 @@ ALTER TABLE oj.contest
 update oj_temp_schema.userprofile_temp
 set new_id = null
 where new_id not in (
-	select id from oj.userprofile
+    select id from oj.userprofile
 );
 
 insert ignore into oj.userprofile (
@@ -457,7 +461,7 @@ left join (
 ) s on s.new_id = p.id
 set
     p.problem = s.problem,
-    p.contest = IFNULL(s.contest, p.contest),
+    p.contest = IFNULL(s.contest, ifnull(p.contest, @oj_id)),
     p.userprofile = s.userprofile,
     p.code_len = s.code_length,
     p.source_code = s.source_code,
@@ -495,7 +499,7 @@ insert into oj.submission (
     orign_id,
     problem,
     userprofile,
-    contest,
+    ifnull(contest, @oj_id),
     time,
     memory,
     in_date,
@@ -535,6 +539,44 @@ ALTER TABLE oj.submission
     DROP COLUMN IF EXISTS orign_oj,
     DROP COLUMN IF EXISTS orign_id;
 
+update oj.submission p
+left join (
+    select
+        new_id,
+        result
+    from oj_temp_schema.solution_temp
+) q on p.id = q.new_id
+    set p.judge_reply = 6
+where
+    q.result = 100 and
+    p.judge_reply is null
+;
+
+/* contest problem start */
+replace into oj.contest_problem (
+    id,
+    contest_order,
+    contest,
+    problem
+) select
+    t.id,
+    orign_id,
+    @oj_id,
+    new_id
+from
+    oj_temp_schema.problem_temp p
+left join (
+    select
+        id,
+        contest,
+        problem
+    from oj.contest_problem
+) t
+    on t.problem = p.new_id and t.contest = @oj_id
+;
+/* contest problem end */
+
+/*
 select
     orign_oj,
     orign_id,
@@ -566,6 +608,7 @@ from (
     ) p on s.orign_problem_id = p.pid and s.orign_oj = p.poj
 ) s
 ;
+*/
 
 /*
 select * from solution_temp

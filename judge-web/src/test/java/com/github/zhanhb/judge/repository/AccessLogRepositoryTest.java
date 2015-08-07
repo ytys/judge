@@ -54,7 +54,7 @@ public class AccessLogRepositoryTest {
                     .url(string)
                     .build());
             assertNotNull(accessLog.getAccessTime());
-            assertTrue(accessLogRepository.findById(accessLog.getId()).get() == accessLog);
+            assertTrue(accessLogRepository.findOne(accessLog.getId()).get() == accessLog);
         }
     }
 
