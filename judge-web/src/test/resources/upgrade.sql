@@ -3,15 +3,16 @@ use clanguage;
 create database if not exists oj_temp_schema COLLATE 'utf8_general_ci';
 
 CREATE TABLE IF NOT EXISTS oj_temp_schema.contest_temp (
-    orign_oj VARCHAR(255) NOT NULL,
-    orign_id BIGINT(20) NOT NULL,
+    orign_oj VARCHAR(255) NULL DEFAULT NULL,
+    orign_id BIGINT(20) NULL DEFAULT NULL,
     title LONGTEXT NULL,
     start_time DATETIME NULL DEFAULT NULL,
     end_time DATETIME NULL DEFAULT NULL,
     description LONGTEXT NULL,
     disabled BIT(1) NOT NULL DEFAULT b'0',
     new_id BIGINT(20) NULL DEFAULT NULL,
-    PRIMARY KEY (orign_oj, orign_id),
+    type INT(11) NULL DEFAULT NULL,
+    UNIQUE INDEX orign_oj_orign_id (orign_oj, orign_id),
     UNIQUE INDEX new_id (new_id)
 );
 
@@ -47,7 +48,7 @@ CREATE TABLE IF NOT EXISTS oj_temp_schema.solution_temp (
     memory INT(11) NOT NULL DEFAULT '0',
     in_date DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
     result SMALLINT(6) NOT NULL DEFAULT '0',
-    language TINYINT(4) NOT NULL DEFAULT '0',
+    language TINYINT(4) NOT NULL,
     ip VARCHAR(32) NOT NULL DEFAULT '',
     code_length INT(11) NOT NULL DEFAULT '0',
     source_code LONGTEXT NULL,
@@ -90,8 +91,8 @@ INSERT IGNORE INTO oj_temp_schema.userprofile_temp (
     @oj_name,
     user_id,
     reg_time,
-    IF(defunct='Y',1,0),
-    replace(trim(email),' ',''),
+    IF(defunct='Y', 1, 0),
+    replace(trim(email), 194, ''),
     accesstime,
     trim(nick),
     password,
@@ -425,33 +426,6 @@ where new_id not in (
     select id from oj.submission
 );
 
-update oj.submission p
-left join (
-    select * from oj_temp_schema.solution_temp s
-    left join (
-         select new_id as contest, orign_id cid, orign_oj coj
-         from oj_temp_schema.contest_temp
-    ) c on s.orign_contest_id = c.cid and s.orign_oj = c.coj
-    left join (
-         select new_id as userprofile, handle uh, orign_oj uoj
-         from oj_temp_schema.userprofile_temp
-    ) u on s.orign_user_handle = u.uh and s.orign_oj = u.uoj
-    left join (
-        select new_id as problem, orign_id pid, orign_oj poj
-        from oj_temp_schema.problem_temp
-    ) p on s.orign_problem_id = p.pid and s.orign_oj = p.poj
-) s on s.new_id = p.id
-set
-    p.problem = s.problem,
-    p.contest = IFNULL(s.contest, ifnull(p.contest, @oj_id)),
-    p.userprofile = s.userprofile,
-    p.code_len = s.code_length,
-    p.source_code = s.source_code,
-    p.compile_info = s.compile_info,
-    p.language = s.language,
-    p.submit_time = s.in_date
-;
-
 ALTER TABLE oj.submission
     DROP COLUMN IF EXISTS orign_oj,
     DROP COLUMN IF EXISTS orign_id;
@@ -485,7 +459,7 @@ insert into oj.submission (
     time,
     memory,
     in_date,
-    language,
+    language + 1,
     ip,
     code_length,
     compile_info,
@@ -630,7 +604,6 @@ INSERT INTO oj.language (id, compiler, creation_date, description, executable_ex
     (3, '"C:\\JudgeOnline\\bin\\fpc\\fpc.exe" -Sg -dONLINE_JUDGE "%PATH%%NAME%.%EXT%"', '2015-08-06 13:19:35', 'Pascal', 'exe', NULL, 'pas', 'Pascal', 1),
     (4, '"D:\\Program Files\\Java\\jdk1.7.0_79\\bin\\javac.exe" "%PATH%%NAME%.%EXT%"', '2015-08-06 13:20:20', 'Java 7', 'class', '"D:\\Program Files\\Java\\jdk1.7.0_79\\bin\\java.exe" -Djava.security.manager -Djava.security.policy=file:/C:/JudgeOnline/bin/judge.policy -classpath "%PATH%" %NAME%', 'java', 'Java', 1),
     (5, '"C:\\JudgeOnline\\bin\\vc6CompilerAdapter.bat" "D:\\Program Files\\Microsoft Visual Studio" CL.EXE /nologo /ML /W3 /GX /O2 -DONLINE_JUDGE -o %PATH%%NAME% %PATH%%NAME%.%EXT%', '2015-08-06 13:21:10', 'VC++ 6.0', 'exe', NULL, 'cpp', 'VC++', 1);
-update language set id = id - 1;
 
 
 */
