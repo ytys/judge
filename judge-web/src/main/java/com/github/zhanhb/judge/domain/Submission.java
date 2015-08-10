@@ -17,17 +17,14 @@ package com.github.zhanhb.judge.domain;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
-import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -39,7 +36,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -99,17 +95,6 @@ public class Submission implements Serializable {
     @JoinColumn(name = "userprofile", foreignKey = @ForeignKey(name = "FK_submission_userprofile"))
     @ManyToOne
     private Userprofile userprofile;
-
-    @Basic(fetch = FetchType.LAZY)
-    @Column(name = "compile_info", length = Integer.MAX_VALUE)
-    @Lob
-    private String compileInfo;
-
-    @Basic(fetch = FetchType.LAZY)
-    @Column(name = "source_code", length = Integer.MAX_VALUE)
-    @Lob
-    @Length(min = 50, max = 128 * 1024)
-    private String sourceCode;
 
     @Column(name = "time")
     private Long time;

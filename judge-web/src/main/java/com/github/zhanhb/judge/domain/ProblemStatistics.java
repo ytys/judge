@@ -19,14 +19,19 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.xml.bind.annotation.XmlRootElement;
 import lombok.AccessLevel;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.Setter;
 import org.hibernate.annotations.Subselect;
 import org.hibernate.annotations.Synchronize;
 
 @Data
 @Entity
+@EqualsAndHashCode(of = "id")
 @Setter(AccessLevel.PACKAGE)
 @Subselect("SELECT\n"
         + "    p.id as problem,\n"
@@ -36,9 +41,10 @@ import org.hibernate.annotations.Synchronize;
         + "    count(distinct accept.userprofile) as accept_user\n"
         + "from\n"
         + "    problem p\n"
-        + "left join\n"
-        + "    submission s\n"
-        + "on\n"
+        + "left join (\n"
+        + "    select s.id, s.userprofile, s.problem\n"
+        + "    from submission s\n"
+        + ") s on\n"
         + "    s.problem = p.id\n"
         + "left join (\n"
         + "    select\n"
@@ -51,14 +57,19 @@ import org.hibernate.annotations.Synchronize;
         + "    on accept.id = s.id\n"
         + "group by\n"
         + "    p.id")
-@Synchronize("submission")
+@Synchronize({"problem", "submission"})
+@XmlRootElement
 public class ProblemStatistics implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
     @Column(name = "problem")
-    private Long problem;
+    private long id;
+
+    @JoinColumn(name = "problem", nullable = false, insertable = false, updatable = false)
+    @OneToOne(optional = false)
+    private Problem problem;
 
     @Column(name = "accept")
     private long accept;

@@ -15,40 +15,38 @@
  */
 package com.github.zhanhb.judge.domain;
 
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.ForeignKey;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.Lob;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.Setter;
+import lombok.EqualsAndHashCode;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
  *
  * @author zhanhb
  */
-@AllArgsConstructor(access = AccessLevel.PACKAGE)
-@Builder
 @Data
 @Entity
-@Setter(AccessLevel.PACKAGE)
-@Table(name = "persistent_token")
-public class PersistentToken {
+@EntityListeners(AuditingEntityListener.class)
+@EqualsAndHashCode(of = "submission")
+@Table(name = "submission_judge_detail")
+public class SubmissionJudgeDetail implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+    @JoinColumn(name = "id", foreignKey = @ForeignKey(name = "FK_submission_judge_detail_submission"), insertable = false, updatable = false, nullable = false)
+    @OneToOne
+    private Submission submission;
 
-    @JoinColumn(name = "userprofile", foreignKey = @ForeignKey(name = "FK_persistent_token_userprofile"))
-    @ManyToOne
-    private Userprofile userprofile;
+    @Column(name = "detail", length = Integer.MAX_VALUE)
+    @Lob
+    private String detail;
 
 }
