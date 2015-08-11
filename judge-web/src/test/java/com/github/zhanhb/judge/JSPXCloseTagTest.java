@@ -22,13 +22,13 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.fail;
-import org.junit.Ignore;
+import org.junit.AssumptionViolatedException;
 import org.junit.Test;
 
 /**
@@ -37,7 +37,6 @@ import org.junit.Test;
  * @author zhanhb
  * @date Jun 1, 2015, 14:15:38
  */
-@Ignore
 public class JSPXCloseTagTest {
 
     private Stream<Path> getStream() throws IOException {
@@ -48,8 +47,11 @@ public class JSPXCloseTagTest {
 
     @Test
     public void checkJspxTagx() throws IOException {
-        assertNotEquals(0, getStream().count());
-        getStream().forEach(this::check);
+        List<Path> paths = getStream().collect(Collectors.toList());
+        if (0 == paths.size()) {
+            throw new AssumptionViolatedException("no jspx, tagx files found");
+        }
+        paths.stream().forEach(this::check);
     }
 
     private void check(Path path) {

@@ -15,17 +15,14 @@
  */
 package com.github.zhanhb.judge.util;
 
-import lombok.experimental.UtilityClass;
-
 /**
  *
  * @author zhanhb
  */
-@UtilityClass
-@SuppressWarnings({"FinalClass", "ClassWithoutLogger"})
+@SuppressWarnings("ClassWithoutLogger")
 public class Strings {
 
-    public String trimLeft(String str) {
+    public static String trimLeft(String str) {
         if (str != null) {
             int len = str.length();
             int st = 0;
@@ -40,7 +37,7 @@ public class Strings {
         return str;
     }
 
-    public String trimRight(String str) {
+    public static String trimRight(String str) {
         if (str != null) {
             int len = str.length();
 
@@ -54,28 +51,28 @@ public class Strings {
         return str;
     }
 
-    public String trimToNull(String str) {
+    public static String trimToNull(String str) {
         final String ts = trim(str);
         return isEmpty(ts) ? null : ts;
     }
 
-    public boolean isEmpty(final CharSequence cs) {
+    public static boolean isEmpty(final CharSequence cs) {
         return cs == null || cs.length() == 0;
     }
 
-    public String trimToEmpty(String str) {
+    public static String trimToEmpty(String str) {
         return str == null ? "" : str.trim();
     }
 
-    public String trim(String str) {
+    public static String trim(String str) {
         return str != null ? str.trim() : null;
     }
 
-    public String slice(String string, int beginIndex) throws NullPointerException {
+    public static String slice(String string, int beginIndex) throws NullPointerException {
         return string.substring(fixIndex(string, beginIndex));
     }
 
-    public String slice(String string, int beginIndex, int endIndex) throws NullPointerException {
+    public static String slice(String string, int beginIndex, int endIndex) throws NullPointerException {
         int fixedBeginIndex = fixIndex(string, beginIndex);
         int fixedEndIndex = fixIndex(string, endIndex);
         if (fixedBeginIndex >= fixedEndIndex) {
@@ -84,11 +81,15 @@ public class Strings {
         return string.substring(fixedBeginIndex, fixedEndIndex);
     }
 
-    private int fixIndex(String str, int index) {
+    private static int fixIndex(String str, int index) {
         int len = str.length();
         return (index >= 0)
                 ? Math.min(len, index)
                 : Math.max(0, len + index);
+    }
+
+    private Strings() {
+        throw new AssertionError();
     }
 
 }

@@ -43,6 +43,7 @@
     </issueManagement>
     <properties>
         <attoparser.version>1.4.0.RELEASE</attoparser.version>
+        <classmate.version>1.2.0</classmate.version>
         <commons-compress.version>1.9</commons-compress.version>
         <commons-lang3.version>3.4</commons-lang3.version>
         <ehcache-core.version>ehcache-core is deprecated, use ehcache instead.</ehcache-core.version>
@@ -57,6 +58,7 @@
         <jackson.version>2.6.0</jackson.version>
         <java.version>1.8</java.version>
         <javassist.version>3.20.0-GA</javassist.version>
+        <jboss-logging.version>3.3.0.Final</jboss-logging.version>
         <json-patch.version>1.9</json-patch.version>
         <liquibase-hibernate4.version>3.5</liquibase-hibernate4.version>
         <lombok.version>1.16.4</lombok.version>
@@ -72,15 +74,51 @@
         <spring-security.version>4.0.3.CI-SNAPSHOT</spring-security.version>
         <spring.version>4.2.1.BUILD-SNAPSHOT</spring.version>
         <start-class>com.github.zhanhb.judge.Application</start-class>
+        <unbescape.version>1.1.1.RELEASE</unbescape.version>
         <woodstox.version>4.4.1</woodstox.version>
+        <xml-apis.version>1.4.01</xml-apis.version>
+        <jandex.version>1.2.4.Final</jandex.version>
     </properties>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.attoparser</groupId>
+                <artifactId>attoparser</artifactId>
+                <version>${attoparser.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml</groupId>
+                <artifactId>classmate</artifactId>
+                <version>${classmate.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.logging</groupId>
+                <artifactId>jboss-logging</artifactId>
+                <version>${jboss-logging.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.tiles</groupId>
+                <artifactId>tiles-template</artifactId>
+                <version>${tiles.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.unbescape</groupId>
+                <artifactId>unbescape</artifactId>
+                <version>${unbescape.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>xml-apis</groupId>
+                <artifactId>xml-apis</artifactId>
+                <version>${xml-apis.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss</groupId>
+                <artifactId>jandex</artifactId>
+                <version>${jandex.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
     <dependencies>
-        <dependency>
-            <groupId>org.attoparser</groupId>
-            <artifactId>attoparser</artifactId>
-            <version>${attoparser.version}</version>
-            <scope>runtime</scope>
-        </dependency>
         <dependency>
             <groupId>com.github.zhanhb</groupId>
             <artifactId>character-encoding-filter</artifactId>
@@ -280,6 +318,10 @@
                     <artifactId>spring-boot-starter-tomcat</artifactId>
                     <groupId>org.springframework.boot</groupId>
                 </exclusion>
+                <exclusion>
+                    <artifactId>tomcat-embed-el</artifactId>
+                    <groupId>org.apache.tomcat.embed</groupId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
@@ -357,12 +399,6 @@
                     <groupId>ognl</groupId>
                 </exclusion>
             </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.tiles</groupId>
-            <artifactId>tiles-template</artifactId>
-            <version>${tiles.version}</version>
-            <scope>runtime</scope>
         </dependency>
         <dependency>
             <!-- fasterxml -->
@@ -739,7 +775,7 @@
         <profile>
             <id>undertow</id>
             <properties>
-                <undertow.version>1.2.9.Final</undertow.version>
+                <undertow.version>1.2.10.Final</undertow.version>
             </properties>
             <dependencies>
                 <dependency>
