@@ -91,7 +91,7 @@ public class Language implements Serializable {
     @Length(min = 1, max = 32)
     private String executableExtension;
 
-    @Column(name = "creation_date", nullable = false)
+    @Column(name = "creation_date")
     @CreatedDate
     @JsonIgnore
     private LocalDateTime creationDate;

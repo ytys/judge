@@ -28,7 +28,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -69,13 +68,11 @@ public class AccessLog implements Serializable {
     @Length(min = 1, max = 255)
     private String handle;
 
-    @Column(nullable = false)
-    @NotNull
+    @Column
     @Length(min = 1, max = 255)
     private String behaviour;
 
-    @Column(nullable = false)
-    @NotNull
+    @Column
     @Length(min = 0, max = 255)
     private String url;
 
@@ -83,7 +80,7 @@ public class AccessLog implements Serializable {
     @Length(min = 0, max = 255)
     private String ip;
 
-    @Column(name = "access_time", nullable = false)
+    @Column(name = "access_time")
     @CreatedDate
     private LocalDateTime accessTime;
 

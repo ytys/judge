@@ -80,9 +80,8 @@ public class Contest implements Serializable {
     @Length(min = 1, max = 255)
     private String name;
 
-    @Column(nullable = false, length = Integer.MAX_VALUE)
+    @Column(length = Integer.MAX_VALUE)
     @Lob
-    @NotNull
     @Length(min = 1, max = Integer.MAX_VALUE)
     private String title;
 
@@ -114,7 +113,7 @@ public class Contest implements Serializable {
     @NotNull
     private ContestType type;
 
-    @Column(name = "creation_date", nullable = false)
+    @Column(name = "creation_date")
     @CreatedDate
     @JsonIgnore
     private LocalDateTime creationDate;
@@ -125,7 +124,7 @@ public class Contest implements Serializable {
     @ManyToOne
     private Userprofile createdBy;
 
-    @Column(name = "last_update_date", nullable = false)
+    @Column(name = "last_update_date")
     @LastModifiedDate
     @JsonIgnore
     private LocalDateTime lastModifiedDate;

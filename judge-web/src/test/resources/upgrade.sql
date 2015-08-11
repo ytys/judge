@@ -598,7 +598,7 @@ select * from users tb where (
     select count(1) from users where email = tb.email
 ) >= 2 and email is not null and trim(email) <>'' and email<>'null' order by email asc;
 
-INSERT INTO oj.language (id, compiler, creation_date, description, executable_extension, executor, language_extension, name, creation_user) VALUES
+INSERT IGNORE INTO oj.language (id, compiler, creation_date, description, executable_extension, executor, language_extension, name, creation_user) VALUES
     (1, '"D:\\MinGW\\bin\\g++.exe" -fno-asm -s -w -O2 -DONLINE_JUDGE -o "%PATH%%NAME%" "%PATH%%NAME%.%EXT%"', '2015-08-06 13:17:44', 'GNU C++', 'exe', NULL, 'cpp', 'GNU C++', 1),
     (2, '"D:\\MinGW\\bin\\gcc.exe" -fno-asm -s -w -O2 -DONLINE_JUDGE -o "%PATH%%NAME%" "%PATH%%NAME%.%EXT%"', '2015-08-06 13:18:59', 'GNU C', 'exe', NULL, 'c', 'GNU C', 1),
     (3, '"C:\\JudgeOnline\\bin\\fpc\\fpc.exe" -Sg -dONLINE_JUDGE "%PATH%%NAME%.%EXT%"', '2015-08-06 13:19:35', 'Pascal', 'exe', NULL, 'pas', 'Pascal', 1),

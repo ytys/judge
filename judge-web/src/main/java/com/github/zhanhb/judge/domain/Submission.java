@@ -67,7 +67,7 @@ public class Submission implements Serializable {
     @NotNull
     private long codeLen;
 
-    @Column(name = "submit_time", nullable = false)
+    @Column(name = "submit_time")
     @CreatedDate
     @NotNull
     private LocalDateTime submitTime;

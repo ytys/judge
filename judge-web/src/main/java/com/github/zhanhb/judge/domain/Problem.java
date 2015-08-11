@@ -75,43 +75,36 @@ public class Problem implements Serializable {
 
     @Lob
     @Column(length = Integer.MAX_VALUE)
-    @NotNull
     @Length(min = 0, max = Integer.MAX_VALUE)
     private String description;
 
     @Column(length = Integer.MAX_VALUE)
     @Lob
-    @NotNull
     @Length(min = 0, max = Integer.MAX_VALUE)
     private String input;
 
     @Column(length = Integer.MAX_VALUE)
     @Lob
-    @NotNull
     @Length(min = 0, max = Integer.MAX_VALUE)
     private String output;
 
     @Column(name = "sample_input", length = Integer.MAX_VALUE)
     @Lob
-    @NotNull
     @Length(min = 0, max = Integer.MAX_VALUE)
     private String sampleInput;
 
     @Column(name = "sample_output", length = Integer.MAX_VALUE)
     @Lob
-    @NotNull
     @Length(min = 0, max = Integer.MAX_VALUE)
     private String sampleOutput;
 
     @Column(length = Integer.MAX_VALUE)
     @Lob
-    @NotNull
     @Length(min = 0, max = Integer.MAX_VALUE)
     private String hint;
 
     @Column(length = Integer.MAX_VALUE)
     @Lob
-    @NotNull
     @Length(min = 0, max = Integer.MAX_VALUE)
     private String source;
 

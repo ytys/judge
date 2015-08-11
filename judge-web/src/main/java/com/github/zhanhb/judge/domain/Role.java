@@ -67,10 +67,8 @@ public class Role implements Serializable {
     @Length(min = 1, max = 255)
     private String name;
 
-    @Column(name = "description", nullable = false, length = Integer.MAX_VALUE)
+    @Column(name = "description", length = Integer.MAX_VALUE)
     @Lob
-    @NotNull
-    @Length(min = 1, max = Integer.MAX_VALUE)
     private String description;
 
 }

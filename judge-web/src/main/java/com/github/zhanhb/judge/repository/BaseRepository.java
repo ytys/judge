@@ -19,10 +19,12 @@ import java.io.Serializable;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.querydsl.QueryDslPredicateExecutor;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.Repository;
+import org.springframework.data.rest.core.annotation.RestResource;
 
 /**
  *
@@ -36,24 +38,37 @@ import org.springframework.data.repository.Repository;
 @NoRepositoryBean
 public interface BaseRepository<T, ID extends Serializable> extends Repository<T, ID>, QueryDslPredicateExecutor<T> {
 
+    @RestResource(exported = false)
     <S extends T> S save(S entity);
 
+    @RestResource(exported = false)
     <S extends T> Iterable<S> save(Iterable<S> entities);
 
     Optional<T> findOne(ID id);
 
     boolean exists(ID id);
 
+    @RestResource(exported = false)
     Iterable<T> findAll();
 
     // Iterable<T> findAll(Iterable<ID> ids);
-    // long count();
-    // void delete(ID id);
+    long count();
+
+    @RestResource(exported = false)
+    void delete(ID id);
+
+    @RestResource(exported = false)
     void delete(T entity);
 
-    // void delete(Iterable<? extends T> entities);
-    // void deleteAll();
-    // Iterable<T> findAll(Sort sort);
+    @RestResource(exported = false)
+    void delete(Iterable<? extends T> entities);
+
+    @RestResource(exported = false)
+    void deleteAll();
+
+    @RestResource(exported = false)
+    Iterable<T> findAll(Sort sort);
+
     Page<T> findAll(Pageable pageable);
 
 }

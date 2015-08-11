@@ -107,7 +107,7 @@ public class Userprofile implements Serializable {
     @LastModifiedDate
     private LocalDateTime lastUpdateDate;
 
-    @Column(name = "creation_date", nullable = false)
+    @Column(name = "creation_date")
     @CreatedDate
     @JsonIgnore
     private LocalDateTime creationDate;
