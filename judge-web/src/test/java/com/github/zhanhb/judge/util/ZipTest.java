@@ -31,9 +31,12 @@ public class ZipTest {
     @Test
     public void test() throws IOException, ArchiveException {
         Zip zip = new Zip();
-        Path zipfile = Paths.get("target/test.zip");
-        zip.zip(zipfile, Paths.get("src"));
-        Files.delete(zipfile);
+        Path zipfile = Files.createTempFile("", ".zip");
+        try {
+            zip.zip(zipfile, Paths.get("src"));
+        } finally {
+            Files.delete(zipfile);
+        }
     }
 
 }

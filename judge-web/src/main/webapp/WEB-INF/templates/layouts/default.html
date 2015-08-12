@@ -14,7 +14,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      xmlns:data="http://www.thymeleaf.org/">
     <head>
         <!--/*/<th:block th:fragment="metadata">/*/-->
         <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
@@ -95,7 +98,7 @@ limitations under the License.
                         </ul>
                         <!--/* you must add dependency thymeleaf-extras-springsecurity and has dialect SpringSecurityDialect */-->
                         <ul class="nav navbar-nav navbar-right nav-controls" sec:authorize="isAuthenticated()">
-                            <li class="dropdown hidden-sm hidden-md">
+                            <li class="dropdown">
                                 <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" th:text="${#authentication.principal.username}">Administrator<b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     <li><a th:href="@{/user/edit}">Edit Profile</a></li>
@@ -106,12 +109,41 @@ limitations under the License.
                             </li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right nav-controls" sec:authorize="!isAuthenticated()">
-                            <li><a href="../login.html" th:href="@{/login}">Login</a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#loginModal">Login</a></li>
                         </ul>
                     </div>
                 </div> <!-- .container -->
             </nav>
             <div class="navigation-placeholder"></div>
+            <div id="loginModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h1 class="text-center">Login</h1>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form col-md-12 center-block" th:action="@{/login}" th:replace="login :: .form-signin">
+                                <div class="form-group">
+                                    <input type="text" class="form-control input-lg" placeholder="Email"/>
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" class="form-control input-lg" placeholder="Password"/>
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-primary btn-lg btn-block">Sign In</button>
+                                    <span class="pull-right"><a href="#">Register</a></span><span><a href="#">Need help?</a></span>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <div class="col-md-12">
+                                <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- #loginModal.modal -->
         </th:block>
 
         <div class="container content" th:fragment="content">

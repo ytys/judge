@@ -13,17 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.zhanhb.judge.domain;
+package com.github.zhanhb.judge.repository;
+
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
 /**
  *
  * @author zhanhb
  */
-public enum ContestType {
-
-    /* not set yet */
-    NONE,
-    /* OJ */
-    OJ, CONTEST, PRACTISE
+@RunWith(Suite.class)
+@Suite.SuiteClasses({
+    AccessLogRepositoryTest.class,
+    ProblemStatisticsRepositoryTest.class,
+    SubmissionRepositoryTest.class,
+    UserprofileRepositoryTest.class,
+    UserprofileRoleRepositoryTest.class,
+})
+public class TestSuite {
 
 }

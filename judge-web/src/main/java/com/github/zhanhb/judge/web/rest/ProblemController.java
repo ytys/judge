@@ -18,6 +18,7 @@ package com.github.zhanhb.judge.web.rest;
 import com.github.zhanhb.judge.repository.ProblemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
+import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -33,10 +34,9 @@ public class ProblemController {
     @Autowired
     private ProblemRepository repository;
 
-    @RequestMapping(method = GET, value = "/problems/{id}")
+    @RequestMapping(method = GET, value = "/problems/{id}", produces = TEXT_HTML_VALUE)
     @ResponseBody
     public String get(@PathVariable("id") Long id) {
-        Thread.dumpStack();
         return "get a " + id;
     }
 

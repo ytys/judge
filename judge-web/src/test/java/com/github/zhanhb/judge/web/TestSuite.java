@@ -31,7 +31,6 @@ import org.junit.runners.Suite;
     LoginControllerTest.class,
     ProblemControllerTest.class,
     SimpleViewControllerTest.class,
-    XmlTestControllerTest.class,
     ContestControllerTest.class
 })
 public class TestSuite {

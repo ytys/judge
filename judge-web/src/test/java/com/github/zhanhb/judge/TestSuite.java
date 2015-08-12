@@ -25,10 +25,9 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
     ConfigureTest.class,
-    LocaleTest.class,
     JSPXCloseTagTest.class,
-    PagesTest.class,
-    LocaleTest.class
+    LocaleTest.class,
+    PagesTest.class
 })
 public class TestSuite {
 

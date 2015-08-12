@@ -23,6 +23,7 @@ limitations under the License.
         <!--*/-->
     </head>
     <body>
+        <th:block th:text="${themes.class.name}"></th:block>
         <th:block th:text="${beans.class.name}"/>
         <th:block th:text="${beans.keySet()}"/>
         <th:block th:text="${class}">
@@ -32,9 +33,7 @@ limitations under the License.
         <th:block th:text="${#locale}"></th:block>
         <th:block th:text="${#vars.class}"></th:block>
         <ul>
-            <li th:each="v : ${#vars.keySet()}">
-                <th:block th:text="${v}"></th:block>
-            </li>
+            <li th:each="v : ${#vars.keySet()}" th:text="${v}"></li>
         </ul>
         <th:block th:text="${userRegisterForm}"></th:block>
     </body>

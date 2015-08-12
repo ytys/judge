@@ -51,8 +51,6 @@ CREATE TABLE IF NOT EXISTS oj_temp_schema.solution_temp (
     language TINYINT(4) NOT NULL,
     ip VARCHAR(32) NOT NULL DEFAULT '',
     code_length INT(11) NOT NULL DEFAULT '0',
-    source_code LONGTEXT NULL,
-    compile_info LONGTEXT NULL,
     new_id BIGINT(20) NULL DEFAULT NULL,
     PRIMARY KEY (orign_oj, orign_id),
     UNIQUE INDEX new_id (new_id)
@@ -75,7 +73,23 @@ CREATE TABLE IF NOT EXISTS oj_temp_schema.userprofile_temp (
     INDEX KEY_email (email(100)) USING HASH
 );
 
-set @oj_name = DATABASE();
+CREATE TABLE IF NOT EXISTS submission_compile_info (
+    orign_oj VARCHAR(255) NOT NULL,
+    orign_id BIGINT(20) NOT NULL,
+    info LONGTEXT NULL,
+    PRIMARY KEY (orign_oj, orign_id)
+);
+
+CREATE TABLE IF NOT EXISTS submission_source_temp (
+    orign_oj VARCHAR(255) NOT NULL,
+    orign_id BIGINT(20) NOT NULL,
+    source_code LONGTEXT NULL,
+    PRIMARY KEY (orign_oj, orign_id)
+);
+
+set @oj_name = (
+    select DATABASE() from dual
+);
 /* userprofile start */
 INSERT IGNORE INTO oj_temp_schema.userprofile_temp (
     orign_oj,
@@ -213,6 +227,7 @@ set @oj_id = (
 
 update oj_temp_schema.userprofile_temp set email = null where email = '' or email='null' or length(email) < 2;
 
+/*
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO';
 update
     oj_temp_schema.solution_temp as t
@@ -245,6 +260,7 @@ update
 set t.source_code = s.source
 where t.code_length <> char_length(t.source_code) and t.orign_oj=@oj_name;
 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '');
+*/
 
 set @output_limit = 16 * 1024 * 1024;
 ALTER TABLE oj.problem AUTO_INCREMENT=0;
@@ -436,6 +452,13 @@ ALTER TABLE oj.submission
 
 ALTER TABLE oj.submission AUTO_INCREMENT=0;
 
+INSERT IGNORE INTO oj.language (id, compiler, creation_date, description, executable_extension, executor, language_extension, name, creation_user) VALUES
+    (1, '"D:\\MinGW\\bin\\g++.exe" -fno-asm -s -w -O2 -DONLINE_JUDGE -o "%PATH%%NAME%" "%PATH%%NAME%.%EXT%"', '2015-08-06 13:17:44', 'GNU C++', 'exe', NULL, 'cpp', 'GNU C++', 1),
+    (2, '"D:\\MinGW\\bin\\gcc.exe" -fno-asm -s -w -O2 -DONLINE_JUDGE -o "%PATH%%NAME%" "%PATH%%NAME%.%EXT%"', '2015-08-06 13:18:59', 'GNU C', 'exe', NULL, 'c', 'GNU C', 1),
+    (3, '"C:\\JudgeOnline\\bin\\fpc\\fpc.exe" -Sg -dONLINE_JUDGE "%PATH%%NAME%.%EXT%"', '2015-08-06 13:19:35', 'Pascal', 'exe', NULL, 'pas', 'Pascal', 1),
+    (4, '"D:\\Program Files\\Java\\jdk1.7.0_79\\bin\\javac.exe" "%PATH%%NAME%.%EXT%"', '2015-08-06 13:20:20', 'Java 7', 'class', '"D:\\Program Files\\Java\\jdk1.7.0_79\\bin\\java.exe" -Djava.security.manager -Djava.security.policy=file:/C:/JudgeOnline/bin/judge.policy -classpath "%PATH%" %NAME%', 'java', 'Java', 1),
+    (5, '"C:\\JudgeOnline\\bin\\vc6CompilerAdapter.bat" "D:\\Program Files\\Microsoft Visual Studio" CL.EXE /nologo /ML /W3 /GX /O2 -DONLINE_JUDGE -o %PATH%%NAME% %PATH%%NAME%.%EXT%', '2015-08-06 13:21:10', 'VC++ 6.0', 'exe', NULL, 'cpp', 'VC++', 1);
+
 insert into oj.submission (
     orign_oj,
     orign_id,
@@ -447,9 +470,7 @@ insert into oj.submission (
     submit_time,
     language,
     ip,
-    code_len,
-    compile_info,
-    source_code
+    code_len
 ) select
     orign_oj,
     orign_id,
@@ -461,9 +482,7 @@ insert into oj.submission (
     in_date,
     language + 1,
     ip,
-    code_length,
-    compile_info,
-    source_code
+    code_length
 from (
     select * from oj_temp_schema.solution_temp s
     left join (
@@ -597,13 +616,5 @@ update users set submit = (
 select * from users tb where (
     select count(1) from users where email = tb.email
 ) >= 2 and email is not null and trim(email) <>'' and email<>'null' order by email asc;
-
-INSERT IGNORE INTO oj.language (id, compiler, creation_date, description, executable_extension, executor, language_extension, name, creation_user) VALUES
-    (1, '"D:\\MinGW\\bin\\g++.exe" -fno-asm -s -w -O2 -DONLINE_JUDGE -o "%PATH%%NAME%" "%PATH%%NAME%.%EXT%"', '2015-08-06 13:17:44', 'GNU C++', 'exe', NULL, 'cpp', 'GNU C++', 1),
-    (2, '"D:\\MinGW\\bin\\gcc.exe" -fno-asm -s -w -O2 -DONLINE_JUDGE -o "%PATH%%NAME%" "%PATH%%NAME%.%EXT%"', '2015-08-06 13:18:59', 'GNU C', 'exe', NULL, 'c', 'GNU C', 1),
-    (3, '"C:\\JudgeOnline\\bin\\fpc\\fpc.exe" -Sg -dONLINE_JUDGE "%PATH%%NAME%.%EXT%"', '2015-08-06 13:19:35', 'Pascal', 'exe', NULL, 'pas', 'Pascal', 1),
-    (4, '"D:\\Program Files\\Java\\jdk1.7.0_79\\bin\\javac.exe" "%PATH%%NAME%.%EXT%"', '2015-08-06 13:20:20', 'Java 7', 'class', '"D:\\Program Files\\Java\\jdk1.7.0_79\\bin\\java.exe" -Djava.security.manager -Djava.security.policy=file:/C:/JudgeOnline/bin/judge.policy -classpath "%PATH%" %NAME%', 'java', 'Java', 1),
-    (5, '"C:\\JudgeOnline\\bin\\vc6CompilerAdapter.bat" "D:\\Program Files\\Microsoft Visual Studio" CL.EXE /nologo /ML /W3 /GX /O2 -DONLINE_JUDGE -o %PATH%%NAME% %PATH%%NAME%.%EXT%', '2015-08-06 13:21:10', 'VC++ 6.0', 'exe', NULL, 'cpp', 'VC++', 1);
-
 
 */

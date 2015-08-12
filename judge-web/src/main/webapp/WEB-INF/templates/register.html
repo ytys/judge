@@ -23,6 +23,7 @@ limitations under the License.
         <!--/*-->
         <link href="../../static/bootstrap/css/bootstrap-theme.css" rel="stylesheet" type="text/css"/>
         <link href="../../static/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+        <style>.error .form-signup .colorgraph{}</style>
         <!--*/-->
     </head>
     <body>
@@ -54,12 +55,12 @@ limitations under the License.
                             <input class="btn btn-lg btn-primary btn-block" type="submit" value="Register"/>
                             <!--/*--><p class="text-center" style="margin-top:10px;">OR</p>
                             <a class="btn btn-lg btn-default btn-block" th:href="@{/login/github}"><i class="icon-github"></i> Register with Github</a>
-                            <br/>
-                            <p class="text-center"><a th:href="@{/login}">Already have an account?</a></p><!--*/-->
+                            <br/><!--*/-->
+                            <p class="text-center"><a th:href="@{/login}">Already have an account?</a></p>
                         </fieldset>
                         <script>//<![CDATA[
                             jQuery(function ($) {
-                                function submit() {
+                                $("form.form-signup").submit(function() {
                                     function submit() {
                                         return $.post(form.attr("action"), form.serialize(), function (html) {
                                             var id = form.attr("id");
@@ -76,8 +77,7 @@ limitations under the License.
                                         }
                                     });
                                     return false;
-                                }
-                                $("form.form-signup").submit(submit);
+                                });
                             });//]]></script>
                     </form>
                 </div>

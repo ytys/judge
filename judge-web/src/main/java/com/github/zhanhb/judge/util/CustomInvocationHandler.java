@@ -34,10 +34,6 @@ class CustomInvocationHandler implements InvocationHandler {
 
     private static final MethodHandles.Lookup trusted = getTrusted();
 
-    private static StringBuilder getMethodDescriptor(StringBuilder buf, Method m) {
-        return buf.append(Type.getMethodDescriptor(m));
-    }
-
     private static MethodHandles.Lookup getTrusted() {
         try {
             return getTrusted1();
@@ -45,7 +41,7 @@ class CustomInvocationHandler implements InvocationHandler {
             try {
                 return getTrusted2();
             } catch (Throwable ex1) {
-                throw new ExceptionInInitializerError();
+                throw new ExceptionInInitializerError(ex);
             }
         }
     }
@@ -116,8 +112,7 @@ class CustomInvocationHandler implements InvocationHandler {
             return invoke(method, proxy, args);
         }
 
-        StringBuilder buf = new StringBuilder(proxy.getClass().getName()).append('.').append(methodName);
-        throw new AbstractMethodError(getMethodDescriptor(buf, method).toString());
+        throw new AbstractMethodError(proxy.getClass().getName() + '.' + methodName + Type.getMethodDescriptor(method));
     }
 
     private Object invoke(Method method, Object proxy, Object[] args) throws Throwable {

@@ -17,7 +17,6 @@ package com.github.zhanhb.judge;
 
 import com.github.zhanhb.judge.main.LineInfo;
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -51,18 +50,12 @@ public class JSPXCloseTagTest {
         if (0 == paths.size()) {
             throw new AssumptionViolatedException("no jspx, tagx files found");
         }
-        paths.stream().forEach(this::check);
-    }
-
-    private void check(Path path) {
-        try {
-            chech0(path);
-        } catch (IOException ex) {
-            throw new UncheckedIOException(ex);
+        for (Path path : paths) {
+            check(path);
         }
     }
 
-    private void chech0(Path path) throws IOException {
+    private void check(Path path) throws IOException {
         final String idStart = "[a-zA-Z_\u007F-\uFFFF]";
         // the identity part has colon in it, but colon is ok for us.
         // sample:
