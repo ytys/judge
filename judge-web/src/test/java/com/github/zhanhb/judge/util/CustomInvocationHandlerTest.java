@@ -17,6 +17,7 @@ package com.github.zhanhb.judge.util;
 
 import java.lang.reflect.Proxy;
 import java.util.Iterator;
+import lombok.extern.slf4j.Slf4j;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertSame;
@@ -28,6 +29,7 @@ import org.junit.Test;
  *
  * @author zhanhb
  */
+@Slf4j
 public class CustomInvocationHandlerTest {
 
     private Object orign;
@@ -48,12 +50,12 @@ public class CustomInvocationHandlerTest {
      */
     @Test
     public void testProxy() throws Throwable {
-        System.out.println("invoke");
+        log.info("invoke");
         assertEquals("proxy should equals itsself", proxy, proxy);
         assertNotEquals(orign, proxy);
         assertEquals(System.identityHashCode(proxy), proxy.hashCode());
 
-        System.out.println(proxy.toString());
+        log.info(proxy.toString());
     }
 
     @Test(expected = AbstractMethodError.class)

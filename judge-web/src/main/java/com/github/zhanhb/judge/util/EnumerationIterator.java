@@ -22,7 +22,7 @@ import java.util.Objects;
 /**
  *
  * @author zhanhb
- * @param <T>
+ * @param <T> the type of elements returned by this iterator
  */
 public class EnumerationIterator<T> implements Iterator<T> {
 

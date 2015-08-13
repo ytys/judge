@@ -40,7 +40,7 @@ public class UserRegisterForm {
     @Length(max = 255)
     @NotEmpty
     private String email;
-    // will be validated in
+    // will be validated in the controller
     private String rptPassword;
     @Length(max = 255)
     private String nickname;

@@ -15,9 +15,10 @@
  */
 package com.github.zhanhb.judge;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Locale;
-import java.util.Scanner;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -34,12 +35,13 @@ import org.springframework.context.ApplicationContext;
 @SpringBootApplication
 public class Application extends SpringBootServletInitializer {
 
+    @SuppressWarnings("NestedAssignment")
     public static void main(String[] args) throws IOException {
         ApplicationContext ctx = start(args);
-        try (Scanner scanner = new Scanner(System.in)) {
-            while (scanner.hasNext()) {
-                String name = scanner.next();
-                switch (name) {
+        try (InputStreamReader isr = new InputStreamReader(System.in);
+                BufferedReader br = new BufferedReader(isr)) {
+            for (String line; (line = br.readLine()) != null;) {
+                switch (line.toLowerCase(Locale.US)) {
                     case "exit":
                     case "quit":
                         SpringApplication.exit(ctx);
@@ -52,7 +54,7 @@ public class Application extends SpringBootServletInitializer {
                         ctx = start(args);
                         continue;
                 }
-                String property = ctx.getEnvironment().getProperty(name);
+                String property = ctx.getEnvironment().getProperty(line);
                 System.out.println(property);
             }
         }

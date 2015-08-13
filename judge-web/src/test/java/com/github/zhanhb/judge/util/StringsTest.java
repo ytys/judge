@@ -30,6 +30,9 @@ import org.junit.Test;
 @Slf4j
 public class StringsTest {
 
+    private final Random random = new Random();
+    private final ScriptEngine javascript = new ScriptEngineManager().getEngineByName("javascript");
+
     private StringBuilder merge(StringBuilder a, StringBuilder b) {
         throw new IllegalStateException();
     }
@@ -42,10 +45,8 @@ public class StringsTest {
     @Test
     public void testSlice_String_int() throws ScriptException {
         log.info("slice");
-        Random random = new Random();
-        ScriptEngine javascript = new ScriptEngineManager().getEngineByName("javascript");
 
-        int length = random.nextInt(20) + 5;
+        int length = random.nextInt(5) + 20;
         for (int i = 0; i < 30; ++i) {
             String randomString = random.ints(length, 'a', 'z' + 1)
                     .collect(StringBuilder::new,
@@ -71,10 +72,8 @@ public class StringsTest {
     @Test
     public void testSlice_3args() throws ScriptException {
         log.info("slice");
-        Random random = new Random();
-        ScriptEngine javascript = new ScriptEngineManager().getEngineByName("javascript");
 
-        int length = random.nextInt(20) + 5;
+        int length = random.nextInt(5) + 20;
         for (int i = 0; i < 30; ++i) {
             String randomString = random.ints(length, 'a', 'z' + 1)
                     .collect(StringBuilder::new,

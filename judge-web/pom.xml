@@ -49,7 +49,6 @@
         <classmate.version>1.2.0</classmate.version>
         <commons-compress.version>1.9</commons-compress.version>
         <commons-lang3.version>3.4</commons-lang3.version>
-        <ehcache-core.version>ehcache-core is deprecated, use ehcache instead.</ehcache-core.version>
         <evo-inflector.version>1.2.1</evo-inflector.version>
         <guava.version>18.0</guava.version>
         <!--<hibernate.version>4.3.10.Final</hibernate.version>-->
@@ -91,6 +90,16 @@
                 <version>${classmate.version}</version>
             </dependency>
             <dependency>
+                <groupId>net.sf.ehcache</groupId>
+                <artifactId>ehcache-core</artifactId>
+                <version>ehcache-core is deprecated, use net.sf.ehcache:ehcache instead.</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.geronimo.specs</groupId>
+                <artifactId>geronimo-jta_1.1_spec</artifactId>
+                <version>geronimo-jta_1.1_spec is deprecated, use javax.transaction:javax.transaction-api instead.</version>
+            </dependency>
+            <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-core</artifactId>
                 <version>${hibernate.version}</version>
@@ -119,6 +128,16 @@
                         <groupId>org.hibernate.javax.persistence</groupId>
                     </exclusion>
                 </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate.javax.persistence</groupId>
+                <artifactId>hibernate-jpa-2.0-api</artifactId>
+                <version>hibernate-jpa-2.0-api is deprecated, use org.eclipse.persistence:javax.persistence instead.</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate.javax.persistence</groupId>
+                <artifactId>hibernate-jpa-2.1-api</artifactId>
+                <version>hibernate-jpa-2.1-api is deprecated, use org.eclipse.persistence:javax.persistence instead.</version>
             </dependency>
             <dependency>
                 <groupId>org.jboss</groupId>
@@ -190,11 +209,6 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-compress</artifactId>
             <version>${commons-compress.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>net.sf.ehcache</groupId>
@@ -456,11 +470,6 @@
     <build>
         <pluginManagement>
             <plugins>
-                <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>exec-maven-plugin</artifactId>
-                    <version>1.4.0</version>
-                </plugin>
                 <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
                 <plugin>
                     <groupId>org.eclipse.m2e</groupId>
@@ -648,10 +657,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>2.6</version>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
             </plugin>
             <plugin>
                 <groupId>org.liquibase</groupId>

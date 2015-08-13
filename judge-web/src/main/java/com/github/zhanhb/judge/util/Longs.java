@@ -15,23 +15,24 @@
  */
 package com.github.zhanhb.judge.util;
 
-import lombok.experimental.UtilityClass;
-
 /**
  *
  * @author zhanhb
  */
-@UtilityClass
-@SuppressWarnings({"FinalClass", "ClassWithoutLogger"})
+@SuppressWarnings({"ClassWithoutLogger"})
 public class Longs {
 
-    public long addIgnoreOverFlow(long x, long y) {
+    public static long addIgnoreOverFlow(long x, long y) {
         long r = x + y;
         // HD 2-12 Overflow iff both arguments have the opposite sign of the result
         if (((x ^ r) & (y ^ r)) < 0) {
             return x < 0 ? Long.MIN_VALUE : Long.MAX_VALUE;
         }
         return r;
+    }
+
+    private Longs() {
+        throw new AssertionError();
     }
 
 }

@@ -68,11 +68,14 @@ public class Strings {
         return str != null ? str.trim() : null;
     }
 
-    public static String slice(String string, int beginIndex) throws NullPointerException {
-        return string.substring(fixIndex(string, beginIndex));
+    public static String slice(String string, int beginIndex) {
+        return string == null ? null : string.substring(fixIndex(string, beginIndex));
     }
 
-    public static String slice(String string, int beginIndex, int endIndex) throws NullPointerException {
+    public static String slice(String string, int beginIndex, int endIndex) {
+        if (string == null) {
+            return null;
+        }
         int fixedBeginIndex = fixIndex(string, beginIndex);
         int fixedEndIndex = fixIndex(string, endIndex);
         if (fixedBeginIndex >= fixedEndIndex) {
@@ -82,10 +85,9 @@ public class Strings {
     }
 
     private static int fixIndex(String str, int index) {
-        int len = str.length();
         return (index >= 0)
-                ? Math.min(len, index)
-                : Math.max(0, len + index);
+                ? Math.min(str.length(), index)
+                : Math.max(0, str.length() + index);
     }
 
     private Strings() {

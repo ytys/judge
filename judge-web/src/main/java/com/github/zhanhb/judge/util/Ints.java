@@ -15,23 +15,23 @@
  */
 package com.github.zhanhb.judge.util;
 
-import lombok.experimental.UtilityClass;
-
 /**
  *
  * @author zhanhb
  */
-@UtilityClass
-@SuppressWarnings({"FinalClass", "ClassWithoutLogger"})
 public class Ints {
 
-    public int addIgnoreOverFlow(int x, int y) {
+    public static int addIgnoreOverFlow(int x, int y) {
         int r = x + y;
         // HD 2-12 Overflow iff both arguments have the opposite sign of the result
         if (((x ^ r) & (y ^ r)) < 0) {
             return x < 0 ? Integer.MIN_VALUE : Integer.MAX_VALUE;
         }
         return r;
+    }
+
+    private Ints() {
+        throw new AssertionError();
     }
 
 }

@@ -28,7 +28,7 @@ import org.springframework.data.rest.core.annotation.RestResource;
 
 /**
  *
- * Out base repository rather extends {@link PagingAndSortingRepository}
+ * Our base repository rather extends {@link PagingAndSortingRepository}
  *
  * @author zhanhb
  * @param <T> Entity class

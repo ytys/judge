@@ -34,7 +34,7 @@ public abstract class BaseController {
         log.debug("A binder for object: {}", binder.getObjectName());
     }
 
-    @ModelAttribute(value = "ajaxRequest")
+    @ModelAttribute("ajaxRequest")
     public boolean ajaxRequest(WebRequest request) {
         return AjaxUtils.isAjaxRequest(request);
     }
