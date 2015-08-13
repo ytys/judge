@@ -35,13 +35,12 @@ public abstract class Resource {
      */
     static {
         format = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
-        TimeZone gmtZone = TimeZone.getTimeZone("GMT");
-        format.setTimeZone(gmtZone);
+        format.setTimeZone(TimeZone.getTimeZone("GMT"));
     }
     private String lastModifiedHttp;
     private String weakETag;
 
-    public abstract boolean exists();
+    public abstract boolean exists() throws IOException;
 
     public abstract String getName();
 
@@ -49,15 +48,17 @@ public abstract class Resource {
      * Get content length.
      *
      * @return content length value
+     * @throws java.io.IOException when an I/O exception occur.
      */
-    public abstract long getContentLength();
+    public abstract long getContentLength() throws IOException;
 
     /**
      * Get last modified time.
      *
      * @return lastModified time value
+     * @throws java.io.IOException
      */
-    public abstract long getLastModified();
+    public abstract long getLastModified() throws IOException;
 
     /**
      * @return Returns the lastModifiedHttp.
@@ -66,11 +67,14 @@ public abstract class Resource {
         if (lastModifiedHttp != null) {
             return lastModifiedHttp;
         }
-        long modifiedDate = getLastModified();
-        if (modifiedDate >= 0) {
-            synchronized (format) {
-                lastModifiedHttp = format.format(modifiedDate);
+        try {
+            long modifiedDate = getLastModified();
+            if (modifiedDate >= 0) {
+                synchronized (format) {
+                    lastModifiedHttp = format.format(modifiedDate);
+                }
             }
+        } catch (IOException ex) {
         }
         return lastModifiedHttp;
     }
@@ -86,16 +90,20 @@ public abstract class Resource {
         String result = weakETag;
         // The weakETag is contentLength + lastModified
         if (result == null) {
-            long contentLength = getContentLength();
-            long lastModified = getLastModified();
-            if ((contentLength >= 0) || (lastModified >= 0)) {
-                result = "W/\"" + contentLength + "-"
-                        + lastModified + "\"";
+            try {
+                long contentLength = getContentLength();
+                long lastModified = getLastModified();
+                if ((contentLength >= 0) || (lastModified >= 0)) {
+                    result = "W/\"" + contentLength + "-"
+                            + lastModified + "\"";
+                }
+                weakETag = result;
+            } catch (IOException ex) {
             }
-            weakETag = result;
         }
         return result;
     }
 
-    public abstract InputStream streamContent() throws IOException;
+    public abstract InputStream openStream() throws IOException;
+
 }

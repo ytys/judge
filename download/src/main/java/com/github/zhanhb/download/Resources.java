@@ -16,9 +16,10 @@
 package com.github.zhanhb.download;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Date;
 
 /**
@@ -32,6 +33,10 @@ public class Resources {
         return new Builder(file);
     }
 
+    public static Builder of(Path path) {
+        return new Builder(path);
+    }
+
     /**
      * Build resource with an input stream. The inputStream will be closed
      * automatically.
@@ -39,6 +44,7 @@ public class Resources {
      * @param inputStream
      * @return
      */
+    @Deprecated
     public static Builder of(InputStream inputStream) {
         return new Builder(inputStream);
     }
@@ -50,18 +56,25 @@ public class Resources {
     @SuppressWarnings("PublicInnerClass")
     public static class Builder {
 
-        private File file;
+        private Path path;
         private InputStream inputStream;
         private String name;
         private long lastModified = -1;
         private String mimeType;
         private long contentLength = -1;
 
+        private Builder(Path path) {
+            if (path == null) {
+                throw new NullPointerException("path");
+            }
+            this.path = path;
+        }
+
         private Builder(File file) {
             if (file == null) {
                 throw new NullPointerException("file");
             }
-            this.file = file;
+            this.path = file.toPath();
         }
 
         private Builder(InputStream inputStream) {
@@ -80,38 +93,35 @@ public class Resources {
             return this;
         }
 
-        public long lastModified() {
-            if (file != null) {
-                return file.lastModified();
+        public long lastModified() throws IOException {
+            if (lastModified != -1) {
+                return lastModified;
+            }
+            if (path != null) {
+                return Files.getLastModifiedTime(path).toMillis();
             }
             return lastModified;
         }
 
         public Builder lastModified(long lastModified) {
-            if (file != null) {
-                throw new IllegalStateException("file last modified should not be changed in the builder");
-            }
             this.lastModified = lastModified;
             return this;
         }
 
         public Builder lastModified(Date date) {
-            if (file != null) {
-                throw new IllegalStateException("file last modified should not be changed in the builder");
-            }
             this.lastModified = date != null ? date.getTime() : -1;
             return this;
         }
 
-        public long contentLength() {
-            if (file != null) {
-                return file.length();
+        public long contentLength() throws IOException {
+            if (path != null) {
+                return Files.size(path);
             }
             return contentLength;
         }
 
         public Builder contentLength(long contentLength) {
-            if (file != null) {
+            if (path != null) {
                 throw new IllegalStateException("file content length should not be changed in the builder");
             }
             this.contentLength = contentLength;
@@ -128,8 +138,8 @@ public class Resources {
         }
 
         public Resource build() {
-            if (file != null) {
-                return new FileResource(file, name, mimeType);
+            if (path != null) {
+                return new FileResource(path, name, mimeType, lastModified);
             }
             assert inputStream != null;
             return new InputStreamResource(inputStream, name, lastModified, contentLength, mimeType);
@@ -138,39 +148,44 @@ public class Resources {
 
     private static class FileResource extends Resource {
 
-        private final File file;
+        private final Path file;
         private final String name;
         private final String mimeType;
+        private final long lastModified;
 
-        private FileResource(File file, String name, String mimeType) {
+        private FileResource(Path file, String name, String mimeType, long lastModified) {
             this.file = file;
             this.name = name;
             this.mimeType = mimeType;
+            this.lastModified = lastModified;
         }
 
         @Override
         public boolean exists() {
-            return file.exists();
+            return Files.exists(file);
         }
 
         @Override
         public String getName() {
-            return name != null ? name : file.getName();
+            return name != null ? name : file.getFileName().toString();
         }
 
         @Override
-        public InputStream streamContent() throws IOException {
-            return new FileInputStream(file);
+        public InputStream openStream() throws IOException {
+            return Files.newInputStream(file);
         }
 
         @Override
-        public long getContentLength() {
-            return file.length();
+        public long getContentLength() throws IOException {
+            return Files.size(file);
         }
 
         @Override
-        public long getLastModified() {
-            return file.lastModified();
+        public long getLastModified() throws IOException {
+            if (lastModified != -1) {
+                return lastModified;
+            }
+            return Files.getLastModifiedTime(file).toMillis();
         }
 
         @Override
@@ -206,7 +221,7 @@ public class Resources {
         }
 
         @Override
-        public InputStream streamContent() throws IOException {
+        public InputStream openStream() throws IOException {
             return stream;
         }
 

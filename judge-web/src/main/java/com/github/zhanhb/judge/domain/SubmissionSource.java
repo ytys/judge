@@ -43,7 +43,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Table(name = "submission_source")
 public class SubmissionSource implements Serializable {
 
-    @Id
+	private static final long serialVersionUID = 1L;
+
+	@Id
     @JoinColumn(name = "id", foreignKey = @ForeignKey(name = "FK_submission_source_submission"), insertable = false, updatable = false, nullable = false)
     @OneToOne
     private Submission submission;

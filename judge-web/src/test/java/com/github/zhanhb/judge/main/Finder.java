@@ -28,7 +28,6 @@ import lombok.extern.slf4j.Slf4j;
  * @author zhanhb
  * @date May 31, 2015, 23:23:44
  */
-@Slf4j
 public class Finder {
 
     public static void main(String[] args) throws Throwable {

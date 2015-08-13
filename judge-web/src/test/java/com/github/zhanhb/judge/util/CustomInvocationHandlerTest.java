@@ -68,7 +68,7 @@ public class CustomInvocationHandlerTest {
     // only JDK 8+
     @Test
     public void testDefaultMethod() {
-        Iterator<?> it = (Iterator) Proxy.newProxyInstance(
+        Iterator<?> it = (Iterator<?>) Proxy.newProxyInstance(
                 CustomInvocationHandlerTest.class.getClassLoader(),
                 new Class<?>[]{
                     Iterator.class

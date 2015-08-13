@@ -25,6 +25,10 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class SimpleContentDisposition implements ContentDisposition {
 
+    // https://tools.ietf.org/html/rfc5987#section-3.2.1
+    // we will encoding + for some browser will decode + to a space
+    static final URLEncoder CONTENT_DISPOSITION = new URLEncoder("!#$&-.^_`|~");
+
     @Override
     public void setContentDisposition(HttpServletRequest request, HttpServletResponse response, String filename) {
         if (filename == null || filename.length() == 0) {
@@ -32,7 +36,7 @@ public class SimpleContentDisposition implements ContentDisposition {
         } else if (isToken(filename)) { // already a token
             response.setHeader("Content-Disposition", "attachment; filename=" + filename);
         } else {
-            String encoded = URLEncoder.CONTENT_DISPOSITION.encode(filename);
+            String encoded = CONTENT_DISPOSITION.encode(filename);
             response.setHeader("Content-Disposition", "attachment; filename=\"" + encoded + "\"; filename*=utf-8''" + encoded);
         }
     }

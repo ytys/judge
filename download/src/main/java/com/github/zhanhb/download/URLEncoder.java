@@ -24,9 +24,6 @@ import java.util.BitSet;
  */
 public class URLEncoder {
 
-    // https://tools.ietf.org/html/rfc5987#section-3.2.1
-    // we will encoding + for some browser will decode + to a space
-    public static final URLEncoder CONTENT_DISPOSITION = new URLEncoder("!#$&-.^_`|~");
     private static final char[] hexChars = "0123456789ABCDEF".toCharArray();
 
     private final BitSet dontNeedEncoding;

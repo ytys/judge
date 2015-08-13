@@ -24,6 +24,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -41,7 +42,7 @@ public class Downloader {
     /**
      * Full range marker.
      */
-    private static final ArrayList<Range> FULL = new ArrayList<Range>(0);
+    private static final List<Range> FULL = Collections.emptyList();
 
     // ----------------------------------------------------- Static Initializer
     /**
@@ -66,7 +67,7 @@ public class Downloader {
     private boolean useAcceptRanges = true;
 
     /**
-     * Should the Content-Disposition: attachment; filename=... header be send
+     * Should the Content-Disposition: attachment; filename=... header be sent
      * with static resources?
      */
     private ContentDisposition contentDisposition = new SimpleContentDisposition();
@@ -147,7 +148,7 @@ public class Downloader {
      * @param request The servlet request we are processing
      * @param response The servlet response we are creating
      * @param content Should the content be included?
-     * @param resource
+     * @param resource the resource to serve
      *
      * @exception IOException if an input/output error occurs
      * @exception ServletException if a servlet-specified error occurs
@@ -376,7 +377,7 @@ public class Downloader {
         // Vector which will contain all the ranges which are successfully
         // parsed.
         StringTokenizer commaTokenizer = new StringTokenizer(rangeHeader, ",");
-        ArrayList<Range> result = new ArrayList<Range>(commaTokenizer.countTokens());
+        ArrayList<Range> result = new ArrayList<>(commaTokenizer.countTokens());
         // Parsing the range list
         while (commaTokenizer.hasMoreTokens()) {
             String rangeDefinition = commaTokenizer.nextToken().trim();
@@ -488,7 +489,7 @@ public class Downloader {
                     return false;
                 }
             }
-        } catch (IllegalArgumentException illegalArgument) {
+        } catch (IllegalArgumentException | IOException ex) {
             return true;
         }
         return true;
@@ -585,15 +586,11 @@ public class Downloader {
     private void copy(Resource resource, ServletOutputStream ostream)
             throws IOException {
         IOException exception;
-        InputStream stream = resource.streamContent();
-        try {
-            stream = new BufferedInputStream(stream, input);
+
+        try (InputStream stream = resource.openStream();
+                BufferedInputStream bis = new BufferedInputStream(stream, input)) {
             // Copy the input stream to the output stream
-            exception = copyRange(stream, ostream);
-        } finally {
-            if (stream != null) {
-                stream.close();
-            }
+            exception = copyRange(bis, ostream);
         }
         // Rethrow any exception that has occurred
         if (exception != null) {
@@ -615,22 +612,15 @@ public class Downloader {
     private void copy(Resource resource, PrintWriter writer)
             throws IOException {
         IOException exception;
+        // FIXME fileEncoding is always null
         String fileEncoding = null;
-        InputStream resourceInputStream = resource.streamContent();
-        Reader reader = null;
-        try {
-            reader = fileEncoding == null
-                    ? new InputStreamReader(resourceInputStream)
-                    : new InputStreamReader(resourceInputStream, fileEncoding);
+
+        try (InputStream resourceInputStream = resource.openStream();
+                Reader reader = fileEncoding == null
+                        ? new InputStreamReader(resourceInputStream)
+                        : new InputStreamReader(resourceInputStream, fileEncoding)) {
             // Copy the input stream to the output stream
             exception = copyRange(reader, writer);
-        } finally {
-            if (reader != null) {
-                reader.close();
-            }
-            if (resourceInputStream != null) {
-                resourceInputStream.close();
-            }
         }
         // Rethrow any exception that has occurred
         if (exception != null) {
@@ -651,14 +641,9 @@ public class Downloader {
     private void copy(Resource resource, ServletOutputStream ostream,
             Range range) throws IOException {
         IOException exception;
-        InputStream stream = resource.streamContent();
-        try {
-            stream = new BufferedInputStream(stream, input);
-            exception = copyRange(stream, ostream, range.start, range.end);
-        } finally {
-            if (stream != null) {
-                stream.close();
-            }
+        try (InputStream stream = resource.openStream();
+                BufferedInputStream bis = new BufferedInputStream(stream, input)) {
+            exception = copyRange(bis, ostream, range.start, range.end);
         }
         // Rethrow any exception that has occurred
         if (exception != null) {
@@ -681,9 +666,9 @@ public class Downloader {
             throws IOException {
         IOException exception = null;
         while ((exception == null) && (ranges.hasNext())) {
-            InputStream stream = resource.streamContent();
-            try {
-                stream = new BufferedInputStream(stream, input);
+            try (InputStream stream = resource.openStream();
+                    BufferedInputStream bis = new BufferedInputStream(stream, input);) {
+
                 Range currentRange = ranges.next();
                 // Writing MIME header.
                 ostream.println();
@@ -694,12 +679,8 @@ public class Downloader {
                 ostream.println("Content-Range: bytes " + currentRange.start + "-" + currentRange.end + "/" + currentRange.length);
                 ostream.println();
                 // Printing content
-                exception = copyRange(stream, ostream, currentRange.start,
+                exception = copyRange(bis, ostream, currentRange.start,
                         currentRange.end);
-            } finally {
-                if (stream != null) {
-                    stream.close();
-                }
             }
         }
         ostream.println();

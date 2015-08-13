@@ -53,7 +53,7 @@ public class LoginControllerTest extends AbstractMockMvcTests {
     @Test
     public void testLoginRaw() throws Exception {
         mockMvc.perform(post("/login").param("login", email).param("password", sha))
-                .andExpect(view().name("login")); // TODO password too long
+                .andExpect(view().name("login"));
     }
 
     @Test

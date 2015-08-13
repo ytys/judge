@@ -74,7 +74,7 @@ public class URLEncoderTest {
 
         String s = sb.toString();
 
-        String encoded = URLEncoder.CONTENT_DISPOSITION.encode(s, charset);
+        String encoded = SimpleContentDisposition.CONTENT_DISPOSITION.encode(s, charset);
 
         encoded.chars().forEach(ch -> assertTrue(32 < ch && ch < 127));
 
