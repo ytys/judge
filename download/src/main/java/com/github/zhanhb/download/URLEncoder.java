@@ -17,6 +17,7 @@ package com.github.zhanhb.download;
 
 import java.nio.charset.Charset;
 import java.util.BitSet;
+import java.util.Objects;
 
 /**
  *
@@ -43,9 +44,17 @@ public class URLEncoder {
         }
     }
 
+    /**
+     *
+     * @param s {@code String} to be translated.
+     * @param charset the encoding to use.
+     * @return the translated {@code String}.
+     * @see java.net.URLEncoder#encode(java.lang.String, java.lang.String)
+     */
     public String encode(String s, Charset charset) {
         boolean needToChange = false;
         final int length = s.length();
+        Objects.requireNonNull(charset, "charset");
         StringBuilder out = new StringBuilder(length);
 
         for (int cur = 0; cur < length;) {

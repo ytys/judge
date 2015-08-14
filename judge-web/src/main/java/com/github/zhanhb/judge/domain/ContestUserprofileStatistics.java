@@ -16,57 +16,65 @@
 package com.github.zhanhb.judge.domain;
 
 import java.io.Serializable;
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.ForeignKey;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.hibernate.annotations.Subselect;
+import org.hibernate.annotations.Synchronize;
 
 /**
  *
  * @author zhanhb
  */
-@AllArgsConstructor(access = AccessLevel.PACKAGE)
-@Builder
 @Data
 @Entity
-@EntityListeners(AuditingEntityListener.class)
-@EqualsAndHashCode(of = "id")
-@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
+@EqualsAndHashCode(of = {"contest", "userprofile"})
 @Setter(AccessLevel.PACKAGE)
 @Table(name = "contest_userprofile_statistics", uniqueConstraints = {
     @UniqueConstraint(name = "UK_contest_userprofile_statistics_contest_userprofile", columnNames = {"contest", "userprofile"})
 })
+@Subselect("select\n"
+        + "    s.userprofile * 1048576 + s.contest as id,\n"
+        + "    s.contest,\n"
+        + "    s.userprofile,\n"
+        + "    count(s.id) submit\n"
+        + "from\n"
+        + "    submission s\n"
+        + "where\n"
+        + "    userprofile is not null and\n"
+        + "    problem is not null\n"
+        + "group by\n"
+        + "    contest, userprofile")
+@Synchronize("submission")
 @XmlRootElement
 public class ContestUserprofileStatistics implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
-    private Long id;
+    @EmbeddedId
+    @AttributeOverrides({
+        @AttributeOverride(name = "contest", column = @Column(name = "contest", insertable = false, updatable = false)),
+        @AttributeOverride(name = "userprofile", column = @Column(name = "userprofile", insertable = false, updatable = false))
+    })
+    private ContestUserprofile id;
 
-    @JoinColumn(name = "contest", nullable = false, foreignKey = @ForeignKey(name = "FK_contest_userprofile_statistics_contest"))
+    // TODO contest id less than 1048576 is assumed.
+    @JoinColumn(name = "contest", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Contest contest;
 
-    @JoinColumn(name = "userprofile", nullable = false, foreignKey = @ForeignKey(name = "FK_contest_userprofile_statistics_userprofile"))
+    @JoinColumn(name = "userprofile", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Userprofile userprofile;
 

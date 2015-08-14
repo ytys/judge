@@ -15,9 +15,11 @@
  */
 package com.github.zhanhb.judge.domain;
 
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -25,6 +27,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Subselect;
 import org.hibernate.annotations.Synchronize;
@@ -32,6 +35,7 @@ import org.hibernate.annotations.Synchronize;
 @Data
 @Entity
 @EqualsAndHashCode(of = "id")
+@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 @Setter(AccessLevel.PACKAGE)
 @Subselect("SELECT\n"
         + "    p.id as problem,\n"
@@ -68,7 +72,8 @@ public class ProblemStatistics implements Serializable {
     private long id;
 
     @JoinColumn(name = "problem", nullable = false, insertable = false, updatable = false)
-    @OneToOne(optional = false)
+    @JsonUnwrapped
+    @OneToOne(optional = false, fetch = FetchType.EAGER)
     private Problem problem;
 
     @Column(name = "accept")

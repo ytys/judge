@@ -40,9 +40,9 @@ public abstract class Resource {
     private String lastModifiedHttp;
     private String weakETag;
 
-    public abstract boolean exists() throws IOException;
+    abstract boolean exists() throws IOException;
 
-    public abstract String getName();
+    abstract String getName();
 
     /**
      * Get content length.
@@ -50,7 +50,7 @@ public abstract class Resource {
      * @return content length value
      * @throws java.io.IOException when an I/O exception occur.
      */
-    public abstract long getContentLength() throws IOException;
+    abstract long getContentLength() throws IOException;
 
     /**
      * Get last modified time.
@@ -58,12 +58,12 @@ public abstract class Resource {
      * @return lastModified time value
      * @throws java.io.IOException
      */
-    public abstract long getLastModified() throws IOException;
+    abstract long getLastModified() throws IOException;
 
     /**
      * @return Returns the lastModifiedHttp.
      */
-    public String getLastModifiedHttp() {
+    String getLastModifiedHttp() {
         if (lastModifiedHttp != null) {
             return lastModifiedHttp;
         }
@@ -86,7 +86,7 @@ public abstract class Resource {
      *
      * @return strong ETag if available, else weak ETag.
      */
-    public String getETag() {
+    String getETag() {
         String result = weakETag;
         // The weakETag is contentLength + lastModified
         if (result == null) {
@@ -104,6 +104,12 @@ public abstract class Resource {
         return result;
     }
 
-    public abstract InputStream openStream() throws IOException;
+    /**
+     * Always open a new input stream.
+     *
+     * @return a new input stream.
+     * @throws IOException
+     */
+    abstract InputStream openStream() throws IOException;
 
 }

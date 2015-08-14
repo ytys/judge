@@ -20,9 +20,6 @@ import java.io.BufferedInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -54,12 +51,12 @@ public class Downloader {
     /**
      * The input buffer size to use when serving resources.
      */
-    private int input = 2048;
+    private int input = 4096;
 
     /**
      * The output buffer size to use when serving resources.
      */
-    private int outputBufferSize = 2048;
+    private int outputBufferSize = 4096;
 
     /**
      * Should the Accept-Ranges: bytes header be send with static resources?
@@ -206,7 +203,6 @@ public class Downloader {
             serveContent = false;
         }
         ServletOutputStream ostream = null;
-        PrintWriter writer = null;
         if (serveContent) {
             // Trying to retrieve the servlet output stream
             try {
@@ -214,16 +210,7 @@ public class Downloader {
             } catch (IllegalStateException e) {
                 // If it fails, we try to get a Writer instead if we're
                 // trying to serve a text file
-                if ((contentType == null)
-                        || (contentType.startsWith("text"))
-                        || (contentType.endsWith("xml"))
-                        || (contentType.contains("/javascript"))) {
-                    writer = response.getWriter();
-                    // Cannot reliably serve partial content with a Writer
-                    ranges = FULL;
-                } else {
-                    throw e;
-                }
+                throw e;
             }
         }
 
@@ -263,7 +250,7 @@ public class Downloader {
                 if (ostream != null) {
                     copy(resource, ostream);
                 } else {
-                    copy(resource, writer);
+                    throw new IllegalStateException();
                 }
             }
         } else {
@@ -604,36 +591,6 @@ public class Downloader {
      * the face of an exception).
      *
      * @param resource The cache entry for the source resource
-     * @param is The input stream to read the source resource from
-     * @param writer The writer to write to
-     *
-     * @exception IOException if an input/output error occurs
-     */
-    private void copy(Resource resource, PrintWriter writer)
-            throws IOException {
-        IOException exception;
-        // FIXME fileEncoding is always null
-        String fileEncoding = null;
-
-        try (InputStream resourceInputStream = resource.openStream();
-                Reader reader = fileEncoding == null
-                        ? new InputStreamReader(resourceInputStream)
-                        : new InputStreamReader(resourceInputStream, fileEncoding)) {
-            // Copy the input stream to the output stream
-            exception = copyRange(reader, writer);
-        }
-        // Rethrow any exception that has occurred
-        if (exception != null) {
-            throw exception;
-        }
-    }
-
-    /**
-     * Copy the contents of the specified input stream to the specified output
-     * stream, and ensure that both streams are closed before returning (even in
-     * the face of an exception).
-     *
-     * @param resource The cache entry for the source resource
      * @param ostream The output stream to write to
      * @param range Range the client wanted to retrieve
      * @exception IOException if an input/output error occurs
@@ -724,34 +681,6 @@ public class Downloader {
      * stream, and ensure that both streams are closed before returning (even in
      * the face of an exception).
      *
-     * @param reader The reader to read from
-     * @param writer The writer to write to
-     * @return Exception which occurred during processing
-     */
-    private IOException copyRange(Reader reader, PrintWriter writer) {
-        // Copy the input stream to the output stream
-        IOException exception = null;
-        char buffer[] = new char[input];
-        while (true) {
-            try {
-                int len = reader.read(buffer);
-                if (len == -1) {
-                    break;
-                }
-                writer.write(buffer, 0, len);
-            } catch (IOException e) {
-                exception = e;
-                break;
-            }
-        }
-        return exception;
-    }
-
-    /**
-     * Copy the contents of the specified input stream to the specified output
-     * stream, and ensure that both streams are closed before returning (even in
-     * the face of an exception).
-     *
      * @param istream The input stream to read from
      * @param ostream The output stream to write to
      * @param start Start of the range which will be copied
@@ -776,7 +705,7 @@ public class Downloader {
         long bytesToRead = end - start + 1;
         byte buffer[] = new byte[input];
         int len = buffer.length;
-        while ((bytesToRead > 0) && (len >= buffer.length)) {
+        while ((bytesToRead > 0) && (len > 0)) {
             try {
                 len = istream.read(buffer);
                 if (bytesToRead >= len) {
@@ -789,9 +718,6 @@ public class Downloader {
             } catch (IOException e) {
                 exception = e;
                 len = -1;
-            }
-            if (len < buffer.length) {
-                break;
             }
         }
         return exception;

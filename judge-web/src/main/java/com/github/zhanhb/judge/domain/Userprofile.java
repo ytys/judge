@@ -70,7 +70,7 @@ public class Userprofile implements Serializable {
     @JsonIgnore
     private Long id;
 
-    @Column(name = "handle")
+    @Column(name = "handle", nullable = false)
     private String handle;
 
     @Column(name = "password")

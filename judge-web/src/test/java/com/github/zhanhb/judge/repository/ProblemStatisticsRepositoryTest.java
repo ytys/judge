@@ -18,10 +18,10 @@ package com.github.zhanhb.judge.repository;
 import com.github.zhanhb.judge.Application;
 import com.github.zhanhb.judge.domain.Problem;
 import com.github.zhanhb.judge.domain.ProblemStatistics;
-import java.time.LocalDateTime;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
@@ -42,28 +42,20 @@ import org.springframework.test.context.web.WebAppConfiguration;
 public class ProblemStatisticsRepositoryTest {
 
     @Autowired
+    private SampleData sampleData;
+    @Autowired
     private ProblemStatisticsRepository repository;
     @Autowired
     private ProblemRepository problems;
 
     @Test
     public void test() {
-        Problem problem = problems.save(Problem.builder()
-                .lastUpdateDate(LocalDateTime.now())
-                .creationDate(LocalDateTime.now())
-                .source("source")
-                .hint("hint")
-                .input("input")
-                .output("output")
-                .sampleInput("sample input")
-                .sampleOutput("sample output")
-                .description("desc")
-                .title("title")
-                .build());
+        Problem problem = sampleData.problem();
         assertThat(problems.findOne(problem.getId()).get(), is(problem));
         Optional<ProblemStatistics> problemStatistics = repository.findOne(problem.getId());
         assertTrue("problem " + problem.getId() + " not exists", problemStatistics.isPresent());
-        repository.save(problemStatistics.get());
+        assertEquals(problemStatistics.get().getProblem(), problem);
+        log.info(problemStatistics.get().getClass().getName());
         problems.delete(problem);
     }
 
