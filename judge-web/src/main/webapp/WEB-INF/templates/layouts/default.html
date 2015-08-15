@@ -86,14 +86,14 @@ limitations under the License.
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a href="../home.html" class="navbar-brand" th:href="@{/}">Home</a>
+                        <a href="../home.html" class="navbar-brand" th:href="@{/}" th:text="#{header.index}">Home</a>
                     </div> <!-- .navbar-header -->
                     <div id="navigation" class="collapse navbar-collapse" aria-expanded="true">
                         <ul class="nav navbar-nav">
                             <li><a href="../problems.html" th:href="@{/problems}" th:text="#{header.problems}">Problems</a></li>
                             <li><a href="../users.html" th:href="@{/users}" th:text="#{header.users}">Users</a></li>
                             <li><a href="../contests.html" th:href="@{/contests}" th:text="#{header.contests}">Contests</a></li>
-                            <li><a href="../faq.html" th:href="@{/faq}">FAQ</a></li>
+                            <li><a href="../faq.html" th:href="@{/faq}" th:text="#{header.faq}">FAQ</a></li>
                             <!--<li><a th:href="@{/forum}">Forum</a></li>-->
                         </ul>
                         <!--/* you must add dependency thymeleaf-extras-springsecurity and has dialect SpringSecurityDialect */-->
@@ -104,12 +104,12 @@ limitations under the License.
                                     <li><a th:href="@{/user/edit}">Edit Profile</a></li>
                                     <li><a th:href="@{/mail}">Mail</a></li>
                                     <li class="divider"></li>
-                                    <li><a th:href="@{/logout}" data-no-turbolink="">Logout</a></li>
+                                    <li><a th:href="@{/logout}" data-no-turbolink="" th:text="#{header.logout}">Logout</a></li>
                                 </ul>
                             </li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right nav-controls" sec:authorize="!isAuthenticated()">
-                            <li><a href="#" data-toggle="modal" data-target="#loginModal">Login</a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#loginModal" th:text="#{header.login}">Login</a></li>
                         </ul>
                     </div>
                 </div> <!-- .container -->
@@ -120,10 +120,10 @@ limitations under the License.
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                            <h1 class="text-center">Login</h1>
+                            <h1 class="text-center" th:text="#{login.title}">Login</h1>
                         </div>
                         <div class="modal-body">
-                            <form class="form col-md-12 center-block" th:action="@{/login}" th:replace="login :: .form-signin">
+                            <form class="form col-md-12 center-block" th:action="@{/login}" th:replace="login :: .th-form-signin">
                                 <div class="form-group">
                                     <input type="text" class="form-control input-lg" placeholder="Email"/>
                                 </div>
@@ -136,11 +136,11 @@ limitations under the License.
                                 </div>
                             </form>
                         </div>
-                        <div class="modal-footer">
+                        <!--/*--><div class="modal-footer">
                             <div class="col-md-12">
                                 <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
                             </div>
-                        </div>
+                        </div><!--*/-->
                     </div>
                 </div>
             </div><!-- #loginModal.modal -->

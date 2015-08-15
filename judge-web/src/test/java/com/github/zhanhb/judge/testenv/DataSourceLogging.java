@@ -20,8 +20,8 @@ import org.jdbcdslog.ConnectionPoolDataSourceProxy;
 import org.jdbcdslog.JDBCDSLogException;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
+import org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -34,7 +34,7 @@ import org.springframework.context.annotation.Primary;
  * enable logging for test scope.
  */
 @AutoConfigureAfter(DataSourceAutoConfiguration.class)
-@AutoConfigureBefore(LiquibaseAutoConfiguration.class)
+@AutoConfigureBefore(FlywayAutoConfiguration.class)
 @Configuration
 public class DataSourceLogging {
 

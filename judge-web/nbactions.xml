@@ -113,21 +113,6 @@
         </properties>
     </action>
     <action>
-        <actionName>CUSTOM-liquibase:diff</actionName>
-        <displayName>liquibase:diff</displayName>
-        <goals>
-            <goal>compile</goal>
-            <goal>liquibase:diff</goal>
-        </goals>
-    </action>
-    <action>
-        <actionName>CUSTOM-liquibase:releaseLocks</actionName>
-        <displayName>liquibase:releaseLocks</displayName>
-        <goals>
-            <goal>liquibase:releaseLocks</goal>
-        </goals>
-    </action>
-    <action>
         <actionName>CUSTOM-clean package maven.tesk.skip=true</actionName>
         <displayName>clean package maven.test.skip=true</displayName>
         <goals>

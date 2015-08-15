@@ -16,7 +16,9 @@
 package com.github.zhanhb.judge.service;
 
 import com.github.zhanhb.judge.audit.CustomUserDetails;
+import com.github.zhanhb.judge.domain.Role;
 import com.github.zhanhb.judge.domain.Userprofile;
+import com.github.zhanhb.judge.domain.UserprofileRole;
 import com.github.zhanhb.judge.repository.UserprofileRepository;
 import com.github.zhanhb.judge.repository.UserprofileRoleRepository;
 import java.util.Objects;
@@ -51,7 +53,12 @@ public class UserprofileDetailsService implements UserDetailsService {
         @SuppressWarnings("ThrowableInstanceNotThrown")
         Userprofile userprofile = optional.orElseThrow(() -> new UsernameNotFoundException(username));
 
-        return new CustomUserDetails(userprofile, urr.findAllByUserprofile(userprofile).stream().map(urole -> urole.getRole().getName()).toArray(String[]::new));
+        return new CustomUserDetails(userprofile,
+                urr.findAllByUserprofile(userprofile)
+                .stream()
+                .map(UserprofileRole::getRole)
+                .map(Role::getName)
+                .toArray(String[]::new));
     }
 
 }

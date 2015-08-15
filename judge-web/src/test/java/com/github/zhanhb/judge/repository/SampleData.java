@@ -59,7 +59,15 @@ public class SampleData {
     }
 
     public Contest contest() {
-        return contests.save(Contest.builder().name("test1").type(ContestType.NONE).build());
+        String contestName = "test_contest_name";
+
+        return contests.save(Contest.builder()
+                .beginTime(LocalDateTime.now())
+                .finishTime(LocalDateTime.now())
+                .type(ContestType.OJ)
+                .title("title")
+                .name(contestName)
+                .build());
     }
 
     public Userprofile userprofile() {
@@ -68,6 +76,22 @@ public class SampleData {
 
     public Language language() {
         return languages.save(Language.builder().name("testLanguage").executableExtension("tmp").languageExtension("tmp").build());
+    }
+
+    void delete(Userprofile userprofile) {
+        userprofiles.delete(userprofile);
+    }
+
+    void delete(Language language) {
+        languages.delete(language);
+    }
+
+    void delete(Contest contest) {
+        contests.delete(contest);
+    }
+
+    void delete(Problem problem) {
+        problems.delete(problem);
     }
 
 }

@@ -60,8 +60,6 @@
         <jboss-logging.version>3.3.0.Final</jboss-logging.version>
         <json-patch.version>1.9</json-patch.version>
         <lombok.version>1.16.4</lombok.version>
-        <!-- for liquibase-maven-plugin -->
-        <maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
         <!--<maven.test.failure.ignore>true</maven.test.failure.ignore>-->
         <!--<maven.test.skip>true</maven.test.skip>-->
         <poi.version>3.12</poi.version>
@@ -185,6 +183,11 @@
             <scope>runtime</scope>
         </dependency>
         <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <scope>runtime</scope>
@@ -244,17 +247,6 @@
             <artifactId>jdbcdslog</artifactId>
             <version>1.0.6.2</version>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.liquibase</groupId>
-            <artifactId>liquibase-core</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.mattbertolini</groupId>
-            <artifactId>liquibase-slf4j</artifactId>
-            <version>1.2.1</version>
-            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -338,6 +330,11 @@
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.taglibs</groupId>
+            <artifactId>taglibs-standard-jstlel</artifactId>
+            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.thymeleaf.extras</groupId>
@@ -448,30 +445,10 @@
     <build>
         <pluginManagement>
             <plugins>
-                <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
                 <plugin>
-                    <groupId>org.eclipse.m2e</groupId>
-                    <artifactId>lifecycle-mapping</artifactId>
-                    <version>1.0.0</version>
-                    <configuration>
-                        <lifecycleMappingMetadata>
-                            <pluginExecutions>
-                                <pluginExecution>
-                                    <pluginExecutionFilter>
-                                        <groupId>org.apache.maven.plugins</groupId>
-                                        <artifactId>maven-dependency-plugin</artifactId>
-                                        <versionRange>[2.10,)</versionRange>
-                                        <goals>
-                                            <goal>copy</goal>
-                                        </goals>
-                                    </pluginExecutionFilter>
-                                    <action>
-                                        <ignore />
-                                    </action>
-                                </pluginExecution>
-                            </pluginExecutions>
-                        </lifecycleMappingMetadata>
-                    </configuration>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>exec-maven-plugin</artifactId>
+                    <version>1.4.0</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -581,8 +558,8 @@
                 <configuration>
                     <rules>
                         <requireMavenVersion>
-                            <message>You are running an older version of Maven. ${project.name} requires at least Maven 3.0.2</message>
-                            <version>[3.0.2,)</version>
+                            <message>You are running an older version of Maven. ${project.name} requires at least Maven ${project.prerequisites.maven}</message>
+                            <version>[${project.prerequisites.maven},)</version>
                         </requireMavenVersion>
                         <requireJavaVersion>
                             <message>You are running an older version of Java. ${project.name} requires at least JDK ${java.version}</message>
@@ -633,41 +610,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>2.6</version>
-            </plugin>
-            <plugin>
-                <groupId>org.liquibase</groupId>
-                <artifactId>liquibase-maven-plugin</artifactId>
-                <version>${liquibase.version}</version>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.javassist</groupId>
-                        <artifactId>javassist</artifactId>
-                        <version>${javassist.version}</version>
-                    </dependency>
-                </dependencies>
-                <inherited>true</inherited>
-                <configuration>
-                    <url>jdbc:mariadb://localhost:3306/oj?zeroDateTimeBehavior=convertToNull&amp;characterEncoding=UTF-8</url>
-                    <username>root</username>
-                    <password>root</password>
-
-                    <!-- see liquibase.ext.hibernate.database.HibernateSpringDatabase -->
-                    <!-- see org.springframework.orm.jpa.persistenceunit.DefaultPersistenceUnitManager -->
-                    <!-- we use package to scan. -->
-                    <referenceUrl>jdbc:mariadb://localhost:3306/oj_test_db?zeroDateTimeBehavior=convertToNull&amp;characterEncoding=UTF-8</referenceUrl>
-                    <referenceUsername>root</referenceUsername>
-                    <referencePassword>root</referencePassword>
-
-                    <changeLogFile>${project.build.resources[0].directory}/config/liquibase/master.xml</changeLogFile>
-                    <diffChangeLogFile>${project.build.resources[0].directory}/config/liquibase/changelog/${maven.build.timestamp}_changelog.xml</diffChangeLogFile>
-
-                    <logging>debug</logging>
-                    <promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
-                    <verbose>true</verbose>
-                    <systemProperties>
-                        <logback.configurationFile>${project.build.resources[0].directory}/logback.xml</logback.configurationFile>
-                    </systemProperties>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

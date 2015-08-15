@@ -30,8 +30,8 @@
             <jsp:text>${pageContext}</jsp:text>
             <jsp:text>${tt}</jsp:text>
             <form:form servletRelativeAction="/upload" role="form" enctype="multipart/form-data">
-                    <input type="file" name="file"/>
-                    <input type="submit"/>
+                <input type="file" name="file"/>
+                <input type="submit"/>
             </form:form>
         </pre>
         <script>/*<![CDATA[/**/jQuery("<div>").qrcode(location.href).appendTo("body");//]]>;</script>

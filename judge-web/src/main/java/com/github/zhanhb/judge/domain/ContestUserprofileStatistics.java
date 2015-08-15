@@ -78,4 +78,7 @@ public class ContestUserprofileStatistics implements Serializable {
     @ManyToOne(optional = false)
     private Userprofile userprofile;
 
+    @Column(name = "submit", nullable = false)
+    private long submit;
+
 }

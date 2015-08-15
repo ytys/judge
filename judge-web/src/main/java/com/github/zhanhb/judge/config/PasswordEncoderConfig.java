@@ -35,14 +35,13 @@ public class PasswordEncoderConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new LengthLimitedPasswordEncoder(
-                new CombinePasswordEncoder(
-                        new MutiPasswordSupport(
-                                new CombinePasswordEncoder(
-                                        new BCryptPasswordEncoder(),
-                                        new MessageDigestPasswordEncoder("SHA"),
-                                        new MessageDigestPasswordEncoder("MD5")
-                                )
-                        ), NoOpPasswordEncoder.getInstance()
+                new MutiPasswordSupport(
+                        new CombinePasswordEncoder(
+                                new BCryptPasswordEncoder(),
+                                new MessageDigestPasswordEncoder("SHA"),
+                                new MessageDigestPasswordEncoder("MD5"),
+                                NoOpPasswordEncoder.getInstance()
+                        )
                 ), 30);
     }
 

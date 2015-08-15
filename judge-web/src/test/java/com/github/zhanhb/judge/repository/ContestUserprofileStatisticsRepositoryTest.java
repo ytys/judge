@@ -17,8 +17,17 @@ package com.github.zhanhb.judge.repository;
 
 import com.github.zhanhb.judge.Application;
 import com.github.zhanhb.judge.domain.Contest;
+import com.github.zhanhb.judge.domain.ContestUserprofileStatistics;
+import com.github.zhanhb.judge.domain.Language;
+import com.github.zhanhb.judge.domain.Problem;
+import com.github.zhanhb.judge.domain.Submission;
 import com.github.zhanhb.judge.domain.Userprofile;
+import java.util.Collection;
+import javax.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.not;
+import static org.junit.Assert.assertThat;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,30 +46,44 @@ import org.springframework.test.context.web.WebAppConfiguration;
 public class ContestUserprofileStatisticsRepositoryTest {
 
     @Autowired
-    private ContestUserprofileStatisticsRepository instance;
+    private UserprofileRepository userprofiles;
+    @Autowired
+    private ContestRepository contests;
+    @Autowired
+    private SubmissionRepository submissions;
+    @Autowired
+    private LanguageRepository languages;
+    @Autowired
+    private ProblemRepository problems;
+    @Autowired
+    private SampleData sampleData;
+    @Autowired
+    private ContestUserprofileStatisticsRepository contestUserprofileStatisticss;
 
-    /**
-     * Test of findByContestNameAndUserprofileHandle method, of class
-     * ContestUserprofileStatisticsRepository.
-     */
     @Test
-    public void testFindByContestNameAndUserprofileHandle() {
-        log.info("findByContestNameAndUserprofileHandle");
-        String name = "";
-        String handle = "";
-        instance.findByContestNameAndUserprofileHandle(name, handle);
-    }
+    @Transactional
+    public void test() {
+        Problem problem = sampleData.problem();
+        Language language = sampleData.language();
+        Userprofile userprofile = sampleData.userprofile();
+        Contest contest = sampleData.contest();
 
-    /**
-     * Test of findByContestAndUserprofile method, of class
-     * ContestUserprofileStatisticsRepository.
-     */
-    @Test
-    public void testFindByContestAndUserprofile() {
-        log.info("findByContestAndUserprofile");
-        Contest contest = null;
-        Userprofile userprofile = null;
-        instance.findByContestAndUserprofile(contest, userprofile);
+        Submission submission = submissions.save(Submission.builder()
+                .contest(contest)
+                .userprofile(userprofile)
+                .language(language)
+                .problem(problem)
+                .build());
+
+        Iterable<ContestUserprofileStatistics> list = contestUserprofileStatisticss.findAll();
+
+        assertThat((Collection<?>)list, not(hasSize(0)));
+
+        submissions.delete(submission);
+        contests.delete(contest);
+        userprofiles.delete(userprofile);
+        languages.delete(language);
+        problems.delete(problem);
     }
 
 }

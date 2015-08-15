@@ -21,7 +21,6 @@ import java.net.URL;
 import java.util.Enumeration;
 import java.util.Optional;
 import java.util.function.Consumer;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  *
@@ -32,6 +31,8 @@ public class Finder {
 
     public static void main(String[] args) throws Throwable {
         Consumer<URL> c = System.out::println;
+        consume(javax.annotation.Generated.class, c);
+        consume(javax.annotation.CheckForNull.class, c);
         consume(aj.org.objectweb.asm.ClassVisitor.class, c);
         //consume(com.sun.xml.internal.ws.org.objectweb.asm.ClassVisitor.class, c);
         consume(org.springframework.asm.ClassVisitor.class, c);

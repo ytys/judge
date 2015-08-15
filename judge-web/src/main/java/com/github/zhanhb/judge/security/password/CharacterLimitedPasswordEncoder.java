@@ -15,28 +15,40 @@
  */
 package com.github.zhanhb.judge.security.password;
 
-import java.util.StringTokenizer;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  *
  * @author zhanhb
  */
-public class MutiPasswordSupport extends PasswordEncoderWrapper {
+public class CharacterLimitedPasswordEncoder extends PasswordEncoderWrapper {
 
-    public MutiPasswordSupport(PasswordEncoder encoder) {
-        super(encoder);
+    private final char[] limitChars;
+
+    public CharacterLimitedPasswordEncoder(PasswordEncoder parent, String limitString) {
+        super(parent);
+        if (limitString.length() == 0) {
+            throw new IllegalArgumentException("limitString");
+        }
+        this.limitChars = limitString.toCharArray();
     }
 
     @Override
     public boolean matches(CharSequence rawPassword, String encodedPassword) {
-        for (StringTokenizer tokenizer = new StringTokenizer(encodedPassword, "\u2028\u2029");
-                tokenizer.hasMoreElements();) {
-            if (super.matches(rawPassword, tokenizer.nextToken())) {
-                return true;
-            }
+        return super.matches(limit(rawPassword), encodedPassword);
+    }
+
+    @Override
+    public String encode(CharSequence rawPassword) {
+        return super.encode(limit(rawPassword));
+    }
+
+    private CharSequence limit(CharSequence encodedPassword) {
+        String string = encodedPassword.toString();
+        for (char ch : limitChars) {
+            string = string.replace(ch, ' ');
         }
-        return false;
+        return string;
     }
 
 }

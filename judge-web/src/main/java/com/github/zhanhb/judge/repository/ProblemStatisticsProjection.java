@@ -15,14 +15,10 @@
  */
 package com.github.zhanhb.judge.repository;
 
-import com.github.zhanhb.judge.domain.ContestUserprofile;
-import com.github.zhanhb.judge.domain.ContestUserprofileStatistics;
-
 /**
  *
  * @author zhanhb
  */
-@SuppressWarnings("MarkerInterface")
-public interface ContestUserprofileStatisticsRepository extends BaseRepository<ContestUserprofileStatistics, ContestUserprofile> {
+public interface ProblemStatisticsProjection {
 
 }

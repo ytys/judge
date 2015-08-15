@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
 public class LineStyle {
 
     private static final String LINE_STYLE = "\n";
-    private static final Set<String> acceptsuffix = new HashSet<>(Arrays.asList("java,xml,jspx,tagx,css,js,jsp,tag,yml,properties,sql,txt,html".split("[^a-z]+")));
+    private static final Set<String> ACCEPT_SUFFIX = new HashSet<>(Arrays.asList("java,xml,jspx,tagx,css,js,jsp,tag,yml,properties,sql,txt,html".split("[^a-z]+")));
 
     public static void main(String[] args) throws IOException {
         Files.walk(Paths.get("."))
@@ -47,7 +47,7 @@ public class LineStyle {
     }
 
     private static boolean accept(Path path) {
-        return acceptsuffix.contains(getExtension(path.toString()));
+        return ACCEPT_SUFFIX.contains(getExtension(path.toString()));
     }
 
     private static void handle0(Path path) throws IOException {

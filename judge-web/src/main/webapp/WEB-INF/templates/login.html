@@ -29,7 +29,7 @@ limitations under the License.
         <div class="container">
             <div class="row" style="margin-top:60px;">
                 <div class="col-md-4 col-md-offset-4">
-                    <form method="POST" th:action="@{/login}" accept-charset="UTF-8" role="form" id="loginform" class="form-signin">
+                    <form method="POST" th:action="@{/login}" accept-charset="UTF-8" role="form" id="loginform" class="form-signin th-form-signin">
                         <fieldset>
                             <h3 class="sign-up-title" style="color:dimgray; text-align: center">Welcome back! Please sign in</h3>
 
@@ -42,21 +42,22 @@ limitations under the License.
                             </div>
 
                             <hr class="colorgraph"/>
-                            <input class="form-control email-title" placeholder="Username or E-mail" name="login" type="text" autofocus="autofocus"/>
-                            <input class="form-control" placeholder="Password" name="password" type="password"/>
-                            <a class="pull-right" th:href="@{/password}">Forgot password?</a>
+                            <input class="form-control email-title" placeholder="Username or E-mail" name="login" type="text" autofocus="autofocus" th:placeholder="#{login.handle.placeholder}"/>
+                            <input class="form-control" placeholder="Password" name="password" type="password" th:placeholder="#{login.password.placeholder}"/>
+                            <a class="pull-right" th:href="@{/password}" th:text="#{login.forget.password}">Forgot password?</a>
                             <div class="checkbox" style="width:140px;">
-                                <label><input name="remember" type="checkbox" value="Remember Me"/> Remember Me</label>
+                                <label><input name="remember" type="checkbox" value="Remember Me"/> <th:block th:text="#{login.rememberme}">Remember Me</th:block></label>
                             </div>
-                            <input class="btn btn-lg btn-success btn-block" type="submit" value="Login"/>
-                            <p class="text-center" style="margin-top:10px;">OR</p>
+                            <input class="btn btn-lg btn-success btn-block" type="submit" value="Login" th:value="#{login.action}"/>
+                            <!--/*--><p class="text-center" style="margin-top:10px;">OR</p>
                             <a class="btn btn-default btn-block" th:href="@{/login/github}"><i class="icon-github"></i> Login with Github</a>
-                            <br/>
-                            <p class="text-center"><a th:href="@{/register}">Register for an account?</a></p>
+                            <br/><!--*/-->
+                            <p class="text-center"><a th:href="@{/register}" th:text="#{login.register}">Register for an account?</a></p>
                         </fieldset>
                     </form>
                 </div>
             </div>
         </div>
+        <div th:replace="fragments/footer :: footer"></div>
     </body>
 </html>
