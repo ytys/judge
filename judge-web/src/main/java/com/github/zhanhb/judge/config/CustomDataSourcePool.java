@@ -16,7 +16,6 @@
 package com.github.zhanhb.judge.config;
 
 import com.github.zhanhb.judge.util.Standalone;
-import com.zaxxer.hikari.HikariDataSource;
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
@@ -38,10 +37,10 @@ public class CustomDataSourcePool {
 
     @Bean
     @ConfigurationProperties(prefix = DataSourceProperties.PREFIX)
-    public DataSource dataSource() {
+    public DataSource dataSource() throws ClassNotFoundException {
         return DataSourceBuilder
                 .create()
-                .type(HikariDataSource.class)
+                .type(Class.forName("com.zaxxer.hikari.HikariDataSource").asSubclass(DataSource.class))
                 .url(properties.getUrl())
                 .username(properties.getUsername())
                 .password(properties.getPassword())

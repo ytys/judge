@@ -15,19 +15,35 @@
  */
 package com.github.zhanhb.judge.web;
 
-import com.github.zhanhb.judge.testenv.AbstractMockMvcTests;
+import com.github.zhanhb.judge.Application;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
+import org.springframework.web.context.WebApplicationContext;
 
 /**
  *
  * @author zhanhb
  */
-public class SimpleViewControllerTest extends AbstractMockMvcTests {
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringApplicationConfiguration(classes = Application.class)
+@WebAppConfiguration
+public class SimpleViewControllerTest {
+
+    @Autowired
+    private WebApplicationContext wac;
 
     @Test
     public void homeAndFaq() throws Exception {
+        MockMvc mockMvc = webAppContextSetup(wac).alwaysExpect(status().isOk()).build();
         mockMvc.perform(get("/")).andExpect(view().name("home"));
         mockMvc.perform(get("/faq")).andExpect(view().name("faq"));
     }

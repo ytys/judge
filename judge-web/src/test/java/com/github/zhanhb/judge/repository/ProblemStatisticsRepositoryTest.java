@@ -16,12 +16,10 @@
 package com.github.zhanhb.judge.repository;
 
 import com.github.zhanhb.judge.Application;
-import com.github.zhanhb.judge.domain.Problem;
 import com.github.zhanhb.judge.domain.ProblemStatistics;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
@@ -44,19 +42,19 @@ public class ProblemStatisticsRepositoryTest {
     @Autowired
     private SampleData sampleData;
     @Autowired
-    private ProblemStatisticsRepository repository;
+    private ProblemStatisticsRepository problemStatisticses;
     @Autowired
     private ProblemRepository problems;
 
     @Test
     public void test() {
-        Problem problem = sampleData.problem();
-        assertThat(problems.findOne(problem.getId()).get(), is(problem));
-        Optional<ProblemStatistics> problemStatistics = repository.findOne(problem.getId());
-        assertTrue("problem " + problem.getId() + " not exists", problemStatistics.isPresent());
-        assertEquals(problemStatistics.get().getProblem(), problem);
-        log.info(problemStatistics.get().getClass().getName());
-        problems.delete(problem);
+        sampleData.problem(problem -> {
+            assertThat(problems.findOne(problem.getId()).get(), is(problem));
+            Optional<ProblemStatistics> problemStatistics = problemStatisticses.findOne(problem.getId());
+            assertTrue("problem " + problem.getId() + " not exists", problemStatistics.isPresent());
+            assertThat(problem, is(problemStatistics.get().getProblem()));
+            log.info(problemStatistics.get().getClass().getName());
+        });
     }
 
 }

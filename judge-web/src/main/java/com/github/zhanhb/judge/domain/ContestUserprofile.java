@@ -27,7 +27,7 @@ import lombok.Data;
 @Embeddable
 public class ContestUserprofile implements Serializable {
 
-    private Contest contest;
-    private Userprofile userprofile;
+    private long contest;
+    private long userprofile;
 
 }

@@ -19,8 +19,12 @@ import com.github.zhanhb.judge.domain.Contest;
 import com.github.zhanhb.judge.domain.ContestType;
 import com.github.zhanhb.judge.domain.Language;
 import com.github.zhanhb.judge.domain.Problem;
+import com.github.zhanhb.judge.domain.Submission;
 import com.github.zhanhb.judge.domain.Userprofile;
 import java.time.LocalDateTime;
+import java.util.Objects;
+import java.util.function.Consumer;
+import java.util.function.UnaryOperator;
 import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -43,8 +47,9 @@ public class SampleData {
     @Autowired
     private ProblemRepository problems;
 
-    public Problem problem() {
-        return problems.save(Problem.builder()
+    public void problem(Consumer<Problem> consumer) {
+        Objects.requireNonNull(consumer);
+        Problem problem = problems.save(Problem.builder()
                 .lastUpdateDate(LocalDateTime.now())
                 .creationDate(LocalDateTime.now())
                 .source("source")
@@ -56,42 +61,79 @@ public class SampleData {
                 .description("desc")
                 .title("title")
                 .build());
+        try {
+            consumer.accept(problem);
+        } finally {
+            problems.delete(problem);
+        }
     }
 
-    public Contest contest() {
-        String contestName = "test_contest_name";
-
-        return contests.save(Contest.builder()
+    public void constest(Consumer<Contest> consumer) {
+        Objects.requireNonNull(consumer);
+        Contest contest = contests.save(Contest.builder()
                 .beginTime(LocalDateTime.now())
                 .finishTime(LocalDateTime.now())
                 .type(ContestType.OJ)
                 .title("title")
-                .name(contestName)
+                .name("test_contest_name")
                 .build());
+        try {
+            consumer.accept(contest);
+        } finally {
+            contests.delete(contest);
+        }
     }
 
-    public Userprofile userprofile() {
-        return userprofiles.save(Userprofile.builder().handle("test_user1").build());
+    public void userprofile(Consumer<Userprofile> consumer) {
+        userprofile(builder -> builder.handle("test_user1"), consumer);
     }
 
-    public Language language() {
-        return languages.save(Language.builder().name("testLanguage").executableExtension("tmp").languageExtension("tmp").build());
+    public void language(Consumer<Language> consumer) {
+        language(builder -> builder
+                .name("testLanguage")
+                .executableExtension("tmp")
+                .languageExtension("tmp"), consumer);
     }
 
-    void delete(Userprofile userprofile) {
-        userprofiles.delete(userprofile);
+    public void submission(Consumer<Submission> consumer) {
+        problem(problem -> {
+            language(language -> {
+                userprofile(userprofile -> {
+                    constest(contest -> {
+                        Submission submission = submissions.save(Submission.builder()
+                                .contest(contest)
+                                .userprofile(userprofile)
+                                .language(language)
+                                .problem(problem)
+                                .build());
+                        try {
+                            consumer.accept(submission);
+                        } finally {
+                            submissions.delete(submission);
+                        }
+                    });
+                });
+            });
+        });
     }
 
-    void delete(Language language) {
-        languages.delete(language);
+    public void language(UnaryOperator<Language.LanguageBuilder> func, Consumer<Language> consumer) {
+        Objects.requireNonNull(consumer);
+        Language g = languages.save(func.apply(Language.builder()).build());
+        try {
+            consumer.accept(g);
+        } finally {
+            languages.delete(g);
+        }
     }
 
-    void delete(Contest contest) {
-        contests.delete(contest);
+    public void userprofile(UnaryOperator<Userprofile.UserprofileBuilder> func, Consumer<Userprofile> consumer) {
+        Objects.requireNonNull(consumer);
+        Userprofile u = userprofiles.save(func.apply(Userprofile.builder()).build());
+        try {
+            consumer.accept(u);
+        } finally {
+            userprofiles.delete(u);
+        }
     }
-
-    void delete(Problem problem) {
-        problems.delete(problem);
-    }
-
 }

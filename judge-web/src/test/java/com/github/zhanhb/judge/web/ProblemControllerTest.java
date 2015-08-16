@@ -15,21 +15,26 @@
  */
 package com.github.zhanhb.judge.web;
 
+import com.github.zhanhb.judge.Application;
 import com.github.zhanhb.judge.domain.Problem;
 import com.github.zhanhb.judge.repository.ProblemRepository;
-import com.github.zhanhb.judge.testenv.AbstractMockMvcTests;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.SpringApplicationConfiguration;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_XML;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
+import org.springframework.web.context.WebApplicationContext;
 
 /**
  *
@@ -37,21 +42,28 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
  * @date Jun 5, 2015, 2:20:42
  */
 @Ignore
-public class ProblemControllerTest extends AbstractMockMvcTests {
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringApplicationConfiguration(classes = Application.class)
+@WebAppConfiguration
+public class ProblemControllerTest {
 
-    private static final String PROBLEM_LIST = "/problems";
-    private static final String PROBLEM_VIEW = "/problems/{problemId}";
+    private static final String PROBLEM_LIST = "/rest/problems";
+    private static final String PROBLEM_VIEW = "/rest/problems/{problemId}";
 
     private String encoding = "UTF-8";
 
     @Autowired
-    private ProblemRepository repository;
+    private WebApplicationContext wac;
+    private MockMvc mockMvc;
+    @Autowired
+    private ProblemRepository problems;
     private long id = -1;
 
     @Before
     public void setup() throws Exception {
+        mockMvc = webAppContextSetup(wac).alwaysExpect(status().isOk()).build();
         if (id == -1) {
-            id = repository.save(
+            id = problems.save(
                     Problem.builder()
                     .title("title")
                     .description("description")

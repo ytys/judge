@@ -15,17 +15,26 @@
  */
 package com.github.zhanhb.judge.repository;
 
+import com.github.zhanhb.judge.domain.QUserprofile;
 import com.github.zhanhb.judge.domain.Userprofile;
 import java.util.Optional;
+import org.springframework.data.querydsl.QueryDslPredicateExecutor;
+import org.springframework.data.querydsl.binding.QuerydslBinderCustomizer;
+import org.springframework.data.querydsl.binding.QuerydslBindings;
 
 /**
  *
  * @author zhanhb
  */
-public interface UserprofileRepository extends BaseRepository<Userprofile, Long> {
+public interface UserprofileRepository extends BaseRepository<Userprofile, Long>, QueryDslPredicateExecutor<Userprofile>, QuerydslBinderCustomizer<QUserprofile> {
 
     Optional<Userprofile> findByHandleIgnoreCase(String handle);
 
     Optional<Userprofile> findByEmail(String email);
+
+    @Override
+    default void customize(QuerydslBindings bindings, QUserprofile userprofile) {
+        bindings.excluding(userprofile.password);
+    }
 
 }

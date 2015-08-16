@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserprofileResource {
 
     @Autowired
-    private UserprofileRepository userRepository;
+    private UserprofileRepository userprofiles;
 
     /**
      * GET /rest/users/:login -> get the "login" user.
@@ -36,7 +36,7 @@ public class UserprofileResource {
     @SuppressWarnings("ThrowableInstanceNotThrown")
     ResponseEntity<Userprofile> getUserprofile(@PathVariable("login") String login) {
         log.debug("REST request to get User : {}", login);
-        return userRepository.findByHandleIgnoreCase(login)
+        return userprofiles.findByHandleIgnoreCase(login)
                 .map(user -> new ResponseEntity<>(user, HttpStatus.OK))
                 .orElseThrow(() -> new UserprofileNotExistException(login));
     }

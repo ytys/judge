@@ -18,6 +18,7 @@ package com.github.zhanhb.judge.util;
 import com.github.zhanhb.judge.Application;
 import lombok.extern.slf4j.Slf4j;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,6 +40,10 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @WebAppConfiguration
 public class PasswordEncoderTest {
 
+    private static final String ORIGN = "admin";
+    private static final String SHA = "d033e22ae348aeb5660fc2140aec35850c4da997";
+    private static final String BCRYPT = "$2a$10$TNkPaGUpWzppnfzArYQsVOKdqU1qTHlq3UGaCT3dFJ8fiIsaXwj3i";
+
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -48,8 +53,8 @@ public class PasswordEncoderTest {
     @Test
     public void testEncodePassword() {
         log.info("encodePassword");
-        CharSequence rawPassword = "admin";
-        String encodedPassword = "d033e22ae348aeb5660fc2140aec35850c4da997";
+        CharSequence rawPassword = ORIGN;
+        String encodedPassword = SHA;
         assertTrue(passwordEncoder.matches(rawPassword, encodedPassword));
     }
 
@@ -57,14 +62,16 @@ public class PasswordEncoderTest {
     public void testRawPassword() {
         log.info("encodePassword");
 
-        String password = "d033e22ae348aeb5660fc2140aec35850c4da997".substring(0, 20);
+        String password = SHA;
+        assertFalse(passwordEncoder.matches(password, password));
+        password = password.substring(0, 20);
         assertTrue(passwordEncoder.matches(password, password));
     }
 
     @Test
     public void testBCrypt() {
-        CharSequence rawPassword = "admin";
-        String encodedPassword = "$2a$10$TNkPaGUpWzppnfzArYQsVOKdqU1qTHlq3UGaCT3dFJ8fiIsaXwj3i";
+        CharSequence rawPassword = ORIGN;
+        String encodedPassword = BCRYPT;
         assertTrue(passwordEncoder.matches(rawPassword, encodedPassword));
         assertEquals(encodedPassword, BCrypt.hashpw(rawPassword.toString(), encodedPassword));
     }

@@ -16,11 +16,7 @@
 package com.github.zhanhb.judge.repository;
 
 import com.github.zhanhb.judge.Application;
-import com.github.zhanhb.judge.domain.Contest;
-import com.github.zhanhb.judge.domain.Language;
-import com.github.zhanhb.judge.domain.Problem;
 import com.github.zhanhb.judge.domain.Submission;
-import com.github.zhanhb.judge.domain.Userprofile;
 import lombok.extern.slf4j.Slf4j;
 import static org.junit.Assert.assertNotEquals;
 import org.junit.Test;
@@ -54,27 +50,13 @@ public class SubmissionRepositoryTest {
     public void testFindAllByContestName() {
         log.info("findAllByContestName");
 
-        Contest contest = sampleData.contest();
-        Userprofile userprofile = sampleData.userprofile();
-        Language language = sampleData.language();
-        Problem problem = sampleData.problem();
-        String contestName = contest.getName();
-
-        Submission submission = submissions.save(Submission.builder()
-                .contest(contest)
-                .userprofile(userprofile)
-                .language(language)
-                .problem(problem)
-                .build());
-        Pageable pageable = new PageRequest(0, 20);
-        Page<Submission> page = submissions.findAllByContestName(contestName, pageable);
-        assertNotEquals(0, page.getTotalElements());
-        log.debug("{}", page);
-        submissions.delete(submission);
-        sampleData.delete(problem);
-        sampleData.delete(language);
-        sampleData.delete(userprofile);
-        sampleData.delete(contest);
+        sampleData.submission(submission -> {
+            String contestName = submission.getContest().getName();
+            Pageable pageable = new PageRequest(0, 20);
+            Page<Submission> page = submissions.findAllByContestName(contestName, pageable);
+            assertNotEquals(0, page.getTotalElements());
+            log.debug("{}", page);
+        });
     }
 
 }

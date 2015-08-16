@@ -20,15 +20,17 @@ import com.github.zhanhb.judge.domain.ContestType;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.querydsl.QueryDslPredicateExecutor;
+import org.springframework.data.repository.query.Param;
 
 /**
  *
  * @author zhanhb
  */
-public interface ContestRepository extends BaseRepository<Contest, Long> {
+public interface ContestRepository extends BaseRepository<Contest, Long>, QueryDslPredicateExecutor<Contest> {
 
-    Optional<Contest> findByNameIgnoreCase(String name);
+    Optional<Contest> findByNameIgnoreCase(@Param("name") String name);
 
-    Page<Contest> findAllByType(ContestType contestType, Pageable pageable);
+    Page<Contest> findAllByType(@Param("type") ContestType contestType, Pageable pageable);
 
 }

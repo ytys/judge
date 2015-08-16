@@ -33,7 +33,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -46,46 +45,37 @@ import org.springframework.transaction.annotation.Transactional;
 public class ContestDslTest {
 
     @Autowired
-    private ContestRepository repository;
+    private ContestRepository contests;
 
     /**
      * Test of scheduling method, of class ContestSpec.
      */
-    @Test(expected = Roolback.class)
-    @Transactional(rollbackFor = Roolback.class)
+    @Test
     public void testFindAll() {
         LocalDateTime start = LocalDateTime.now().minusSeconds(5);
-        int schedulingSize = size(repository.findAll(scheduling()));
-        int runningSize = size(repository.findAll(running()));
-        int endedSize = size(repository.findAll(ended()));
+        int schedulingSize = size(contests.findAll(scheduling()));
+        int runningSize = size(contests.findAll(running()));
+        int endedSize = size(contests.findAll(ended()));
 
-        long id = repository.save(Contest
+        long id = contests.save(Contest
                 .builder()
                 .beginTime(start)
                 .finishTime(start.plus(5, ChronoUnit.HOURS))
+                .name("test_contest")
                 .title("title")
                 .type(ContestType.CONTEST)
                 .build()
         ).getId();
 
-        log.debug(String.valueOf(id));
-
-        log.info("scheduling");
-        Iterable<Contest> scheduling = repository.findAll(scheduling());
-        log.info("scheduling = " + scheduling);
-        assertEquals(schedulingSize, size(scheduling));
-        Iterable<Contest> running = repository.findAll(running());
-        log.info("running = " + running);
-        assertEquals(runningSize + 1, size(running));
-        Iterable<Contest> ended = repository.findAll(ended());
-        log.info("ended = " + ended);
-        assertEquals(endedSize, size(ended));
-        throw new Roolback();
-    }
-
-    // just use to roolback the transaction
-    private static class Roolback extends RuntimeException {
-
-        private static final long serialVersionUID = 3521399605135440155L;
+        try {
+            Iterable<Contest> scheduling = contests.findAll(scheduling());
+            assertEquals(schedulingSize, size(scheduling));
+            Iterable<Contest> running = contests.findAll(running());
+            assertEquals(runningSize + 1, size(running));
+            Iterable<Contest> ended = contests.findAll(ended());
+            assertEquals(endedSize, size(ended));
+        } finally {
+            contests.delete(id);
+        }
     }
 }

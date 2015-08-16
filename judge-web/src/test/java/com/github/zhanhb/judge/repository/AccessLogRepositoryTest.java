@@ -18,8 +18,9 @@ package com.github.zhanhb.judge.repository;
 import com.github.zhanhb.judge.Application;
 import com.github.zhanhb.judge.domain.AccessLog;
 import lombok.extern.slf4j.Slf4j;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertThat;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,20 +42,20 @@ import org.springframework.transaction.annotation.Transactional;
 public class AccessLogRepositoryTest {
 
     @Autowired
-    private AccessLogRepository accessLogRepository;
+    private AccessLogRepository accessLogs;
 
     @Test
     @Transactional
     public void testSomeMethod() {
         log.info("someMethod");
         for (String string : new String[]{"/", "/faq", "/login", "/problem/list", "/problem/1"}) {
-            AccessLog accessLog = accessLogRepository.save(AccessLog.builder()
+            AccessLog accessLog = accessLogs.save(AccessLog.builder()
                     .behaviour("test")
                     .ip("127.0.0.1")
                     .url(string)
                     .build());
             assertNotNull(accessLog.getAccessTime());
-            assertTrue(accessLogRepository.findOne(accessLog.getId()).get() == accessLog);
+            assertThat(accessLogs.findOne(accessLog.getId()).get(), is(accessLog));
         }
     }
 
@@ -67,7 +68,7 @@ public class AccessLogRepositoryTest {
         log.info("findAllByUserprofileHandleIgnoreCase");
         String userprofileHandle = "admin";
         Pageable pageable = new PageRequest(0, 100);
-        accessLogRepository.findAllByUserprofileHandleIgnoreCase(userprofileHandle, pageable);
+        accessLogs.findAllByUserprofileHandleIgnoreCase(userprofileHandle, pageable);
     }
 
 }

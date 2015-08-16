@@ -45,7 +45,6 @@ import org.hibernate.annotations.Synchronize;
     @UniqueConstraint(name = "UK_contest_userprofile_statistics_contest_userprofile", columnNames = {"contest", "userprofile"})
 })
 @Subselect("select\n"
-        + "    s.userprofile * 1048576 + s.contest as id,\n"
         + "    s.contest,\n"
         + "    s.userprofile,\n"
         + "    count(s.id) submit\n"
@@ -69,7 +68,6 @@ public class ContestUserprofileStatistics implements Serializable {
     })
     private ContestUserprofile id;
 
-    // TODO contest id less than 1048576 is assumed.
     @JoinColumn(name = "contest", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Contest contest;

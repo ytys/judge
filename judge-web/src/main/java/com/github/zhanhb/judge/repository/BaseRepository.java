@@ -20,7 +20,6 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.querydsl.QueryDslPredicateExecutor;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.Repository;
@@ -36,7 +35,7 @@ import org.springframework.data.rest.core.annotation.RestResource;
  * @see PagingAndSortingRepository
  */
 @NoRepositoryBean
-public interface BaseRepository<T, ID extends Serializable> extends Repository<T, ID>, QueryDslPredicateExecutor<T> {
+public interface BaseRepository<T, ID extends Serializable> extends Repository<T, ID> {
 
     @RestResource(exported = false)
     <S extends T> S save(S entity);

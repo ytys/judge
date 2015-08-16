@@ -48,15 +48,15 @@ public class UserprofileRepositoryTest {
     private static final String email = "testemail1@example.com";
 
     @Resource
-    private UserprofileRepository userprofileRepository;
+    private UserprofileRepository userprofiles;
     @Resource
     private PasswordEncoder passwordEncoder;
     private long id;
 
     @Before
     public void setUp() {
-        id = userprofileRepository.findByHandleIgnoreCase(handle).orElseGet(
-                () -> userprofileRepository.save(
+        id = userprofiles.findByHandleIgnoreCase(handle).orElseGet(
+                () -> userprofiles.save(
                         Userprofile.builder().handle(handle)
                         .password(passwordEncoder.encode(password))
                         .nickname("nick")
@@ -75,33 +75,33 @@ public class UserprofileRepositoryTest {
     @Test
     public void testFindByEmail() {
         log.info("findByEmail");
-        Userprofile userprofile = userprofileRepository.findByEmail(email).get();
+        Userprofile userprofile = userprofiles.findByEmail(email).get();
         assertTrue(passwordEncoder.matches(password, userprofile.getPassword()));
     }
 
     @Test
     public void testFindByHandle() {
         log.info("findByHandleIgnoreCase");
-        Userprofile userprofile = userprofileRepository.findByHandleIgnoreCase(handle).get();
+        Userprofile userprofile = userprofiles.findByHandleIgnoreCase(handle).get();
         assertTrue(passwordEncoder.matches(password, userprofile.getPassword()));
     }
 
     @Test
     public void testFindAll() {
-        assertNotEquals(0, userprofileRepository.findAll().spliterator().estimateSize());
+        assertNotEquals(0, userprofiles.findAll().spliterator().estimateSize());
     }
 
     @Test
     public void testFindById() {
-        assertTrue(userprofileRepository.findOne(id).isPresent());
+        assertTrue(userprofiles.findOne(id).isPresent());
     }
 
     @Test
     public void testLastModified() {
         long now = System.currentTimeMillis() - 1_000; // substract one second to avoid the error
-        Userprofile userprofile = userprofileRepository.findByHandleIgnoreCase(handle).get();
+        Userprofile userprofile = userprofiles.findByHandleIgnoreCase(handle).get();
         userprofile.setPassword(passwordEncoder.encode(password));
-        LocalDateTime lastUpdateDate = userprofileRepository.save(userprofile).getLastUpdateDate();
+        LocalDateTime lastUpdateDate = userprofiles.save(userprofile).getLastUpdateDate();
         long modifiedTime = Date.from(lastUpdateDate.atZone(ZoneId.systemDefault()).toInstant()).getTime();
         assertTrue(Instant.ofEpochMilli(now) + " <= " + Instant.ofEpochMilli(modifiedTime), now <= modifiedTime);
         assertTrue(Instant.ofEpochMilli(modifiedTime) + " <= " + Instant.ofEpochMilli(now + 30_000), modifiedTime <= now + 30_000);
