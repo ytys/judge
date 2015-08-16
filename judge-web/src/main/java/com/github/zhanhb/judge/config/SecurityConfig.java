@@ -19,12 +19,14 @@ import com.github.zhanhb.judge.security.AuthoritiesConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.repository.query.spi.EvaluationContextExtension;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
@@ -71,7 +73,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
             .authorizeRequests()
                 .antMatchers("/", "/login", "/logout", "/static/**", "/faq", "/password", "/register").permitAll()
-                .antMatchers("/users/**").permitAll()
+                .antMatchers("/userprofiles/**").permitAll()
                 .antMatchers("/**/favicon.*").permitAll()
                 .antMatchers("/api/**").hasAnyAuthority(AuthoritiesConstants.ADMIN)
                 .antMatchers("/autoconfig").hasAnyAuthority(AuthoritiesConstants.ADMIN)
@@ -98,9 +100,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public AuthenticationSuccessHandler authenticationSuccessHandler() {
         SavedRequestAwareAuthenticationSuccessHandler sraash = new SavedRequestAwareAuthenticationSuccessHandler();
-        sraash.setUseReferer(true);
-        sraash.setDefaultTargetUrl("/");
-        sraash.setTargetUrlParameter(TARGET_URL_PARAMETER);
+//        sraash.setUseReferer(true);
+//        sraash.setDefaultTargetUrl("/");
+//        sraash.setTargetUrlParameter(TARGET_URL_PARAMETER);
         return sraash;
     }
 
@@ -111,6 +113,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         sulsh.setDefaultTargetUrl("/");
         sulsh.setTargetUrlParameter(TARGET_URL_PARAMETER);
         return sulsh;
+    }
+
+    @Bean
+    public EvaluationContextExtension securityExtension() {
+        return new SecurityEvaluationContextExtension();
     }
 
 }

@@ -19,7 +19,6 @@ package com.github.zhanhb.judge.util;
  *
  * @author zhanhb
  */
-@SuppressWarnings({"ClassWithoutLogger"})
 public class Longs {
 
     public static long addIgnoreOverFlow(long x, long y) {

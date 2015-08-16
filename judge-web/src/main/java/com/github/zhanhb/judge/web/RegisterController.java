@@ -46,9 +46,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class RegisterController extends BaseController {
 
     @Autowired
-    private UserprofileRepository repository;
+    private UserprofileRepository userprofiles;
     @Autowired
-    private UserprofileRoleRepository urr;
+    private UserprofileRoleRepository userprofileRoles;
     @Autowired
     private Roles roles;
     @Autowired
@@ -80,13 +80,13 @@ public class RegisterController extends BaseController {
         }
         Consumer<Object> handleAction = rejectValue(result, "handle", "Exists");
         try {
-            repository.findByHandleIgnoreCase(userRegisterForm.getHandle()).ifPresent(handleAction);
+            userprofiles.findByHandleIgnoreCase(userRegisterForm.getHandle()).ifPresent(handleAction);
         } catch (IncorrectResultSizeDataAccessException ex) {
             handleAction.accept(ex);
         }
         Consumer<Object> emailAction = rejectValue(result, "email", "Exists");
         try {
-            repository.findByEmail(userRegisterForm.getEmail()).ifPresent(emailAction);
+            userprofiles.findByEmail(userRegisterForm.getEmail()).ifPresent(emailAction);
         } catch (IncorrectResultSizeDataAccessException ex) {
             emailAction.accept(ex);
         }
@@ -95,7 +95,7 @@ public class RegisterController extends BaseController {
             return "register";
         }
 
-        Userprofile userprofile = repository.save(Userprofile
+        Userprofile userprofile = userprofiles.save(Userprofile
                 .builder()
                 .handle(userRegisterForm.getHandle())
                 .password(encoder.encode(userRegisterForm.getPassword()))
@@ -106,8 +106,8 @@ public class RegisterController extends BaseController {
                 .build()
         );
         Role roleUser = roles.user();
-        urr.findByUserprofileAndRole(userprofile, roleUser).orElseGet(
-                () -> urr.save(UserprofileRole.builder()
+        userprofileRoles.findByUserprofileAndRole(userprofile, roleUser).orElseGet(
+                () -> userprofileRoles.save(UserprofileRole.builder()
                         .userprofile(userprofile)
                         .role(roleUser).build())
         );

@@ -39,22 +39,22 @@ import org.springframework.stereotype.Service;
 public class UserprofileDetailsService implements UserDetailsService {
 
     @Autowired
-    private UserprofileRepository ur;
+    private UserprofileRepository userprofiles;
     @Autowired
-    private UserprofileRoleRepository urr;
+    private UserprofileRoleRepository userprofileRoles;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Objects.requireNonNull(username, "username");
         Optional<Userprofile> optional = username.contains("@")
-                ? ur.findByEmail(username)
-                : ur.findByHandleIgnoreCase(username);
+                ? userprofiles.findByEmail(username)
+                : userprofiles.findByHandleIgnoreCase(username);
 
         @SuppressWarnings("ThrowableInstanceNotThrown")
         Userprofile userprofile = optional.orElseThrow(() -> new UsernameNotFoundException(username));
 
         return new CustomUserDetails(userprofile,
-                urr.findAllByUserprofile(userprofile)
+                userprofileRoles.findAllByUserprofile(userprofile)
                 .stream()
                 .map(UserprofileRole::getRole)
                 .map(Role::getName)

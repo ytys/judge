@@ -14,7 +14,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" th:inline="text">
     <head>
         <meta charset="UTF-8"/>
         <title>An Error Occur</title>
@@ -22,8 +22,8 @@ limitations under the License.
     <body>
         <h1>Whitelabel Error Page</h1>
         <p>This application has no explicit mapping for /error, so you are seeing this as a fallback.</p>
-        <div id='created'>Sat Aug 15 22:58:00 CST 2015</div>
-        <div>There was an unexpected error (type=Not Found, status=404).</div>
-        <div>No message available</div>
+        <div id="created">[[${timestamp}]]</div>
+        <div>There was an unexpected error (type=[[${error}]], status=[[${status}]]).</div>
+        <div>[[${message}]]</div>
     </body>
 </html>

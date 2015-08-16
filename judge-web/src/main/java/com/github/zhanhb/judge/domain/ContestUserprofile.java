@@ -27,6 +27,8 @@ import lombok.Data;
 @Embeddable
 public class ContestUserprofile implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private long contest;
     private long userprofile;
 

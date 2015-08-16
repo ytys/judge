@@ -20,7 +20,6 @@ import com.github.zhanhb.judge.domain.Userprofile;
 import com.github.zhanhb.judge.repository.UserprofileRepository;
 import com.github.zhanhb.judge.util.Utility;
 import java.util.Optional;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,7 +28,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 /**
  * Utility class for Spring Security.
  */
-@Slf4j
 @Utility
 public class SecurityUtils {
 

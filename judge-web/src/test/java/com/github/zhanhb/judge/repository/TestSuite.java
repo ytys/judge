@@ -29,7 +29,7 @@ import org.junit.runners.Suite;
     ProblemStatisticsRepositoryTest.class,
     SubmissionRepositoryTest.class,
     UserprofileRepositoryTest.class,
-    UserprofileRoleRepositoryTest.class,
+    UserprofileRoleRepositoryTest.class
 })
 public class TestSuite {
 

@@ -37,8 +37,7 @@ public final class MatcherWrapper implements MatchResult {
         Matcher m = matcher.reset();
         boolean result = m.find();
         if (result) {
-            @SuppressWarnings("StringBufferWithoutInitialCapacity")
-            StringBuffer sb = new StringBuffer();
+            StringBuffer sb = new StringBuffer(text.length());
             do {
                 String replacement;
                 try {
@@ -69,8 +68,7 @@ public final class MatcherWrapper implements MatchResult {
         } finally {
             unlock();
         }
-        @SuppressWarnings("StringBufferWithoutInitialCapacity")
-        StringBuffer sb = new StringBuffer();
+        StringBuffer sb = new StringBuffer(text.length());
         return m.appendReplacement(sb, Matcher.quoteReplacement(replacement)).appendTail(sb).toString();
     }
 

@@ -14,6 +14,7 @@
     <name>ZJNU Online Judge</name>
     <description>ZJNU Online Judge</description>
     <url>https://github.com/zhanhb/judge/</url>
+    <inceptionYear>2015</inceptionYear>
     <organization>
         <name>zhanhb</name>
         <url>http://github.com/zhanhb</url>
@@ -51,7 +52,6 @@
         <commons-lang3.version>3.4</commons-lang3.version>
         <evo-inflector.version>1.2.1</evo-inflector.version>
         <guava.version>18.0</guava.version>
-        <!--<hibernate.version>4.3.10.Final</hibernate.version>-->
         <hibernate.version>5.0.0.CR4</hibernate.version>
         <hikaricp.version>2.4.0</hikaricp.version>
         <jandex.version>1.2.4.Final</jandex.version>
@@ -240,6 +240,10 @@
             <scope>runtime</scope>
         </dependency>
         <dependency>
+            <groupId>javax.inject</groupId>
+            <artifactId>javax.inject</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.eclipse.persistence</groupId>
             <artifactId>javax.persistence</artifactId>
         </dependency>
@@ -319,10 +323,10 @@
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
             <scope>runtime</scope>
         </dependency>
-<!--        <dependency>
+        <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-rest-hal-browser</artifactId>
-        </dependency>-->
+        </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-data</artifactId>

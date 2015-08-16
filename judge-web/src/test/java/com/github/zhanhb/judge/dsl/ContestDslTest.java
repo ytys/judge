@@ -22,11 +22,15 @@ import static com.github.zhanhb.judge.dsl.ContestDsl.ended;
 import static com.github.zhanhb.judge.dsl.ContestDsl.running;
 import static com.github.zhanhb.judge.dsl.ContestDsl.scheduling;
 import com.github.zhanhb.judge.repository.ContestRepository;
+import com.github.zhanhb.judge.repository.SampleData;
 import static com.google.common.collect.Iterables.size;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import lombok.extern.slf4j.Slf4j;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,36 +50,36 @@ public class ContestDslTest {
 
     @Autowired
     private ContestRepository contests;
+    @Autowired
+    private SampleData sampleData;
 
     /**
-     * Test of scheduling method, of class ContestSpec.
+     * Test of querydsl methods, of class ContestSpec.
      */
     @Test
-    public void testFindAll() {
+    public void testQuerydsl() {
         LocalDateTime start = LocalDateTime.now().minusSeconds(5);
+        LocalDateTime end = start.plus(5, ChronoUnit.HOURS);
         int schedulingSize = size(contests.findAll(scheduling()));
         int runningSize = size(contests.findAll(running()));
         int endedSize = size(contests.findAll(ended()));
 
-        long id = contests.save(Contest
-                .builder()
-                .beginTime(start)
-                .finishTime(start.plus(5, ChronoUnit.HOURS))
+        sampleData.contest(builder -> builder.beginTime(start)
+                .finishTime(end)
                 .name("test_contest")
                 .title("title")
-                .type(ContestType.CONTEST)
-                .build()
-        ).getId();
+                .type(ContestType.CONTEST), contest -> {
+                    Iterable<Contest> scheduling = contests.findAll(scheduling());
+                    Iterable<Contest> running = contests.findAll(running());
+                    Iterable<Contest> ended = contests.findAll(ended());
 
-        try {
-            Iterable<Contest> scheduling = contests.findAll(scheduling());
-            assertEquals(schedulingSize, size(scheduling));
-            Iterable<Contest> running = contests.findAll(running());
-            assertEquals(runningSize + 1, size(running));
-            Iterable<Contest> ended = contests.findAll(ended());
-            assertEquals(endedSize, size(ended));
-        } finally {
-            contests.delete(id);
-        }
+                    assertEquals(schedulingSize, size(scheduling));
+                    assertEquals(runningSize + 1, size(running));
+                    assertEquals(endedSize, size(ended));
+
+                    assertThat(running, contains(contest));
+                    assertThat(scheduling, not(contains(contest)));
+                    assertThat(ended, not(contains(contest)));
+                });
     }
 }

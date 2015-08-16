@@ -29,7 +29,6 @@ import org.springframework.data.web.config.EnableSpringDataWebSupport;
 @Configuration
 @EnableJpaAuditing
 @EnableSpringDataWebSupport
-@SuppressWarnings({"ClassMayBeInterface", "ClassWithoutLogger"})
 public class SpringDataConfig {
 
 }

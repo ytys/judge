@@ -16,8 +16,10 @@
 package com.github.zhanhb.judge.repository;
 
 import com.github.zhanhb.judge.domain.AccessLog;
+import com.github.zhanhb.judge.domain.Userprofile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 
 /**
  *
@@ -25,6 +27,8 @@ import org.springframework.data.domain.Pageable;
  */
 public interface AccessLogRepository extends BaseRepository<AccessLog, Long> {
 
-    Page<AccessLog> findAllByUserprofileHandleIgnoreCase(String userprofileHandle, Pageable pageable);
+    Page<AccessLog> findAllByUserprofileHandleIgnoreCase(@Param("handle") String userprofileHandle, Pageable pageable);
+
+    Page<AccessLog> findByUserprofile(Userprofile userprofile, Pageable pageable);
 
 }

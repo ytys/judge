@@ -25,7 +25,6 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
-import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -36,7 +35,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class SampleData {
 
-    @Resource
+    @Autowired
     private UserprofileRepository userprofiles;
     @Autowired
     private ContestRepository contests;
@@ -68,15 +67,18 @@ public class SampleData {
         }
     }
 
-    public void constest(Consumer<Contest> consumer) {
+    public void contest(Consumer<Contest> consumer) {
         Objects.requireNonNull(consumer);
-        Contest contest = contests.save(Contest.builder()
-                .beginTime(LocalDateTime.now())
+        SampleData.this.contest(builder -> builder.beginTime(LocalDateTime.now())
                 .finishTime(LocalDateTime.now())
                 .type(ContestType.OJ)
                 .title("title")
-                .name("test_contest_name")
-                .build());
+                .name("test_contest_name"), consumer);
+    }
+
+    public void contest(UnaryOperator<Contest.ContestBuilder> operator, Consumer<Contest> consumer) {
+        Objects.requireNonNull(consumer);
+        Contest contest = contests.save(operator.apply(Contest.builder()).build());
         try {
             consumer.accept(contest);
         } finally {
@@ -99,7 +101,7 @@ public class SampleData {
         problem(problem -> {
             language(language -> {
                 userprofile(userprofile -> {
-                    constest(contest -> {
+                    contest(contest -> {
                         Submission submission = submissions.save(Submission.builder()
                                 .contest(contest)
                                 .userprofile(userprofile)

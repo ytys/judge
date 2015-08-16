@@ -19,28 +19,28 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import lombok.experimental.UtilityClass;
 
 /**
  *
  * @author zhanhb
  */
-@UtilityClass
-@SuppressWarnings({"FinalClass", "ClassWithoutLogger"})
 public class Calendars {
 
-    public GregorianCalendar toCalendar(LocalDateTime datetime) {
+    public static GregorianCalendar toCalendar(LocalDateTime datetime) {
         return datetime == null ? null
                 : GregorianCalendar.from(datetime.atZone(ZoneId.systemDefault()));
     }
 
-    public Date toDate(LocalDateTime datetime) {
+    public static Date toDate(LocalDateTime datetime) {
         try {
             return datetime == null ? null
                     : new Date(datetime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
         } catch (ArithmeticException ex) {
             throw new IllegalArgumentException(ex);
         }
+    }
+
+    private Calendars() {
     }
 
 }

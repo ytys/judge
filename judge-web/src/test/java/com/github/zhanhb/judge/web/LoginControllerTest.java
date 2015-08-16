@@ -3,8 +3,6 @@ package com.github.zhanhb.judge.web;
 import com.github.zhanhb.judge.Application;
 import com.github.zhanhb.judge.domain.Userprofile;
 import com.github.zhanhb.judge.repository.UserprofileRepository;
-import com.github.zhanhb.judge.testenv.AbstractMockMvcTests;
-import javax.annotation.Resource;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -26,7 +24,7 @@ import org.springframework.web.context.WebApplicationContext;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
-public class LoginControllerTest extends AbstractMockMvcTests {
+public class LoginControllerTest {
 
     private static final String HANDLE = "testaccount2";
     private static final String PASSWORD = "admin";
@@ -37,7 +35,7 @@ public class LoginControllerTest extends AbstractMockMvcTests {
     private WebApplicationContext wac;
     private MockMvc mockMvc;
 
-    @Resource
+    @Autowired
     private UserprofileRepository userprofiles;
     private Userprofile userprofile;
 

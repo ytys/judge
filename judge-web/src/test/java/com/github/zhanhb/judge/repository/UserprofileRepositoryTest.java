@@ -21,13 +21,13 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
-import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -47,9 +47,9 @@ public class UserprofileRepositoryTest {
     private static final String password = "testpassword1";
     private static final String email = "testemail1@example.com";
 
-    @Resource
+    @Autowired
     private UserprofileRepository userprofiles;
-    @Resource
+    @Autowired
     private PasswordEncoder passwordEncoder;
     private long id;
 

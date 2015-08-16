@@ -21,6 +21,7 @@ import java.util.Optional;
 import org.springframework.data.querydsl.QueryDslPredicateExecutor;
 import org.springframework.data.querydsl.binding.QuerydslBinderCustomizer;
 import org.springframework.data.querydsl.binding.QuerydslBindings;
+import org.springframework.data.repository.query.Param;
 
 /**
  *
@@ -28,9 +29,9 @@ import org.springframework.data.querydsl.binding.QuerydslBindings;
  */
 public interface UserprofileRepository extends BaseRepository<Userprofile, Long>, QueryDslPredicateExecutor<Userprofile>, QuerydslBinderCustomizer<QUserprofile> {
 
-    Optional<Userprofile> findByHandleIgnoreCase(String handle);
+    Optional<Userprofile> findByHandleIgnoreCase(@Param("handle") String handle);
 
-    Optional<Userprofile> findByEmail(String email);
+    Optional<Userprofile> findByEmail(@Param("email") String email);
 
     @Override
     default void customize(QuerydslBindings bindings, QUserprofile userprofile) {

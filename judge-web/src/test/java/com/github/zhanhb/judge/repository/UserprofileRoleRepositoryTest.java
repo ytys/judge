@@ -40,7 +40,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 public class UserprofileRoleRepositoryTest {
 
     @Autowired
-    private UserprofileRoleRepository instance;
+    private UserprofileRoleRepository userprofileRoles;
 
     /**
      * Test of findAllByUserprofile method, of class UserprofileRoleRepository.
@@ -50,7 +50,7 @@ public class UserprofileRoleRepositoryTest {
         log.info("findAllByUserprofile");
         Userprofile userprofile = null;
         Collection<UserprofileRole> expResult = Collections.emptyList();
-        Collection<UserprofileRole> result = instance.findAllByUserprofile(userprofile);
+        Collection<UserprofileRole> result = userprofileRoles.findAllByUserprofile(userprofile);
         assertEquals(expResult, result);
     }
 

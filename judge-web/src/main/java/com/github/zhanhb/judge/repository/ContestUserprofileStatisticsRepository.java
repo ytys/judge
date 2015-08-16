@@ -22,7 +22,6 @@ import com.github.zhanhb.judge.domain.ContestUserprofileStatistics;
  *
  * @author zhanhb
  */
-@SuppressWarnings("MarkerInterface")
 public interface ContestUserprofileStatisticsRepository extends BaseRepository<ContestUserprofileStatistics, ContestUserprofile> {
 
 }

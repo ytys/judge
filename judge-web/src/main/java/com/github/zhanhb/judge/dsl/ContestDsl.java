@@ -23,7 +23,6 @@ import java.time.LocalDateTime;
  *
  * @author zhanhb
  */
-@SuppressWarnings({"UtilityClassWithoutPrivateConstructor", "ClassWithoutLogger"})
 public class ContestDsl {
 
     public static Predicate ended() {
@@ -37,6 +36,9 @@ public class ContestDsl {
     public static Predicate running() {
         LocalDateTime now = LocalDateTime.now();
         return contest.beginTime.lt(now).and(contest.finishTime.gt(now));
+    }
+
+    private ContestDsl() {
     }
 
 }

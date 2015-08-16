@@ -35,12 +35,15 @@ import org.springframework.context.ApplicationContext;
 @SpringBootApplication
 public class Application extends SpringBootServletInitializer {
 
-    @SuppressWarnings("NestedAssignment")
     public static void main(String[] args) throws IOException {
         ApplicationContext ctx = start(args);
         try (InputStreamReader isr = new InputStreamReader(System.in);
                 BufferedReader br = new BufferedReader(isr)) {
-            for (String line; (line = br.readLine()) != null;) {
+            for (;;) {
+                String line = br.readLine();
+                if (line == null) {
+                    break;
+                }
                 switch (line.toLowerCase(Locale.US)) {
                     case "exit":
                     case "quit":

@@ -20,11 +20,13 @@ import com.github.zhanhb.judge.domain.Userprofile;
 import com.github.zhanhb.judge.domain.UserprofileRole;
 import java.util.Collection;
 import java.util.Optional;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 /**
  *
  * @author zhanhb
  */
+@RepositoryRestResource(exported = false)
 public interface UserprofileRoleRepository extends BaseRepository<UserprofileRole, Long> {
 
     Collection<UserprofileRole> findAllByUserprofile(Userprofile userprofile);

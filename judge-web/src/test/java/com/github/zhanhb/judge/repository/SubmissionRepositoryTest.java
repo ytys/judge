@@ -18,7 +18,8 @@ package com.github.zhanhb.judge.repository;
 import com.github.zhanhb.judge.Application;
 import com.github.zhanhb.judge.domain.Submission;
 import lombok.extern.slf4j.Slf4j;
-import static org.junit.Assert.assertNotEquals;
+import static org.hamcrest.Matchers.not;
+import static org.junit.Assert.assertThat;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,8 +43,6 @@ public class SubmissionRepositoryTest {
     @Autowired
     private SubmissionRepository submissions;
     @Autowired
-    private ContestRepository contests;
-    @Autowired
     private SampleData sampleData;
 
     @Test
@@ -54,7 +53,7 @@ public class SubmissionRepositoryTest {
             String contestName = submission.getContest().getName();
             Pageable pageable = new PageRequest(0, 20);
             Page<Submission> page = submissions.findAllByContestName(contestName, pageable);
-            assertNotEquals(0, page.getTotalElements());
+            assertThat(page.getTotalElements(), not(0));
             log.debug("{}", page);
         });
     }

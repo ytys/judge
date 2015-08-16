@@ -37,13 +37,13 @@ limitations under the License.
                         <hr class="colorgraph"/>
                         <fieldset>
                             <span th:errors="${userRegisterForm.handle}" class="error">...</span>
-                            <input class="form-control" placeholder="Username" th:field="*{handle}" type="text"/>
+                            <input class="form-control" placeholder="Username" th:field="*{handle}" type="text" required="required"/>
                             <span th:errors="${userRegisterForm.email}" class="error">...</span>
-                            <input class="form-control middle" placeholder="E-mail" th:field="*{email}" type="text"/>
+                            <input class="form-control middle" placeholder="E-mail" th:field="*{email}" type="text" required="required"/>
                             <span th:errors="${userRegisterForm.password}" class="error">...</span>
-                            <input class="form-control middle" placeholder="Password" th:field="*{password}" type="password"/>
+                            <input class="form-control middle" placeholder="Password" th:field="*{password}" type="password" required="required"/>
                             <span th:errors="${userRegisterForm.rptPassword}" class="error">...</span>
-                            <input class="form-control bottom" placeholder="Confirm Password" th:field="*{rptPassword}" type="password"/>
+                            <input class="form-control bottom" placeholder="Confirm Password" th:field="*{rptPassword}" type="password" required="required"/>
 
                             <span th:errors="${userRegisterForm.realname}" class="error">...</span>
                             <input class="form-control middle" placeholder="Real name" th:field="*{realname}" type="text"/>

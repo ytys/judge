@@ -35,11 +35,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ContestController extends BaseController {
 
     @Autowired
-    private ContestRepository repository;
+    private ContestRepository contests;
 
     @SuppressWarnings("ThrowableInstanceNotThrown")
     public String view(@PathVariable("search") String search, ModelMap model) {
-        model.addAttribute("contest", repository.findByNameIgnoreCase(search).orElseThrow(() -> new ContestNotExistException(search)));
+        model.addAttribute("contest", contests.findByNameIgnoreCase(search).orElseThrow(() -> new ContestNotExistException(search)));
         return "contests/view";
     }
 

@@ -19,7 +19,6 @@ package com.github.zhanhb.judge.util;
  *
  * @author zhanhb
  */
-@SuppressWarnings("ClassWithoutLogger")
 public class Strings {
 
     public static String trimLeft(String str) {
