@@ -22,6 +22,7 @@ import org.springframework.data.querydsl.QueryDslPredicateExecutor;
 import org.springframework.data.querydsl.binding.QuerydslBinderCustomizer;
 import org.springframework.data.querydsl.binding.QuerydslBindings;
 import org.springframework.data.repository.query.Param;
+import org.springframework.data.rest.core.annotation.RestResource;
 
 /**
  *
@@ -29,8 +30,10 @@ import org.springframework.data.repository.query.Param;
  */
 public interface UserprofileRepository extends BaseRepository<Userprofile, Long>, QueryDslPredicateExecutor<Userprofile>, QuerydslBinderCustomizer<QUserprofile> {
 
+    @RestResource(path = "by-handle")
     Optional<Userprofile> findByHandleIgnoreCase(@Param("handle") String handle);
 
+    @RestResource(path = "by-email")
     Optional<Userprofile> findByEmail(@Param("email") String email);
 
     @Override

@@ -34,6 +34,8 @@ interface Constants {
 
         public static final String EMAIL_OR_EMPRTY = "(?:" + EMAIL + ")?";
 
+        private Patterns() {
+        }
     }
 
 }

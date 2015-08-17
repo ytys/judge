@@ -22,18 +22,17 @@ limitations under the License.
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <!--*/-->
     </head>
-    <body>
-        <th:block th:text="${themes.class.name}"></th:block>
-        <th:block th:text="${beans.class.name}"/>
-        <th:block th:text="${beans.keySet()}"/>
-        <th:block th:text="${class}">
-        </th:block>
-        <th:block th:text="${#ctx.class}"></th:block>
-        <th:block th:text="${#locale}"></th:block>
-        <th:block th:text="${#vars.class}"></th:block>
+    <body th:inline="text">
+        [[${themes.class.name}]]
+        [[${beans.class.name}]]
+        [[${beans.keySet()}]]
+        [[${class}]]
+        [[${#ctx.class}]]
+        [[${#locale}]]
+        [[${#vars.class}]]
         <ul>
             <li th:each="v : ${#vars.keySet()}" th:text="${v}"></li>
         </ul>
-        <th:block th:text="${userRegisterForm}"></th:block>
+        [[${userRegisterForm}]]
     </body>
 </html>

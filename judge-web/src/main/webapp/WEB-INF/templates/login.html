@@ -49,7 +49,7 @@ limitations under the License.
                             <input class="form-control" placeholder="Password" name="password" type="password" th:placeholder="#{login.password.placeholder}" required="required"/>
                             <a class="pull-right" th:href="@{/password}" th:text="#{login.forget.password}">Forgot password?</a>
                             <div class="checkbox" style="width:140px;">
-                                <label><input name="remember" type="checkbox" value="Remember Me"/> <th:block th:text="#{login.rememberme}">Remember Me</th:block></label>
+                                <label th:inline="text"><input name="remember" type="checkbox" value="Remember Me"/> [[#{login.rememberme}]]</label>
                             </div>
                             <input class="btn btn-lg btn-success btn-block" type="submit" value="Login" th:value="#{login.action}"/>
                             <!--/*--><p class="text-center" style="margin-top:10px;">OR</p>

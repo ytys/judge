@@ -14,16 +14,20 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" th:inline="text">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head>
-        <meta charset="UTF-8"/>
+        <!--/*--><meta charset="UTF-8"/><!--*/-->
+        <link th:replace="layouts/default :: metadata" href="layouts/default.html" rel=""/>
         <title>An Error Occur</title>
+        <link th:replace="layouts/default :: scripts" href="layouts/default.html" rel=""/>
     </head>
     <body>
-        <h1>Whitelabel Error Page</h1>
-        <p>This application has no explicit mapping for /error, so you are seeing this as a fallback.</p>
-        <div id="created">[[${timestamp}]]</div>
-        <div>There was an unexpected error (type=[[${error}]], status=[[${status}]]).</div>
-        <div>[[${message}]]</div>
+        <div class="container" th:inline="text">
+            <h1>Whitelabel Error Page</h1>
+            <p>This application has no explicit mapping for /error, so you are seeing this as a fallback.</p>
+            <div id="created">[[${timestamp}]]</div>
+            <div>There was an unexpected error (type=[[${error}]], status=[[${status}]]).</div>
+            <div>[[${message}]]</div>
+        </div>
     </body>
 </html>

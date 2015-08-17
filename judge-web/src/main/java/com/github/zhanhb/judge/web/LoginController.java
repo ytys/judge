@@ -16,12 +16,19 @@
 package com.github.zhanhb.judge.web;
 
 import com.github.zhanhb.judge.config.SecurityConfig;
+import java.util.Collections;
+import java.util.Map;
 import java.util.Optional;
+import org.springframework.http.HttpStatus;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.http.MediaType.APPLICATION_XML_VALUE;
 import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 
 /**
@@ -38,8 +45,16 @@ public class LoginController extends BaseController {
                         () -> Optional.ofNullable(request.getHeader("referer"))
                         .orElseGet(request::getContextPath)
                 );
-        model.addAttribute("url", url);
+        model.addAttribute(SecurityConfig.TARGET_URL_PARAMETER, url);
         return "login";
+    }
+
+    @RequestMapping(value = "login", method = RequestMethod.GET, produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
+    @ResponseBody
+    public ResponseEntity<Map<String, ? extends Object>> login() {
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(Collections.singletonMap("message", "not login"));
     }
 
     @RequestMapping(value = "password", method = RequestMethod.GET, produces = TEXT_HTML_VALUE)
