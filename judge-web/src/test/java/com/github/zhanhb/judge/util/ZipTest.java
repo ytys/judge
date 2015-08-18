@@ -15,7 +15,9 @@
  */
 package com.github.zhanhb.judge.util;
 
+import com.github.zhanhb.judge.main.Finder;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -34,6 +36,13 @@ public class ZipTest {
         Path zipfile = Files.createTempFile("", ".zip");
         try {
             zip.zip(zipfile, Paths.get("src"));
+            Finder.consume(ZipTest.class, url -> {
+                try {
+                    zip.zip(zipfile, Paths.get(url.toURI()));
+                } catch (URISyntaxException | IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            });
         } finally {
             Files.delete(zipfile);
         }

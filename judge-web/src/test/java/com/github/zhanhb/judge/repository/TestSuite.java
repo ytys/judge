@@ -25,6 +25,7 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
     AccessLogRepositoryTest.class,
+    ContestProblemRepositoryTest.class,
     ContestUserprofileStatisticsRepositoryTest.class,
     ProblemStatisticsRepositoryTest.class,
     SubmissionRepositoryTest.class,

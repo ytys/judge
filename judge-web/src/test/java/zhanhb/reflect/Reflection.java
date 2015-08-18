@@ -38,7 +38,16 @@ public class Reflection {
 
     private static class SecurityContext extends SecurityManager {
 
-        static SecurityContext INSTANCE = AccessController.doPrivileged((PrivilegedAction<SecurityContext>) SecurityContext::new);
+        static SecurityContext INSTANCE;
+
+        static {
+            if (System.getSecurityManager() != null) {
+                PrivilegedAction<SecurityContext> action = SecurityContext::new;
+                INSTANCE = AccessController.doPrivileged(action);
+            } else {
+                INSTANCE = new SecurityContext();
+            }
+        }
 
         Class<?> getCallerClass(int i) {
             try {

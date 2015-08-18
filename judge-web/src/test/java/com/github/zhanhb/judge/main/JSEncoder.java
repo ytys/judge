@@ -16,6 +16,7 @@
 package com.github.zhanhb.judge.main;
 
 import com.github.zhanhb.judge.util.MatcherWrapper;
+import com.github.zhanhb.judge.util.Strings;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -35,13 +36,9 @@ public class JSEncoder {
         byte[] bytes = Files.readAllBytes(path);
         String str = StandardCharsets.UTF_8.newDecoder().decode(ByteBuffer.wrap(bytes)).toString();
         str = new MatcherWrapper(Pattern.compile("[\u007f-\uffff]"), str).replaceAll(matcher
-                -> "\\u" + slice(Integer.toHexString(matcher.group().charAt(0)), -4));
+                -> "\\u" + Strings.slice(Integer.toHexString(matcher.group().charAt(0)), -4));
 
         Files.write(path, str.getBytes());
-    }
-
-    private static String slice(String str, int i) {
-        return str.substring(i >= 0 ? i : str.length() + i);
     }
 
 }

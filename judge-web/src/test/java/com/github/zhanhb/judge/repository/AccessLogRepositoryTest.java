@@ -43,6 +43,8 @@ public class AccessLogRepositoryTest {
 
     @Autowired
     private AccessLogRepository accessLogs;
+    @Autowired
+    private SampleData SampleData;
 
     @Test
     @Transactional
@@ -69,6 +71,18 @@ public class AccessLogRepositoryTest {
         String userprofileHandle = "admin";
         Pageable pageable = new PageRequest(0, 100);
         accessLogs.findAllByUserprofileHandleIgnoreCase(userprofileHandle, pageable);
+    }
+
+    /**
+     * Test of findByUserprofile method, of class AccessLogRepository.
+     */
+    @Test
+    public void testFindByUserprofile() {
+        log.info("findByUserprofile");
+        SampleData.userprofile(userprofile -> {
+            Pageable pageable = new PageRequest(0, 20);
+            accessLogs.findByUserprofile(userprofile, pageable);
+        });
     }
 
 }

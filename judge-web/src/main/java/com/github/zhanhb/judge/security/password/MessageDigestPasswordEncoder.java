@@ -40,10 +40,6 @@ public class MessageDigestPasswordEncoder implements PasswordEncoder {
         passwordLength = digest.getDigestLength() << 1; // hex bytes
     }
 
-    public String getAlgorithm() {
-        return algorithm;
-    }
-
     public int getPasswordLength() {
         return passwordLength;
     }

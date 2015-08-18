@@ -54,9 +54,7 @@ class CustomInvocationHandler implements InvocationHandler {
 
     private static MethodHandles.Lookup getTrusted2() throws Throwable {
         Constructor<MethodHandles.Lookup> constructor = MethodHandles.Lookup.class.getDeclaredConstructor(Class.class, int.class);
-        if (!constructor.isAccessible()) {
-            constructor.setAccessible(true);
-        }
+        constructor.setAccessible(true);
         return constructor.newInstance(Object.class, -1);
     }
 
@@ -79,9 +77,6 @@ class CustomInvocationHandler implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        if (proxy == null) {
-            throw new NullPointerException();
-        }
         if (!Proxy.isProxyClass(proxy.getClass())) {
             throw new IllegalArgumentException("not a proxy instance");
         }

@@ -49,7 +49,7 @@ import org.hibernate.annotations.Synchronize;
         + "    submission t\n"
         + "on\n"
         + "    s.id = t.id and\n"
-        + "    t.judge_reply = 6"
+        + "    t.judge_reply = 6\n"
         + "group by\n"
         + "    p.id")
 @Synchronize({"problem", "submission"})

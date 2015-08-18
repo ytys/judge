@@ -13,24 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.zhanhb.judge.web;
+package com.github.zhanhb.judge.security.password;
 
-import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import org.junit.Test;
 
 /**
  *
  * @author zhanhb
  */
-@Controller
-@RequestMapping("endpoint")
-public class EndpointController {
+public class MessageDigestPasswordEncoderTest {
 
-    @RequestMapping(value = "beans", produces = TEXT_HTML_VALUE, method = GET)
-    public String beans() {
-        return "beans";
+    @Test(expected = IllegalArgumentException.class)
+    public void testIllegalArgumentException() {
+        MessageDigestPasswordEncoder t = new MessageDigestPasswordEncoder("any");
     }
+
 
 }

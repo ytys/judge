@@ -31,7 +31,11 @@ import org.junit.Test;
 public class StringsTest {
 
     private final Random random = new Random();
-    private final ScriptEngine javascript = new ScriptEngineManager().getEngineByName("javascript");
+    // use null class loader, ensure access of system script engine manager.
+    // usually our classloader will extends system class loader.
+    // but surefire won't do like this when not forking
+    // the enigine manager can be found though system class loader.
+    private final ScriptEngine javascript = new ScriptEngineManager(null).getEngineByName("javascript");
 
     private StringBuilder merge(StringBuilder a, StringBuilder b) {
         throw new IllegalStateException();
