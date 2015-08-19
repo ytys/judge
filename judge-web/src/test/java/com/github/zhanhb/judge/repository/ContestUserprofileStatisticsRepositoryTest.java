@@ -16,17 +16,16 @@
 package com.github.zhanhb.judge.repository;
 
 import com.github.zhanhb.judge.Application;
-import com.github.zhanhb.judge.domain.ContestUserprofileStatistics;
+import java.util.function.LongSupplier;
 import javax.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.iterableWithSize;
-import static org.junit.Assert.assertThat;
-import org.junit.Ignore;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
@@ -45,15 +44,20 @@ public class ContestUserprofileStatisticsRepositoryTest {
     @Autowired
     private ContestUserprofileStatisticsRepository contestUserprofileStatisticses;
 
-    // FIXME unknown reason that it doesn't pass the test.
-    @Ignore("unknown reason that it doesn't pass the test.")
+    @Autowired
+    private NamedParameterJdbcOperations jdbcTemplate;
+
     @Test
     @Transactional
     public void contestUserprofileStatisticss() {
+        LongSupplier supplier = () -> contestUserprofileStatisticses.count();
+        long size = supplier.getAsLong();
         sampleData.submission(submission -> {
-            Iterable<ContestUserprofileStatistics> it = contestUserprofileStatisticses.findAll();
-
-            assertThat(it, iterableWithSize(greaterThan(0)));
+            assertNotNull(submission.getProblem());
+            assertNotNull(submission.getUserprofile());
+            assertNotNull(submission.getLanguage());
+            assertNotNull(submission.getSubmitTime());
+            assertEquals(size + 1, supplier.getAsLong());
         });
     }
 

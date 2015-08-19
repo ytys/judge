@@ -18,7 +18,9 @@ package com.github.zhanhb.judge.service;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.util.ContextSelectorStaticBinder;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 import org.junit.Before;
@@ -94,6 +96,15 @@ public class LoggersTest {
         } finally {
             instance.save(name, level.toString());
         }
+    }
+
+    @Test
+    public void testDefaultIsByName() {
+        Pageable pageable = new PageRequest(0, 20000);
+        Pageable pageable2 = new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), new Sort("name"));
+        List<Logger> content = instance.findAll(pageable).getContent();
+        List<Logger> content1 = instance.findAll(pageable2).getContent();
+        assertEquals(content, content1);
     }
 
 }

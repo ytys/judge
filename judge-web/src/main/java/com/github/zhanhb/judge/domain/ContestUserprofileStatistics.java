@@ -47,14 +47,14 @@ import org.hibernate.annotations.Synchronize;
 @Subselect("select\n"
         + "    s.contest,\n"
         + "    s.userprofile,\n"
-        + "    count(s.id) submit\n"
+        + "    count(s.id) as submit\n"
         + "from\n"
         + "    submission s\n"
         + "where\n"
-        + "    userprofile is not null and\n"
-        + "    problem is not null\n"
+        + "    s.contest is not null and\n"
+        + "    s.userprofile is not null\n"
         + "group by\n"
-        + "    contest, userprofile")
+        + "    s.contest, s.userprofile")
 @Synchronize("submission")
 @XmlRootElement
 public class ContestUserprofileStatistics implements Serializable {

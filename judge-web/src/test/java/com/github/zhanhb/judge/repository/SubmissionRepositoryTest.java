@@ -18,15 +18,16 @@ package com.github.zhanhb.judge.repository;
 import com.github.zhanhb.judge.Application;
 import com.github.zhanhb.judge.domain.Submission;
 import lombok.extern.slf4j.Slf4j;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
@@ -51,10 +52,26 @@ public class SubmissionRepositoryTest {
 
         sampleData.submission(submission -> {
             String contestName = submission.getContest().getName();
-            Pageable pageable = new PageRequest(0, 20);
-            Page<Submission> page = submissions.findAllByContestName(contestName, pageable);
+            Page<Submission> page = submissions.findAllByContestName(contestName, sampleData.pageable());
             assertThat(page.getTotalElements(), not(0));
             log.debug("{}", page);
+        });
+    }
+
+    @Test
+    public void testFindAll() {
+        sampleData.submission(submission -> {
+            assertThat(submissions.findAll(), contains(submission));
+            assertThat(submissions.findOne(submission.getId()).get(), is(submission));
+        });
+    }
+
+    @Test
+    public void testForeignKeyNotNull() {
+        sampleData.submission(submission -> {
+            assertNotNull(submission.getContest());
+            assertNotNull(submission.getProblem());
+            assertNotNull(submission.getUserprofile());
         });
     }
 

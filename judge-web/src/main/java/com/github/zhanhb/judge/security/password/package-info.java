@@ -15,6 +15,7 @@
  */
 /**
  * password encoder
+ *
  * @see com.github.zhanhb.judge.config.PasswordEncoderConfig#passwordEncoder()
  */
 package com.github.zhanhb.judge.security.password;

@@ -36,7 +36,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -91,7 +90,7 @@ public class Submission implements Serializable {
     @ManyToOne(optional = false)
     private Problem problem;
 
-    @CreatedBy
+    // TODO disabled temporary @CreatedBy
     @JoinColumn(name = "userprofile", foreignKey = @ForeignKey(name = "FK_submission_userprofile"))
     @ManyToOne
     private Userprofile userprofile;

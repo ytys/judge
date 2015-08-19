@@ -34,7 +34,7 @@ public class LogsResource {
         return assembler.toResource(loggers.findAll(pageable).map(LoggerDTO::new));
     }
 
-    @RequestMapping(value = "logs", method = RequestMethod.POST)
+    @RequestMapping(value = "logs", method = RequestMethod.POST, consumes = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void changeLevel(@Valid @RequestBody LoggerDTO json) {
         loggers.save(json.getName(), json.getLevel());

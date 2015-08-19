@@ -25,8 +25,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
@@ -69,8 +67,7 @@ public class AccessLogRepositoryTest {
     public void testFindAllByUserprofileHandleIgnoreCase() {
         log.info("findAllByUserprofileHandleIgnoreCase");
         String userprofileHandle = "admin";
-        Pageable pageable = new PageRequest(0, 100);
-        accessLogs.findAllByUserprofileHandleIgnoreCase(userprofileHandle, pageable);
+        accessLogs.findAllByUserprofileHandleIgnoreCase(userprofileHandle, SampleData.pageable());
     }
 
     /**
@@ -80,8 +77,7 @@ public class AccessLogRepositoryTest {
     public void testFindByUserprofile() {
         log.info("findByUserprofile");
         SampleData.userprofile(userprofile -> {
-            Pageable pageable = new PageRequest(0, 20);
-            accessLogs.findByUserprofile(userprofile, pageable);
+            accessLogs.findByUserprofile(userprofile, SampleData.pageable());
         });
     }
 

@@ -100,9 +100,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public AuthenticationSuccessHandler authenticationSuccessHandler() {
         SavedRequestAwareAuthenticationSuccessHandler sraash = new SavedRequestAwareAuthenticationSuccessHandler();
-//        sraash.setUseReferer(true);
-//        sraash.setDefaultTargetUrl("/");
-//        sraash.setTargetUrlParameter(TARGET_URL_PARAMETER);
+        sraash.setUseReferer(true);
+        sraash.setDefaultTargetUrl("/");
+        sraash.setTargetUrlParameter(TARGET_URL_PARAMETER);
         return sraash;
     }
 

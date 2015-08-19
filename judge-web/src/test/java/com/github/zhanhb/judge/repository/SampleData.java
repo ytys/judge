@@ -26,6 +26,9 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.stereotype.Component;
 
 /**
@@ -45,6 +48,8 @@ public class SampleData {
     private LanguageRepository languages;
     @Autowired
     private ProblemRepository problems;
+    @Autowired
+    private RepositoryRestConfiguration restConfig;
 
     public void problem(Consumer<Problem> consumer) {
         Objects.requireNonNull(consumer);
@@ -87,7 +92,7 @@ public class SampleData {
     }
 
     public void userprofile(Consumer<Userprofile> consumer) {
-        userprofile(builder -> builder.handle("test_user1"), consumer);
+        userprofile(builder -> builder.handle("test_user1").password("sample_password"), consumer);
     }
 
     public void language(Consumer<Language> consumer) {
@@ -104,6 +109,7 @@ public class SampleData {
                     contest(contest -> {
                         Submission submission = submissions.save(Submission.builder()
                                 .contest(contest)
+                                // TODO userprofile may be modified of CreatedBy
                                 .userprofile(userprofile)
                                 .language(language)
                                 .problem(problem)
@@ -137,5 +143,9 @@ public class SampleData {
         } finally {
             userprofiles.delete(u);
         }
+    }
+
+    public Pageable pageable() {
+        return new PageRequest(0, restConfig.getDefaultPageSize());
     }
 }
