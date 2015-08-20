@@ -343,12 +343,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-mail</artifactId>
-            <exclusions>
-                <exclusion>
-                    <artifactId>activation</artifactId>
-                    <groupId>javax.activation</groupId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -468,15 +462,6 @@
         </pluginRepository>
     </pluginRepositories>
     <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>exec-maven-plugin</artifactId>
-                    <version>1.4.0</version>
-                </plugin>
-            </plugins>
-        </pluginManagement>
         <plugins>
             <plugin>
                 <groupId>com.github.ekryd.sortpom</groupId>
@@ -614,7 +599,7 @@
                 <configuration>
                     <!-- surefire doesn't support file.encoding in environment, -->
                     <!-- we must specify it using argLine -->
-                    <!-- surefireArgLine is set by jacoco-maven-plugin. -->
+                    <!-- surefireArgLine will be set by jacoco-maven-plugin. -->
                     <argLine>-Dfile.encoding=${file.encoding} -ea ${surefireArgLine}</argLine>
                     <!-- includes of surefire -->
                     <!-- http://maven.apache.org/surefire/maven-surefire-plugin/examples/inclusion-exclusion.html -->
@@ -652,6 +637,8 @@
                 </executions>
                 <configuration>
                     <excludes>
+                        <exclude>com/github/zhanhb/judge/Application.class</exclude>
+                        <exclude>com/github/zhanhb/judge/config/*.class</exclude>
                         <exclude>com/github/zhanhb/judge/domain/*.class</exclude>
                     </excludes>
                     <propertyName>surefireArgLine</propertyName>

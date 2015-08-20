@@ -28,6 +28,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.Setter;
 
 /**
@@ -38,6 +39,7 @@ import lombok.Setter;
 @Builder
 @Data
 @Entity
+@EqualsAndHashCode(of = "id")
 @Setter(AccessLevel.PACKAGE)
 @Table(name = "persistent_token")
 public class PersistentToken {

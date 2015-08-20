@@ -39,7 +39,7 @@ import org.hibernate.annotations.Synchronize;
  */
 @Data
 @Entity
-@EqualsAndHashCode(of = {"contest", "userprofile"})
+@EqualsAndHashCode(of = "id")
 @Setter(AccessLevel.PACKAGE)
 @Table(name = "contest_userprofile_statistics", uniqueConstraints = {
     @UniqueConstraint(name = "UK_contest_userprofile_statistics_contest_userprofile", columnNames = {"contest", "userprofile"})

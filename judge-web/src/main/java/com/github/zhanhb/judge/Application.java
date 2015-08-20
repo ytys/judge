@@ -28,6 +28,7 @@ import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.context.ApplicationContext;
 
 /**
+ * Boot class for both web application and spring-boot application.
  *
  * @author zhanhb
  */
