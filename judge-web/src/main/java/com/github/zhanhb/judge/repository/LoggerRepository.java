@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.zhanhb.judge.service;
+package com.github.zhanhb.judge.repository;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
@@ -35,7 +35,7 @@ import org.springframework.stereotype.Service;
  * @author zhanhb
  */
 @Service
-public class Loggers {
+public class LoggerRepository {
 
     /**
      * sort by effective level, real level of current logger, getLevel may

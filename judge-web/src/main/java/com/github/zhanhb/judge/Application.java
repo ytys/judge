@@ -59,7 +59,7 @@ public class Application extends SpringBootServletInitializer {
                         continue;
                 }
                 String property = ctx.getEnvironment().getProperty(line);
-                System.out.println(property);
+                log.info(property);
             }
         }
     }

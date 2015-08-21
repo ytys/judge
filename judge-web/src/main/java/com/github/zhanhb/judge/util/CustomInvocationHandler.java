@@ -24,6 +24,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Proxy;
+import java.util.Objects;
 import org.springframework.asm.Type;
 
 /**
@@ -68,9 +69,7 @@ class CustomInvocationHandler implements InvocationHandler {
     CustomInvocationHandler(Object... parents) {
         Object[] clone = parents.clone();
         for (Object parent : clone) {
-            if (parent == null) {
-                throw new NullPointerException();
-            }
+            Objects.requireNonNull(parent);
         }
         this.parents = clone;
     }

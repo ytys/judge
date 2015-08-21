@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.zhanhb.judge.service;
+package com.github.zhanhb.judge.repository;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
@@ -35,9 +35,9 @@ import org.springframework.data.domain.Sort;
  * @author zhanhb
  */
 @Slf4j
-public class LoggersTest {
+public class LoggerRepositoryTest {
 
-    private final Loggers instance = new Loggers();
+    private final LoggerRepository instance = new LoggerRepository();
 
     @Before
     public void setUp() throws Exception {
@@ -50,7 +50,7 @@ public class LoggersTest {
     }
 
     /**
-     * Test of findAll method, of class Loggers.
+     * Test of findAll method, of class LoggerRepository.
      */
     @Test
     public void testFindAll_0args() {
@@ -60,7 +60,7 @@ public class LoggersTest {
     }
 
     /**
-     * Test of findAll method, of class Loggers.
+     * Test of findAll method, of class LoggerRepository.
      */
     @Test
     public void testFindAll_Pageable() {
@@ -71,7 +71,7 @@ public class LoggersTest {
     }
 
     /**
-     * Test of save method, of class Loggers.
+     * Test of save method, of class LoggerRepository.
      */
     @Test
     public void testSave() {

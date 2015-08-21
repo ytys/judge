@@ -17,7 +17,7 @@ package com.github.zhanhb.judge.web.rest;
 
 import ch.qos.logback.classic.Level;
 import com.github.zhanhb.judge.Application;
-import com.github.zhanhb.judge.service.Loggers;
+import com.github.zhanhb.judge.repository.LoggerRepository;
 import lombok.extern.slf4j.Slf4j;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
@@ -27,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.http.MediaType;
+import static org.springframework.http.MediaType.APPLICATION_XML;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -34,6 +35,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
@@ -47,7 +49,7 @@ import org.springframework.web.context.WebApplicationContext;
 @Slf4j
 @SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
-public class LogsResourceTest {
+public class LoggerControllerTest {
 
     private static final String logs = "/api/logs";
 
@@ -56,7 +58,7 @@ public class LogsResourceTest {
     @Autowired
     private RepositoryRestConfiguration restConfig;
     @Autowired
-    private Loggers loggers;
+    private LoggerRepository loggers;
     private MockMvc mvc;
 
     @Before
@@ -66,7 +68,7 @@ public class LogsResourceTest {
     }
 
     /**
-     * Test of list method, of class LogsResource.
+     * Test of list method, of class LoggerController.
      *
      * @throws java.lang.Exception
      */
@@ -90,7 +92,7 @@ public class LogsResourceTest {
     }
 
     /**
-     * Test of changeLevel method, of class LogsResource.
+     * Test of changeLevel method, of class LoggerController.
      *
      * @throws java.lang.Exception
      */
@@ -113,6 +115,14 @@ public class LogsResourceTest {
         } finally {
             loggers.findOne(name).get().setLevel(level);
         }
+    }
+
+    @Test
+    public void testListAsXml() throws Exception{
+        mvc.perform(get(logs).accept(APPLICATION_XML))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(APPLICATION_XML))
+                .andDo(print());
     }
 
 }

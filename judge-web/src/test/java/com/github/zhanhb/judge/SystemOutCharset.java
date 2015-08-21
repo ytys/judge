@@ -29,7 +29,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @Slf4j
 @SuppressWarnings("UseOfSystemOutOrSystemErr")
-public class SystemOutCharset {
+class SystemOutCharset {
 
     static {
         try {

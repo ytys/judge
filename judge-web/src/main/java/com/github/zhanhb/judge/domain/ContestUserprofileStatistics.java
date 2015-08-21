@@ -23,8 +23,6 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -41,9 +39,6 @@ import org.hibernate.annotations.Synchronize;
 @Entity
 @EqualsAndHashCode(of = "id")
 @Setter(AccessLevel.PACKAGE)
-@Table(name = "contest_userprofile_statistics", uniqueConstraints = {
-    @UniqueConstraint(name = "UK_contest_userprofile_statistics_contest_userprofile", columnNames = {"contest", "userprofile"})
-})
 @Subselect("select\n"
         + "    s.contest,\n"
         + "    s.userprofile,\n"

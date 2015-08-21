@@ -22,20 +22,11 @@ package com.github.zhanhb.judge.web.form;
 interface Constants {
 
     @SuppressWarnings("PackageVisibleInnerClass")
-    abstract class Patterns {
+    interface Patterns {
 
-        private static final String userNameField = "[a-z0-9!#$%&'*+/=?^_`{|}~-]";
-        private static final String lowerAlpha = "[a-z0-9]";
-        private static final String lowerAlphaDash = "[a-z0-9-]";
-        private static final String domainField = lowerAlpha + "(?:" + lowerAlphaDash + "*" + lowerAlpha + ")?+";
+        String EMAIL = "[a-z0-9!#$%&'*+/=?^_`{|}~-]++(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]++)*+@[a-z0-9](?:[a-z0-9-]*[a-z0-9])?+(?:\\.[a-z0-9](?:[a-z0-9-]*[a-z0-9])?+)++";
+        String EMAIL_OR_EMPRTY = "(?:" + EMAIL + ")?";
 
-        public static final String EMAIL = userNameField + "++(?:\\." + userNameField + "++)*+@"
-                + domainField + "(?:\\." + domainField + ")++";
-
-        public static final String EMAIL_OR_EMPRTY = "(?:" + EMAIL + ")?";
-
-        private Patterns() {
-        }
     }
 
 }
