@@ -15,7 +15,6 @@
  */
 package com.github.zhanhb.judge.main;
 
-import com.github.zhanhb.judge.util.Strings;
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -29,6 +28,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.springframework.util.StringUtils;
 
 /**
  *
@@ -54,7 +54,7 @@ public class LineStyle {
         long lastModified = Files.getLastModifiedTime(path).toMillis();
         Charset charset = StandardCharsets.ISO_8859_1;
         try {
-            String str = Files.readAllLines(path, charset).stream().map(Strings::trimRight)
+            String str = Files.readAllLines(path, charset).stream().map(StringUtils::trimTrailingWhitespace)
                     .collect(Collectors.joining(LINE_STYLE)) + LINE_STYLE;
             Files.write(path, str.getBytes(charset));
         } finally {

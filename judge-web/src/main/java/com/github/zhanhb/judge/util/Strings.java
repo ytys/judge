@@ -21,52 +21,6 @@ package com.github.zhanhb.judge.util;
  */
 public class Strings {
 
-    public static String trimLeft(String str) {
-        if (str != null) {
-            int len = str.length();
-            int st = 0;
-
-            while ((st < len) && (str.charAt(st) <= ' ')) {
-                st++;
-            }
-            if (st > 0) {
-                return str.substring(st, len);
-            }
-        }
-        return str;
-    }
-
-    public static String trimRight(String str) {
-        if (str != null) {
-            int len = str.length();
-
-            while (0 < len && str.charAt(len - 1) <= ' ') {
-                len--;
-            }
-            if (len < str.length()) {
-                return str.substring(0, len);
-            }
-        }
-        return str;
-    }
-
-    public static String trimToNull(String str) {
-        final String ts = trim(str);
-        return isEmpty(ts) ? null : ts;
-    }
-
-    public static boolean isEmpty(final CharSequence cs) {
-        return cs == null || cs.length() == 0;
-    }
-
-    public static String trimToEmpty(String str) {
-        return str == null ? "" : str.trim();
-    }
-
-    public static String trim(String str) {
-        return str != null ? str.trim() : null;
-    }
-
     public static String slice(String string, int beginIndex) {
         return string == null ? null : string.substring(fixIndex(string, beginIndex));
     }
@@ -87,6 +41,20 @@ public class Strings {
         return (index >= 0)
                 ? Math.min(str.length(), index)
                 : Math.max(0, str.length() + index);
+    }
+
+    @SuppressWarnings("NestedAssignment")
+    public static boolean isBlank(final CharSequence cs) {
+        int strLen;
+        if (cs == null || (strLen = cs.length()) == 0) {
+            return true;
+        }
+        for (int i = 0; i < strLen; i++) {
+            if (!Character.isWhitespace(cs.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private Strings() {

@@ -15,7 +15,7 @@
  */
 package com.github.zhanhb.judge.exception;
 
-import com.github.zhanhb.judge.util.Strings;
+import org.springframework.util.StringUtils;
 
 /**
  *
@@ -34,7 +34,7 @@ public class EntityNotExistException extends RuntimeException {
     }
 
     public EntityNotExistException(String message) {
-        super(Strings.isEmpty(message) ? defaultMessage() : message);
+        super(StringUtils.isEmpty(message) ? defaultMessage() : message);
     }
 
     @Override

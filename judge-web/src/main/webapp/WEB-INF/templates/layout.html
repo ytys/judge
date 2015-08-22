@@ -17,20 +17,12 @@ limitations under the License.
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-      layout:decorator="layout">
+      th:replace="layouts/default">
     <head>
-        <!--/*--><meta charset="UTF-8"/><!--*/-->
-        <title>Beans</title>
-        <script src="../../static/commons/js/angular.js" th:href="@{/static/commons/js/angular.min.js}" type="text/javascript"></script>
-        <!--/*-->
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <!--*/-->
+        <title></title>
+        <meta charset="UTF-8" />
     </head>
-    <body ng-app="">
-        <div th:replace="fragments/header :: header"></div>
-        <div class="container">
-
-        </div>
-        <div th:replace="fragments/footer :: footer"></div>
+    <body>
+        <a href="layouts/default.html">destination</a>
     </body>
 </html>

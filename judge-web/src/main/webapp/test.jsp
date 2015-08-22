@@ -8,8 +8,6 @@
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-<%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" session="false"%>
 <!DOCTYPE html>
 <html>
@@ -19,9 +17,6 @@
     </head>
     <body>
         ${test}
-        <div>
-            <sec:authentication property="principal" />
-        </div>
 
         <c:set var="test" value="&amp;"/>
 

@@ -42,7 +42,7 @@ public class StringsTest {
     }
 
     /**
-     * Test of slice method, of class StringUtils.
+     * Test of slice method, of class Strings.
      *
      * @throws javax.script.ScriptException
      */
@@ -69,7 +69,7 @@ public class StringsTest {
     }
 
     /**
-     * Test of slice method, of class StringUtils.
+     * Test of slice method, of class Strings.
      *
      * @throws javax.script.ScriptException
      */

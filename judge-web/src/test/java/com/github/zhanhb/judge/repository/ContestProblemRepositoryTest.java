@@ -50,7 +50,8 @@ public class ContestProblemRepositoryTest {
     }
 
     /**
-     * Test of findOneByContestNameAndContestOrder method, of class ContestProblemRepository.
+     * Test of findOneByContestNameAndContestOrder method, of class
+     * ContestProblemRepository.
      */
     @Test
     public void testFindOneByContestNameAndContestOrder() {

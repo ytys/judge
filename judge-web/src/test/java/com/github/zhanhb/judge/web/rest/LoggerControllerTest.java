@@ -86,7 +86,7 @@ public class LoggerControllerTest {
     @Test
     public void testList2() throws Exception {
         int pageSize = 2;
-        mvc.perform(get(logs + "?size=" + pageSize))
+        mvc.perform(get(logs).param("size", String.valueOf(pageSize)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("page.size").value(pageSize));
     }
@@ -118,7 +118,7 @@ public class LoggerControllerTest {
     }
 
     @Test
-    public void testListAsXml() throws Exception{
+    public void testListAsXml() throws Exception {
         mvc.perform(get(logs).accept(APPLICATION_XML))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_XML))

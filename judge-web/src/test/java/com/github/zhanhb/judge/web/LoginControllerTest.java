@@ -46,7 +46,7 @@ public class LoginControllerTest {
     public void setUp() throws Exception {
         mockMvc = webAppContextSetup(wac)
                 .addFilter(filterChain)
-                .alwaysExpect(status().isFound()).build();
+                .build();
         userprofile = userprofiles.findByHandleIgnoreCase(HANDLE).orElseGet(
                 () -> userprofiles.save(
                         Userprofile
@@ -70,7 +70,7 @@ public class LoginControllerTest {
     @Test
     public void testLoginWithHandle() throws Exception {
         ResultActions resultActions = mockMvc.perform(post("/login").param("login", HANDLE).param("password", PASSWORD));
-        resultActions.andDo(print());
+        resultActions.andDo(print()).andExpect(status().isFound());
         Throwable throwable = getSpringSecurityLastException(resultActions);
         assertNull(throwable);
     }
@@ -78,6 +78,7 @@ public class LoginControllerTest {
     @Test
     public void testLoginWithEmail() throws Exception {
         ResultActions resultActions = mockMvc.perform(post("/login").param("login", EMAIL).param("password", PASSWORD));
+        resultActions.andDo(print()).andExpect(status().isFound());
         Throwable throwable = getSpringSecurityLastException(resultActions);
         assertNull(throwable);
     }
@@ -85,6 +86,7 @@ public class LoginControllerTest {
     @Test
     public void testLoginRaw() throws Exception {
         ResultActions resultActions = mockMvc.perform(post("/login").param("login", EMAIL).param("password", SHA));
+        resultActions.andDo(print()).andExpect(status().isFound());
         Throwable throwable = getSpringSecurityLastException(resultActions);
         // login failed
         assertNotNull(throwable);
@@ -93,6 +95,7 @@ public class LoginControllerTest {
     @Test
     public void testLoginFailed() throws Exception {
         ResultActions resultActions = mockMvc.perform(post("/login").param("login", "zhanhb8@qq.com").param("password", PASSWORD + 1));
+        resultActions.andDo(print()).andExpect(status().isFound());
         Throwable throwable = getSpringSecurityLastException(resultActions);
         // login failed
         assertNotNull(throwable);

@@ -14,12 +14,13 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorator="layout">
     <head>
         <!--/*--><meta charset="UTF-8"/><!--*/-->
-        <link th:replace="layouts/default :: metadata" href="layouts/default.html" rel=""/>
         <title th:text="#{login.title}">Login</title>
-        <link th:replace="layouts/default :: scripts" href="layouts/default.html" rel=""/>
         <!--/*-->
         <link href="../../static/bootstrap/css/bootstrap-theme.css" rel="stylesheet" type="text/css"/>
         <link href="../../static/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css"/>
@@ -28,7 +29,7 @@ limitations under the License.
         <!--*/-->
     </head>
     <body>
-        <div class="container">
+        <div class="container" layout:fragment="content">
             <div class="row" style="margin-top:60px;">
                 <div class="col-md-4 col-md-offset-4">
                     <form method="POST" th:action="@{/login}" accept-charset="UTF-8" role="form" id="loginform" class="form-signin th-form-signin">
@@ -61,6 +62,5 @@ limitations under the License.
                 </div>
             </div>
         </div>
-        <div th:replace="fragments/footer :: footer"></div>
     </body>
 </html>

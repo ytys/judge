@@ -21,11 +21,11 @@ import com.github.zhanhb.judge.domain.UserprofileRole;
 import com.github.zhanhb.judge.repository.UserprofileRepository;
 import com.github.zhanhb.judge.repository.UserprofileRoleRepository;
 import com.github.zhanhb.judge.service.Roles;
-import com.github.zhanhb.judge.util.Strings;
 import com.github.zhanhb.judge.web.form.UserRegisterForm;
 import com.google.common.base.Objects;
 import java.util.function.Consumer;
 import javax.validation.Valid;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
@@ -85,10 +85,12 @@ public class RegisterController extends BaseController {
             handleAction.accept(ex);
         }
         Consumer<Object> emailAction = rejectValue(result, "email", "Exists");
-        try {
-            userprofiles.findByEmail(userRegisterForm.getEmail()).ifPresent(emailAction);
-        } catch (IncorrectResultSizeDataAccessException ex) {
-            emailAction.accept(ex);
+        if (StringUtils.isNoneEmpty(userRegisterForm.getEmail())) {
+            try {
+                userprofiles.findByEmail(userRegisterForm.getEmail()).ifPresent(emailAction);
+            } catch (IncorrectResultSizeDataAccessException ex) {
+                emailAction.accept(ex);
+            }
         }
 
         if (result.hasErrors()) {
@@ -99,10 +101,10 @@ public class RegisterController extends BaseController {
                 .builder()
                 .handle(userRegisterForm.getHandle())
                 .password(encoder.encode(userRegisterForm.getPassword()))
-                .email(Strings.trimToNull(userRegisterForm.getEmail()))
-                .school(Strings.trimToNull(userRegisterForm.getSchool()))
-                .major(Strings.trimToNull(userRegisterForm.getMajor()))
-                .nickname(Strings.trimToNull(userRegisterForm.getNickname()))
+                .email(StringUtils.trimToNull(userRegisterForm.getEmail()))
+                .school(StringUtils.trimToNull(userRegisterForm.getSchool()))
+                .major(StringUtils.trimToNull(userRegisterForm.getMajor()))
+                .nickname(StringUtils.trimToNull(userRegisterForm.getNickname()))
                 .build()
         );
         Role roleUser = roles.user();

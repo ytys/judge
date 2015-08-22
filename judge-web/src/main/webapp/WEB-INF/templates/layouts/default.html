@@ -17,6 +17,7 @@ limitations under the License.
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
       xmlns:data="http://www.thymeleaf.org/">
     <head>
         <!--/*/<th:block th:fragment="metadata">/*/-->
@@ -146,7 +147,7 @@ limitations under the License.
             </div><!-- #loginModal.modal -->
         </th:block>
 
-        <div class="container content" th:fragment="content">
+        <div layout:fragment="content">
             <div>
                 put html body here.
             </div>

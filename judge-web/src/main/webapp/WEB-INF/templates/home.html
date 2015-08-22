@@ -14,7 +14,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorator="layout">
     <head>
         <!--/*--><meta charset="UTF-8"/><!--*/-->
         <link th:replace="layouts/default :: metadata" href="layouts/default.html" rel=""/>
@@ -28,8 +31,7 @@ limitations under the License.
         <!--*/-->
     </head>
     <body>
-        <div th:replace="fragments/header :: header"></div>
-        <div class="jumbotron masthead">
+        <div layout:fragment="content" class="jumbotron masthead">
             <div class="container">
                 <h3 th:text="#{home.title}" class="text-center"></h3>
                 <p>第一次使用，请阅读<a href="faq.html" th:href="@{/faq}">常见问题</a>。然后，选择题目，编程并提交程序。</p>
@@ -42,6 +44,5 @@ limitations under the License.
                 <p><span style="color:red">如遇题目数据、描述有误等问题，请在<a href="forum.html" th:href="@{/forum}">讨论版</a>反映，我们将及时处理！(有关题目解法等问题将不予回答)</span></p>
             </div>
         </div>
-        <div th:replace="fragments/footer :: footer"></div>
     </body>
 </html>

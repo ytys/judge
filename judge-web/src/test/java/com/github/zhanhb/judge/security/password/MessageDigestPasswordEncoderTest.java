@@ -28,5 +28,4 @@ public class MessageDigestPasswordEncoderTest {
         MessageDigestPasswordEncoder t = new MessageDigestPasswordEncoder("any");
     }
 
-
 }
