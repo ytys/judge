@@ -93,6 +93,7 @@
                 <artifactId>hibernate-core</artifactId>
                 <version>${hibernate.version}</version>
                 <exclusions>
+                    <!-- for hibernate 5 -->
                     <exclusion>
                         <artifactId>geronimo-jta_1.1_spec</artifactId>
                         <groupId>org.apache.geronimo.specs</groupId>
@@ -100,6 +101,11 @@
                     <exclusion>
                         <artifactId>hibernate-jpa-2.1-api</artifactId>
                         <groupId>org.hibernate.javax.persistence</groupId>
+                    </exclusion>
+                    <!-- for hibernate 4 -->
+                    <exclusion>
+                        <artifactId>jboss-transaction-api_1.2_spec</artifactId>
+                        <groupId>org.jboss.spec.javax.transaction</groupId>
                     </exclusion>
                 </exclusions>
             </dependency>
@@ -115,6 +121,10 @@
                     <exclusion>
                         <artifactId>hibernate-jpa-2.1-api</artifactId>
                         <groupId>org.hibernate.javax.persistence</groupId>
+                    </exclusion>
+                    <exclusion>
+                        <artifactId>jboss-transaction-api_1.2_spec</artifactId>
+                        <groupId>org.jboss.spec.javax.transaction</groupId>
                     </exclusion>
                 </exclusions>
             </dependency>
@@ -253,12 +263,6 @@
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.datatype</groupId>
-            <artifactId>jackson-datatype-jsr353</artifactId>
-            <version>${jackson.version}</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>

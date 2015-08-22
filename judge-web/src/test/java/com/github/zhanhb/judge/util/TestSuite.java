@@ -15,23 +15,22 @@
  */
 package com.github.zhanhb.judge.util;
 
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+
 /**
  *
  * @author zhanhb
  */
-public class Longs {
-
-    public static long addIgnoreOverFlow(long x, long y) {
-        long r = x + y;
-        // HD 2-12 Overflow iff both arguments have the opposite sign of the result
-        if (((x ^ r) & (y ^ r)) < 0) {
-            return x < 0 ? Long.MIN_VALUE : Long.MAX_VALUE;
-        }
-        return r;
-    }
-
-    private Longs() {
-        throw new AssertionError();
-    }
+@RunWith(Suite.class)
+@Suite.SuiteClasses({
+    CustomInvocationHandlerTest.class,
+    MatcherWrapperTest.class,
+    PasswordEncoderTest.class,
+    StringsTest.class,
+    UriComponentsBuilderTest.class,
+    ZipTest.class
+})
+public class TestSuite {
 
 }

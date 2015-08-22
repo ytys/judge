@@ -4,19 +4,22 @@ import ch.qos.logback.classic.Logger;
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
+/**
+ * Logger data transfer object.
+ *
+ * @author zhanhb
+ */
 @Data
+@NoArgsConstructor
 public class LoggerDTO {
 
     @NotNull
     private String name;
     @Nullable
     private String level;
-
-    // for accessor of json creator
-    public LoggerDTO() {
-    }
 
     public LoggerDTO(@NonNull Logger logger) {
         this.name = logger.getName();

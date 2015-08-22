@@ -15,7 +15,9 @@
  */
 package com.github.zhanhb.judge.util;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Proxy;
+import java.lang.reflect.UndeclaredThrowableException;
 import java.util.Iterator;
 import lombok.extern.slf4j.Slf4j;
 import static org.junit.Assert.assertEquals;
@@ -37,7 +39,11 @@ public class CustomInvocationHandlerTest {
 
     @Before
     public void setUp() {
-        orign = new Object();
+        orign = new Object() {
+            public int g() {
+                return 1;
+            }
+        };
         CustomInvocationHandler instance = new CustomInvocationHandler(orign);
         proxy = (C) Proxy.newProxyInstance(C.class.getClassLoader(),
                 new Class<?>[]{C.class}, instance);
@@ -60,9 +66,12 @@ public class CustomInvocationHandlerTest {
 
     @Test(expected = AbstractMethodError.class)
     public void testNoSuchMethodException() {
-
         proxy.f();
+    }
 
+    @Test
+    public void testOk() {
+        assertEquals(1, proxy.g());
     }
 
     // only JDK 8+
@@ -87,12 +96,57 @@ public class CustomInvocationHandlerTest {
         assertSame(Proxy.getInvocationHandler(proxy.clone()), Proxy.getInvocationHandler(proxy));
     }
 
+    @Test(expected = IllegalStateException.class)
+    public void testThrowException() {
+        orign = new Object() {
+            public void f() {
+                throw new IllegalStateException();
+            }
+        };
+        CustomInvocationHandler instance = new CustomInvocationHandler(orign);
+        proxy = (C) Proxy.newProxyInstance(C.class.getClassLoader(),
+                new Class<?>[]{C.class}, instance);
+
+        proxy.f();
+    }
+
+    @Test(expected = UndeclaredThrowableException.class)
+    public void testUndeclaredThrowableException() {
+        orign = new Object() {
+            public void f() throws InvocationTargetException {
+                throw new InvocationTargetException(new IllegalStateException());
+            }
+        };
+        CustomInvocationHandler instance = new CustomInvocationHandler(orign);
+        proxy = (C) Proxy.newProxyInstance(C.class.getClassLoader(),
+                new Class<?>[]{C.class}, instance);
+
+        proxy.f();
+    }
+
+    @Test(expected = InvocationTargetException.class)
+    public void testInvocationTargetException() throws Exception {
+        orign = new Object() {
+            public void h() throws InvocationTargetException {
+                throw new InvocationTargetException(new IllegalStateException());
+            }
+        };
+        CustomInvocationHandler instance = new CustomInvocationHandler(orign);
+        proxy = (C) Proxy.newProxyInstance(C.class.getClassLoader(),
+                new Class<?>[]{C.class}, instance);
+
+        proxy.h();
+    }
+
     private static interface C extends Cloneable {
 
         Object clone();
 
         void f();
 
+        int g();
+
+        void h() throws Exception;
     }
 
 }
