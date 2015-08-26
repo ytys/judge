@@ -22,7 +22,7 @@ import com.github.zhanhb.judge.repository.UserprofileRepository;
 import com.github.zhanhb.judge.repository.UserprofileRoleRepository;
 import com.github.zhanhb.judge.service.Roles;
 import com.github.zhanhb.judge.web.form.UserRegisterForm;
-import com.google.common.base.Objects;
+import java.util.Objects;
 import java.util.function.Consumer;
 import javax.validation.Valid;
 import org.apache.commons.lang3.StringUtils;
@@ -75,7 +75,7 @@ public class RegisterController extends BaseController {
             RedirectAttributes redirectAttrs) {
 
         Consumer<Object> rptPasswordAction = rejectValue(result, "rptPassword", "NotSame");
-        if (!Objects.equal(userRegisterForm.getPassword(), userRegisterForm.getRptPassword())) {
+        if (!Objects.equals(userRegisterForm.getPassword(), userRegisterForm.getRptPassword())) {
             rptPasswordAction.accept(this);
         }
         Consumer<Object> handleAction = rejectValue(result, "handle", "Exists");
