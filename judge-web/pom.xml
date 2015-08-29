@@ -52,7 +52,7 @@
         <commons-lang3.version>3.4</commons-lang3.version>
         <evo-inflector.version>1.2.1</evo-inflector.version>
         <guava.version>18.0</guava.version>
-        <hibernate.version>5.0.0.CR4</hibernate.version>
+        <hibernate.version>5.0.0.Final</hibernate.version>
         <hikaricp.version>2.4.0</hikaricp.version>
         <jandex.version>1.2.4.Final</jandex.version>
         <java.version>1.8</java.version>
@@ -72,7 +72,6 @@
         <spring-web-flow.version>2.4.2.BUILD-SNAPSHOT</spring-web-flow.version>
         <spring.version>4.2.1.BUILD-SNAPSHOT</spring.version>
         <start-class>com.github.zhanhb.judge.Application</start-class>
-        <tomcat.version>8.0.24</tomcat.version>
         <unbescape.version>1.1.1.RELEASE</unbescape.version>
         <woodstox.version>4.4.1</woodstox.version>
         <xml-apis.version>1.4.01</xml-apis.version>
@@ -644,7 +643,7 @@
         <profile>
             <id>tomcat7</id>
             <properties>
-                <tomcat.version>7.0.63</tomcat.version>
+                <tomcat.version>7.0.64</tomcat.version>
             </properties>
             <dependencies>
                 <dependency>
