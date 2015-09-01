@@ -45,7 +45,7 @@ public class LoggerRepository {
     /**
      * sort by name, same as the default when no uppercase package declared.
      */
-    private static final Comparator<Logger> BY_NAME = Comparator.comparing(x -> x.getName());
+    private static final Comparator<Logger> BY_NAME = Comparator.comparing(Logger::getName);
     /**
      * sort by name ignoring case, as the order in the dictionary.
      */
