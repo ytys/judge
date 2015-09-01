@@ -6,3 +6,5 @@ _notes/
 /src/main/webapp/META-INF/context.xml
 npm-debug.log
 /nbproject/
+/.idea/
+/judge-web.iml
