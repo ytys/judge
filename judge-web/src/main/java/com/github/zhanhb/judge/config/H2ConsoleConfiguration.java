@@ -15,21 +15,30 @@
  */
 package com.github.zhanhb.judge.config;
 
+import com.github.zhanhb.judge.util.Standalone;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.context.embedded.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.repository.query.spi.EvaluationContextExtension;
-import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
 
 /**
  *
  * @author zhanhb
  */
 @Configuration
-public class SecurityConfig {
+@Slf4j
+@Standalone
+public class H2ConsoleConfiguration {
+
+    public static final String CONSOLE_URL_PREFIX = "/console/";
 
     @Bean
-    public EvaluationContextExtension securityExtension() {
-        return new SecurityEvaluationContextExtension();
+    public ServletRegistrationBean h2Console() {
+        log.debug("Initialize H2 console");
+        ServletRegistrationBean bean = new ServletRegistrationBean(new org.h2.server.web.WebServlet(), CONSOLE_URL_PREFIX + "*");
+        // don't load properties from file.
+        bean.addInitParameter("-properties", "null");
+        return bean;
     }
 
 }
