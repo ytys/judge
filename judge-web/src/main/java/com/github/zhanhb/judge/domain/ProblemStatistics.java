@@ -39,19 +39,12 @@ import org.hibernate.annotations.Synchronize;
         + "    count(t.id) as accept,\n"
         + "    count(distinct s.userprofile) as submit_user,\n"
         + "    count(distinct t.userprofile) as accept_user\n"
-        + "from \n"
-        + "    problem p\n"
-        + "left join\n"
-        + "    submission s\n"
-        + "on\n"
-        + "    p.id = s.problem\n"
-        + "left join\n"
-        + "    submission t\n"
-        + "on\n"
-        + "    s.id = t.id and\n"
-        + "    t.judge_reply = 6\n"
-        + "group by\n"
-        + "    p.id")
+        + "from problem p\n"
+        + "left join submission s\n"
+        + "on p.id = s.problem\n"
+        + "left join submission t\n"
+        + "on\n s.id = t.id and t.judge_reply = 6\n"
+        + "group by p.id")
 @Synchronize({"problem", "submission"})
 @XmlRootElement
 public class ProblemStatistics implements Serializable {

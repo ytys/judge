@@ -74,7 +74,7 @@ public class SampleData {
 
     public void contest(Consumer<Contest> consumer) {
         Objects.requireNonNull(consumer);
-        SampleData.this.contest(builder -> builder.beginTime(LocalDateTime.now())
+        contest(builder -> builder.beginTime(LocalDateTime.now())
                 .finishTime(LocalDateTime.now())
                 .type(ContestType.OJ)
                 .title("title")

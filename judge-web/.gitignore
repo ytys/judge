@@ -1,10 +1,25 @@
+# maven
 /target/
-/pom.xml.bak
-/*.zip
 *~
+
+# sortpom
+/pom.xml.bak
+
+# dreamweaver
 _notes/
-/src/main/webapp/META-INF/context.xml
+
+# nodejs
 npm-debug.log
+
+# NetBeans
 /nbproject/
+
+# idea
 /.idea/
 /judge-web.iml
+/dependency-reduced-pom.xml
+
+# project
+/src/main/webapp/META-INF/context.xml
+/*.zip
+

@@ -52,7 +52,7 @@ public class ContestControllerTest {
 
     @BeforeClass
     public static void setUpClass() {
-        if (!ClassUtils.isPresent("org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguration", null)) {
+        if (!ClassUtils.isPresent("org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguration", Thread.currentThread().getContextClassLoader())) {
             throw new AssumptionViolatedException("rest not on the classpath, skip the test");
         }
     }
