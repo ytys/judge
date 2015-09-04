@@ -62,7 +62,8 @@ public class BeansConfig {
     }
 
     private String getCookiePath(ServletContext container) {
-        return container.getContextPath().replaceFirst("/$", "") + '/';
+        String contextPath = container.getContextPath();
+        return contextPath.endsWith("/") ? contextPath : contextPath + '/';
     }
 
 }

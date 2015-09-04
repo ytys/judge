@@ -37,6 +37,8 @@ public class ContestProblemRepositoryTest {
 
     @Autowired
     private ContestProblemRepository instance;
+    @Autowired
+    private SampleData sampleData;
 
     /**
      * Test of findAllByContestName method, of class ContestProblemRepository.
@@ -45,7 +47,7 @@ public class ContestProblemRepositoryTest {
     public void testFindAllByContestName() {
         log.info("findAllByContestName");
         String contestName = "'";
-        Pageable pageable = null;
+        Pageable pageable = sampleData.pageable();
         instance.findAllByContestName(contestName, pageable);
     }
 

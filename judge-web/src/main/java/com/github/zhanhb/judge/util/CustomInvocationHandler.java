@@ -87,8 +87,7 @@ class CustomInvocationHandler implements InvocationHandler {
             return invoke(Object.class, method, proxy, args);
         }
 
-        for (int i = 0, len = parents.length; i < len; ++i) {
-            Object parent = parents[i];
+        for (Object parent : parents) {
             Method m;
             try {
                 m = parent.getClass().getMethod(method.getName(), method.getParameterTypes());

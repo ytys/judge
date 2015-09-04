@@ -15,6 +15,7 @@
  */
 package com.github.zhanhb.judge;
 
+import com.google.common.base.Strings;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -70,7 +71,7 @@ public class Application extends SpringBootServletInitializer {
             int port = ((EmbeddedWebApplicationContext) context).getEmbeddedServletContainer().getPort();
             String contextPath = context.getApplicationName();
             String url = String.format(Locale.US, "http://localhost:%d%s", port, contextPath);
-            String dashes = "------------------------------------------------------------------------";
+            String dashes = Strings.repeat("-", 72);
             log.info("Access URLs:\n{}\n\tLocal: \t\t{}\n{}", dashes, url, dashes);
         }
         return context;
