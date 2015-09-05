@@ -15,12 +15,16 @@
  */
 package com.github.zhanhb.judge.util;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Random;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import lombok.extern.slf4j.Slf4j;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 import org.junit.Test;
 
 /**
@@ -39,6 +43,18 @@ public class StringsTest {
 
     private StringBuilder merge(StringBuilder a, StringBuilder b) {
         throw new IllegalStateException();
+    }
+
+    @Test(expected = AssertionError.class)
+    public void testConstructor() throws Throwable {
+        Constructor<Strings> c = Strings.class.getDeclaredConstructor();
+        c.setAccessible(true);
+        try {
+            c.newInstance();
+            fail("should throw an InvocationTargetException");
+        } catch (InvocationTargetException ex) {
+            throw ex.getTargetException();
+        }
     }
 
     /**
@@ -94,6 +110,15 @@ public class StringsTest {
                 assertEquals(expResult, result);
             }
         }
+    }
+
+    @Test
+    public void testNull() {
+        log.info("slice");
+        assertNull(Strings.slice(null, 0));
+        assertNull(Strings.slice(null, 1));
+        assertNull(Strings.slice(null, -1000));
+        assertNull(Strings.slice(null, 0, 0));
     }
 
 }

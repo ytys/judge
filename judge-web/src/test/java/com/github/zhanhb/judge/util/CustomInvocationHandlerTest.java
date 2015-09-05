@@ -34,6 +34,13 @@ import org.junit.Test;
 @Slf4j
 public class CustomInvocationHandlerTest {
 
+    @SuppressWarnings("unchecked")
+    private static <T> T newProxy(Class<T> cl, Object... parents) {
+        CustomInvocationHandler instance = new CustomInvocationHandler(parents);
+        return (T) Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(),
+                new Class<?>[]{cl}, instance);
+    }
+
     private Object orign;
     private C proxy;
 
@@ -44,9 +51,7 @@ public class CustomInvocationHandlerTest {
                 return 1;
             }
         };
-        CustomInvocationHandler instance = new CustomInvocationHandler(orign);
-        proxy = (C) Proxy.newProxyInstance(C.class.getClassLoader(),
-                new Class<?>[]{C.class}, instance);
+        proxy = newProxy(C.class, orign);
     }
 
     /**
@@ -77,16 +82,26 @@ public class CustomInvocationHandlerTest {
     // only JDK 8+
     @Test
     public void testDefaultMethod() {
-        Iterator<?> it = (Iterator<?>) Proxy.newProxyInstance(
-                CustomInvocationHandlerTest.class.getClassLoader(),
-                new Class<?>[]{
-                    Iterator.class
-                }, new CustomInvocationHandler());
+        try {
+            newProxy(Iterator.class).remove();
+            fail("should throw an unsupported operation exception");
+        } catch (UnsupportedOperationException ex) {
+            // ok
+        }
+    }
+
+    @Test
+    public void testDefaultMethodImplementation() {
+        Iterator<?> it = newProxy(Iterator.class, new Object() {
+            public void remove() {
+                throw new IllegalStateException();
+            }
+        });
 
         try {
             it.remove();
-            fail("should throw an unsupported operation exception");
-        } catch (UnsupportedOperationException ex) {
+            fail("should throw an IllegalStateException");
+        } catch (IllegalStateException ex) {
             // ok
         }
     }
@@ -103,11 +118,7 @@ public class CustomInvocationHandlerTest {
                 throw new IllegalStateException();
             }
         };
-        CustomInvocationHandler instance = new CustomInvocationHandler(orign);
-        proxy = (C) Proxy.newProxyInstance(C.class.getClassLoader(),
-                new Class<?>[]{C.class}, instance);
-
-        proxy.f();
+        newProxy(C.class, orign).f();
     }
 
     @Test(expected = UndeclaredThrowableException.class)
@@ -117,25 +128,16 @@ public class CustomInvocationHandlerTest {
                 throw new InvocationTargetException(new IllegalStateException());
             }
         };
-        CustomInvocationHandler instance = new CustomInvocationHandler(orign);
-        proxy = (C) Proxy.newProxyInstance(C.class.getClassLoader(),
-                new Class<?>[]{C.class}, instance);
-
-        proxy.f();
+        newProxy(C.class, orign).f();
     }
 
     @Test(expected = InvocationTargetException.class)
     public void testInvocationTargetException() throws Exception {
-        orign = new Object() {
+        newProxy(C.class, new Object() {
             public void h() throws InvocationTargetException {
                 throw new InvocationTargetException(new IllegalStateException());
             }
-        };
-        CustomInvocationHandler instance = new CustomInvocationHandler(orign);
-        proxy = (C) Proxy.newProxyInstance(C.class.getClassLoader(),
-                new Class<?>[]{C.class}, instance);
-
-        proxy.h();
+        }).h();
     }
 
     private static interface C extends Cloneable {

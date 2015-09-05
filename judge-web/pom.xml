@@ -297,6 +297,7 @@
             <scope>runtime</scope>
             <exclusions>
                 <exclusion>
+                    <!-- for client version less than or equal to 1.2.0 -->
                     <artifactId>commons-dbcp</artifactId>
                     <groupId>commons-dbcp</groupId>
                 </exclusion>
@@ -704,7 +705,7 @@
             <id>undertow</id>
             <properties>
                 <!-- don't override undertow.version in spring-boot-dependencies -->
-                <!--<undertow.version>1.2.10.Final</undertow.version>-->
+                <!--<undertow.version>1.2.11.Final</undertow.version>-->
             </properties>
             <dependencies>
                 <dependency>
