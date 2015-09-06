@@ -22,10 +22,11 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import lombok.extern.slf4j.Slf4j;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
+import org.hamcrest.Matchers;
 import org.junit.Test;
+
+import static org.hamcrest.Matchers.instanceOf;
+import static org.junit.Assert.*;
 
 /**
  *
@@ -45,7 +46,7 @@ public class StringsTest {
         throw new IllegalStateException();
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void testConstructor() throws Throwable {
         Constructor<Strings> c = Strings.class.getDeclaredConstructor();
         c.setAccessible(true);
@@ -53,7 +54,7 @@ public class StringsTest {
             c.newInstance();
             fail("should throw an InvocationTargetException");
         } catch (InvocationTargetException ex) {
-            throw ex.getTargetException();
+            assertThat(ex.getTargetException(), instanceOf(AssertionError.class));
         }
     }
 

@@ -103,10 +103,7 @@ public class SampleData {
     }
 
     public void submission(Consumer<Submission> consumer) {
-        problem(problem -> {
-            language(language -> {
-                userprofile(userprofile -> {
-                    contest(contest -> {
+        problem(problem -> language(language -> userprofile(userprofile -> contest(contest -> {
                         Submission submission = submissions.save(Submission.builder()
                                 .contest(contest)
                                 // TODO userprofile may be modified of CreatedBy
@@ -119,10 +116,10 @@ public class SampleData {
                         } finally {
                             submissions.delete(submission);
                         }
-                    });
-                });
-            });
-        });
+                    })
+                )
+            )
+        );
     }
 
     public void language(UnaryOperator<Language.LanguageBuilder> func, Consumer<Language> consumer) {

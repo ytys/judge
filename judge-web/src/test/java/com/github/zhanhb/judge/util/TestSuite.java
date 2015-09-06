@@ -19,13 +19,13 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 /**
- *
  * @author zhanhb
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
     CustomInvocationHandlerTest.class,
     MatcherWrapperTest.class,
+    NumbersTest.class,
     PasswordEncoderTest.class,
     StringsTest.class,
     UriComponentsBuilderTest.class,

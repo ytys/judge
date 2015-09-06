@@ -27,4 +27,5 @@ npm-debug.log
 # project
 /src/main/webapp/META-INF/context.xml
 /*.zip
+/src/main/webapp/WEB-INF/templates/classic/
 

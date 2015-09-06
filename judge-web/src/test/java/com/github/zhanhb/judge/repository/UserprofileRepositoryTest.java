@@ -75,7 +75,7 @@ public class UserprofileRepositoryTest {
                         .build()
                 )
         ).getId();
-        log.info("id = " + id);
+        log.info("id = {}", id);
     }
 
     /**
