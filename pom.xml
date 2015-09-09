@@ -6,7 +6,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
-        <module>judge-web</module>
         <module>download</module>
+        <module>judge-web</module>
     </modules>
 </project>

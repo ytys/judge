@@ -1,7 +1,9 @@
 /*.zip
+.idea/
 .svn/
 .project
 .settings/
 .classpath
 .tern-project/
 *~
+*.iml
