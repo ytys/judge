@@ -36,6 +36,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -80,6 +81,7 @@ public class Submission implements Serializable {
 
     @JoinColumn(name = "judge_reply", foreignKey = @ForeignKey(name = "FK_submission_judge_reply"))
     @ManyToOne
+    @Setter(AccessLevel.PUBLIC)
     private JudgeReply judgeReply;
 
     @JoinColumn(name = "language", foreignKey = @ForeignKey(name = "FK_submission_language"))
@@ -90,15 +92,17 @@ public class Submission implements Serializable {
     @ManyToOne(optional = false)
     private Problem problem;
 
-    // TODO disabled temporary @CreatedBy
+    @CreatedBy
     @JoinColumn(name = "userprofile", foreignKey = @ForeignKey(name = "FK_submission_userprofile"))
     @ManyToOne
     private Userprofile userprofile;
 
     @Column(name = "time")
+    @Setter(AccessLevel.PUBLIC)
     private Long time;
 
     @Column(name = "memory")
+    @Setter(AccessLevel.PUBLIC)
     private Long memory;
 
     @Column(name = "ip", length = 40)

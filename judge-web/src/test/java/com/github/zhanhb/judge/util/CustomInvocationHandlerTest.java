@@ -15,17 +15,22 @@
  */
 package com.github.zhanhb.judge.util;
 
+import java.lang.invoke.MethodHandles;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.util.Iterator;
 import lombok.extern.slf4j.Slf4j;
+import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.util.ReflectionUtils;
 
 /**
  *
@@ -52,6 +57,18 @@ public class CustomInvocationHandlerTest {
             }
         };
         proxy = newProxy(C.class, orign);
+    }
+
+    /**
+     * Test of getTrusted2 method, of class CustomInvocationHandler.
+     *
+     * @throws java.lang.Throwable
+     */
+    @Test
+    public void testGetTrusted2() throws Throwable {
+        Method method = CustomInvocationHandler.class.getDeclaredMethod("getTrusted2");
+        ReflectionUtils.makeAccessible(method);
+        assertThat(MethodHandles.Lookup.class.cast(method.invoke(null)).toString(), containsString("trusted"));
     }
 
     /**
