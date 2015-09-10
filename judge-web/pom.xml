@@ -60,10 +60,11 @@
         <javassist.version>3.20.0-GA</javassist.version>
         <jboss-logging.version>3.3.0.Final</jboss-logging.version>
         <json-patch.version>1.9</json-patch.version>
+        <json-smart.version>2.2</json-smart.version>
         <lombok.version>1.16.6</lombok.version>
         <!--<maven.test.failure.ignore>true</maven.test.failure.ignore>-->
         <!--<maven.test.skip>true</maven.test.skip>-->
-        <!--<poi.version>3.12</poi.version>-->
+        <poi.version>3.12</poi.version>
         <querydsl.version>3.6.7</querydsl.version>
         <spring-data-releasetrain.version>Hopper-BUILD-SNAPSHOT</spring-data-releasetrain.version>
         <spring-hateoas.version>0.20.0.BUILD-SNAPSHOT</spring-hateoas.version>
@@ -137,6 +138,12 @@
                 <groupId>org.jboss.logging</groupId>
                 <artifactId>jboss-logging</artifactId>
                 <version>${jboss-logging.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.minidev</groupId>
+                <artifactId>json-smart</artifactId>
+                <version>${json-smart.version}</version>
+                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
@@ -272,12 +279,16 @@
         </dependency>
         <dependency>
             <groupId>com.jayway.jsonpath</groupId>
-            <artifactId>json-path-assert</artifactId>
+            <artifactId>json-path</artifactId>
             <scope>test</scope>
             <exclusions>
                 <exclusion>
                     <artifactId>asm</artifactId>
                     <groupId>asm</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>asm</artifactId>
+                    <groupId>org.ow2.asm</groupId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -591,6 +602,7 @@
                         <include>**/*Tests.java</include>
                     </includes>
                     <excludes>
+                        <exclude>com/github/zhanhb/judge/util/TestUtils.java</exclude>
                         <exclude>**/TestSuite.java</exclude>
                         <exclude>**/NewTestSuite.java</exclude>
                     </excludes>

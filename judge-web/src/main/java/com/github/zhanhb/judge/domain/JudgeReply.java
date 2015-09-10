@@ -15,79 +15,46 @@
  */
 package com.github.zhanhb.judge.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.ForeignKey;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlRootElement;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import org.hibernate.validator.constraints.Length;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
  *
  * @author zhanhb
  */
-@AllArgsConstructor(access = AccessLevel.PACKAGE)
-@Builder
-@Data
-@Entity
-@EntityListeners(AuditingEntityListener.class)
-@EqualsAndHashCode(of = "id")
-@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-@Setter(AccessLevel.PACKAGE)
-@Table(name = "judge_reply")
-@XmlRootElement
-public class JudgeReply implements Serializable {
+public enum JudgeReply implements Serializable {
+    /* a placeholder, do NOT use */
+    @Deprecated
+    __HOLDER__,
+    Queuing,
+    Compiling,
+    Running,
+    RuntimeError,
+    WrongAnswer,
+    Accepted,
+    TimeLimitExceeded,
+    MemoryLimitExceeded,
+    OutOfContestTime {
+        public String toString() {
+            return "Out of Contest Time";
+        }
+    },
+    RestrictedFunction,
+    OutputLimitExceeded,
+    NosuchProblem,
+    CompilationError,
+    PresentationError,
+    JudgeInternalError,
+    FloatingPointError,
+    SegmentationFault,
+    PrepareCompilation,
+    PrepareExecution,
+    Judging,
+    SubmissionLimitExceeded,
+    Aborted;
 
-    private static final long serialVersionUID = 1L;
-
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
-    private Long id;
-
-    @Column(nullable = false, length = 32)
-    @NotNull
-    @Length(min = 1, max = 32)
-    private String name;
-
-    @Column(length = 128)
-    @Length(max = 128)
-    private String description;
-
-    @Column(length = 32)
-    @Length(max = 32)
-    private String style;
-
-    @NotNull
-    @Column(nullable = false)
-    private short committed;
-
-    @CreatedBy
-    @JoinColumn(name = "creation_user", foreignKey = @ForeignKey(name = "FK_judge_reply_creation_user"))
-    @JsonIgnore
-    @ManyToOne
-    private Userprofile creationUser;
-
-    @JoinColumn(name = "last_update_user", foreignKey = @ForeignKey(name = "FK_judge_reply_last_update_user"))
-    @ManyToOne
-    private Userprofile lastUpdateUser;
+    public String toString() {
+        String name = name();
+        return name.charAt(0) + name.substring(1).replaceAll("[A-Z]", " $0");
+    }
 
 }

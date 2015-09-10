@@ -15,8 +15,8 @@
  */
 package com.github.zhanhb.judge.core;
 
+import com.github.zhanhb.judge.domain.JudgeReply;
 import com.github.zhanhb.judge.domain.Submission;
-import com.github.zhanhb.judge.repository.JudgeReplyRepository;
 import com.github.zhanhb.judge.service.JudgeService;
 import java.util.LinkedHashSet;
 import javax.annotation.PostConstruct;
@@ -38,15 +38,13 @@ public class Judger {
     private final Object judgeLock = new Object();
     @Autowired
     private JudgeService judgeService;
-    @Autowired
-    private JudgeReplyRepository judgeReplies;
     private boolean shutdown = false;
 
     @PostConstruct
     public void start() {
         synchronized (judgeGroup) {
             if (shutdown) {
-                throw new IllegalStateException("judger is shutting down");
+                throw new IllegalStateException("judge system is shutting down");
             }
             if (judgeGroup.activeGroupCount() < 1) {
                 new Thread(judgeGroup, Judger.this::runInternal, "judger").start();
@@ -77,23 +75,27 @@ public class Judger {
                         return;
                     }
                 }
-                //获取列表中第一个RunRecord
+                // get the first submission id from the queue
                 id = queue.iterator().next();
             }
-            judgeService.getSubmission(id).ifPresent(submission -> {
-                try {
-                    judgeService.updataStatus(submission, judgeReplies.compiling());
-                    synchronized (judgeLock) {
-                        if (compile(submission)) {
-                            judgeService.updataStatus(submission, judgeReplies.running());
-                            runProcess(submission);
+            try {
+                judgeService.findOne(id).ifPresent(submission -> {
+                    try {
+                        judgeService.updataStatus(submission, JudgeReply.Compiling);
+                        synchronized (judgeLock) {
+                            if (compile(submission)) {
+                                judgeService.updataStatus(submission, JudgeReply.Running);
+                                runProcess(submission);
+                            }
                         }
+                    } catch (Throwable ex) {
+                        log.error("", ex);
+                        judgeService.updataStatus(submission, JudgeReply.JudgeInternalError);
                     }
-                } catch (Throwable ex) {
-                    log.error("",ex);
-                    judgeService.updataStatus(submission, judgeReplies.internalError());
-                }
-            });
+                });
+            } finally {
+                queue.remove(id);
+            }
         }
     }
 

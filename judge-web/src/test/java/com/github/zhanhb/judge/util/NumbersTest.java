@@ -16,13 +16,8 @@
 package com.github.zhanhb.judge.util;
 
 import static com.github.zhanhb.judge.util.Numbers.addIgnoreOverFlow;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import lombok.extern.slf4j.Slf4j;
-import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
 import org.junit.Test;
 
 /**
@@ -34,14 +29,7 @@ public class NumbersTest {
 
     @Test
     public void testConstructor() throws Throwable {
-        Constructor<Numbers> c = Numbers.class.getDeclaredConstructor();
-        c.setAccessible(true);
-        try {
-            c.newInstance();
-            fail("should throw an InvocationTargetException");
-        } catch (InvocationTargetException ex) {
-            assertThat(ex.getTargetException(), instanceOf(AssertionError.class));
-        }
+        TestUtils.testConstructor(Numbers.class);
     }
 
     /**

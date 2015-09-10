@@ -86,9 +86,6 @@ public class LineStyle {
         int lastIndexOf = filename.lastIndexOf('.');
         // a file whose name has only extension
         // such as .gitignore is regard as no extension
-        if (lastIndexOf > 0) {
-            return filename.substring(lastIndexOf + 1);
-        }
-        return "";
+        return (lastIndexOf > 0) ? filename.substring(lastIndexOf + 1) : "";
     }
 }

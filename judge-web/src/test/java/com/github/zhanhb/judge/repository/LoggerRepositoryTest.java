@@ -84,14 +84,14 @@ public class LoggerRepositoryTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testSaveRootNull() {
-        String name = "ROOT";
+        String name = Logger.ROOT_LOGGER_NAME;
         String level = null;
         instance.save(name, level);
     }
 
     @Test
     public void testSaveRoot() {
-        String name = "ROOT";
+        String name = Logger.ROOT_LOGGER_NAME;
         Level level = instance.findOne(name).get().getLevel();
         try {
             instance.save(name, "WARN");

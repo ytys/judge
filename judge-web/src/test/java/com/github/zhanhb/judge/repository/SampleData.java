@@ -17,6 +17,7 @@ package com.github.zhanhb.judge.repository;
 
 import com.github.zhanhb.judge.domain.Contest;
 import com.github.zhanhb.judge.domain.ContestType;
+import com.github.zhanhb.judge.domain.JudgeReply;
 import com.github.zhanhb.judge.domain.Language;
 import com.github.zhanhb.judge.domain.Problem;
 import com.github.zhanhb.judge.domain.Submission;
@@ -115,6 +116,7 @@ public class SampleData {
                         .userprofile(userprofile)
                         .language(language)
                         .problem(problem)
+                        .judgeReply(JudgeReply.Queuing)
                         .build());
                 try {
                     consumer.accept(submission);

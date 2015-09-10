@@ -31,21 +31,17 @@ import org.springframework.transaction.annotation.Transactional;
 public class JudgeService {
 
     @Autowired
-    private SubmissionRepository submissionRepository;
+    private SubmissionRepository submissions;
 
-    public Optional<Submission> getSubmission(long id) {
-        return submissionRepository.findOne(id);
-    }
-
-    @Transactional
-    public void save(Submission submission) {
-        submissionRepository.save(submission);
+    @Transactional(readOnly = true)
+    public Optional<Submission> findOne(long id) {
+        return submissions.findOne(id);
     }
 
     @Transactional
     public void updataStatus(Submission submission, JudgeReply judgeReply) {
         submission.setJudgeReply(judgeReply);
-        submissionRepository.save(submission);
+        submissions.save(submission);
     }
 
 }

@@ -15,18 +15,13 @@
  */
 package com.github.zhanhb.judge.util;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Random;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import lombok.extern.slf4j.Slf4j;
-import org.hamcrest.Matchers;
-import org.junit.Test;
-
-import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  *
@@ -48,14 +43,7 @@ public class StringsTest {
 
     @Test
     public void testConstructor() throws Throwable {
-        Constructor<Strings> c = Strings.class.getDeclaredConstructor();
-        c.setAccessible(true);
-        try {
-            c.newInstance();
-            fail("should throw an InvocationTargetException");
-        } catch (InvocationTargetException ex) {
-            assertThat(ex.getTargetException(), instanceOf(AssertionError.class));
-        }
+        TestUtils.testConstructor(Strings.class);
     }
 
     /**

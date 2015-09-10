@@ -79,8 +79,7 @@ public class Submission implements Serializable {
     @ManyToOne
     private Contest contest;
 
-    @JoinColumn(name = "judge_reply", foreignKey = @ForeignKey(name = "FK_submission_judge_reply"))
-    @ManyToOne
+    @Column(name = "judge_reply", nullable = false)
     @Setter(AccessLevel.PUBLIC)
     private JudgeReply judgeReply;
 
