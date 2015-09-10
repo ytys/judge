@@ -143,7 +143,6 @@
                 <groupId>net.minidev</groupId>
                 <artifactId>json-smart</artifactId>
                 <version>${json-smart.version}</version>
-                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
@@ -402,6 +401,13 @@
             <groupId>org.codehaus.woodstox</groupId>
             <artifactId>woodstox-core-asl</artifactId>
             <scope>runtime</scope>
+            <exclusions>
+                <!-- we have xml-apis already, maybe xml-api is optional, it is in jdk rt.jar -->
+                <exclusion>
+                    <artifactId>stax-api</artifactId>
+                    <groupId>javax.xml.stream</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
     <repositories>
@@ -491,7 +497,7 @@
                             <goal>test-process</goal>
                         </goals>
                         <configuration>
-                            <testOutputDirectory>${project.build.directory}/generated-test-sources/test-annotations</testOutputDirectory>
+                            <testOutputDirectory>${project.build.directory}/generated-test-sources/java</testOutputDirectory>
                         </configuration>
                     </execution>
                 </executions>

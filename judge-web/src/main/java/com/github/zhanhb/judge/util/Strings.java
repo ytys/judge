@@ -31,16 +31,11 @@ public class Strings {
         }
         int fixedBeginIndex = fixIndex(string, beginIndex);
         int fixedEndIndex = fixIndex(string, endIndex);
-        if (fixedBeginIndex >= fixedEndIndex) {
-            return "";
-        }
-        return string.substring(fixedBeginIndex, fixedEndIndex);
+        return (fixedBeginIndex >= fixedEndIndex) ? "" : string.substring(fixedBeginIndex, fixedEndIndex);
     }
 
     private static int fixIndex(String str, int index) {
-        return (index >= 0)
-                ? Math.min(str.length(), index)
-                : Math.max(0, str.length() + index);
+        return (index >= 0) ? Math.min(str.length(), index) : Math.max(0, str.length() + index);
     }
 
     private Strings() {

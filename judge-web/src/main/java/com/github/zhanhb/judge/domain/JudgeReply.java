@@ -22,7 +22,7 @@ import java.io.Serializable;
  * @author zhanhb
  */
 public enum JudgeReply implements Serializable {
-    /* a placeholder, do NOT use */
+    /* a placeholder whose ordinal is 0, do NOT use */
     @Deprecated
     __HOLDER__,
     Queuing,
@@ -34,13 +34,19 @@ public enum JudgeReply implements Serializable {
     TimeLimitExceeded,
     MemoryLimitExceeded,
     OutOfContestTime {
+        @Override
         public String toString() {
             return "Out of Contest Time";
         }
     },
     RestrictedFunction,
     OutputLimitExceeded,
-    NosuchProblem,
+    NoSuchProblem {
+        @Override
+        public String toString() {
+            return "No such Problem";
+        }
+    },
     CompilationError,
     PresentationError,
     JudgeInternalError,
@@ -52,9 +58,9 @@ public enum JudgeReply implements Serializable {
     SubmissionLimitExceeded,
     Aborted;
 
+    @Override
     public String toString() {
-        String name = name();
-        return name.charAt(0) + name.substring(1).replaceAll("[A-Z]", " $0");
+        return name().charAt(0) + name().substring(1).replaceAll("[A-Z]", " $0");
     }
 
 }

@@ -41,6 +41,7 @@ public class Calendars {
     }
 
     private Calendars() {
+        throw new AssertionError();
     }
 
 }

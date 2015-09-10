@@ -161,4 +161,13 @@
             <maven.test.skip>true</maven.test.skip>
         </properties>
     </action>
+    <action>
+        <actionName>CUSTOM-verify javadoc:javadoc site:site</actionName>
+        <displayName>verify javadoc:javadoc site:site</displayName>
+        <goals>
+            <goal>verify</goal>
+            <goal>javadoc:javadoc</goal>
+            <goal>site:site</goal>
+        </goals>
+    </action>
 </actions>
