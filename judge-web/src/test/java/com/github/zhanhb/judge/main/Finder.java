@@ -31,6 +31,7 @@ public class Finder {
 
     public static void main(String[] args) throws Throwable {
         Consumer<URL> c = System.out::println;
+        consume(javax.xml.stream.EventFilter.class, c);
         consume(javax.annotation.Generated.class, c);
         consume(javax.annotation.CheckForNull.class, c);
         consume(aj.org.objectweb.asm.ClassVisitor.class, c);

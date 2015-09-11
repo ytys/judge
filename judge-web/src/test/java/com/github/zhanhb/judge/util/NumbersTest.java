@@ -27,6 +27,11 @@ import org.junit.Test;
 @Slf4j
 public class NumbersTest {
 
+    @Test
+    public void testConstructor() throws Throwable {
+        TestUtils.testConstructor(Numbers.class);
+    }
+
     /**
      * Test of addIgnoreOverFlow method, of class Numbers.
      */

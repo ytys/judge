@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -35,6 +36,8 @@ import org.springframework.stereotype.Service;
  * @author zhanhb
  */
 @Service
+// ensure slf4j is initlized.
+@Slf4j
 public class LoggerRepository {
 
     /**
@@ -54,15 +57,6 @@ public class LoggerRepository {
      * sort algorithm in java is stable, we just return 0
      */
     private static final Comparator<Logger> ORIGN_ORDER = (a, b) -> 0;
-
-    static {
-        // ensure slf4j is initlized.
-        try {
-            Class.forName("org.slf4j.impl.StaticLoggerBinder");
-        } catch (ClassNotFoundException ex) {
-            throw new ExceptionInInitializerError(ex);
-        }
-    }
 
     public Optional<Logger> findOne(String name) {
         return Optional.ofNullable(getLoggerContext().exists(name));
@@ -101,9 +95,16 @@ public class LoggerRepository {
     private Comparator<? super Logger> toComparator(Sort sort) {
         Comparator<Logger> result = null;
         for (Sort.Order order : sort) {
-            Comparator<Logger> c = "level".equalsIgnoreCase(order.getProperty())
-                    ? BY_LEVEL
-                    : order.isIgnoreCase() ? BY_NAME_I : BY_NAME;
+            String property = order.getProperty();
+
+            Comparator<Logger> c;
+            if ("level".equalsIgnoreCase(property)) {
+                c = BY_LEVEL;
+            } else if ("name".equalsIgnoreCase(property)) {
+                c = order.isIgnoreCase() ? BY_NAME_I : BY_NAME;
+            } else {
+                throw new IllegalArgumentException(String.format("No property %s found for type %s!", property, Logger.class.getSimpleName()));
+            }
             c = order.isAscending() ? c : c.reversed();
             result = result == null ? c : result.thenComparing(c);
         }

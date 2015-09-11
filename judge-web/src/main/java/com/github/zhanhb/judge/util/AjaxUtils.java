@@ -13,6 +13,7 @@ public class AjaxUtils {
     }
 
     private AjaxUtils() {
+        throw new AssertionError();
     }
 
 }

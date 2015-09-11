@@ -33,7 +33,7 @@ import org.springframework.asm.Type;
  */
 class CustomInvocationHandler implements InvocationHandler {
 
-    private static final MethodHandles.Lookup trusted = getTrusted();
+    private static final MethodHandles.Lookup IMPL_LOOKUP = getTrusted();
 
     private static MethodHandles.Lookup getTrusted() {
         try {
@@ -109,13 +109,12 @@ class CustomInvocationHandler implements InvocationHandler {
     }
 
     private Object invoke(Method method, Object proxy, Object[] args) throws Throwable {
-        return trusted.unreflectSpecial(method, method.getDeclaringClass()).bindTo(proxy)
-                .invokeWithArguments(args);
+        return IMPL_LOOKUP.unreflectSpecial(method, method.getDeclaringClass()).bindTo(proxy).invokeWithArguments(args);
     }
 
     private Object invoke(Class<?> declaringClass, Method method, Object proxy, Object[] args)
             throws Throwable {
-        return trusted.findSpecial(declaringClass, method.getName(),
+        return IMPL_LOOKUP.findSpecial(declaringClass, method.getName(),
                 MethodType.methodType(method.getReturnType(), method.getParameterTypes()),
                 declaringClass).bindTo(proxy).invokeWithArguments(args);
     }

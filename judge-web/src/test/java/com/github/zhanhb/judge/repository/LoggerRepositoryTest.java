@@ -20,8 +20,10 @@ import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.util.ContextSelectorStaticBinder;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
+import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 import org.junit.Before;
 import org.junit.Test;
@@ -82,14 +84,14 @@ public class LoggerRepositoryTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testSaveRootNull() {
-        String name = "ROOT";
+        String name = Logger.ROOT_LOGGER_NAME;
         String level = null;
         instance.save(name, level);
     }
 
     @Test
     public void testSaveRoot() {
-        String name = "ROOT";
+        String name = Logger.ROOT_LOGGER_NAME;
         Level level = instance.findOne(name).get().getLevel();
         try {
             instance.save(name, "WARN");
@@ -107,4 +109,13 @@ public class LoggerRepositoryTest {
         assertEquals(content, content1);
     }
 
+    @Test
+    public void testNoProperty() {
+        PageRequest pageRequest = new PageRequest(0, 20, Sort.Direction.DESC, "testKey");
+        try {
+            instance.findAll(pageRequest);
+        } catch (RuntimeException ex) {
+            assertThat(ex.getMessage(), containsString("No property"));
+        }
+    }
 }
