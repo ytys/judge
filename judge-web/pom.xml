@@ -56,6 +56,7 @@
         <hibernate.version>5.0.1.Final</hibernate.version>
         <hikaricp.version>2.4.1</hikaricp.version>
         <httpcore.version>4.4.2</httpcore.version>
+        <jackson-coreutils.version>1.8</jackson-coreutils.version>
         <jandex.version>1.2.4.Final</jandex.version>
         <java.version>1.8</java.version>
         <javassist.version>3.20.0-GA</javassist.version>
@@ -131,6 +132,11 @@
                         <groupId>org.jboss.spec.javax.transaction</groupId>
                     </exclusion>
                 </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>com.github.fge</groupId>
+                <artifactId>jackson-coreutils</artifactId>
+                <version>${jackson-coreutils.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.jboss</groupId>
@@ -578,6 +584,15 @@
                         </requireReleaseDeps>
                         -->
                     </rules>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>2.18.1</version>
+                <configuration>
+                    <parallel>methods</parallel>
+                    <threadCount>4</threadCount>
                 </configuration>
             </plugin>
             <plugin>
