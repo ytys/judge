@@ -26,6 +26,7 @@ import org.springframework.boot.autoconfigure.h2.H2ConsoleProperties;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.TestRestTemplate;
 import org.springframework.boot.test.WebIntegrationTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -59,8 +60,14 @@ public class H2ConsoleConfigurationTest {
         String url = baseUrl + path + (path.endsWith("/") ? "" : "/");
         log.debug(url);
         ResponseEntity<String> entity = new TestRestTemplate().getForEntity(url, String.class);
-        assertTrue("wrong status code " + entity.getStatusCode(),
-                entity.getStatusCode().is2xxSuccessful());
+        // status code is either success or redirection
+        // not client error or server error
+        HttpStatus.Series series = entity.getStatusCode().series();
+
+        assertTrue("wrong status code " + entity.getStatusCode() + " for request '" + url + "'",
+                series == HttpStatus.Series.REDIRECTION
+                || series == HttpStatus.Series.SUCCESSFUL);
+
     }
 
 }
