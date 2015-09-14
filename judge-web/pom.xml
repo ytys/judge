@@ -35,7 +35,7 @@
         </developer>
     </developers>
     <prerequisites>
-        <maven>3.0.2</maven>
+        <maven>3.0.4</maven>
     </prerequisites>
     <scm>
         <connection>scm:git:git://github.com/zhanhb/judge.git</connection>
@@ -47,6 +47,7 @@
         <url>https://github.com/zhanhb/judge/issues</url>
     </issueManagement>
     <properties>
+        <aspectj.version>1.8.7</aspectj.version>
         <attoparser.version>1.4.0.RELEASE</attoparser.version>
         <classmate.version>1.2.0</classmate.version>
         <commons-compress.version>1.10</commons-compress.version>
@@ -55,7 +56,7 @@
         <guava.version>18.0</guava.version>
         <hibernate.version>5.0.1.Final</hibernate.version>
         <hikaricp.version>2.4.1</hikaricp.version>
-        <httpcore.version>4.4.2</httpcore.version>
+        <httpcore.version>4.4.3</httpcore.version>
         <jackson-coreutils.version>1.8</jackson-coreutils.version>
         <jandex.version>1.2.4.Final</jandex.version>
         <java.version>1.8</java.version>
