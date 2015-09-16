@@ -107,4 +107,20 @@ public class Judger {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    public void submit(long id) {
+        synchronized (queue) {
+            queue.add(id);
+            queue.notifyAll();
+        }
+    }
+
+    public void submit(long[] ids) {
+        synchronized (queue) {
+            for (long id : ids) {
+                queue.add(id);
+            }
+            queue.notifyAll();
+        }
+    }
+
 }
