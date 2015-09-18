@@ -23,9 +23,15 @@ import org.junit.Test;
  */
 public class MessageDigestPasswordEncoderTest {
 
+    @Test
+    public void testOK() {
+        new MessageDigestPasswordEncoder("md5");
+        new MessageDigestPasswordEncoder("sha");
+    }
+
     @Test(expected = IllegalArgumentException.class)
     public void testIllegalArgumentException() {
-        MessageDigestPasswordEncoder t = new MessageDigestPasswordEncoder("any");
+        new MessageDigestPasswordEncoder("any");
     }
 
 }

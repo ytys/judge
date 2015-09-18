@@ -53,10 +53,6 @@ public class LoggerRepository {
      * sort by name ignoring case, as the order in the dictionary.
      */
     private static final Comparator<Logger> BY_NAME_I = (a, b) -> a.getName().compareToIgnoreCase(b.getName());
-    /**
-     * sort algorithm in java is stable, we just return 0
-     */
-    private static final Comparator<Logger> ORIGN_ORDER = (a, b) -> 0;
 
     public Optional<Logger> findOne(String name) {
         return Optional.ofNullable(getLoggerContext().exists(name));
@@ -81,12 +77,10 @@ public class LoggerRepository {
     }
 
     private List<Logger> paging(List<Logger> list, Pageable pageable) {
-        return list.stream()
-                .sorted(
-                        Optional.ofNullable(pageable.getSort())
-                        .map(this::toComparator)
-                        .orElse(ORIGN_ORDER)
-                )
+        return Optional.ofNullable(pageable.getSort())
+                .map(this::toComparator)
+                .map(list.stream()::sorted)
+                .orElseGet(list::stream)
                 .skip(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .collect(Collectors.toList());

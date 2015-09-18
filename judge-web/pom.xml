@@ -9,18 +9,18 @@
         <relativePath />
     </parent>
 
-    <groupId>com.github.zhanhb</groupId>
+    <groupId>com.github.zjnu-acm</groupId>
     <artifactId>judge-web</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
     <name>ZJNU Online Judge</name>
     <description>Online Judge System of Zhejiang Normal University.</description>
-    <url>https://github.com/zhanhb/judge/</url>
+    <url>https://github.com/zjnu-acm/judge/</url>
     <inceptionYear>2015</inceptionYear>
 
     <organization>
-        <name>zhanhb</name>
-        <url>http://github.com/zhanhb</url>
+        <name>ZJNU ACM</name>
+        <url>http://github.com/zjnu-acm</url>
     </organization>
 
     <licenses>
@@ -35,7 +35,10 @@
             <id>zhanhb</id>
             <name>Huangbin Zhan</name>
             <email>zhanhb88@gmail.com</email>
-            <organization>Zhejiang Normal University</organization>
+            <organization>ZJNU ACM</organization>
+        </developer>
+        <developer>
+            <id>stkevintan</id>
         </developer>
     </developers>
 
@@ -44,14 +47,14 @@
     </prerequisites>
 
     <scm>
-        <connection>scm:git:git://github.com/zhanhb/judge.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com/zhanhb/judge.git</developerConnection>
-        <url>https://github.com/zhanhb/judge</url>
+        <connection>scm:git:git://github.com/zjnu-acm/judge.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/zjnu-acm/judge.git</developerConnection>
+        <url>https://github.com/zjnu-acm/judge</url>
     </scm>
 
     <issueManagement>
         <system>Github</system>
-        <url>https://github.com/zhanhb/judge/issues</url>
+        <url>https://github.com/zjnu-acm/judge/issues</url>
     </issueManagement>
 
     <properties>
