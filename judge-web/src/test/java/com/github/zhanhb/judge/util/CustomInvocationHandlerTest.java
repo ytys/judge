@@ -52,6 +52,7 @@ public class CustomInvocationHandlerTest {
     @Before
     public void setUp() {
         orign = new Object() {
+            @SuppressWarnings("unused")
             public int g() {
                 return 1;
             }
@@ -81,6 +82,7 @@ public class CustomInvocationHandlerTest {
         log.info("invoke");
         assertEquals("proxy should equals itsself", proxy, proxy);
         assertNotEquals(orign, proxy);
+        assertNotEquals(proxy, orign);
         assertEquals(System.identityHashCode(proxy), proxy.hashCode());
 
         log.info(proxy.toString());
@@ -110,6 +112,7 @@ public class CustomInvocationHandlerTest {
     @Test
     public void testDefaultMethodImplementation() {
         Iterator<?> it = newProxy(Iterator.class, new Object() {
+            @SuppressWarnings("unused")
             public void remove() {
                 throw new IllegalStateException();
             }
@@ -131,6 +134,7 @@ public class CustomInvocationHandlerTest {
     @Test(expected = IllegalStateException.class)
     public void testThrowException() {
         orign = new Object() {
+            @SuppressWarnings("unused")
             public void f() {
                 throw new IllegalStateException();
             }
@@ -141,6 +145,7 @@ public class CustomInvocationHandlerTest {
     @Test(expected = UndeclaredThrowableException.class)
     public void testUndeclaredThrowableException() {
         orign = new Object() {
+            @SuppressWarnings("unused")
             public void f() throws InvocationTargetException {
                 throw new InvocationTargetException(new IllegalStateException());
             }
@@ -151,6 +156,7 @@ public class CustomInvocationHandlerTest {
     @Test(expected = InvocationTargetException.class)
     public void testInvocationTargetException() throws Exception {
         newProxy(C.class, new Object() {
+            @SuppressWarnings("unused")
             public void h() throws InvocationTargetException {
                 throw new InvocationTargetException(new IllegalStateException());
             }

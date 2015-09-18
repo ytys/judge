@@ -13,25 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.zhanhb.judge.security.password;
+package com.github.zhanhb.judge.core;
 
-import org.junit.Test;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author zhanhb
  */
-public class MessageDigestPasswordEncoderTest {
-
-    @Test
-    public void testOK() {
-        new MessageDigestPasswordEncoder("md5");
-        new MessageDigestPasswordEncoder("sha");
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testIllegalArgumentException() {
-        new MessageDigestPasswordEncoder("any");
-    }
+@Service
+public class Compiler {
 
 }

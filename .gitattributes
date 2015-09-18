@@ -17,6 +17,8 @@
 *.PDF   diff=astextplain
 *.rtf   diff=astextplain
 *.RTF   diff=astextplain
+*.png   diff=astextplain
+*.jpg   diff=astextplain
 
 *.java  text    diff=java
 *.html  text    diff=html

@@ -28,4 +28,5 @@ npm-debug.log
 /src/main/webapp/META-INF/context.xml
 /*.zip
 /src/main/webapp/WEB-INF/templates/classic/
+/pom.xml.versionsBackup
 
