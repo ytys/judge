@@ -16,7 +16,6 @@
 package com.github.zhanhb.judge.domain;
 
 import java.util.Arrays;
-import static java.util.stream.Collectors.toList;
 import lombok.extern.slf4j.Slf4j;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -36,7 +35,7 @@ public class JudgeReplyTest {
 
     @Test
     public void testToString() {
-        log.debug("{}", Arrays.stream(JudgeReply.values()).collect(toList()));
+        log.debug("{}", Arrays.asList(JudgeReply.values()));
     }
 
 }

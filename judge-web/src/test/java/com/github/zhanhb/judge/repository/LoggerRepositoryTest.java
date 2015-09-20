@@ -114,6 +114,7 @@ public class LoggerRepositoryTest {
         PageRequest pageRequest = new PageRequest(0, 20, Sort.Direction.DESC, "testKey");
         try {
             instance.findAll(pageRequest);
+            fail("should throw a RuntimeException");
         } catch (RuntimeException ex) {
             assertThat(ex.getMessage(), containsString("No property"));
         }

@@ -42,20 +42,22 @@ public class LoggerRepository {
 
     /**
      * sort by effective level, real level of current logger, getLevel may
-     * return null when inherited from parent level.
+     * return null when inherited from parent logger.
      */
     private static final Comparator<Logger> BY_LEVEL = Comparator.comparingInt(x -> x.getEffectiveLevel().toInt());
+
     /**
      * sort by name, same as the default when no uppercase package declared.
      */
     private static final Comparator<Logger> BY_NAME = Comparator.comparing(Logger::getName);
+
     /**
      * sort by name ignoring case, as the order in the dictionary.
      */
-    private static final Comparator<Logger> BY_NAME_I = (a, b) -> a.getName().compareToIgnoreCase(b.getName());
+    private static final Comparator<Logger> BY_NAME_I = Comparator.comparing(Logger::getName, String.CASE_INSENSITIVE_ORDER);
 
     public Optional<Logger> findOne(String name) {
-        return Optional.ofNullable(getLoggerContext().exists(name));
+        return Optional.ofNullable(getLoggerContext().exists(Objects.requireNonNull(name, "name")));
     }
 
     public Iterable<Logger> findAll() {
@@ -69,11 +71,7 @@ public class LoggerRepository {
     }
 
     public void save(String name, String level) {
-        Objects.requireNonNull(name, "name");
-        Logger logger = getLoggerContext().exists(name);
-        if (logger != null) {
-            logger.setLevel(Level.toLevel(level, null));
-        }
+        findOne(name).ifPresent(logger -> logger.setLevel(Level.toLevel(level, null)));
     }
 
     private List<Logger> paging(List<Logger> list, Pageable pageable) {

@@ -20,7 +20,7 @@
 
     <organization>
         <name>ZJNU ACM</name>
-        <url>http://github.com/zjnu-acm</url>
+        <url>https://github.com/zjnu-acm</url>
     </organization>
 
     <licenses>
@@ -35,7 +35,7 @@
             <id>zhanhb</id>
             <name>Huangbin Zhan</name>
             <email>zhanhb88@gmail.com</email>
-            <organization>ZJNU ACM</organization>
+            <timezone>+8</timezone>
         </developer>
         <developer>
             <id>stkevintan</id>
@@ -635,8 +635,18 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>2.8.1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
                 <version>2.7</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>3.4</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
