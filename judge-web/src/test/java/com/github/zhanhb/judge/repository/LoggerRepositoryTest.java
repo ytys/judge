@@ -21,6 +21,8 @@ import ch.qos.logback.classic.util.ContextSelectorStaticBinder;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
@@ -118,5 +120,15 @@ public class LoggerRepositoryTest {
         } catch (RuntimeException ex) {
             assertThat(ex.getMessage(), containsString("No property"));
         }
+    }
+
+    @Test
+    public void testIgnoreCase() {
+        PageRequest pageRequest = new PageRequest(0, 20, new Sort(new Sort.Order("name")));
+        assertThat(instance.findAll(pageRequest).getContent().get(0).getName(), is("ROOT"));
+
+        pageRequest = new PageRequest(0, 20, new Sort(new Sort.Order("name").ignoreCase()));
+        assertThat(instance.findAll(pageRequest).getContent().get(0).getName(), not("ROOT"));
+
     }
 }
