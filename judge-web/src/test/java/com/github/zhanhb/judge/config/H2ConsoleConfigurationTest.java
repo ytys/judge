@@ -18,14 +18,15 @@ package com.github.zhanhb.judge.config;
 import com.github.zhanhb.judge.Application;
 import lombok.extern.slf4j.Slf4j;
 import static org.junit.Assert.assertTrue;
+import org.junit.AssumptionViolatedException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.h2.H2ConsoleProperties;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.TestRestTemplate;
 import org.springframework.boot.test.WebIntegrationTest;
+import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
@@ -45,18 +46,28 @@ public class H2ConsoleConfigurationTest {
     static final String CONTEXT_PATH = "/znoj";
 
     @Autowired
-    private H2ConsoleProperties hcp;
-    @Value("http://localhost:${local.server.port}" + CONTEXT_PATH)
+    private ApplicationContext context;
+    @Value("http://localhost:${local.server.port:0}" + CONTEXT_PATH)
     private String baseUrl;
 
     /**
-     * Test of h2Console method, of class H2ConsoleConfiguration.
+     * Test of h2Console method, of class H2ConsoleConfiguration. It will be
+     * tested when spring-boot.version is greater or equal than 1.3.0.
      *
      * @throws java.lang.Exception
      */
     @Test
     public void testH2Console() throws Exception {
-        String path = hcp.getPath();
+        String className = "org.springframework.boot.autoconfigure.h2.H2ConsoleProperties";
+        Class<?> h2ConsolePropertiesClass;
+        try {
+            h2ConsolePropertiesClass = Class.forName(className);
+        } catch (ClassNotFoundException ex) {
+            throw new AssumptionViolatedException("spring-boot.version less than 1.3.0, test skipped");
+        }
+
+        Object h2ConsoleProperties = context.getBean(h2ConsolePropertiesClass);
+        String path = (String) h2ConsolePropertiesClass.getMethod("getPath").invoke(h2ConsoleProperties);
         String url = baseUrl + path + (path.endsWith("/") ? "" : "/");
         log.debug(url);
         ResponseEntity<String> entity = new TestRestTemplate().getForEntity(url, String.class);
