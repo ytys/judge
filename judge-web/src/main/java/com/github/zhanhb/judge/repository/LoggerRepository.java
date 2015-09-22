@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -42,20 +43,22 @@ public class LoggerRepository {
 
     /**
      * sort by effective level, real level of current logger, getLevel may
-     * return null when inherited from parent level.
+     * return null when inherited from parent logger.
      */
     private static final Comparator<Logger> BY_LEVEL = Comparator.comparingInt(x -> x.getEffectiveLevel().toInt());
+
     /**
      * sort by name, same as the default when no uppercase package declared.
      */
     private static final Comparator<Logger> BY_NAME = Comparator.comparing(Logger::getName);
+
     /**
      * sort by name ignoring case, as the order in the dictionary.
      */
-    private static final Comparator<Logger> BY_NAME_I = (a, b) -> a.getName().compareToIgnoreCase(b.getName());
+    private static final Comparator<Logger> BY_NAME_I = Comparator.comparing(Logger::getName, String.CASE_INSENSITIVE_ORDER);
 
     public Optional<Logger> findOne(String name) {
-        return Optional.ofNullable(getLoggerContext().exists(name));
+        return Optional.ofNullable(getLoggerContext().exists(Objects.requireNonNull(name, "name")));
     }
 
     public Iterable<Logger> findAll() {
@@ -65,22 +68,18 @@ public class LoggerRepository {
     public Page<Logger> findAll(Pageable pageable) {
         Objects.requireNonNull(pageable, "pageable");
         List<Logger> all = getLoggerContext().getLoggerList();
-        return new PageImpl<>(paging(all, pageable), pageable, all.size());
+        return new PageImpl<>(paging(all.stream(), pageable), pageable, all.size());
     }
 
     public void save(String name, String level) {
-        Objects.requireNonNull(name, "name");
-        Logger logger = getLoggerContext().exists(name);
-        if (logger != null) {
-            logger.setLevel(Level.toLevel(level, null));
-        }
+        findOne(name).ifPresent(logger -> logger.setLevel(Level.toLevel(level, null)));
     }
 
-    private List<Logger> paging(List<Logger> list, Pageable pageable) {
-        return Optional.ofNullable(pageable.getSort())
-                .map(this::toComparator)
-                .map(list.stream()::sorted)
-                .orElseGet(list::stream)
+    private List<Logger> paging(Stream<Logger> stream, Pageable pageable) {
+        return Optional.ofNullable(pageable.getSort()) // maybe api returns null
+                .map(this::toComparator) // usually not null, throws an IAE if the property is not present
+                .map(stream::sorted)
+                .orElse(stream)
                 .skip(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .collect(Collectors.toList());

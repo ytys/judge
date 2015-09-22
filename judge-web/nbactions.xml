@@ -170,4 +170,14 @@
             <goal>site:site</goal>
         </goals>
     </action>
+    <action>
+        <actionName>CUSTOM-clean verify javadoc:javadoc site:site</actionName>
+        <displayName>clean verify javadoc:javadoc site:site</displayName>
+        <goals>
+            <goal>clean</goal>
+            <goal>verify</goal>
+            <goal>javadoc:javadoc</goal>
+            <goal>site:site</goal>
+        </goals>
+    </action>
 </actions>

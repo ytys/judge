@@ -27,9 +27,7 @@ import static org.junit.Assert.fail;
  */
 public class TestUtils {
 
-    public static void testConstructor(Class<?> cl) throws InstantiationException,
-            IllegalArgumentException, IllegalAccessException,
-            SecurityException, NoSuchMethodException {
+    public static void testConstructor(Class<?> cl) throws Exception {
         Constructor<?> c = cl.getDeclaredConstructor();
         c.setAccessible(true);
         try {

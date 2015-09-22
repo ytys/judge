@@ -15,9 +15,12 @@
  */
 package com.github.zhanhb.judge.main;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.StringReader;
 import java.io.UncheckedIOException;
+import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -53,13 +56,18 @@ public class LineStyle {
     private static void handle0(Path path) throws IOException {
         long lastModified = Files.getLastModifiedTime(path).toMillis();
         Charset charset = StandardCharsets.ISO_8859_1;
-        try {
-            String str = Files.readAllLines(path, charset).stream().map(StringUtils::trimTrailingWhitespace)
-                    .collect(Collectors.joining(LINE_STYLE)) + LINE_STYLE;
-            Files.write(path, str.getBytes(charset));
-        } finally {
-            // add one second
-            Files.setLastModifiedTime(path, FileTime.fromMillis(lastModified + 1000));
+        byte[] bytes = Files.readAllBytes(path);
+        String content = charset.newDecoder().decode(ByteBuffer.wrap(bytes)).toString();
+        String str = new BufferedReader(new StringReader(content)).lines().map(StringUtils::trimTrailingWhitespace)
+                .collect(Collectors.joining(LINE_STYLE)) + LINE_STYLE;
+
+        if (!str.equals(content)) {
+            try {
+                Files.write(path, content.getBytes(charset));
+            } finally {
+                // add one second
+                Files.setLastModifiedTime(path, FileTime.fromMillis(lastModified + 1000));
+            }
         }
     }
 

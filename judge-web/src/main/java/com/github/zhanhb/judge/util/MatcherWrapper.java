@@ -1,6 +1,6 @@
 package com.github.zhanhb.judge.util;
 
-import static java.util.Objects.requireNonNull;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
@@ -33,7 +33,7 @@ public final class MatcherWrapper implements MatchResult {
 
     public String replaceAll(Function<MatcherWrapper, String> replaceFunction) {
         checkLocked();
-        requireNonNull(replaceFunction);
+        Objects.requireNonNull(replaceFunction);
         Matcher m = matcher.reset();
         boolean result = m.find();
         if (result) {
@@ -42,7 +42,7 @@ public final class MatcherWrapper implements MatchResult {
                 String replacement;
                 try {
                     lock();
-                    replacement = requireNonNull(replaceFunction.apply(this));
+                    replacement = Objects.requireNonNull(replaceFunction.apply(this));
                 } finally {
                     unlock();
                 }
@@ -54,7 +54,7 @@ public final class MatcherWrapper implements MatchResult {
     }
 
     public String replaceFirst(Function<MatcherWrapper, String> replaceFunction) {
-        requireNonNull(replaceFunction, "replaceFunction");
+        Objects.requireNonNull(replaceFunction, "replaceFunction");
         checkLocked();
         Matcher m = matcher;
         m.reset();
@@ -64,7 +64,7 @@ public final class MatcherWrapper implements MatchResult {
         String replacement;
         try {
             lock();
-            replacement = requireNonNull(replaceFunction.apply(this));
+            replacement = Objects.requireNonNull(replaceFunction.apply(this));
         } finally {
             unlock();
         }

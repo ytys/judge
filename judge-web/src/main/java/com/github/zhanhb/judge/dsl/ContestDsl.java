@@ -39,6 +39,7 @@ public class ContestDsl {
     }
 
     private ContestDsl() {
+        throw new AssertionError();
     }
 
 }

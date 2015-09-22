@@ -76,7 +76,7 @@
                     </div> <!-- .navbar-header -->
                     <div id="navigation" class="collapse navbar-collapse" aria-expanded="true">
                         <ul class="nav navbar-nav">
-                            <li><a href="../problems.html" th:href="@{/problems}" th:text="#{header.problems}">Problems</a></li>
+                            <li><a href="../problems.html" th:href="@{/problems}" th:text="#{header.problems}" sec:authorize="hasRole('ADMIN')">Problems</a></li>
                             <li><a href="../users.html" th:href="@{/users}" th:text="#{header.users}">Users</a></li>
                             <li><a href="../contests.html" th:href="@{/contests}" th:text="#{header.contests}">Contests</a></li>
                             <li><a href="../faq.html" th:href="@{/faq}" th:text="#{header.faq}">FAQ</a></li>

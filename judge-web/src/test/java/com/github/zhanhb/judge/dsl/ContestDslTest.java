@@ -23,6 +23,7 @@ import static com.github.zhanhb.judge.dsl.ContestDsl.running;
 import static com.github.zhanhb.judge.dsl.ContestDsl.scheduling;
 import com.github.zhanhb.judge.repository.ContestRepository;
 import com.github.zhanhb.judge.repository.SampleData;
+import com.github.zhanhb.judge.util.TestUtils;
 import static com.google.common.collect.Iterables.size;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -69,17 +70,23 @@ public class ContestDslTest {
                 .name("test_contest")
                 .title("title")
                 .type(ContestType.CONTEST), contest -> {
-                    Iterable<Contest> scheduling = contests.findAll(scheduling());
-                    Iterable<Contest> running = contests.findAll(running());
-                    Iterable<Contest> ended = contests.findAll(ended());
+            Iterable<Contest> scheduling = contests.findAll(scheduling());
+            Iterable<Contest> running = contests.findAll(running());
+            Iterable<Contest> ended = contests.findAll(ended());
 
-                    assertEquals(schedulingSize, size(scheduling));
-                    assertEquals(runningSize + 1, size(running));
-                    assertEquals(endedSize, size(ended));
+            assertEquals(schedulingSize, size(scheduling));
+            assertEquals(runningSize + 1, size(running));
+            assertEquals(endedSize, size(ended));
 
-                    assertThat(running, contains(contest));
-                    assertThat(scheduling, not(contains(contest)));
-                    assertThat(ended, not(contains(contest)));
-                });
+            assertThat(running, contains(contest));
+            assertThat(scheduling, not(contains(contest)));
+            assertThat(ended, not(contains(contest)));
+        });
     }
+
+    @Test
+    public void testConstructor() throws Exception {
+        TestUtils.testConstructor(ContestDsl.class);
+    }
+
 }
