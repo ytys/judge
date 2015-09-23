@@ -13,29 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.zhanhb.judge.domain;
+package com.github.zhanhb.judge.core;
 
-import java.util.Arrays;
-import lombok.extern.slf4j.Slf4j;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
-import org.junit.Test;
+import com.github.zhanhb.judge.domain.Submission;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author zhanhb
  */
-@Slf4j
-public class JudgeReplyTest {
+@Service
+public class Runner {
 
-    @Test
-    public void testAccepted() {
-        assertThat(JudgeReply.accepted.ordinal(), is(6));
-    }
-
-    @Test
-    public void testToString() {
-        log.debug("{}", Arrays.asList(JudgeReply.values()));
+    public JudgeResult run(Submission submission) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
 }

@@ -15,6 +15,7 @@
  */
 package com.github.zhanhb.judge.core;
 
+import com.github.zhanhb.judge.domain.Submission;
 import org.springframework.stereotype.Service;
 
 /**
@@ -23,5 +24,9 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class Compiler {
+
+    public CompilationResult compile(Submission submission) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 
 }

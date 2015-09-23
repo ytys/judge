@@ -13,29 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.zhanhb.judge.domain;
-
-import java.util.Arrays;
-import lombok.extern.slf4j.Slf4j;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
-import org.junit.Test;
+package com.github.zhanhb.judge.core;
 
 /**
  *
  * @author zhanhb
  */
-@Slf4j
-public class JudgeReplyTest {
-
-    @Test
-    public void testAccepted() {
-        assertThat(JudgeReply.accepted.ordinal(), is(6));
-    }
-
-    @Test
-    public void testToString() {
-        log.debug("{}", Arrays.asList(JudgeReply.values()));
-    }
+public class JudgeResult {
 
 }

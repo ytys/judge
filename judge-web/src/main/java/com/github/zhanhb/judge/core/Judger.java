@@ -21,6 +21,8 @@ import com.github.zhanhb.judge.service.JudgeService;
 import java.util.LinkedHashSet;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +31,8 @@ import org.springframework.stereotype.Service;
  *
  * @author zhanhb
  */
+@RequiredArgsConstructor(onConstructor = @__({
+    @Autowired}))
 @Service
 @Slf4j
 public class Judger {
@@ -36,9 +40,14 @@ public class Judger {
     private final ThreadGroup judgeGroup = new ThreadGroup("judge group");
     private final LinkedHashSet<Long> queue = new LinkedHashSet<>(200);
     private final Object judgeLock = new Object();
-    @Autowired
-    private JudgeService judgeService;
+
     private boolean shutdown = false;
+    @NonNull
+    private final JudgeService judgeService;
+    @NonNull
+    private final Compiler compiler;
+    @NonNull
+    private final Runner runner;
 
     @PostConstruct
     public void start() {
@@ -81,16 +90,19 @@ public class Judger {
             try {
                 judgeService.findOne(id).ifPresent(submission -> {
                     try {
-                        judgeService.updataStatus(submission, JudgeReply.Compiling);
+                        judgeService.updataStatus(submission, JudgeReply.compiling);
                         synchronized (judgeLock) {
-                            if (compile(submission)) {
-                                judgeService.updataStatus(submission, JudgeReply.Running);
+                            CompilationResult result = compile(submission);
+                            if (result.isPass()) {
+                                judgeService.updataStatus(submission, JudgeReply.running);
                                 runProcess(submission);
+                            } else {
+                                judgeService.updataStatus(submission, JudgeReply.compilationError);
                             }
                         }
                     } catch (Throwable ex) {
-                        log.error("", ex);
-                        judgeService.updataStatus(submission, JudgeReply.JudgeInternalError);
+                        log.error("juge error, id {}", id, ex);
+                        judgeService.updataStatus(submission, JudgeReply.judgeInternalError);
                     }
                 });
             } finally {
@@ -99,12 +111,12 @@ public class Judger {
         }
     }
 
-    private boolean compile(Submission submission) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    private CompilationResult compile(Submission submission) {
+        return compiler.compile(submission);
     }
 
-    private void runProcess(Submission submission) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    private JudgeResult runProcess(Submission submission) {
+        return runner.run(submission);
     }
 
     public void submit(long id) {

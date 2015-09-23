@@ -16,7 +16,7 @@
     <name>ZJNU Online Judge</name>
     <description>Online Judge System of Zhejiang Normal University.</description>
     <url>https://github.com/zjnu-acm/judge/</url>
-    <inceptionYear>2015</inceptionYear>
+    <inceptionYear>2006</inceptionYear>
 
     <organization>
         <name>ZJNU ACM</name>
@@ -255,6 +255,11 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-compress</artifactId>
             <version>${commons-compress.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -687,7 +692,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <finalName>${project.build.finalName}-spring</finalName>
+                    <classifier>spring</classifier>
                 </configuration>
             </plugin>
         </plugins>
