@@ -43,14 +43,17 @@ public class SecurityUtils {
      * @param username must not be {@literal null} or empty.
      * @param password must not be {@literal null} or empty.
      * @param roles
+     * @return Authentication of specified username, password and roles
      */
     @Deprecated
-    public static void runAs(String username, String password, String... roles) {
+    public static Authentication runAs(String username, String password, String... roles) {
         Objects.requireNonNull(username, "Username must not be null!");
         Objects.requireNonNull(password, "Password must not be null!");
 
-        SecurityContextHolder.getContext().setAuthentication(
-                new UsernamePasswordAuthenticationToken(username, password, AuthorityUtils.createAuthorityList(roles)));
+        Authentication auth = new UsernamePasswordAuthenticationToken(username, password,
+                AuthorityUtils.createAuthorityList(roles));
+        SecurityContextHolder.getContext().setAuthentication(auth);
+        return auth;
     }
 
     @Autowired
@@ -98,12 +101,14 @@ public class SecurityUtils {
         Objects.requireNonNull(userprofile);
         Objects.requireNonNull(action);
         SecurityContext context = SecurityContextHolder.getContext();
-        Authentication auth = context.getAuthentication();
+        Authentication old = context.getAuthentication();
+        Authentication auth = runAs(userprofile.getHandle(), userprofile.getPassword());
         try {
-            runAs(userprofile.getHandle(), userprofile.getPassword());
             action.run();
         } finally {
-            context.setAuthentication(auth);
+            if (context.getAuthentication() == auth) {
+                context.setAuthentication(old);
+            }
         }
     }
 

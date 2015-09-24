@@ -21,8 +21,6 @@ import com.github.zhanhb.judge.service.JudgeService;
 import java.util.LinkedHashSet;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,23 +29,22 @@ import org.springframework.stereotype.Service;
  *
  * @author zhanhb
  */
-@RequiredArgsConstructor(onConstructor = @__({
-    @Autowired}))
 @Service
 @Slf4j
 public class Judger {
 
     private final ThreadGroup judgeGroup = new ThreadGroup("judge group");
     private final LinkedHashSet<Long> queue = new LinkedHashSet<>(200);
-    private final Object judgeLock = new Object();
+    private final JudgerLock judgeLock = new JudgerLock();
 
     private boolean shutdown = false;
-    @NonNull
-    private final JudgeService judgeService;
-    @NonNull
-    private final Compiler compiler;
-    @NonNull
-    private final Runner runner;
+
+    @Autowired
+    private JudgeService judgeService;
+    @Autowired
+    private Compiler compiler;
+    @Autowired
+    private Runner runner;
 
     @PostConstruct
     public void start() {

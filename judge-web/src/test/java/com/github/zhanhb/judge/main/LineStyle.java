@@ -29,6 +29,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.util.StringUtils;
 
@@ -36,6 +37,7 @@ import org.springframework.util.StringUtils;
  *
  * @author zhanhb
  */
+@Slf4j
 public class LineStyle {
 
     private static final String LINE_STYLE = "\n";
@@ -60,7 +62,8 @@ public class LineStyle {
                 .collect(Collectors.joining(LINE_STYLE)) + LINE_STYLE;
 
         if (!str.equals(content)) {
-            Files.write(path, content.getBytes(charset));
+            log.info("{}", path);
+            Files.write(path, str.getBytes(charset));
         }
     }
 
