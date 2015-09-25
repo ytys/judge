@@ -40,8 +40,10 @@ public class JudgeService {
 
     @Transactional
     public void updataStatus(Submission submission, JudgeReply judgeReply) {
-        submission.setJudgeReply(judgeReply);
-        submissions.save(submission);
+        if (submission.getJudgeReply() != judgeReply) {
+            submission.setJudgeReply(judgeReply);
+            submissions.save(submission);
+        }
     }
 
 }

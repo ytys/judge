@@ -16,7 +16,6 @@
 package com.github.zhanhb.judge.main;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.UncheckedIOException;
@@ -26,17 +25,19 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.attribute.FileTime;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.util.StringUtils;
 
 /**
  *
  * @author zhanhb
  */
+@Slf4j
 public class LineStyle {
 
     private static final String LINE_STYLE = "\n";
@@ -50,11 +51,10 @@ public class LineStyle {
     }
 
     private static boolean accept(Path path) {
-        return ACCEPT_SUFFIX.contains(getExtension(path.toString()));
+        return ACCEPT_SUFFIX.contains(FilenameUtils.getExtension(path.toString()));
     }
 
     private static void handle0(Path path) throws IOException {
-        long lastModified = Files.getLastModifiedTime(path).toMillis();
         Charset charset = StandardCharsets.ISO_8859_1;
         byte[] bytes = Files.readAllBytes(path);
         String content = charset.newDecoder().decode(ByteBuffer.wrap(bytes)).toString();
@@ -62,12 +62,8 @@ public class LineStyle {
                 .collect(Collectors.joining(LINE_STYLE)) + LINE_STYLE;
 
         if (!str.equals(content)) {
-            try {
-                Files.write(path, content.getBytes(charset));
-            } finally {
-                // add one second
-                Files.setLastModifiedTime(path, FileTime.fromMillis(lastModified + 1000));
-            }
+            log.info("{}", path);
+            Files.write(path, str.getBytes(charset));
         }
     }
 
@@ -79,21 +75,4 @@ public class LineStyle {
         }
     }
 
-    @SuppressWarnings("AssignmentToMethodParameter")
-    private static String getExtension(String filename) {
-        int indexOf = filename.indexOf(File.separatorChar);
-        if (indexOf >= 0) {
-            filename = filename.substring(indexOf);
-        }
-        if (File.separatorChar != '/') {
-            indexOf = filename.lastIndexOf('/');
-            if (indexOf >= 0) {
-                filename = filename.substring(indexOf);
-            }
-        }
-        int lastIndexOf = filename.lastIndexOf('.');
-        // a file whose name has only extension
-        // such as .gitignore is regard as no extension
-        return (lastIndexOf > 0) ? filename.substring(lastIndexOf + 1) : "";
-    }
 }

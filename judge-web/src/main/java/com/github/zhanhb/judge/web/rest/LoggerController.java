@@ -2,7 +2,6 @@ package com.github.zhanhb.judge.web.rest;
 
 import com.github.zhanhb.judge.repository.LoggerRepository;
 import com.github.zhanhb.judge.web.rest.dto.LoggerDTO;
-import java.util.Objects;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -29,12 +28,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class LoggerController {
 
-    private final LoggerRepository loggers;
-
     @Autowired
-    public LoggerController(LoggerRepository loggers) {
-        this.loggers = Objects.requireNonNull(loggers);
-    }
+    private LoggerRepository loggers;
 
     @RequestMapping(method = RequestMethod.GET,
             produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})

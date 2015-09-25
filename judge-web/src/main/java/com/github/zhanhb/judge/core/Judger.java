@@ -35,10 +35,16 @@ public class Judger {
 
     private final ThreadGroup judgeGroup = new ThreadGroup("judge group");
     private final LinkedHashSet<Long> queue = new LinkedHashSet<>(200);
-    private final Object judgeLock = new Object();
+    private final JudgerLock judgeLock = new JudgerLock();
+
+    private boolean shutdown = false;
+
     @Autowired
     private JudgeService judgeService;
-    private boolean shutdown = false;
+    @Autowired
+    private Compiler compiler;
+    @Autowired
+    private Runner runner;
 
     @PostConstruct
     public void start() {
@@ -81,16 +87,19 @@ public class Judger {
             try {
                 judgeService.findOne(id).ifPresent(submission -> {
                     try {
-                        judgeService.updataStatus(submission, JudgeReply.Compiling);
+                        judgeService.updataStatus(submission, JudgeReply.compiling);
                         synchronized (judgeLock) {
-                            if (compile(submission)) {
-                                judgeService.updataStatus(submission, JudgeReply.Running);
+                            CompilationResult result = compile(submission);
+                            if (result.isPass()) {
+                                judgeService.updataStatus(submission, JudgeReply.running);
                                 runProcess(submission);
+                            } else {
+                                judgeService.updataStatus(submission, JudgeReply.compilationError);
                             }
                         }
                     } catch (Throwable ex) {
-                        log.error("", ex);
-                        judgeService.updataStatus(submission, JudgeReply.JudgeInternalError);
+                        log.error("juge error, id {}", id, ex);
+                        judgeService.updataStatus(submission, JudgeReply.judgeInternalError);
                     }
                 });
             } finally {
@@ -99,12 +108,12 @@ public class Judger {
         }
     }
 
-    private boolean compile(Submission submission) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    private CompilationResult compile(Submission submission) {
+        return compiler.compile(submission);
     }
 
-    private void runProcess(Submission submission) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    private JudgeResult runProcess(Submission submission) {
+        return runner.run(submission);
     }
 
     public void submit(long id) {

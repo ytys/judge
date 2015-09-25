@@ -16,7 +16,7 @@
     <name>ZJNU Online Judge</name>
     <description>Online Judge System of Zhejiang Normal University.</description>
     <url>https://github.com/zjnu-acm/judge/</url>
-    <inceptionYear>2015</inceptionYear>
+    <inceptionYear>2006</inceptionYear>
 
     <organization>
         <name>ZJNU ACM</name>
@@ -255,6 +255,11 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-compress</artifactId>
             <version>${commons-compress.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -602,7 +607,7 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>2.10.3</version>
                 <configuration>
-                    <!--<additionalJOption>-J-Dfile.encoding=${file.encoding}</additionalJOption>-->
+                    <additionalJOption>-J-Dfile.encoding=${file.encoding}</additionalJOption>
                     <locale>en_US</locale>
                     <linksource>true</linksource>
                 </configuration>
@@ -629,7 +634,7 @@
                     <!-- surefire doesn't support file.encoding in environment, -->
                     <!-- we must specify it using argLine -->
                     <!-- surefireArgLine will be set by jacoco-maven-plugin. -->
-                    <!--<argLine>-Dfile.encoding=${file.encoding} -ea ${surefireArgLine}</argLine>-->
+                    <argLine>-Dfile.encoding=${file.encoding} -ea ${surefireArgLine}</argLine>
                     <!-- includes of surefire -->
                     <!-- http://maven.apache.org/surefire/maven-surefire-plugin/examples/inclusion-exclusion.html -->
                     <includes>
@@ -651,7 +656,7 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>versions-maven-plugin</artifactId>
                 <configuration>
-                    <rulesUri>https://raw.githubusercontent.com/zhanhb/platform/master/maven-version-rules.xml</rulesUri>
+                    <rulesUri>file:${project.build.testResources[0].directory}/maven-version-rules.xml</rulesUri>
                 </configuration>
             </plugin>
             <plugin>
@@ -680,14 +685,14 @@
                         <exclude>com/github/zhanhb/judge/config/*.class</exclude>
                         <exclude>com/github/zhanhb/judge/domain/*.class</exclude>
                     </excludes>
-                    <!--<propertyName>surefireArgLine</propertyName>-->
+                    <propertyName>surefireArgLine</propertyName>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <finalName>${project.build.finalName}-spring</finalName>
+                    <classifier>spring</classifier>
                 </configuration>
             </plugin>
         </plugins>
@@ -699,8 +704,7 @@
             <properties>
                 <!-- 9.3.1 and 9.3.2 can't find source in dir src/main/webapps -->
                 <!--<jetty.version>9.3.0.v20150612</jetty.version>-->
-                <!--<jetty.version>9.3.1.v20150714</jetty.version>-->
-                <!--<jetty.version>9.3.2.v20150730</jetty.version>-->
+                <!--<jetty.version>9.3.3.v20150827</jetty.version>-->
                 <servlet-api.version>3.1.0</servlet-api.version>
             </properties>
             <dependencies>

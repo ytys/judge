@@ -13,29 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.zhanhb.judge.domain;
+package com.github.zhanhb.judge.core;
 
-import java.util.Arrays;
-import lombok.extern.slf4j.Slf4j;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
-import org.junit.Test;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 /**
  *
  * @author zhanhb
  */
-@Slf4j
-public class JudgeReplyTest {
-
-    @Test
-    public void testAccepted() {
-        assertThat(JudgeReply.accepted.ordinal(), is(6));
-    }
-
-    @Test
-    public void testToString() {
-        log.debug("{}", Arrays.asList(JudgeReply.values()));
-    }
+@NoArgsConstructor(access = AccessLevel.PACKAGE)
+public class JudgerLock {
 
 }

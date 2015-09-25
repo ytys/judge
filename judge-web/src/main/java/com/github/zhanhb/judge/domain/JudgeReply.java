@@ -25,42 +25,50 @@ public enum JudgeReply implements Serializable {
     /* a placeholder whose ordinal is 0, do NOT use */
     @Deprecated
     __HOLDER__,
-    Queuing,
-    Compiling,
-    Running,
-    RuntimeError,
-    WrongAnswer,
-    Accepted,
-    TimeLimitExceeded,
-    MemoryLimitExceeded,
-    OutOfContestTime {
-        @Override
-        public String toString() {
-            return "Out of Contest Time";
-        }
-    },
-    RestrictedFunction,
-    OutputLimitExceeded,
-    NoSuchProblem {
-        @Override
-        public String toString() {
-            return "No such Problem";
-        }
-    },
-    CompilationError,
-    PresentationError,
-    JudgeInternalError,
-    FloatingPointError,
-    SegmentationFault,
-    PrepareCompilation,
-    PrepareExecution,
-    Judging,
-    SubmissionLimitExceeded,
-    Aborted;
+    queuing,
+    compiling,
+    running,
+    runtimeError,
+    wrongAnswer,
+    accepted,
+    timeLimitExceeded,
+    memoryLimitExceeded,
+    outOfContestTime,
+    restrictedFunction,
+    outputLimitExceeded,
+    noSuchProblem,
+    compilationError,
+    presentationError,
+    judgeInternalError,
+    floatingPointError,
+    segmentationFault,
+    prepareCompilation,
+    prepareExecution,
+    judging,
+    submissionLimitExceeded,
+    aborted;
+    private static final JudgeReply[] values = values();
+    private transient final String toString = toString(name());
 
     @Override
     public String toString() {
-        return name().charAt(0) + name().substring(1).replaceAll("[A-Z]", " $0");
+        return toString;
+    }
+
+    public static String toString(String name) {
+        char charAt0 = name.charAt(0);
+        return charAt0 == '_' ? name
+                : (Character.toUpperCase(charAt0)
+                + name.substring(1).replaceAll("[A-Z]", " $0"))
+                .replace(" Of ", " of ");
+    }
+
+    public static JudgeReply valueOf(int ordinal) {
+        try {
+            return values[ordinal];
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            throw new IllegalArgumentException();
+        }
     }
 
 }

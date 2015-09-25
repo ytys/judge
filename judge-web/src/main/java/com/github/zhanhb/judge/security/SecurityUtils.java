@@ -19,9 +19,13 @@ import com.github.zhanhb.judge.audit.CustomUserDetails;
 import com.github.zhanhb.judge.domain.Userprofile;
 import com.github.zhanhb.judge.repository.UserprofileRepository;
 import com.github.zhanhb.judge.util.Utility;
+import java.util.Objects;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -30,6 +34,27 @@ import org.springframework.security.core.userdetails.UserDetails;
  */
 @Utility
 public class SecurityUtils {
+
+    /**
+     * Configures the Spring Security {@link SecurityContext} to be
+     * authenticated as the user with the given username and password as well as
+     * the given granted authorities.
+     *
+     * @param username must not be {@literal null} or empty.
+     * @param password must not be {@literal null} or empty.
+     * @param roles
+     * @return Authentication of specified username, password and roles
+     */
+    @Deprecated
+    public static Authentication runAs(String username, String password, String... roles) {
+        Objects.requireNonNull(username, "Username must not be null!");
+        Objects.requireNonNull(password, "Password must not be null!");
+
+        Authentication auth = new UsernamePasswordAuthenticationToken(username, password,
+                AuthorityUtils.createAuthorityList(roles));
+        SecurityContextHolder.getContext().setAuthentication(auth);
+        return auth;
+    }
 
     @Autowired
     private UserprofileRepository repository;
@@ -70,6 +95,21 @@ public class SecurityUtils {
      */
     public boolean isAuthenticated() {
         return getCurrentUserprofile() != null;
+    }
+
+    public void runAs(Userprofile userprofile, Runnable action) {
+        Objects.requireNonNull(userprofile);
+        Objects.requireNonNull(action);
+        SecurityContext context = SecurityContextHolder.getContext();
+        Authentication old = context.getAuthentication();
+        Authentication auth = runAs(userprofile.getHandle(), userprofile.getPassword());
+        try {
+            action.run();
+        } finally {
+            if (context.getAuthentication() == auth) {
+                context.setAuthentication(old);
+            }
+        }
     }
 
 }

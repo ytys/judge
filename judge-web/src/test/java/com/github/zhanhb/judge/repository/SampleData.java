@@ -22,7 +22,7 @@ import com.github.zhanhb.judge.domain.Language;
 import com.github.zhanhb.judge.domain.Problem;
 import com.github.zhanhb.judge.domain.Submission;
 import com.github.zhanhb.judge.domain.Userprofile;
-import com.github.zhanhb.judge.util.SecurityUtils;
+import com.github.zhanhb.judge.security.SecurityUtils;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -31,8 +31,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 /**
@@ -54,6 +52,8 @@ public class SampleData {
     private ProblemRepository problems;
     @Autowired
     private RepositoryRestConfiguration restConfig;
+    @Autowired
+    private SecurityUtils securityUtils;
 
     public void problem(Consumer<Problem> consumer) {
         Objects.requireNonNull(consumer);
@@ -108,24 +108,20 @@ public class SampleData {
 
     public void submission(Consumer<Submission> consumer) {
         problem(problem -> language(language -> userprofile(userprofile -> contest(contest -> {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            try {
-                SecurityUtils.runAs(userprofile.getHandle(), userprofile.getPassword());
+            securityUtils.runAs(userprofile, () -> {
                 Submission submission = submissions.save(Submission.builder()
                         .contest(contest)
                         .userprofile(userprofile)
                         .language(language)
                         .problem(problem)
-                        .judgeReply(JudgeReply.Queuing)
+                        .judgeReply(JudgeReply.queuing)
                         .build());
                 try {
                     consumer.accept(submission);
                 } finally {
                     submissions.delete(submission);
                 }
-            } finally {
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            }
+            });
         }))));
     }
 
