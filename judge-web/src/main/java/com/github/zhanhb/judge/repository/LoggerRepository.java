@@ -25,6 +25,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -71,13 +72,22 @@ public class LoggerRepository {
         return new PageImpl<>(paging(all.stream(), pageable), pageable, all.size());
     }
 
+    /**
+     *
+     * @param name the name of the logger to set
+     * @param level the name of the level
+     * @throws NullPointerException if name is null.
+     * @throws IllegalArgumentException if name is ROOT, and level is null.
+     */
     public void save(String name, String level) {
         findOne(name).ifPresent(logger -> logger.setLevel(Level.toLevel(level, null)));
     }
 
     private List<Logger> paging(Stream<Logger> stream, Pageable pageable) {
         return Optional.ofNullable(pageable.getSort()) // maybe api returns null
-                .map(this::toComparator) // usually not null, throws an IAE if the property is not present
+                .flatMap(sort -> StreamSupport.stream(sort.spliterator(), false)
+                        .map(this::toComparator) // throws an IAE if the property is not present
+                        .collect(Collectors.reducing(Comparator::thenComparing))) // usually not null
                 .map(stream::sorted)
                 .orElse(stream)
                 .skip(pageable.getOffset())
@@ -85,23 +95,17 @@ public class LoggerRepository {
                 .collect(Collectors.toList());
     }
 
-    private Comparator<? super Logger> toComparator(Sort sort) {
-        Comparator<Logger> result = null;
-        for (Sort.Order order : sort) {
-            String property = order.getProperty();
-
-            Comparator<Logger> c;
-            if ("level".equalsIgnoreCase(property)) {
-                c = BY_LEVEL;
-            } else if ("name".equalsIgnoreCase(property)) {
-                c = order.isIgnoreCase() ? BY_NAME_I : BY_NAME;
-            } else {
-                throw new IllegalArgumentException(String.format("No property %s found for type %s!", property, Logger.class.getSimpleName()));
-            }
-            c = order.isAscending() ? c : c.reversed();
-            result = result == null ? c : result.thenComparing(c);
+    private Comparator<Logger> toComparator(Sort.Order order) {
+        String property = order.getProperty();
+        Comparator<Logger> c;
+        if ("level".equalsIgnoreCase(property)) {
+            c = BY_LEVEL;
+        } else if ("name".equalsIgnoreCase(property)) {
+            c = order.isIgnoreCase() ? BY_NAME_I : BY_NAME;
+        } else {
+            throw new IllegalArgumentException(String.format("No property %s found for type %s!", property, Logger.class.getSimpleName()));
         }
-        return result;
+        return order.isAscending() ? c : c.reversed();
     }
 
     private LoggerContext getLoggerContext() {
