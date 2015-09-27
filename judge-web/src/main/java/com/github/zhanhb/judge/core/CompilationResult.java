@@ -35,24 +35,23 @@ public class CompilationResult implements Serializable {
     private static final long serialVersionUID = 1L;
     public static final CompilationResult SUCCESS = new CompilationResult();
 
-    private boolean pass;
-    private String message;
-    private String detailMessage;
-
-    public CompilationResult success(String message) {
+    public static CompilationResult success(String message) {
         return success(message, null);
     }
 
-    public CompilationResult success(String message, String detailMessage) {
+    public static CompilationResult success(String message, String detailMessage) {
         return new CompilationResult(true, message, detailMessage);
     }
 
-    public CompilationResult fail(String message) {
+    public static CompilationResult fail(String message) {
         return fail(message, null);
     }
 
-    public CompilationResult fail(String message, String detailMessage) {
+    public static CompilationResult fail(String message, String detailMessage) {
         return new CompilationResult(false, message, detailMessage);
     }
+    private boolean pass;
+    private String message;
+    private String detailMessage;
 
 }
