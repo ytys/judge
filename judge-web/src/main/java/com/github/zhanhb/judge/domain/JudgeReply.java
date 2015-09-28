@@ -15,13 +15,11 @@
  */
 package com.github.zhanhb.judge.domain;
 
-import java.io.Serializable;
-
 /**
  *
  * @author zhanhb
  */
-public enum JudgeReply implements Serializable {
+public enum JudgeReply {
     /* a placeholder whose ordinal is 0, do NOT use */
     @Deprecated
     __HOLDER__,

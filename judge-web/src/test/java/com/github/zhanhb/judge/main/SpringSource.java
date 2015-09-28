@@ -37,40 +37,36 @@ import java.util.Map;
  */
 public class SpringSource {
 
-    private static Path target;
-
-    static {
-        URI uri = URI.create("jar:" + Paths.get("target/test.zip").toUri());
-        Map<String, ?> env = Collections.singletonMap("create", "true");
-        try {
-            target = FileSystems.newFileSystem(uri, env).getRootDirectories().iterator().next();
-        } catch (IOException ex) {
-            throw new ExceptionInInitializerError(ex);
-        }
-    }
-
     public static void main(String[] args) throws IOException {
         ArrayList<ClassLoader> list = new ArrayList<>(20);
         for (ClassLoader cl = SpringSource.class.getClassLoader(); cl != null; cl = cl.getParent()) {
             list.add(cl);
         }
 
-        list.stream()
-                .filter(URLClassLoader.class::isInstance)
-                .map(URLClassLoader.class::cast)
-                .flatMap(cl -> Arrays.stream(cl.getURLs()))
-                .forEach((URL url) -> {
-                    try {
-                        resolve(url);
-                    } catch (URISyntaxException | IOException ex) {
-                        throw new Error(ex);
-                    }
-                });
-        target.getFileSystem().close();
+        URI uri = URI.create("jar:" + Paths.get("target/test.zip").toUri());
+        Map<String, ?> env = Collections.singletonMap("create", "true");
+        try (FileSystem fs = FileSystems.newFileSystem(uri, env)) {
+            Path target = fs.getPath("/");
+
+            list.stream()
+                    .filter(URLClassLoader.class::isInstance)
+                    .map(URLClassLoader.class::cast)
+                    .map(URLClassLoader::getURLs)
+                    .flatMap(Arrays::stream)
+                    .forEach(url -> resolve(url, target));
+        }
 
     }
 
-    private static void resolve(URL url) throws URISyntaxException, IOException {
+    private static void resolve(URL url, Path target) {
+        try {
+            resolve0(url, target);
+        } catch (URISyntaxException | IOException ex) {
+            throw new Error(ex);
+        }
+    }
+
+    private static void resolve0(URL url, Path target) throws URISyntaxException, IOException {
         Path path = Paths.get(url.toURI());
 
         if (Files.isDirectory(path)) {
@@ -89,12 +85,12 @@ public class SpringSource {
         if (!Files.isReadable(path)) {
             throw new IllegalArgumentException(resolve.toString());
         }
-        FileSystem fs = FileSystems.newFileSystem(new URI("jar:" + resolve.toUri()), Collections.emptyMap());
+        try (FileSystem fs = FileSystems.newFileSystem(URI.create("jar:" + resolve.toUri()), Collections.emptyMap())) {
+            Path source = fs.getPath("/");
 
-        Path source = fs.getRootDirectories().iterator().next();
-
-        DirectoryCopyHelper.copy(source, target,
-                p -> Files.isDirectory(p) || p.getFileName().toString().endsWith(".java"));
+            DirectoryCopyHelper.copy(source, target,
+                    p -> Files.isDirectory(p) || p.getFileName().toString().endsWith(".java"));
+        }
 
     }
 

@@ -23,8 +23,10 @@ import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 
@@ -38,12 +40,11 @@ public class LoginController {
     public static final String TARGET_URL_PARAMETER = "url";
 
     @RequestMapping(value = "login", method = RequestMethod.GET, produces = TEXT_HTML_VALUE)
-    public String login(WebRequest request, Model model) {
-        String url = Optional.ofNullable(request.getParameter(TARGET_URL_PARAMETER))
-                .orElseGet(
-                        () -> Optional.ofNullable(request.getHeader("referer"))
-                        .orElseGet(request::getContextPath)
-                );
+    public String login(WebRequest request, Model model,
+            @RequestHeader("referer") Optional<String> referrer,
+            @RequestParam(TARGET_URL_PARAMETER) Optional<String> paramURL
+    ) {
+        String url = paramURL.orElse(referrer.orElseGet(request::getContextPath));
         model.addAttribute(TARGET_URL_PARAMETER, url);
         return "login";
     }

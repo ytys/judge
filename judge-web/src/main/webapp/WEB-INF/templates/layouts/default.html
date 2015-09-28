@@ -62,75 +62,75 @@
         <!--/*/</th:block>/*/--> <!--/* ends of fragment="scripts" */-->
     </head>
     <body>
-        <th:block th:fragment="header">
-            <nav role="navigation" id="header" class="navbar navbar-default navbar-fixed-top">
-                <div class="container navbar-inner">
-                    <div class="navbar-header">
-                        <button type="button" data-toggle="collapse" data-target="#navigation" class="navbar-toggle collapsed">
-                            <span class="sr-only">Toggle navigation</span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <a href="../home.html" class="navbar-brand" th:href="@{/}" th:text="#{header.index}">Home</a>
-                    </div> <!-- .navbar-header -->
-                    <div id="navigation" class="collapse navbar-collapse" aria-expanded="true">
-                        <ul class="nav navbar-nav">
-                            <li><a href="../problems.html" th:href="@{/problems}" th:text="#{header.problems}" sec:authorize="hasRole('ADMIN')">Problems</a></li>
-                            <li><a href="../users.html" th:href="@{/users}" th:text="#{header.users}">Users</a></li>
-                            <li><a href="../contests.html" th:href="@{/contests}" th:text="#{header.contests}">Contests</a></li>
-                            <li><a href="../faq.html" th:href="@{/faq}" th:text="#{header.faq}">FAQ</a></li>
-                            <li><a href="../forum.html" th:href="@{/forum}" th:text="#{header.forum}">Forum</a></li>
-                        </ul>
-                        <!--/* you must add dependency thymeleaf-extras-springsecurity and has dialect SpringSecurityDialect */-->
-                        <ul class="nav navbar-nav navbar-right nav-controls" sec:authorize="isAuthenticated()">
-                            <li class="dropdown">
-                                <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" th:inline="text">[[${#authentication.principal.username}]]<b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a th:href="@{/user/edit}">Edit Profile</a></li>
-                                    <li><a th:href="@{/mail}">Mail</a></li>
-                                    <li class="divider"></li>
-                                    <li><a th:href="@{/logout}" data-no-turbolink="" th:text="#{header.logout}">Logout</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                        <ul class="nav navbar-nav navbar-right nav-controls" sec:authorize="!isAuthenticated()">
-                            <li><a href="#" data-toggle="modal" data-target="#loginModal" th:text="#{header.login}">Login</a></li>
-                        </ul>
-                    </div>
-                </div> <!-- .container -->
-            </nav>
-            <div class="navigation-placeholder"></div>
-            <div id="loginModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                            <h1 class="text-center" th:text="#{login.title}">Login</h1>
-                        </div>
-                        <div class="modal-body">
-                            <form class="form col-md-12 center-block" th:action="@{/login}" th:replace="login :: .th-form-signin">
-                                <div class="form-group">
-                                    <input type="text" class="form-control input-lg" placeholder="Email"/>
-                                </div>
-                                <div class="form-group">
-                                    <input type="password" class="form-control input-lg" placeholder="Password"/>
-                                </div>
-                                <div class="form-group">
-                                    <button class="btn btn-primary btn-lg btn-block">Sign In</button>
-                                    <span class="pull-right"><a href="#">Register</a></span><span><a href="#">Need help?</a></span>
-                                </div>
-                            </form>
-                        </div>
-                        <!--/*--><div class="modal-footer">
-                            <div class="col-md-12">
-                                <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
-                            </div>
-                        </div><!--*/-->
-                    </div>
+        <!--/*/<th:block th:fragment="header">/*/-->
+        <nav role="navigation" id="header" class="navbar navbar-default navbar-fixed-top">
+            <div class="container navbar-inner">
+                <div class="navbar-header">
+                    <button type="button" data-toggle="collapse" data-target="#navigation" class="navbar-toggle collapsed">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a href="../home.html" class="navbar-brand" th:href="@{/}" th:text="#{header.index}">Home</a>
+                </div> <!-- .navbar-header -->
+                <div id="navigation" class="collapse navbar-collapse" aria-expanded="true">
+                    <ul class="nav navbar-nav">
+                        <li><a href="../problems.html" th:href="@{/problems}" th:text="#{header.problems}" sec:authorize="hasRole('ADMIN')">Problems</a></li>
+                        <li><a href="../users.html" th:href="@{/users}" th:text="#{header.users}">Users</a></li>
+                        <li><a href="../contests.html" th:href="@{/contests}" th:text="#{header.contests}">Contests</a></li>
+                        <li><a href="../faq.html" th:href="@{/faq}" th:text="#{header.faq}">FAQ</a></li>
+                        <li><a href="../forum.html" th:href="@{/forum}" th:text="#{header.forum}">Forum</a></li>
+                    </ul>
+                    <!--/* you must add dependency thymeleaf-extras-springsecurity and has dialect SpringSecurityDialect */-->
+                    <ul class="nav navbar-nav navbar-right nav-controls" sec:authorize="isAuthenticated()">
+                        <li class="dropdown">
+                            <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" th:inline="text">[[${#authentication.principal.username}]]<b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a th:href="@{/user/edit}">Edit Profile</a></li>
+                                <li><a th:href="@{/mail}">Mail</a></li>
+                                <li class="divider"></li>
+                                <li><a th:href="@{/logout}" data-no-turbolink="" th:text="#{header.logout}">Logout</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right nav-controls" sec:authorize="!isAuthenticated()">
+                        <li><a href="#" data-toggle="modal" data-target="#loginModal" th:text="#{header.login}">Login</a></li>
+                    </ul>
                 </div>
-            </div><!-- #loginModal.modal -->
-        </th:block>
+            </div> <!-- .container -->
+        </nav>
+        <div class="navigation-placeholder"></div>
+        <div id="loginModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h1 class="text-center" th:text="#{login.title}">Login</h1>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form col-md-12 center-block" th:action="@{/login}" th:replace="login :: .th-form-signin">
+                            <div class="form-group">
+                                <input type="text" class="form-control input-lg" placeholder="Email"/>
+                            </div>
+                            <div class="form-group">
+                                <input type="password" class="form-control input-lg" placeholder="Password"/>
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-primary btn-lg btn-block">Sign In</button>
+                                <span class="pull-right"><a href="#">Register</a></span><span><a href="#">Need help?</a></span>
+                            </div>
+                        </form>
+                    </div>
+                    <!--/*--><div class="modal-footer">
+                        <div class="col-md-12">
+                            <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                        </div>
+                    </div><!--*/-->
+                </div>
+            </div>
+        </div><!-- #loginModal.modal -->
+        <!--/*/</th:block>/*/-->
 
         <div layout:fragment="content">
             <div>
@@ -138,12 +138,12 @@
             </div>
         </div>
 
-        <th:block th:fragment="footer">
+        <!--/*/<th:block th:fragment="footer">>/*/-->
             <hr/>
             <div class="footer text-center" >
                 <p>Copyright &#169; <span th:text="${#calendars.format(execInfo.now,'yyyy')}">2010</span> ZJNU ACM</p>
             </div>
             <span th:title="#{back_to_top}" class="back-to-top" id="back-to-top"></span>
-        </th:block>
+        <!--/*/</th:block>/*/-->
     </body>
 </html>
