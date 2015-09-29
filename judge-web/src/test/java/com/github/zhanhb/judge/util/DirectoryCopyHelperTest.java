@@ -43,10 +43,8 @@ public class DirectoryCopyHelperTest {
         log.info("copy");
         Path zipfile = Files.createTempFile("", ".zip");
         Files.delete(zipfile);
-        try {
-            try (FileSystem fs = FileSystems.newFileSystem(URI.create("jar:" + zipfile.toUri()), Collections.singletonMap("create", "true"))) {
-                DirectoryCopyHelper.copy(Paths.get("src"), fs.getPath("/"));
-            }
+        try (FileSystem fs = FileSystems.newFileSystem(URI.create("jar:" + zipfile.toUri()), Collections.singletonMap("create", "true"))) {
+            DirectoryCopyHelper.copy(Paths.get("src"), fs.getPath("/"));
         } finally {
             Files.delete(zipfile);
         }

@@ -42,7 +42,7 @@ public class AccessLogRepositoryTest {
     @Autowired
     private AccessLogRepository accessLogs;
     @Autowired
-    private SampleData SampleData;
+    private SampleData sampleData;
 
     @Test
     @Transactional
@@ -67,7 +67,7 @@ public class AccessLogRepositoryTest {
     public void testFindAllByUserprofileHandleIgnoreCase() {
         log.info("findAllByUserprofileHandleIgnoreCase");
         String userprofileHandle = "admin";
-        accessLogs.findAllByUserprofileHandleIgnoreCase(userprofileHandle, SampleData.pageable());
+        accessLogs.findAllByUserprofileHandleIgnoreCase(userprofileHandle, sampleData.pageable());
     }
 
     /**
@@ -76,9 +76,7 @@ public class AccessLogRepositoryTest {
     @Test
     public void testFindByUserprofile() {
         log.info("findByUserprofile");
-        SampleData.userprofile(userprofile -> {
-            accessLogs.findByUserprofile(userprofile, SampleData.pageable());
-        });
+        sampleData.userprofile(userprofile -> accessLogs.findByUserprofile(userprofile, sampleData.pageable()));
     }
 
 }

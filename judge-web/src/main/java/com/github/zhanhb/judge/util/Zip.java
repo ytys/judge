@@ -43,8 +43,8 @@ public class Zip {
                 String name = source.getFileName().toString();
                 if (Files.isDirectory(source)) {
                     Files.walk(source)
-                            .filter(file -> Files.isRegularFile(file))
-                            .forEach((Path file) -> copy(file, source, zip, name));
+                            .filter(Files::isRegularFile)
+                            .forEach(file -> copy(file, source, zip, name));
                 } else {
                     copyEntry(zip, name, source);
                 }

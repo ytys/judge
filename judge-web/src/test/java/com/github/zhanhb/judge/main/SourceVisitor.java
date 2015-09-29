@@ -26,7 +26,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Collectors;
-import lombok.Lombok;
 
 /**
  *
@@ -53,7 +52,7 @@ public class SourceVisitor {
                         out.println(dashes + path.getFileName() + dashes);
                         out.println(string);
                     } catch (IOException ex) {
-                        throw Lombok.sneakyThrow(ex);
+                        throw new Error(ex);
                     }
                 });
         out.flush();
