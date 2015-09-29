@@ -89,7 +89,7 @@ public class SpringSource {
             Path source = fs.getPath("/");
 
             DirectoryCopyHelper.copy(source, target,
-                    p -> Files.isDirectory(p) || p.getFileName().toString().endsWith(".java"));
+                    p -> Files.isDirectory(p) || Files.isRegularFile(p) && p.getFileName().toString().endsWith(".java"));
         }
 
     }

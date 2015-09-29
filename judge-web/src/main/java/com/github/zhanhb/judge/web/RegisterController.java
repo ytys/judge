@@ -65,7 +65,7 @@ public class RegisterController extends BaseController {
     }
 
     private Consumer<Object> rejectValue(BindingResult result, String field, String errorCode) {
-        return (__) -> result.rejectValue(field, errorCode);
+        return __ -> result.rejectValue(field, errorCode);
     }
 
     @RequestMapping(value = "register", method = RequestMethod.POST, produces = TEXT_HTML_VALUE)

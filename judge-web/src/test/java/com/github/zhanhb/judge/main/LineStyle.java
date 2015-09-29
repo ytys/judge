@@ -45,9 +45,9 @@ public class LineStyle {
 
     public static void main(String[] args) throws IOException {
         Files.walk(Paths.get("."))
-                .filter(path -> accept(path))
+                .filter(LineStyle::accept)
                 .filter(Files::isWritable)
-                .forEach(path -> handle(path));
+                .forEach(LineStyle::handle);
     }
 
     private static boolean accept(Path path) {

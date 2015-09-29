@@ -107,22 +107,20 @@ public class SampleData {
     }
 
     public void submission(Consumer<Submission> consumer) {
-        problem(problem -> language(language -> userprofile(userprofile -> contest(contest -> {
-            securityUtils.runAs(userprofile, () -> {
-                Submission submission = submissions.save(Submission.builder()
-                        .contest(contest)
-                        .userprofile(userprofile)
-                        .language(language)
-                        .problem(problem)
-                        .judgeReply(JudgeReply.queuing)
-                        .build());
-                try {
-                    consumer.accept(submission);
-                } finally {
-                    submissions.delete(submission);
-                }
-            });
-        }))));
+        problem(problem -> language(language -> userprofile(userprofile -> contest(contest -> securityUtils.runAs(userprofile, () -> {
+            Submission submission = submissions.save(Submission.builder()
+                    .contest(contest)
+                    .userprofile(userprofile)
+                    .language(language)
+                    .problem(problem)
+                    .judgeReply(JudgeReply.queuing)
+                    .build());
+            try {
+                consumer.accept(submission);
+            } finally {
+                submissions.delete(submission);
+            }
+        })))));
     }
 
     public void language(UnaryOperator<Language.LanguageBuilder> func, Consumer<Language> consumer) {
