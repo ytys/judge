@@ -19,6 +19,7 @@ import com.github.zhanhb.judge.Application;
 import lombok.extern.slf4j.Slf4j;
 import static org.junit.Assert.assertTrue;
 import org.junit.AssumptionViolatedException;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @author zhanhb
  */
 @DirtiesContext
+// security reason
+@Ignore
 @RunWith(SpringJUnit4ClassRunner.class)
 @Slf4j
 @SpringApplicationConfiguration(classes = Application.class)

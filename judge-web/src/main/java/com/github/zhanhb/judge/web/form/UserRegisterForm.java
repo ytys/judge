@@ -29,7 +29,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Data
 public class UserRegisterForm {
 
-    @Pattern(regexp = "[a-zA-Z0-9]*+", message = "{UserRegisterForm.handle.invalid}")
+    @Pattern(regexp = "[a-zA-Z0-9_-]*+", message = "{UserRegisterForm.handle.invalid}")
     @Length(min = 5, max = 255)
     private String handle;
     @Pattern(regexp = "[\u0021-\u007e]*+", message = "{UserRegisterForm.password.invalid}")

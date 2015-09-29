@@ -42,7 +42,7 @@ public class SecurityUtils {
      *
      * @param username must not be {@literal null} or empty.
      * @param password must not be {@literal null} or empty.
-     * @param roles
+     * @param roles the roles which the user have.
      * @return Authentication of specified username, password and roles
      */
     @Deprecated

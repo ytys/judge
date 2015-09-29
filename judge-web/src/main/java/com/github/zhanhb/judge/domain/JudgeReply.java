@@ -15,13 +15,11 @@
  */
 package com.github.zhanhb.judge.domain;
 
-import java.io.Serializable;
-
 /**
  *
  * @author zhanhb
  */
-public enum JudgeReply implements Serializable {
+public enum JudgeReply {
     /* a placeholder whose ordinal is 0, do NOT use */
     @Deprecated
     __HOLDER__,
@@ -47,6 +45,7 @@ public enum JudgeReply implements Serializable {
     judging,
     submissionLimitExceeded,
     aborted;
+
     private static final JudgeReply[] values = values();
     private transient final String toString = toString(name());
 
@@ -63,6 +62,16 @@ public enum JudgeReply implements Serializable {
                 .replace(" Of ", " of ");
     }
 
+    /**
+     * Returns the enum constant of this type with the specified name. The
+     * string must match exactly an identifier used to declare an enum constant
+     * in this type. (Extraneous whitespace characters are not permitted.)
+     *
+     * @param ordinal the ordinal of the enum constant to be returned.
+     * @return the enum constant with the specified name
+     * @throws IllegalArgumentException if this enum type has no constant with
+     * the specified name
+     */
     public static JudgeReply valueOf(int ordinal) {
         try {
             return values[ordinal];
