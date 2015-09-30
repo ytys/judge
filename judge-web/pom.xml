@@ -294,6 +294,10 @@
             <scope>test</scope>
             <exclusions>
                 <exclusion>
+                    <artifactId>accessors-smart</artifactId>
+                    <groupId>net.minidev</groupId>
+                </exclusion>
+                <exclusion>
                     <artifactId>asm</artifactId>
                     <groupId>asm</groupId>
                 </exclusion>
@@ -328,11 +332,6 @@
                     <groupId>net.java.dev.jna</groupId>
                 </exclusion>
             </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>net.sourceforge.nekohtml</groupId>
-            <artifactId>nekohtml</artifactId>
-            <scope>runtime</scope>
         </dependency>
         <!-- it seem that the package name of querydsl will change to com.querydsl -->
         <dependency>

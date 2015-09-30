@@ -1,7 +1,6 @@
 # Auto detect text files and perform LF normalization
 # disable auto normalization of platform line ending.
-# * text=auto
-* text eol=lf
+* text=auto
 
 # Custom for Visual Studio
 *.cs    diff=csharp
@@ -19,6 +18,7 @@
 *.RTF binary
 *.png binary
 *.jpg binary
+*.ttf binary
 
 *.java  text    diff=java
 *.html  text    diff=html
@@ -33,3 +33,4 @@
 *.yml   text
 *.sql   text
 *.properties text
+*.txt   text
