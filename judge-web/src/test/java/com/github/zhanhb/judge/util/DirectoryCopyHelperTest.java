@@ -50,4 +50,9 @@ public class DirectoryCopyHelperTest {
         }
     }
 
+    @Test
+    public void testConstructor() throws Exception {
+        TestUtils.testConstructor(DirectoryCopyHelper.class);
+    }
+
 }

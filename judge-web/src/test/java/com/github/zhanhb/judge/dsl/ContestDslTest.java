@@ -18,13 +18,10 @@ package com.github.zhanhb.judge.dsl;
 import com.github.zhanhb.judge.Application;
 import com.github.zhanhb.judge.domain.Contest;
 import com.github.zhanhb.judge.domain.ContestType;
-import static com.github.zhanhb.judge.dsl.ContestDsl.ended;
-import static com.github.zhanhb.judge.dsl.ContestDsl.running;
-import static com.github.zhanhb.judge.dsl.ContestDsl.scheduling;
 import com.github.zhanhb.judge.repository.ContestRepository;
 import com.github.zhanhb.judge.repository.SampleData;
 import com.github.zhanhb.judge.util.TestUtils;
-import static com.google.common.collect.Iterables.size;
+import com.google.common.collect.Iterables;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import lombok.extern.slf4j.Slf4j;
@@ -61,22 +58,22 @@ public class ContestDslTest {
     public void testQuerydsl() {
         LocalDateTime start = LocalDateTime.now().minusSeconds(5);
         LocalDateTime end = start.plus(5, ChronoUnit.HOURS);
-        int schedulingSize = size(contests.findAll(scheduling()));
-        int runningSize = size(contests.findAll(running()));
-        int endedSize = size(contests.findAll(ended()));
+        int schedulingSize = Iterables.size(contests.findAll(ContestDsl.scheduling()));
+        int runningSize = Iterables.size(contests.findAll(ContestDsl.running()));
+        int endedSize = Iterables.size(contests.findAll(ContestDsl.ended()));
 
         sampleData.contest(builder -> builder.beginTime(start)
                 .finishTime(end)
                 .name("test_contest")
                 .title("title")
                 .type(ContestType.CONTEST), contest -> {
-            Iterable<Contest> scheduling = contests.findAll(scheduling());
-            Iterable<Contest> running = contests.findAll(running());
-            Iterable<Contest> ended = contests.findAll(ended());
+            Iterable<Contest> scheduling = contests.findAll(ContestDsl.scheduling());
+            Iterable<Contest> running = contests.findAll(ContestDsl.running());
+            Iterable<Contest> ended = contests.findAll(ContestDsl.ended());
 
-            assertEquals(schedulingSize, size(scheduling));
-            assertEquals(runningSize + 1, size(running));
-            assertEquals(endedSize, size(ended));
+            assertEquals(schedulingSize, Iterables.size(scheduling));
+            assertEquals(runningSize + 1, Iterables.size(running));
+            assertEquals(endedSize, Iterables.size(ended));
 
             assertThat(running, contains(contest));
             assertThat(scheduling, not(contains(contest)));

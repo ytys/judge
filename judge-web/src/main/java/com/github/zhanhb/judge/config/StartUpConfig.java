@@ -16,7 +16,6 @@
 package com.github.zhanhb.judge.config;
 
 import javax.servlet.ServletContext;
-import static javax.servlet.ServletContext.TEMPDIR;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -33,7 +32,7 @@ public class StartUpConfig {
     @Autowired
     public void setStartUpDate(ServletContext servlet, ApplicationContext application) {
         servlet.setAttribute("startUpDate", application.getStartupDate());
-        log.debug("{}: {}", TEMPDIR, servlet.getAttribute(TEMPDIR));
+        log.debug("{}: {}", ServletContext.TEMPDIR, servlet.getAttribute(ServletContext.TEMPDIR));
     }
 
 }

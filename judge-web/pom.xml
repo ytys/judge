@@ -66,7 +66,10 @@
         <evo-inflector.version>1.2.1</evo-inflector.version>
         <guava.version>18.0</guava.version>
         <h2.version>1.4.189</h2.version>
-        <hibernate.version>5.0.1.Final</hibernate.version>
+        <hibernate-validator.version>5.2.2.Final</hibernate-validator.version>
+        <hibernate.version>5.0.2.Final</hibernate.version>
+        <hikaricp-java6.version>2.3.10</hikaricp-java6.version>
+        <hikaricp.version>2.4.1</hikaricp.version>
         <httpclient.version>4.5.1</httpclient.version>
         <httpcore.version>4.4.3</httpcore.version>
         <jackson-coreutils.version>1.8</jackson-coreutils.version>
@@ -84,7 +87,8 @@
         <!--<maven.test.skip>true</maven.test.skip>-->
         <objenesis.version>2.2</objenesis.version>
         <poi.version>3.13</poi.version>
-        <querydsl.version>3.6.7</querydsl.version>
+        <protobuf.version>2.6.1</protobuf.version>
+        <querydsl.version>3.6.8</querydsl.version>
         <spring-data-releasetrain.version>Hopper-BUILD-SNAPSHOT</spring-data-releasetrain.version>
         <spring-hateoas.version>0.20.0.BUILD-SNAPSHOT</spring-hateoas.version>
         <spring-loaded.version>1.2.5.BUILD-SNAPSHOT</spring-loaded.version>
@@ -153,7 +157,12 @@
             <dependency>
                 <groupId>com.zaxxer</groupId>
                 <artifactId>HikariCP</artifactId>
-                <version>2.4.1</version>
+                <version>${hikaricp.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.zaxxer</groupId>
+                <artifactId>HikariCP-java6</artifactId>
+                <version>${hikaricp-java6.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.github.fge</groupId>
