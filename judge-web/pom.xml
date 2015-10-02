@@ -96,6 +96,7 @@
         <spring-security.version>4.1.0.BUILD-SNAPSHOT</spring-security.version>
         <!--<spring.version>4.2.2.BUILD-SNAPSHOT</spring.version>-->
         <start-class>com.github.zhanhb.judge.Application</start-class>
+        <tomcat.version>8.0.27</tomcat.version>
         <unbescape.version>1.1.1.RELEASE</unbescape.version>
         <undertow.version>1.2.12.Final</undertow.version>
         <woodstox.version>4.4.1</woodstox.version>
