@@ -19,6 +19,7 @@
 *.RTF binary
 *.png binary
 *.jpg binary
+*.ttf binary
 
 *.java  text    diff=java
 *.html  text    diff=html
@@ -33,3 +34,4 @@
 *.yml   text
 *.sql   text
 *.properties text
+*.txt   text

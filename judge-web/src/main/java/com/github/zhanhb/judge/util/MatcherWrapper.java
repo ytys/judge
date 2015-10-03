@@ -46,7 +46,7 @@ public final class MatcherWrapper implements MatchResult {
                 } finally {
                     unlock();
                 }
-                result = m.appendReplacement(sb, Matcher.quoteReplacement(replacement)).find();
+                result = m.appendReplacement(sb, quoteReplacement(replacement)).find();
             } while (result);
             return m.appendTail(sb).toString();
         }
@@ -69,7 +69,7 @@ public final class MatcherWrapper implements MatchResult {
             unlock();
         }
         StringBuffer sb = new StringBuffer(text.length());
-        return m.appendReplacement(sb, Matcher.quoteReplacement(replacement)).appendTail(sb).toString();
+        return m.appendReplacement(sb, quoteReplacement(replacement)).appendTail(sb).toString();
     }
 
     public String replaceFirst(String replacement) {

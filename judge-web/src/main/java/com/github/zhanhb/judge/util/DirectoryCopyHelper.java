@@ -16,122 +16,88 @@
 package com.github.zhanhb.judge.util;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.CopyOption;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.FileVisitResult;
-import static java.nio.file.FileVisitResult.CONTINUE;
-import static java.nio.file.FileVisitResult.SKIP_SUBTREE;
 import java.nio.file.Files;
-import static java.nio.file.Files.getFileAttributeView;
-import static java.nio.file.Files.walkFileTree;
 import java.nio.file.Path;
 import java.nio.file.PathMatcher;
 import java.nio.file.SimpleFileVisitor;
-import static java.nio.file.StandardCopyOption.COPY_ATTRIBUTES;
-import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
+import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.BasicFileAttributeView;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.Objects;
 
 /**
  *
  * @author zhanhb
  */
-public class DirectoryCopyHelper extends SimpleFileVisitor<Path> {
+public class DirectoryCopyHelper {
 
     public static Path copy(Path source, Path target) throws IOException {
-        return walkFileTree(source, new DirectoryCopyHelper(source, target));
+        return copy(source, target, (PathMatcher) null);
     }
 
     public static Path copy(Path source, Path target, CopyOption... options) throws IOException {
-        return walkFileTree(source, new DirectoryCopyHelper(source, target, options));
+        return copy(source, target, (PathMatcher) null, options);
     }
 
     public static Path copy(Path source, Path target, CopyOption[] fileOptions, final CopyOption[] dirOptions) throws IOException {
-        return walkFileTree(source, new DirectoryCopyHelper(source, target, fileOptions, dirOptions));
+        return copy(source, target, null, fileOptions, dirOptions);
     }
 
     public static Path copy(Path source, Path target, PathMatcher pathMatcher) throws IOException {
-        return walkFileTree(source, new DirectoryCopyHelper(source, target, pathMatcher));
+        return copy(source, target, pathMatcher, StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.REPLACE_EXISTING);
     }
 
     public static Path copy(Path source, Path target, PathMatcher pathMatcher, CopyOption... options) throws IOException {
-        return walkFileTree(source, new DirectoryCopyHelper(source, target, pathMatcher, options));
+        return copy(source, target, pathMatcher, options, options);
     }
 
     public static Path copy(Path source, Path target, PathMatcher pathMatcher, CopyOption[] fileOptions, final CopyOption[] dirOptions) throws IOException {
-        return walkFileTree(source, new DirectoryCopyHelper(source, target, pathMatcher, fileOptions, dirOptions));
-    }
+        return Files.walkFileTree(source, new SimpleFileVisitor<Path>() {
 
-    private final Path source;
-    private final Path target;
-    private final CopyOption[] fileOptions;
-    private final CopyOptions dirOptions;
-    private final PathMatcher pathMatcher;
+            private final PathMatcher matcher = pathMatcher == null ? __ -> true : pathMatcher;
+            private final CopyOptions dirOptions2 = CopyOptions.parse(dirOptions);
 
-    protected DirectoryCopyHelper(Path source, Path target) {
-        this(source, target, (PathMatcher) null);
-    }
-
-    protected DirectoryCopyHelper(Path source, Path target, CopyOption[] options) {
-        this(source, target, (PathMatcher) null, options);
-    }
-
-    protected DirectoryCopyHelper(Path source, Path target, CopyOption[] fileOptions, CopyOption[] dirOptions) {
-        this(source, target, null, fileOptions, dirOptions);
-    }
-
-    protected DirectoryCopyHelper(Path source, Path target, PathMatcher pathMatcher) {
-        this(source, target, pathMatcher, COPY_ATTRIBUTES, REPLACE_EXISTING);
-    }
-
-    protected DirectoryCopyHelper(Path source, Path target, PathMatcher pathMatcher, CopyOption... options) {
-        this(source, target, pathMatcher, options, options);
-    }
-
-    protected DirectoryCopyHelper(Path source, Path target, PathMatcher pathMatcher, CopyOption[] fileOptions, CopyOption[] dirOptions) {
-        this.source = Objects.requireNonNull(source, "source");
-        this.target = Objects.requireNonNull(target, "target");
-        this.pathMatcher = pathMatcher == null ? __ -> true : pathMatcher;
-        this.dirOptions = CopyOptions.parse(Objects.requireNonNull(dirOptions, "dir options"));
-        this.fileOptions = Objects.requireNonNull(fileOptions, "file options");
-    }
-
-    protected Path resolve(Path dir) {
-        return target.resolve(source.relativize(dir).toString());
-    }
-
-    @Override
-    @SuppressWarnings({"BroadCatchBlock", "TooBroadCatch"})
-    public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
-        if (pathMatcher.matches(dir)) {
-
-            if (attrs.isSymbolicLink()) {
-                throw new IOException("Copying of symbolic links not supported");
+            protected Path resolve(Path dir) {
+                return target.resolve(source.relativize(dir).toString());
             }
 
-            Path resolve = resolve(dir);
-            boolean exists = Files.exists(resolve);
-            if (resolve.getNameCount() > 0 && !dirOptions.replaceExisting && exists) {
-                throw new FileAlreadyExistsException(resolve.toString());
-            }
-
-            // create directory or copy file
-            if (attrs.isDirectory()) {
-                if (!exists) {
-                    Files.createDirectory(resolve);
+            @Override
+            public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+                if (!matcher.matches(dir)) {
+                    return FileVisitResult.SKIP_SUBTREE;
                 }
-            } else {
-                try (InputStream in = Files.newInputStream(dir)) {
-                    Files.copy(in, resolve);
+                Path resolve = resolve(dir);
+                if (resolve.getNameCount() > 0) {
+                    boolean exists = Files.exists(resolve);
+                    if (!dirOptions2.replaceExisting && exists) {
+                        throw new FileAlreadyExistsException(resolve.toString());
+                    }
+
+                    // create directory
+                    if (exists) {
+                        if (dirOptions2.copyAttributes) { // copy basic attributes to target
+                            copyAttribute(attrs, resolve);
+                        }
+                    } else {
+                        Files.copy(dir, resolve, dirOptions);
+                    }
                 }
+                return FileVisitResult.CONTINUE;
             }
 
-            // copy basic attributes to target
-            if (resolve.getNameCount() > 0 && dirOptions.copyAttributes) {
-                BasicFileAttributeView view
-                        = getFileAttributeView(resolve, BasicFileAttributeView.class);
+            @Override
+            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                if (matcher.matches(file)) {
+                    Files.copy(file, resolve(file), fileOptions);
+                }
+                return FileVisitResult.CONTINUE;
+            }
+
+            @SuppressWarnings({"BroadCatchBlock", "TooBroadCatch"})
+            private void copyAttribute(BasicFileAttributes attrs, Path path) throws IOException {
+                BasicFileAttributeView view = Files.getFileAttributeView(path, BasicFileAttributeView.class);
                 try {
                     view.setTimes(attrs.lastModifiedTime(),
                             attrs.lastAccessTime(),
@@ -139,25 +105,19 @@ public class DirectoryCopyHelper extends SimpleFileVisitor<Path> {
                 } catch (Throwable x) {
                     // rollback
                     try {
-                        Files.delete(resolve);
+                        Files.delete(path);
                     } catch (Throwable suppressed) {
                         x.addSuppressed(suppressed);
                     }
                     throw x;
                 }
             }
-            return CONTINUE;
-        }
-        return SKIP_SUBTREE;
+
+        });
     }
 
-    @Override
-    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-        if (pathMatcher.matches(file)) {
-            Files.copy(file, resolve(file), fileOptions);
-            return CONTINUE;
-        }
-        return SKIP_SUBTREE;
+    private DirectoryCopyHelper() {
+        throw new AssertionError();
     }
 
     private static class CopyOptions {
@@ -165,19 +125,18 @@ public class DirectoryCopyHelper extends SimpleFileVisitor<Path> {
         private static CopyOptions parse(CopyOption[] options) {
             CopyOptions result = new CopyOptions();
             for (CopyOption option : options) {
-                if (option == REPLACE_EXISTING) {
+                if (option == StandardCopyOption.REPLACE_EXISTING) {
                     result.replaceExisting = true;
                     continue;
                 }
-                if (option == COPY_ATTRIBUTES) {
+                if (option == StandardCopyOption.COPY_ATTRIBUTES) {
                     result.copyAttributes = true;
                     continue;
                 }
                 if (option == null) {
                     throw new NullPointerException();
                 }
-                throw new UnsupportedOperationException("'" + option
-                        + "' is not a recognized copy option");
+                // ignore
             }
             return result;
         }

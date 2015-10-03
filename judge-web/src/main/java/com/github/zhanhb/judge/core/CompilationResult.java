@@ -19,7 +19,6 @@ import java.io.Serializable;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -28,7 +27,6 @@ import lombok.Setter;
  */
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Data
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Setter(AccessLevel.PRIVATE)
 public class CompilationResult implements Serializable {
 

@@ -13,26 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.zhanhb.judge.config;
+package com.github.zhanhb.judge.util;
 
-import javax.servlet.ServletContext;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Configuration;
+import org.junit.Test;
 
 /**
  *
  * @author zhanhb
  */
-@Configuration
-@Slf4j
-public class StartUpConfig {
+public class AjaxUtilsTest {
 
-    @Autowired
-    public void setStartUpDate(ServletContext servlet, ApplicationContext application) {
-        servlet.setAttribute("startUpDate", application.getStartupDate());
-        log.debug("{}: {}", ServletContext.TEMPDIR, servlet.getAttribute(ServletContext.TEMPDIR));
+    @Test
+    public void testConstructor() throws Exception {
+        TestUtils.testConstructor(AjaxUtils.class);
     }
 
 }

@@ -28,7 +28,6 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.http.MediaType;
 import static org.springframework.http.MediaType.APPLICATION_XML;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -64,7 +63,6 @@ public class LoggerControllerTest {
     @Before
     public void setUp() {
         this.mvc = webAppContextSetup(context).build();
-        SecurityContextHolder.clearContext();
     }
 
     /**
@@ -77,9 +75,9 @@ public class LoggerControllerTest {
         log.info("list");
         mvc.perform(get(logs))
                 .andExpect(status().isOk()).andDo(print())
-                .andExpect(jsonPath("_links.self.href").isString())
-                .andExpect(jsonPath("_embedded.loggerDToes").isArray())
-                .andExpect(jsonPath("page.size").value(restConfig.getDefaultPageSize()))
+                .andExpect(jsonPath("$._links.self.href").isString())
+                .andExpect(jsonPath("$._embedded.loggerDToes").isArray())
+                .andExpect(jsonPath("$.page.size").value(restConfig.getDefaultPageSize()))
                 .andDo(print());
     }
 
@@ -88,7 +86,7 @@ public class LoggerControllerTest {
         int pageSize = 2;
         mvc.perform(get(logs).param("size", String.valueOf(pageSize)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("page.size").value(pageSize));
+                .andExpect(jsonPath("$.page.size").value(pageSize));
     }
 
     /**
