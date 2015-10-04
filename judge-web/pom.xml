@@ -64,6 +64,7 @@
         <commons-compress.version>1.10</commons-compress.version>
         <commons-lang3.version>3.4</commons-lang3.version>
         <evo-inflector.version>1.2.1</evo-inflector.version>
+        <gson.version>2.4</gson.version>
         <guava.version>18.0</guava.version>
         <h2.version>1.4.189</h2.version>
         <hibernate-validator.version>5.2.2.Final</hibernate-validator.version>
@@ -98,7 +99,6 @@
         <start-class>com.github.zhanhb.judge.Application</start-class>
         <tomcat.version>8.0.27</tomcat.version>
         <unbescape.version>1.1.1.RELEASE</unbescape.version>
-        <undertow.version>1.2.12.Final</undertow.version>
         <woodstox.version>4.4.1</woodstox.version>
         <xml-apis.version>1.4.01</xml-apis.version>
     </properties>
@@ -293,6 +293,10 @@
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
             <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.inject</groupId>
+            <artifactId>javax.inject</artifactId>
         </dependency>
         <dependency>
             <groupId>org.eclipse.persistence</groupId>
@@ -591,28 +595,44 @@
                         <goals>
                             <goal>enforce</goal>
                         </goals>
+                        <configuration>
+                            <rules>
+                                <requireMavenVersion>
+                                    <message>You are running an older version of Maven. ${project.name} requires at least Maven ${project.prerequisites.maven}</message>
+                                    <version>[${project.prerequisites.maven},)</version>
+                                </requireMavenVersion>
+                                <requireJavaVersion>
+                                    <message>You are running an older version of Java. ${project.name} requires at least JDK ${java.version}</message>
+                                    <version>[${java.version}.0,)</version>
+                                </requireJavaVersion>
+                                <!--
+                                <requireNoRepositories>
+                                    <message>Best Practice is to never define repositories in pom.xml (use a repository manager instead).</message>
+                                </requireNoRepositories>
+                                <requireReleaseDeps>
+                                    <message>No Snapshots Dependencies Allowed!</message>
+                                </requireReleaseDeps>
+                                -->
+                                <bannedDependencies>
+                                    <searchTransitive>true</searchTransitive>
+                                    <excludes>
+                                        <!-- logging, use loback instead -->
+                                        <exclude>commons-logging:*</exclude>
+                                        <exclude>log4j:*</exclude>
+
+                                        <!-- use net.sf.ehcache:ehcache instead -->
+                                        <exclude>net.sf.ehcache:ehcache-core</exclude>
+
+                                        <!-- old servlet api -->
+                                        <exclude>javax.servlet:servlet-api</exclude>
+                                        <exclude>org.mortbay.jetty:servlet-api</exclude>
+                                        <exclude>org.mortbay.jetty:servlet-api-2.5</exclude>
+                                    </excludes>
+                                </bannedDependencies>
+                            </rules>
+                        </configuration>
                     </execution>
                 </executions>
-                <configuration>
-                    <rules>
-                        <requireMavenVersion>
-                            <message>You are running an older version of Maven. ${project.name} requires at least Maven ${project.prerequisites.maven}</message>
-                            <version>[${project.prerequisites.maven},)</version>
-                        </requireMavenVersion>
-                        <requireJavaVersion>
-                            <message>You are running an older version of Java. ${project.name} requires at least JDK ${java.version}</message>
-                            <version>[${java.version}.0,)</version>
-                        </requireJavaVersion>
-                        <!--
-                        <requireNoRepositories>
-                            <message>Best Practice is to never define repositories in pom.xml (use a repository manager instead).</message>
-                        </requireNoRepositories>
-                        <requireReleaseDeps>
-                            <message>No Snapshots Dependencies Allowed!</message>
-                        </requireReleaseDeps>
-                        -->
-                    </rules>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

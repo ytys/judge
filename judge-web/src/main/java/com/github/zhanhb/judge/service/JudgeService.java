@@ -15,6 +15,8 @@
  */
 package com.github.zhanhb.judge.service;
 
+import com.github.zhanhb.judge.core.CompilationResult;
+import com.github.zhanhb.judge.core.JudgeResult;
 import com.github.zhanhb.judge.domain.JudgeReply;
 import com.github.zhanhb.judge.domain.Submission;
 import com.github.zhanhb.judge.repository.SubmissionRepository;
@@ -40,10 +42,27 @@ public class JudgeService {
 
     @Transactional
     public void updataStatus(Submission submission, JudgeReply judgeReply) {
+        updataStatus0(submission, judgeReply);
+    }
+
+    private void updataStatus0(Submission submission, JudgeReply judgeReply) {
         if (submission.getJudgeReply() != judgeReply) {
             submission.setJudgeReply(judgeReply);
             submissions.save(submission);
         }
+    }
+
+    public void compilationError(Submission submission, CompilationResult cr) {
+        updataStatus0(submission, JudgeReply.compilationError);
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void updateCompilationMessage(CompilationResult cr) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void updateJudgeResult(JudgeResult jr) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
 }
