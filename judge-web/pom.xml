@@ -75,7 +75,7 @@
         <httpcore.version>4.4.3</httpcore.version>
         <jackson-coreutils.version>1.8</jackson-coreutils.version>
         <jackson.version>2.6.2</jackson.version>
-        <jandex.version>1.2.4.Final</jandex.version>
+        <jandex.version>2.0.0.Final</jandex.version>
         <java.version>1.8</java.version>
         <javassist.version>3.20.0-GA</javassist.version>
         <jboss-logging.version>3.3.0.Final</jboss-logging.version>
