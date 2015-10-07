@@ -16,7 +16,12 @@
 package com.github.zhanhb.judge.config;
 
 import com.github.zhanhb.judge.security.AuthoritiesConstants;
+import java.util.EnumSet;
+import javax.servlet.DispatcherType;
+import javax.servlet.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.context.embedded.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -111,6 +116,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         sulsh.setDefaultTargetUrl("/");
         sulsh.setTargetUrlParameter(TARGET_URL_PARAMETER);
         return sulsh;
+    }
+
+    @Bean
+    public FilterRegistrationBean getSpringSecurityFilterChainBindedToError(
+            @Qualifier("springSecurityFilterChain") Filter springSecurityFilterChain) {
+
+        FilterRegistrationBean registration = new FilterRegistrationBean();
+        registration.setFilter(springSecurityFilterChain);
+        registration.setDispatcherTypes(EnumSet.allOf(DispatcherType.class));
+        return registration;
     }
 
 }

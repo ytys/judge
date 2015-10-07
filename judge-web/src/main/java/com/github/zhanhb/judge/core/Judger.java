@@ -89,12 +89,14 @@ public class Judger {
                     try {
                         judgeService.updataStatus(submission, JudgeReply.compiling);
                         synchronized (judgeLock) {
-                            CompilationResult result = compile(submission);
-                            if (result.isPass()) {
+                            CompilationResult cr = compile(submission);
+                            judgeService.updateCompilationMessage(cr);
+                            if (cr.isPass()) {
                                 judgeService.updataStatus(submission, JudgeReply.running);
-                                runProcess(submission);
+                                JudgeResult jr = runProcess(submission);
+                                judgeService.updateJudgeResult(jr);
                             } else {
-                                judgeService.updataStatus(submission, JudgeReply.compilationError);
+                                judgeService.compilationError(submission, cr);
                             }
                         }
                     } catch (Throwable ex) {
