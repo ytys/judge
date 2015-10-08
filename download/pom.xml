@@ -65,12 +65,6 @@
                         <goals>
                             <goal>compile</goal>
                         </goals>
-                        <configuration>
-                            <fork>true</fork>
-                            <executable>D:/Program Files/Java/jdk1.7.0_79/bin/javac</executable>
-                            <source>1.7</source>
-                            <target>1.7</target>
-                        </configuration>
                     </execution>
                 </executions>
                 <configuration>

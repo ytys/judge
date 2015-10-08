@@ -20,6 +20,7 @@ import static java.lang.Character.MAX_SURROGATE;
 import static java.lang.Character.MIN_SURROGATE;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.BitSet;
 import java.util.Random;
 import java.util.function.IntPredicate;
@@ -50,7 +51,7 @@ public class URLEncoderTest {
         IntUnaryOperator addSurrogate = x
                 -> x >= MIN_SURROGATE ? x + SURROGATE_DIFF : x;
 
-        Charset charset = Charset.forName("UTF-8");
+        Charset charset = StandardCharsets.UTF_8;
 
         int len = 128;
         int num2 = 1000000;

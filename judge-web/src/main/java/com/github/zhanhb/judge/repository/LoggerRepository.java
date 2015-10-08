@@ -23,6 +23,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.BinaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -87,7 +88,8 @@ public class LoggerRepository {
         return Optional.ofNullable(pageable.getSort()) // maybe api returns null
                 .flatMap(sort -> StreamSupport.stream(sort.spliterator(), false)
                         .map(this::toComparator) // throws an IAE if the property is not present
-                        .collect(Collectors.reducing(Comparator::thenComparing))) // usually not null
+                        // add class cast to avoid type-variable argument mismatch
+                        .collect(Collectors.reducing((BinaryOperator<Comparator<Logger>>) Comparator::thenComparing))) // usually not null
                 .map(stream::sorted)
                 .orElse(stream)
                 .skip(pageable.getOffset())

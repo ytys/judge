@@ -69,7 +69,7 @@
         <h2.version>1.4.189</h2.version>
         <hibernate-validator.version>5.2.2.Final</hibernate-validator.version>
         <hibernate.version>5.0.2.Final</hibernate.version>
-        <hikaricp-java6.version>2.3.10</hikaricp-java6.version>
+        <hikaricp-java6.version>2.3.12</hikaricp-java6.version>
         <hikaricp.version>2.4.1</hikaricp.version>
         <httpclient.version>4.5.1</httpclient.version>
         <httpcore.version>4.4.3</httpcore.version>
@@ -83,7 +83,7 @@
         <json-patch.version>1.9</json-patch.version>
         <json-smart.version>2.2</json-smart.version>
         <lombok.version>1.16.6</lombok.version>
-        <mariadb.version>1.2.2</mariadb.version>
+        <mariadb.version>1.2.3</mariadb.version>
         <!--<maven.test.failure.ignore>true</maven.test.failure.ignore>-->
         <!--<maven.test.skip>true</maven.test.skip>-->
         <objenesis.version>2.2</objenesis.version>
