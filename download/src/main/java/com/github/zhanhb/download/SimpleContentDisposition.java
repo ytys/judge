@@ -28,16 +28,23 @@ public class SimpleContentDisposition implements ContentDisposition {
     // https://tools.ietf.org/html/rfc5987#section-3.2.1
     // we will encoding + for some browser will decode + to a space
     static final URLEncoder CONTENT_DISPOSITION = new URLEncoder("!#$&-.^_`|~");
+    public static final ContentDisposition ATTACHMENT = new SimpleContentDisposition("attachment");
+    public static final ContentDisposition INLINE = new SimpleContentDisposition("inline");
+    private final String type;
+
+    SimpleContentDisposition(String type) {
+        this.type = type;
+    }
 
     @Override
     public void setContentDisposition(HttpServletRequest request, HttpServletResponse response, String filename) {
         if (filename == null || filename.length() == 0) {
-            response.setHeader("Content-Disposition", "attachment");
+            response.setHeader("Content-Disposition", type);
         } else if (isToken(filename)) { // already a token
-            response.setHeader("Content-Disposition", "attachment; filename=" + filename);
+            response.setHeader("Content-Disposition", type + "; filename=" + filename);
         } else {
             String encoded = CONTENT_DISPOSITION.encode(filename);
-            response.setHeader("Content-Disposition", "attachment; filename=\"" + encoded + "\"; filename*=utf-8''" + encoded);
+            response.setHeader("Content-Disposition", type + "; filename=\"" + encoded + "\"; filename*=utf-8''" + encoded);
         }
     }
 

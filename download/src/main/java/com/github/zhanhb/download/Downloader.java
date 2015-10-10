@@ -45,7 +45,11 @@ public class Downloader {
     /**
      * MIME multipart separation string
      */
-    private static final String mimeSeparation = "DOWNLOADER_MIME_BOUNDARY";
+    private static final String MIME_SEPARATION = "DOWNLOADER_MIME_BOUNDARY";
+
+    public static Downloader newInstance() {
+        return new Downloader();
+    }
 
     // ----------------------------------------------------- Instance Variables
     /**
@@ -67,7 +71,10 @@ public class Downloader {
      * Should the Content-Disposition: attachment; filename=... header be sent
      * with static resources?
      */
-    private ContentDisposition contentDisposition = new SimpleContentDisposition();
+    private ContentDisposition contentDisposition = SimpleContentDisposition.ATTACHMENT;
+
+    private Downloader() {
+    }
 
     // ------------------------------------------------------ public Methods
     public Downloader useAcceptRanges(boolean useAcceptRanges) {
@@ -287,7 +294,7 @@ public class Downloader {
                     }
                 }
             } else {
-                response.setContentType("multipart/byteranges; boundary=" + mimeSeparation);
+                response.setContentType("multipart/byteranges; boundary=" + MIME_SEPARATION);
                 if (serveContent) {
                     try {
                         response.setBufferSize(outputBufferSize);
@@ -335,10 +342,10 @@ public class Downloader {
                 if (!eTag.equals(headerValue.trim())) {
                     return FULL;
                 }
-            } else {
-                // If the timestamp of the entity the client got is older than
-                // the last modification date of the entity, the entire entity
-                // is returned.
+            } else // If the timestamp of the entity the client got is older than
+            // the last modification date of the entity, the entire entity
+            // is returned.
+            {
                 if (lastModified > (headerValueTime + 1000)) {
                     return FULL;
                 }
@@ -629,7 +636,7 @@ public class Downloader {
                 Range currentRange = ranges.next();
                 // Writing MIME header.
                 ostream.println();
-                ostream.println("--" + mimeSeparation);
+                ostream.println("--" + MIME_SEPARATION);
                 if (contentType != null) {
                     ostream.println("Content-Type: " + contentType);
                 }
@@ -641,7 +648,7 @@ public class Downloader {
             }
         }
         ostream.println();
-        ostream.print("--" + mimeSeparation + "--");
+        ostream.print("--" + MIME_SEPARATION + "--");
         // Rethrow any exception that has occurred
         if (exception != null) {
             throw exception;
