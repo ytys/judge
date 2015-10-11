@@ -64,9 +64,9 @@
         <commons-compress.version>1.10</commons-compress.version>
         <commons-lang3.version>3.4</commons-lang3.version>
         <evo-inflector.version>1.2.1</evo-inflector.version>
+        <findbugs-jsr305.version>3.0.1</findbugs-jsr305.version>
         <gson.version>2.4</gson.version>
         <guava.version>18.0</guava.version>
-        <h2.version>1.4.189</h2.version>
         <hibernate-validator.version>5.2.2.Final</hibernate-validator.version>
         <hibernate.version>5.0.2.Final</hibernate.version>
         <hikaricp-java6.version>2.3.12</hikaricp-java6.version>
@@ -83,7 +83,6 @@
         <json-patch.version>1.9</json-patch.version>
         <json-smart.version>2.2</json-smart.version>
         <lombok.version>1.16.6</lombok.version>
-        <mariadb.version>1.2.3</mariadb.version>
         <!--<maven.test.failure.ignore>true</maven.test.failure.ignore>-->
         <!--<maven.test.skip>true</maven.test.skip>-->
         <objenesis.version>2.2</objenesis.version>
@@ -97,7 +96,7 @@
         <spring-security.version>4.1.0.BUILD-SNAPSHOT</spring-security.version>
         <!--<spring.version>4.2.2.BUILD-SNAPSHOT</spring.version>-->
         <start-class>com.github.zhanhb.judge.Application</start-class>
-        <tomcat.version>8.0.27</tomcat.version>
+        <tomcat.version>8.0.28</tomcat.version>
         <unbescape.version>1.1.1.RELEASE</unbescape.version>
         <woodstox.version>4.4.1</woodstox.version>
         <xml-apis.version>1.4.01</xml-apis.version>
@@ -356,6 +355,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <scope>runtime</scope>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
