@@ -49,8 +49,7 @@
             <goal>spring-boot:run</goal>
         </goals>
         <properties>
-            <server.port>0</server.port>
-            <server.context-path>/znoj</server.context-path>
+            <run.jvmArguments>-Dserver.port=0 -Dserver.context-path=/znoj</run.jvmArguments>
         </properties>
     </action>
     <action>
