@@ -25,7 +25,7 @@ import java.util.Objects;
  */
 public class URLEncoder {
 
-    private static final char[] hexChars = "0123456789ABCDEF".toCharArray();
+    private static final char[] HEX_CHARS = "0123456789ABCDEF".toCharArray();
 
     private final BitSet dontNeedEncoding;
 
@@ -74,7 +74,7 @@ public class URLEncoder {
                 byte[] bytes = s.substring(start, cur).getBytes(charset);
                 for (int j = 0, limit = bytes.length; j < limit; ++j) {
                     byte b = bytes[j];
-                    out.append('%').append(hexChars[b >> 4 & 0xF]).append(hexChars[b & 0xF]);
+                    out.append('%').append(HEX_CHARS[b >> 4 & 0xF]).append(HEX_CHARS[b & 0xF]);
                 }
                 needToChange = true;
             }

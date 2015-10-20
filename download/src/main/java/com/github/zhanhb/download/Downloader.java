@@ -34,7 +34,7 @@ import org.slf4j.LoggerFactory;
 
 public class Downloader {
 
-    private static final Logger log = LoggerFactory.getLogger(Downloader.class);
+    private static final Logger LOG = LoggerFactory.getLogger(Downloader.class);
 
     /**
      * Full range marker.
@@ -233,11 +233,11 @@ public class Downloader {
                 || ranges == FULL) {
             // Set the appropriate output headers
             if (contentType != null) {
-                log.debug("serveFile:  contentType='{}'", contentType);
+                LOG.debug("serveFile:  contentType='{}'", contentType);
                 response.setContentType(contentType);
             }
             if ((contentLength >= 0) && (!serveContent || ostream != null)) {
-                log.debug("serveFile:  contentLength={}", contentLength);
+                LOG.debug("serveFile:  contentLength={}", contentLength);
                 // Don't set a content length if something else has already
                 // written to the response.
                 if (contentLength < Integer.MAX_VALUE) {
@@ -277,7 +277,7 @@ public class Downloader {
                     response.setHeader("content-length", "" + length);
                 }
                 if (contentType != null) {
-                    log.debug("serveFile:  contentType='{}'", contentType);
+                    LOG.debug("serveFile:  contentType='{}'", contentType);
                     response.setContentType(contentType);
                 }
                 if (serveContent) {
@@ -697,7 +697,7 @@ public class Downloader {
     private IOException copyRange(InputStream istream,
             ServletOutputStream ostream,
             long start, long end) {
-        log.trace("Serving bytes:{}-{}", start, end);
+        LOG.trace("Serving bytes:{}-{}", start, end);
 
         long skipped;
         try {
