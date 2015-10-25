@@ -110,7 +110,7 @@ public class Downloader {
      *
      * @param request The servlet request we are processing
      * @param response The servlet response we are creating
-     * @param resource
+     * @param resource The requested resource we are processing
      *
      * @exception IOException if an input/output error occurs
      */
@@ -120,9 +120,31 @@ public class Downloader {
         serveResource(request, response, false, resource);
     }
 
+    /**
+     * Process a GET request for the specified resource.
+     *
+     * @param request The servlet request we are processing
+     * @param response The servlet response we are creating
+     * @param resource The requested resource we are processing
+     *
+     * @exception IOException if an input/output error occurs
+     */
     public void doGet(HttpServletRequest request, HttpServletResponse response,
             Resource resource) throws IOException {
         serveResource(request, response, true, resource);
+    }
+
+    /**
+     * Process a request for the specified resource.
+     *
+     * @param request The servlet request we are processing
+     * @param response The servlet response we are creating
+     * @param resource
+     * @throws IOException
+     */
+    public void service(HttpServletRequest request, HttpServletResponse response,
+            Resource resource) throws IOException {
+        serveResource(request, response, !"HEAD".equals(request.getMethod()), resource);
     }
 
     /**
@@ -345,11 +367,9 @@ public class Downloader {
             } else // If the timestamp of the entity the client got is older than
             // the last modification date of the entity, the entire entity
             // is returned.
-            {
-                if (lastModified > (headerValueTime + 1000)) {
+             if (lastModified > (headerValueTime + 1000)) {
                     return FULL;
                 }
-            }
         }
         long fileLength = resource.getContentLength();
         if (fileLength == 0) {

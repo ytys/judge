@@ -39,7 +39,8 @@ public class Resources {
 
     /**
      * Build resource with an input stream. The inputStream will be closed
-     * automatically.
+     * automatically. Deprecated, input stream should be a new one every time
+     * when the method is called.
      *
      * @param inputStream
      * @return
