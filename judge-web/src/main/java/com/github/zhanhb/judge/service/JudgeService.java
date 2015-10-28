@@ -52,16 +52,16 @@ public class JudgeService {
         }
     }
 
-    public void compilationError(Submission submission, CompilationResult cr) {
+    public void compilationError(Submission submission, CompilationResult compilationResult) {
         updataStatus0(submission, JudgeReply.compilationError);
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public void updateCompilationMessage(CompilationResult cr) {
+    public void updateCompilationMessage(CompilationResult compilationResult) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public void updateJudgeResult(JudgeResult jr) {
+    public void updateJudgeResult(JudgeResult judgeResult) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

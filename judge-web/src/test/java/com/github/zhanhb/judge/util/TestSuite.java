@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 zhanhb.
+ * Copyright 2015 ZJNU ACM.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,11 +19,15 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 /**
+ *
  * @author zhanhb
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
+    AjaxUtilsTest.class,
+    CalendarsTest.class,
     CustomInvocationHandlerTest.class,
+    DirectoryCopyHelperTest.class,
     MatcherWrapperTest.class,
     NumbersTest.class,
     PasswordEncoderTest.class,

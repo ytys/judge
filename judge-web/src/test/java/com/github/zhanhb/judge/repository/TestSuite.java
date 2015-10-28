@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 zhanhb.
+ * Copyright 2015 ZJNU ACM.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ import org.junit.runners.Suite;
     AccessLogRepositoryTest.class,
     ContestProblemRepositoryTest.class,
     ContestUserprofileStatisticsRepositoryTest.class,
+    LoggerRepositoryTest.class,
     ProblemStatisticsRepositoryTest.class,
     SubmissionRepositoryTest.class,
     UserprofileRepositoryTest.class,

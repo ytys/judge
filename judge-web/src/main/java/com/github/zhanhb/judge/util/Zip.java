@@ -23,12 +23,13 @@ import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author zhanhb
  */
-@Utility
+@Component
 public class Zip {
 
     public void zip(Path target, Path... sources) throws IOException {
