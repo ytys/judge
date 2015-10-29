@@ -364,19 +364,19 @@ public class Downloader {
                 if (!eTag.equals(headerValue.trim())) {
                     return FULL;
                 }
-            } else // If the timestamp of the entity the client got is older than
-            // the last modification date of the entity, the entire entity
-            // is returned.
-             if (lastModified > (headerValueTime + 1000)) {
-                    return FULL;
-                }
+            } else if (lastModified > (headerValueTime + 1000)) {
+                // If the timestamp of the entity the client got is older than
+                // the last modification date of the entity, the entire entity
+                // is returned.
+                return FULL;
+            }
         }
         long fileLength = resource.getContentLength();
         if (fileLength == 0) {
             return null;
         }
         // Retrieving the range header (if any is specified
-        String rangeHeader = request.getHeader("Range");
+        final String rangeHeader = request.getHeader("Range");
         if (rangeHeader == null) {
             return null;
         }
@@ -387,17 +387,17 @@ public class Downloader {
             response.sendError(HttpServletResponse.SC_REQUESTED_RANGE_NOT_SATISFIABLE);
             return null;
         }
-        rangeHeader = rangeHeader.substring(6);
+
         // Vector which will contain all the ranges which are successfully
         // parsed.
-        StringTokenizer commaTokenizer = new StringTokenizer(rangeHeader, ",");
-        ArrayList<Range> result = new ArrayList<>(commaTokenizer.countTokens());
+        final StringTokenizer commaTokenizer = new StringTokenizer(rangeHeader.substring(6), ",");
+        final ArrayList<Range> result = new ArrayList<>(commaTokenizer.countTokens());
         // Parsing the range list
         while (commaTokenizer.hasMoreTokens()) {
-            String rangeDefinition = commaTokenizer.nextToken().trim();
-            Range currentRange = new Range();
+            final String rangeDefinition = commaTokenizer.nextToken().trim();
+            final Range currentRange = new Range();
             currentRange.length = fileLength;
-            int dashPos = rangeDefinition.indexOf('-');
+            final int dashPos = rangeDefinition.indexOf('-');
             if (dashPos == -1) {
                 response.addHeader("Content-Range", "bytes */" + fileLength);
                 response.sendError(HttpServletResponse.SC_REQUESTED_RANGE_NOT_SATISFIABLE);
@@ -405,7 +405,7 @@ public class Downloader {
             }
             if (dashPos == 0) {
                 try {
-                    long offset = Long.parseLong(rangeDefinition);
+                    final long offset = Long.parseLong(rangeDefinition);
                     currentRange.start = fileLength + offset;
                     currentRange.end = fileLength - 1;
                 } catch (NumberFormatException e) {
