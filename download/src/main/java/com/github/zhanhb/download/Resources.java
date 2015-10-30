@@ -33,16 +33,23 @@ public class Resources {
         return new Builder(file);
     }
 
+    /**
+     *
+     * @param path Path of the resource
+     * @return a builder
+     */
     public static Builder of(Path path) {
         return new Builder(path);
     }
 
     /**
      * Build resource with an input stream. The inputStream will be closed
-     * automatically.
+     * automatically. Deprecated, input stream should be a new one every time
+     * when the method is called.
      *
-     * @param inputStream
-     * @return
+     * @param inputStream input stream of the resource. stream should be
+     * regenerated when called twice or more.
+     * @return a builder
      */
     @Deprecated
     public static Builder of(InputStream inputStream) {

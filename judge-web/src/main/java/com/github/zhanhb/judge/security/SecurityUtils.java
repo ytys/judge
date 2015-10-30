@@ -18,7 +18,6 @@ package com.github.zhanhb.judge.security;
 import com.github.zhanhb.judge.audit.CustomUserDetails;
 import com.github.zhanhb.judge.domain.Userprofile;
 import com.github.zhanhb.judge.repository.UserprofileRepository;
-import com.github.zhanhb.judge.util.Utility;
 import java.util.Objects;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,11 +27,12 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
 /**
  * Utility class for Spring Security.
  */
-@Utility
+@Component
 public class SecurityUtils {
 
     /**
