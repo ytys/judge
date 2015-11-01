@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 /**
- * password encoder
+ * Password encoders.
  *
  * @see com.github.zhanhb.judge.config.PasswordEncoderConfig#passwordEncoder()
  */
