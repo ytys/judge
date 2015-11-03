@@ -60,7 +60,6 @@
         <commons-compress.version>1.10</commons-compress.version>
         <commons-lang3.version>3.4</commons-lang3.version>
         <evo-inflector.version>1.2.1</evo-inflector.version>
-        <findbugs-jsr305.version>3.0.1</findbugs-jsr305.version>
         <gson.version>2.4</gson.version>
         <guava.version>18.0</guava.version>
         <hibernate.version>5.0.3.Final</hibernate.version>
