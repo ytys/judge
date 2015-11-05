@@ -75,7 +75,7 @@
         <objenesis.version>2.2</objenesis.version>
         <poi.version>3.13</poi.version>
         <protobuf.version>2.6.1</protobuf.version>
-        <querydsl.version>3.6.8</querydsl.version>
+        <querydsl.version>3.6.9</querydsl.version>
         <start-class>com.github.zhanhb.judge.Application</start-class>
         <unbescape.version>1.1.1.RELEASE</unbescape.version>
         <woodstox.version>4.4.1</woodstox.version>
