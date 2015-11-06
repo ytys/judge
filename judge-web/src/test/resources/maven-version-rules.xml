@@ -4,7 +4,6 @@
     <ignoreVersions>
         <ignoreVersion type="regex">(?i).*[-\.](?:alpha|beta|cr|ea|edr|pre|rc)-?(?:\d+(?:\.\d+)*)?</ignoreVersion>
         <ignoreVersion type="regex">.*[\d\.-](?:b|M)\d*</ignoreVersion>
-        <ignoreVersion type="regex">.*[\d\.-]ea</ignoreVersion>
     </ignoreVersions>
 
     <rules>
