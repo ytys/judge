@@ -141,6 +141,17 @@
                 <version>${json-smart.version}</version>
             </dependency>
             <dependency>
+                <groupId>com.mysema.querydsl</groupId>
+                <artifactId>querydsl-core</artifactId>
+                <version>${querydsl.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>bridge-method-annotation</artifactId>
+                        <groupId>com.infradna.tool</groupId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-jdbc</artifactId>
                 <version>${spring-boot.version}</version>
@@ -287,12 +298,6 @@
         <dependency>
             <groupId>com.mysema.querydsl</groupId>
             <artifactId>querydsl-jpa</artifactId>
-            <exclusions>
-                <exclusion>
-                    <artifactId>bridge-method-annotation</artifactId>
-                    <groupId>com.infradna.tool</groupId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
