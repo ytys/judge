@@ -4,7 +4,7 @@
     <parent>
         <artifactId>platform-bom</artifactId>
         <groupId>io.spring.platform</groupId>
-        <version>2.0.0.BUILD-SNAPSHOT</version>
+        <version>2.0.1.BUILD-SNAPSHOT</version>
         <!-- lookup parent from repository -->
         <relativePath />
     </parent>
@@ -62,7 +62,7 @@
         <evo-inflector.version>1.2.1</evo-inflector.version>
         <gson.version>2.4</gson.version>
         <guava.version>18.0</guava.version>
-        <hibernate.version>5.0.3.Final</hibernate.version>
+        <hibernate.version>5.0.4.Final</hibernate.version>
         <jackson-coreutils.version>1.8</jackson-coreutils.version>
         <jandex.version>2.0.0.Final</jandex.version>
         <java.version>1.8</java.version>
@@ -76,7 +76,8 @@
         <objenesis.version>2.2</objenesis.version>
         <poi.version>3.13</poi.version>
         <protobuf.version>2.6.1</protobuf.version>
-        <querydsl.version>3.6.9</querydsl.version>
+        <querydsl4.version>4.0.6</querydsl4.version>
+        <spring-data-releasetrain.version>Hopper-BUILD-SNAPSHOT</spring-data-releasetrain.version>
         <start-class>com.github.zhanhb.judge.Application</start-class>
         <unbescape.version>1.1.1.RELEASE</unbescape.version>
         <woodstox.version>4.4.1</woodstox.version>
@@ -142,9 +143,9 @@
                 <version>${json-smart.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.mysema.querydsl</groupId>
+                <groupId>com.querydsl</groupId>
                 <artifactId>querydsl-core</artifactId>
-                <version>${querydsl.version}</version>
+                <version>${querydsl4.version}</version>
                 <exclusions>
                     <exclusion>
                         <artifactId>bridge-method-annotation</artifactId>
@@ -297,8 +298,9 @@
         </dependency>
         <!-- it seem that the package name of querydsl will change to com.querydsl -->
         <dependency>
-            <groupId>com.mysema.querydsl</groupId>
+            <groupId>com.querydsl</groupId>
             <artifactId>querydsl-jpa</artifactId>
+            <version>${querydsl4.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -486,15 +488,15 @@
                         <version>${hibernate.version}</version>
                     </dependency>
                     <dependency>
-                        <groupId>com.mysema.querydsl</groupId>
+                        <groupId>com.querydsl</groupId>
                         <artifactId>querydsl-apt</artifactId>
-                        <version>${querydsl.version}</version>
+                        <version>${querydsl4.version}</version>
                     </dependency>
                 </dependencies>
                 <configuration>
                     <logOnlyOnError>true</logOnlyOnError>
                     <processors>
-                        <processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor>
+                        <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
                         <processor>org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor</processor>
                     </processors>
                     <options>

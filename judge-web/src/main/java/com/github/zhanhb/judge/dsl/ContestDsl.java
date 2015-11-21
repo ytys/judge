@@ -15,8 +15,8 @@
  */
 package com.github.zhanhb.judge.dsl;
 
-import static com.github.zhanhb.judge.domain.QContest.contest;
-import com.mysema.query.types.Predicate;
+import com.github.zhanhb.judge.domain.QContest;
+import com.querydsl.core.types.Predicate;
 import java.time.LocalDateTime;
 
 /**
@@ -26,16 +26,16 @@ import java.time.LocalDateTime;
 public class ContestDsl {
 
     public static Predicate ended() {
-        return contest.finishTime.lt(LocalDateTime.now());
+        return QContest.contest.finishTime.lt(LocalDateTime.now());
     }
 
     public static Predicate scheduling() {
-        return contest.beginTime.gt(LocalDateTime.now());
+        return QContest.contest.beginTime.gt(LocalDateTime.now());
     }
 
     public static Predicate running() {
         LocalDateTime now = LocalDateTime.now();
-        return contest.beginTime.lt(now).and(contest.finishTime.gt(now));
+        return QContest.contest.beginTime.lt(now).and(QContest.contest.finishTime.gt(now));
     }
 
     private ContestDsl() {
