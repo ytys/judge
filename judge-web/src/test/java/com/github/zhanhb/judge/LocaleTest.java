@@ -73,4 +73,5 @@ public class LocaleTest {
         assertEquals(url, HttpStatus.OK, entity.getStatusCode());
         assertThat("cookie set error", cookie, containsString("locale=en_US"));
     }
+
 }

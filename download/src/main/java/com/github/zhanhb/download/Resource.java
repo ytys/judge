@@ -28,14 +28,14 @@ public abstract class Resource {
     /**
      * HTTP date format.
      */
-    private static final SimpleDateFormat format;
+    private static final SimpleDateFormat FORMATTER;
 
     /**
      * GMT timezone - all HTTP dates are on GMT
      */
     static {
-        format = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
-        format.setTimeZone(TimeZone.getTimeZone("GMT"));
+        FORMATTER = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
+        FORMATTER.setTimeZone(TimeZone.getTimeZone("GMT"));
     }
     private String lastModifiedHttp;
     private String weakETag;
@@ -70,8 +70,8 @@ public abstract class Resource {
         try {
             long modifiedDate = getLastModified();
             if (modifiedDate >= 0) {
-                synchronized (format) {
-                    lastModifiedHttp = format.format(modifiedDate);
+                synchronized (FORMATTER) {
+                    lastModifiedHttp = FORMATTER.format(modifiedDate);
                 }
             }
         } catch (IOException ex) {

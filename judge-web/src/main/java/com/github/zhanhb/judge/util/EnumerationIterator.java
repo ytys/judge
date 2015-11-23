@@ -45,4 +45,5 @@ public class EnumerationIterator<T> implements Iterator<T> {
     public T next() {
         return e.nextElement();
     }
+
 }

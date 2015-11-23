@@ -74,7 +74,8 @@ public class LoggerControllerTest {
     public void testList() throws Exception {
         log.info("list");
         mvc.perform(get(logs))
-                .andExpect(status().isOk()).andDo(print())
+                .andExpect(status().isOk())
+                .andDo(print())
                 .andExpect(jsonPath("$._links.self.href").isString())
                 .andExpect(jsonPath("$._embedded.loggerDToes").isArray())
                 .andExpect(jsonPath("$.page.size").value(restConfig.getDefaultPageSize()))

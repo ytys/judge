@@ -32,22 +32,29 @@ public class UserRegisterForm {
     @Pattern(regexp = "[a-zA-Z0-9_-]*+", message = "{UserRegisterForm.handle.invalid}")
     @Length(min = 5, max = 255)
     private String handle;
+
     @Pattern(regexp = "[\u0021-\u007e]*+", message = "{UserRegisterForm.password.invalid}")
     @Length(min = 6, max = 20)
     @NotNull
     private String password;
+
     @Email(regexp = Constants.Patterns.EMAIL_OR_EMPRTY)
     @Length(max = 255)
     @NotEmpty
     private String email;
+
     // will be validated in the controller
     private String rptPassword;
+
     @Length(max = 255)
     private String nickname;
+
     @Length(max = 255)
     private String school;
+
     @Length(max = 255)
     private String major;
+
     @Length(max = 255)
     private String realname;
 

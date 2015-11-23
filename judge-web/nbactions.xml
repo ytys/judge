@@ -49,8 +49,7 @@
             <goal>spring-boot:run</goal>
         </goals>
         <properties>
-            <server.port>0</server.port>
-            <server.context-path>/znoj</server.context-path>
+            <run.jvmArguments>-Dserver.tomcat.basedir=target -Dserver.port=0 -Dserver.context-path=/znoj</run.jvmArguments>
         </properties>
     </action>
     <action>
@@ -63,10 +62,8 @@
             <goal>spring-boot:run</goal>
         </goals>
         <properties>
-            <debug></debug>
-            <server.port>0</server.port>
-            <server.context-path>/znoj</server.context-path>
-            <jpda.listen>maven</jpda.listen>
+            <run.jvmArguments>-Dserver.tomcat.basedir=target -Dserver.port=0 -Dserver.context-path=/znoj -Xrunjdwp:transport=dt_socket,server=n,address=${jpda.address}</run.jvmArguments>
+            <jpda.listen>true</jpda.listen>
         </properties>
     </action>
     <action>

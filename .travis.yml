@@ -1,0 +1,9 @@
+language: java
+cache:
+  directories:
+    - $HOME/.m2/repository
+jdk:
+  - oraclejdk8
+sudo: false
+install: true
+script: mvn verify

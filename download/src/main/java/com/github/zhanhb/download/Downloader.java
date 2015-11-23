@@ -34,7 +34,7 @@ import org.slf4j.LoggerFactory;
 
 public class Downloader {
 
-    private static final Logger log = LoggerFactory.getLogger(Downloader.class);
+    private static final Logger LOG = LoggerFactory.getLogger(Downloader.class);
 
     /**
      * Full range marker.
@@ -45,7 +45,11 @@ public class Downloader {
     /**
      * MIME multipart separation string
      */
-    private static final String mimeSeparation = "DOWNLOADER_MIME_BOUNDARY";
+    private static final String MIME_SEPARATION = "DOWNLOADER_MIME_BOUNDARY";
+
+    public static Downloader newInstance() {
+        return new Downloader();
+    }
 
     // ----------------------------------------------------- Instance Variables
     /**
@@ -67,7 +71,10 @@ public class Downloader {
      * Should the Content-Disposition: attachment; filename=... header be sent
      * with static resources?
      */
-    private ContentDisposition contentDisposition = new SimpleContentDisposition();
+    private ContentDisposition contentDisposition = SimpleContentDisposition.ATTACHMENT;
+
+    private Downloader() {
+    }
 
     // ------------------------------------------------------ public Methods
     public Downloader useAcceptRanges(boolean useAcceptRanges) {
@@ -103,7 +110,7 @@ public class Downloader {
      *
      * @param request The servlet request we are processing
      * @param response The servlet response we are creating
-     * @param resource
+     * @param resource The requested resource we are processing
      *
      * @exception IOException if an input/output error occurs
      */
@@ -113,9 +120,31 @@ public class Downloader {
         serveResource(request, response, false, resource);
     }
 
+    /**
+     * Process a GET request for the specified resource.
+     *
+     * @param request The servlet request we are processing
+     * @param response The servlet response we are creating
+     * @param resource The requested resource we are processing
+     *
+     * @exception IOException if an input/output error occurs
+     */
     public void doGet(HttpServletRequest request, HttpServletResponse response,
             Resource resource) throws IOException {
         serveResource(request, response, true, resource);
+    }
+
+    /**
+     * Process a request for the specified resource.
+     *
+     * @param request The servlet request we are processing
+     * @param response The servlet response we are creating
+     * @param resource
+     * @throws IOException
+     */
+    public void service(HttpServletRequest request, HttpServletResponse response,
+            Resource resource) throws IOException {
+        serveResource(request, response, !"HEAD".equals(request.getMethod()), resource);
     }
 
     /**
@@ -226,11 +255,11 @@ public class Downloader {
                 || ranges == FULL) {
             // Set the appropriate output headers
             if (contentType != null) {
-                log.debug("serveFile:  contentType='{}'", contentType);
+                LOG.debug("serveFile:  contentType='{}'", contentType);
                 response.setContentType(contentType);
             }
             if ((contentLength >= 0) && (!serveContent || ostream != null)) {
-                log.debug("serveFile:  contentLength={}", contentLength);
+                LOG.debug("serveFile:  contentLength={}", contentLength);
                 // Don't set a content length if something else has already
                 // written to the response.
                 if (contentLength < Integer.MAX_VALUE) {
@@ -270,7 +299,7 @@ public class Downloader {
                     response.setHeader("content-length", "" + length);
                 }
                 if (contentType != null) {
-                    log.debug("serveFile:  contentType='{}'", contentType);
+                    LOG.debug("serveFile:  contentType='{}'", contentType);
                     response.setContentType(contentType);
                 }
                 if (serveContent) {
@@ -287,7 +316,7 @@ public class Downloader {
                     }
                 }
             } else {
-                response.setContentType("multipart/byteranges; boundary=" + mimeSeparation);
+                response.setContentType("multipart/byteranges; boundary=" + MIME_SEPARATION);
                 if (serveContent) {
                     try {
                         response.setBufferSize(outputBufferSize);
@@ -335,13 +364,11 @@ public class Downloader {
                 if (!eTag.equals(headerValue.trim())) {
                     return FULL;
                 }
-            } else {
+            } else if (lastModified > (headerValueTime + 1000)) {
                 // If the timestamp of the entity the client got is older than
                 // the last modification date of the entity, the entire entity
                 // is returned.
-                if (lastModified > (headerValueTime + 1000)) {
-                    return FULL;
-                }
+                return FULL;
             }
         }
         long fileLength = resource.getContentLength();
@@ -349,7 +376,7 @@ public class Downloader {
             return null;
         }
         // Retrieving the range header (if any is specified
-        String rangeHeader = request.getHeader("Range");
+        final String rangeHeader = request.getHeader("Range");
         if (rangeHeader == null) {
             return null;
         }
@@ -360,17 +387,17 @@ public class Downloader {
             response.sendError(HttpServletResponse.SC_REQUESTED_RANGE_NOT_SATISFIABLE);
             return null;
         }
-        rangeHeader = rangeHeader.substring(6);
+
         // Vector which will contain all the ranges which are successfully
         // parsed.
-        StringTokenizer commaTokenizer = new StringTokenizer(rangeHeader, ",");
-        ArrayList<Range> result = new ArrayList<>(commaTokenizer.countTokens());
+        final StringTokenizer commaTokenizer = new StringTokenizer(rangeHeader.substring(6), ",");
+        final ArrayList<Range> result = new ArrayList<>(commaTokenizer.countTokens());
         // Parsing the range list
         while (commaTokenizer.hasMoreTokens()) {
-            String rangeDefinition = commaTokenizer.nextToken().trim();
-            Range currentRange = new Range();
+            final String rangeDefinition = commaTokenizer.nextToken().trim();
+            final Range currentRange = new Range();
             currentRange.length = fileLength;
-            int dashPos = rangeDefinition.indexOf('-');
+            final int dashPos = rangeDefinition.indexOf('-');
             if (dashPos == -1) {
                 response.addHeader("Content-Range", "bytes */" + fileLength);
                 response.sendError(HttpServletResponse.SC_REQUESTED_RANGE_NOT_SATISFIABLE);
@@ -378,7 +405,7 @@ public class Downloader {
             }
             if (dashPos == 0) {
                 try {
-                    long offset = Long.parseLong(rangeDefinition);
+                    final long offset = Long.parseLong(rangeDefinition);
                     currentRange.start = fileLength + offset;
                     currentRange.end = fileLength - 1;
                 } catch (NumberFormatException e) {
@@ -629,7 +656,7 @@ public class Downloader {
                 Range currentRange = ranges.next();
                 // Writing MIME header.
                 ostream.println();
-                ostream.println("--" + mimeSeparation);
+                ostream.println("--" + MIME_SEPARATION);
                 if (contentType != null) {
                     ostream.println("Content-Type: " + contentType);
                 }
@@ -641,7 +668,7 @@ public class Downloader {
             }
         }
         ostream.println();
-        ostream.print("--" + mimeSeparation + "--");
+        ostream.print("--" + MIME_SEPARATION + "--");
         // Rethrow any exception that has occurred
         if (exception != null) {
             throw exception;
@@ -690,7 +717,7 @@ public class Downloader {
     private IOException copyRange(InputStream istream,
             ServletOutputStream ostream,
             long start, long end) {
-        log.trace("Serving bytes:{}-{}", start, end);
+        LOG.trace("Serving bytes:{}-{}", start, end);
 
         long skipped;
         try {
