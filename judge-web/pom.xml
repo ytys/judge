@@ -79,7 +79,9 @@
         <protobuf.version>2.6.1</protobuf.version>
         <querydsl4.version>4.0.6</querydsl4.version>
         <spring-data-releasetrain.version>Hopper-BUILD-SNAPSHOT</spring-data-releasetrain.version>
+        <spring-security.version>4.1.0.BUILD-SNAPSHOT</spring-security.version>
         <start-class>com.github.zhanhb.judge.Application</start-class>
+        <tomcat.version>8.0.29</tomcat.version>
         <unbescape.version>1.1.1.RELEASE</unbescape.version>
         <woodstox.version>4.4.1</woodstox.version>
         <xml-apis.version>1.4.01</xml-apis.version>

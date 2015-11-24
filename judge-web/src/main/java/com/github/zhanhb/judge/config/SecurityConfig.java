@@ -103,18 +103,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public AuthenticationSuccessHandler authenticationSuccessHandler() {
         SavedRequestAwareAuthenticationSuccessHandler sraash = new SavedRequestAwareAuthenticationSuccessHandler();
+        sraash.setTargetUrlParameter(TARGET_URL_PARAMETER);
         sraash.setUseReferer(true);
         sraash.setDefaultTargetUrl("/");
-        sraash.setTargetUrlParameter(TARGET_URL_PARAMETER);
         return sraash;
     }
 
     @Bean
     public LogoutSuccessHandler logoutSuccessHandler() {
         SimpleUrlLogoutSuccessHandler sulsh = new SimpleUrlLogoutSuccessHandler();
+        sulsh.setTargetUrlParameter(TARGET_URL_PARAMETER);
         sulsh.setUseReferer(true);
         sulsh.setDefaultTargetUrl("/");
-        sulsh.setTargetUrlParameter(TARGET_URL_PARAMETER);
         return sulsh;
     }
 

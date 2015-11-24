@@ -18,7 +18,6 @@ package com.github.zhanhb.judge.repository;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
-import ch.qos.logback.classic.util.ContextSelectorStaticBinder;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -111,10 +110,11 @@ public class LoggerRepository {
     }
 
     private LoggerContext getLoggerContext() {
-        return ContextSelectorStaticBinder
-                .getSingleton()
-                .getContextSelector()
-                .getLoggerContext();
+        try {
+            return (LoggerContext) org.slf4j.LoggerFactory.getILoggerFactory();
+        } catch (ClassCastException | NullPointerException ex) {
+            throw new IllegalStateException("fail to get the logger context", ex);
+        }
     }
 
 }
