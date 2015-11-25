@@ -71,7 +71,7 @@
         <json-path.version>2.1.0</json-path.version>
         <json-smart.version>2.2.1</json-smart.version>
         <lombok.version>1.16.6</lombok.version>
-        <mariadb.version>1.3.0</mariadb.version>
+        <mariadb.version>1.3.2</mariadb.version>
         <!--<maven.test.failure.ignore>true</maven.test.failure.ignore>-->
         <!--<maven.test.skip>true</maven.test.skip>-->
         <objenesis.version>2.2</objenesis.version>
@@ -79,10 +79,12 @@
         <protobuf.version>2.6.1</protobuf.version>
         <querydsl4.version>4.0.6</querydsl4.version>
         <spring-data-releasetrain.version>Hopper-BUILD-SNAPSHOT</spring-data-releasetrain.version>
+        <spring-integration.version>4.2.2.RELEASE</spring-integration.version>
         <spring-security.version>4.1.0.BUILD-SNAPSHOT</spring-security.version>
         <start-class>com.github.zhanhb.judge.Application</start-class>
         <tomcat.version>8.0.29</tomcat.version>
         <unbescape.version>1.1.1.RELEASE</unbescape.version>
+        <undertow.version>1.3.6.Final</undertow.version>
         <woodstox.version>4.4.1</woodstox.version>
         <xml-apis.version>1.4.01</xml-apis.version>
     </properties>
@@ -266,10 +268,6 @@
             <scope>runtime</scope>
         </dependency>
         <dependency>
-            <groupId>javax.inject</groupId>
-            <artifactId>javax.inject</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.eclipse.persistence</groupId>
             <artifactId>javax.persistence</artifactId>
         </dependency>
@@ -388,6 +386,10 @@
                     <groupId>javax.xml.stream</groupId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongo-java-driver</artifactId>
         </dependency>
     </dependencies>
 
@@ -780,9 +782,6 @@
         </profile>
         <profile>
             <id>undertow</id>
-            <properties>
-                <undertow.version>1.3.6.Final</undertow.version>
-            </properties>
             <dependencies>
                 <dependency>
                     <groupId>javax</groupId>
