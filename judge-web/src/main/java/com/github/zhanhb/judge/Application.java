@@ -48,8 +48,8 @@ public class Application extends SpringBootServletInitializer {
     }
 
     @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.bannerMode(Banner.Mode.OFF)
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+        return builder.bannerMode(Banner.Mode.OFF)
                 .addCommandLineProperties(false)
                 .logStartupInfo(true)
                 .sources(Application.class);

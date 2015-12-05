@@ -82,6 +82,7 @@
         <spring-integration.version>4.2.2.RELEASE</spring-integration.version>
         <spring-security.version>4.1.0.BUILD-SNAPSHOT</spring-security.version>
         <start-class>com.github.zhanhb.judge.Application</start-class>
+        <thymeleaf.version>3.0.0.BETA01</thymeleaf.version>
         <tomcat.version>8.0.29</tomcat.version>
         <unbescape.version>1.1.1.RELEASE</unbescape.version>
         <undertow.version>1.3.6.Final</undertow.version>
@@ -337,7 +338,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
-            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.data</groupId>
@@ -386,10 +386,6 @@
                     <groupId>javax.xml.stream</groupId>
                 </exclusion>
             </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.mongodb</groupId>
-            <artifactId>mongo-java-driver</artifactId>
         </dependency>
     </dependencies>
 
