@@ -4,7 +4,7 @@
     <parent>
         <artifactId>platform-bom</artifactId>
         <groupId>io.spring.platform</groupId>
-        <version>2.0.1.BUILD-SNAPSHOT</version>
+        <version>2.1.0.BUILD-SNAPSHOT</version>
         <!-- lookup parent from repository -->
         <relativePath />
     </parent>
@@ -60,28 +60,27 @@
         <commons-compress.version>1.10</commons-compress.version>
         <commons-lang3.version>3.4</commons-lang3.version>
         <evo-inflector.version>1.2.1</evo-inflector.version>
-        <gson.version>2.4</gson.version>
+        <gson.version>2.5</gson.version>
         <guava.version>18.0</guava.version>
-        <hibernate.version>5.0.4.Final</hibernate.version>
+        <hibernate.version>5.0.5.Final</hibernate.version>
         <jackson-coreutils.version>1.8</jackson-coreutils.version>
-        <jandex.version>2.0.0.Final</jandex.version>
         <java.version>1.8</java.version>
         <javassist.version>3.20.0-GA</javassist.version>
         <json-patch.version>1.9</json-patch.version>
         <json-path.version>2.1.0</json-path.version>
         <json-smart.version>2.2.1</json-smart.version>
         <lombok.version>1.16.6</lombok.version>
-        <mariadb.version>1.3.0</mariadb.version>
+        <mariadb.version>1.3.3</mariadb.version>
         <!--<maven.test.failure.ignore>true</maven.test.failure.ignore>-->
         <!--<maven.test.skip>true</maven.test.skip>-->
         <objenesis.version>2.2</objenesis.version>
         <poi.version>3.13</poi.version>
         <protobuf.version>2.6.1</protobuf.version>
-        <querydsl4.version>4.0.6</querydsl4.version>
+        <querydsl4.version>4.0.7</querydsl4.version>
         <spring-data-releasetrain.version>Hopper-BUILD-SNAPSHOT</spring-data-releasetrain.version>
         <spring-security.version>4.1.0.BUILD-SNAPSHOT</spring-security.version>
         <start-class>com.github.zhanhb.judge.Application</start-class>
-        <tomcat.version>8.0.29</tomcat.version>
+        <!--<thymeleaf.version>3.0.0.BETA01</thymeleaf.version>-->
         <unbescape.version>1.1.1.RELEASE</unbescape.version>
         <woodstox.version>4.4.1</woodstox.version>
         <xml-apis.version>1.4.01</xml-apis.version>
@@ -106,10 +105,6 @@
                 <exclusions>
                     <!-- for hibernate 5 -->
                     <exclusion>
-                        <artifactId>geronimo-jta_1.1_spec</artifactId>
-                        <groupId>org.apache.geronimo.specs</groupId>
-                    </exclusion>
-                    <exclusion>
                         <artifactId>hibernate-jpa-2.1-api</artifactId>
                         <groupId>org.hibernate.javax.persistence</groupId>
                     </exclusion>
@@ -121,10 +116,6 @@
                 <version>${hibernate.version}</version>
                 <exclusions>
                     <exclusion>
-                        <artifactId>geronimo-jta_1.1_spec</artifactId>
-                        <groupId>org.apache.geronimo.specs</groupId>
-                    </exclusion>
-                    <exclusion>
                         <artifactId>hibernate-jpa-2.1-api</artifactId>
                         <groupId>org.hibernate.javax.persistence</groupId>
                     </exclusion>
@@ -134,11 +125,6 @@
                 <groupId>com.github.fge</groupId>
                 <artifactId>jackson-coreutils</artifactId>
                 <version>${jackson-coreutils.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.jboss</groupId>
-                <artifactId>jandex</artifactId>
-                <version>${jandex.version}</version>
             </dependency>
             <dependency>
                 <groupId>net.minidev</groupId>
@@ -266,10 +252,6 @@
             <scope>runtime</scope>
         </dependency>
         <dependency>
-            <groupId>javax.inject</groupId>
-            <artifactId>javax.inject</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.eclipse.persistence</groupId>
             <artifactId>javax.persistence</artifactId>
         </dependency>
@@ -339,7 +321,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
-            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.data</groupId>
@@ -780,9 +761,6 @@
         </profile>
         <profile>
             <id>undertow</id>
-            <properties>
-                <undertow.version>1.3.6.Final</undertow.version>
-            </properties>
             <dependencies>
                 <dependency>
                     <groupId>javax</groupId>
