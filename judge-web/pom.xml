@@ -80,7 +80,7 @@
         <spring-security.version>4.1.0.BUILD-SNAPSHOT</spring-security.version>
         <start-class>com.github.zhanhb.judge.Application</start-class>
         <!--<thymeleaf.version>3.0.0.BETA01</thymeleaf.version>-->
-        <unbescape.version>1.1.1.RELEASE</unbescape.version>
+        <unbescape.version>1.1.2.RELEASE</unbescape.version>
         <undertow.version>1.3.10.Final</undertow.version>
         <woodstox.version>4.4.1</woodstox.version>
         <xml-apis.version>1.4.01</xml-apis.version>
@@ -762,12 +762,6 @@
         <profile>
             <id>undertow</id>
             <dependencies>
-                <dependency>
-                    <groupId>javax</groupId>
-                    <artifactId>javaee-api</artifactId>
-                    <version>7.0</version>
-                    <scope>provided</scope>
-                </dependency>
                 <dependency>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-starter-undertow</artifactId>
