@@ -24,7 +24,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  *
  * @author zhanhb
  */
-public class MessageDigestPasswordEncoder implements PasswordEncoder {
+public enum MessageDigestPasswordEncoder implements PasswordEncoder {
+
+    MD5("MD5"),
+    SHA1("SHA1"),
+    SHA256("SHA-256");
 
     private final char[] bytes = {
         '0', '1', '2', '3', '4', '5', '6', '7',
@@ -34,7 +38,7 @@ public class MessageDigestPasswordEncoder implements PasswordEncoder {
     private final String algorithm;
     private final int passwordLength;
 
-    public MessageDigestPasswordEncoder(String algorithm) {
+    MessageDigestPasswordEncoder(String algorithm) {
         MessageDigest digest = getDigest(algorithm);
         this.algorithm = digest.getAlgorithm();
         passwordLength = digest.getDigestLength() << 1; // hex bytes

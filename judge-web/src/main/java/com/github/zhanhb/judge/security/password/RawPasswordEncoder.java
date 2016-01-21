@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 zhanhb.
+ * Copyright 2016 ZJNU ACM.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,23 +15,24 @@
  */
 package com.github.zhanhb.judge.security.password;
 
-import org.junit.Test;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  *
  * @author zhanhb
  */
-public class MessageDigestPasswordEncoderTest {
+public enum RawPasswordEncoder implements PasswordEncoder {
 
-    @Test
-    public void testOK() {
-        new MessageDigestPasswordEncoder("md5");
-        new MessageDigestPasswordEncoder("sha");
+    INSTANCE;
+
+    @Override
+    public String encode(CharSequence rawPassword) {
+        return rawPassword != null ? rawPassword.toString() : null;
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testIllegalArgumentException() {
-        new MessageDigestPasswordEncoder("any");
+    @Override
+    public boolean matches(CharSequence rawPassword, String encodedPassword) {
+        return encodedPassword != null ? encodedPassword.contentEquals(rawPassword) : rawPassword == null;
     }
 
 }

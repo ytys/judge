@@ -23,13 +23,13 @@ import javax.servlet.http.HttpServletResponse;
  * @author zhanhb
  * @see https://tools.ietf.org/html/rfc6266#section-4.1
  */
-public class SimpleContentDisposition implements ContentDisposition {
+public enum SimpleContentDisposition implements ContentDisposition {
 
+    ATTACHMENT("attachment"),
+    INLINE("inline");
     // https://tools.ietf.org/html/rfc5987#section-3.2.1
     // we will encoding + for some browser will decode + to a space
     static final URLEncoder CONTENT_DISPOSITION = new URLEncoder("!#$&-.^_`|~");
-    public static final ContentDisposition ATTACHMENT = new SimpleContentDisposition("attachment");
-    public static final ContentDisposition INLINE = new SimpleContentDisposition("inline");
     private final String type;
 
     SimpleContentDisposition(String type) {
