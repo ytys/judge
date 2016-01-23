@@ -15,13 +15,7 @@
  */
 package com.github.zhanhb.download;
 
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
-import java.nio.charset.CharsetEncoder;
-import java.nio.charset.CoderResult;
-import java.nio.charset.CodingErrorAction;
 import java.util.BitSet;
 import java.util.Objects;
 
@@ -62,9 +56,6 @@ public class URLEncoder {
         final int length = s.length();
         Objects.requireNonNull(charset, "charset");
         StringBuilder out = new StringBuilder(length);
-        int n = 40;
-        ByteBuffer bb = null;
-        CharsetEncoder encoder = null;
 
         for (int cur = 0; cur < length;) {
             int start = cur;
@@ -80,37 +71,8 @@ public class URLEncoder {
             }
             if (start != cur) {
                 // convert to external encoding before hex conversion
-                if (bb == null) {
-                    bb = ByteBuffer.allocate(n);
-                    encoder = charset.newEncoder()
-                            .onMalformedInput(CodingErrorAction.REPLACE)
-                            .onUnmappableCharacter(CodingErrorAction.REPLACE);
-                }
-                bb.clear();
-                assert encoder != null;
-                encoder.reset();
-                CoderResult cr;
-                while (true) {
-                    cr = encoder.encode(CharBuffer.wrap(s, start, cur), bb, true);
-                    if (cr.isUnderflow()) {
-                        break;
-                    }
-                    if (cr.isOverflow()) {
-                        n = 2 * n + 1;
-                        ByteBuffer o = ByteBuffer.allocate(n);
-                        bb.flip();
-                        o.put(bb);
-                        bb = o;
-                        continue;
-                    }
-                    try {
-                        cr.throwException();
-                    } catch (CharacterCodingException ex) {
-                        throw new Error(ex);
-                    }
-                }
-                byte[] bytes = bb.array();
-                for (int j = 0, limit = bb.flip().limit(); j < limit; ++j) {
+                byte[] bytes = s.substring(start, cur).getBytes(charset);
+                for (int j = 0, limit = bytes.length; j < limit; ++j) {
                     byte b = bytes[j];
                     out.append('%').append(HEX_CHARS[b >> 4 & 0xF]).append(HEX_CHARS[b & 0xF]);
                 }
