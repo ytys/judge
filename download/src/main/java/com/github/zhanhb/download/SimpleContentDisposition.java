@@ -15,9 +15,6 @@
  */
 package com.github.zhanhb.download;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 /**
  *
  * @author zhanhb
@@ -26,7 +23,16 @@ import javax.servlet.http.HttpServletResponse;
 public enum SimpleContentDisposition implements ContentDisposition {
 
     ATTACHMENT("attachment"),
-    INLINE("inline");
+    INLINE("inline"),
+    NONE(null) {
+
+        @Override
+        public String getContentDisposition(String filename) {
+            return null;
+        }
+
+    };
+
     // https://tools.ietf.org/html/rfc5987#section-3.2.1
     // we will encoding + for some browser will decode + to a space
     static final URLEncoder CONTENT_DISPOSITION = new URLEncoder("!#$&-.^_`|~");
@@ -37,14 +43,14 @@ public enum SimpleContentDisposition implements ContentDisposition {
     }
 
     @Override
-    public void setContentDisposition(HttpServletRequest request, HttpServletResponse response, String filename) {
+    public String getContentDisposition(String filename) {
         if (filename == null || filename.length() == 0) {
-            response.setHeader("Content-Disposition", type);
+            return type;
         } else if (isToken(filename)) { // already a token
-            response.setHeader("Content-Disposition", type + "; filename=" + filename);
+            return type + "; filename=" + filename;
         } else {
             String encoded = CONTENT_DISPOSITION.encode(filename);
-            response.setHeader("Content-Disposition", type + "; filename=\"" + encoded + "\"; filename*=utf-8''" + encoded);
+            return type + "; filename=\"" + encoded + "\"; filename*=utf-8''" + encoded;
         }
     }
 
