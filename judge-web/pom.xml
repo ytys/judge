@@ -55,22 +55,22 @@
     </issueManagement>
 
     <properties>
+        <aspectj.version>1.8.8</aspectj.version>
         <attoparser.version>1.4.0.RELEASE</attoparser.version>
         <classmate.version>1.3.1</classmate.version>
         <commons-compress.version>1.10</commons-compress.version>
-        <commons-lang3.version>3.4</commons-lang3.version>
         <evo-inflector.version>1.2.1</evo-inflector.version>
         <gson.version>2.5</gson.version>
-        <guava.version>18.0</guava.version>
-        <hibernate.version>5.0.5.Final</hibernate.version>
+        <guava.version>19.0</guava.version>
+        <h2.version>1.4.191</h2.version>
+        <hibernate.version>5.0.7.Final</hibernate.version>
         <jackson-coreutils.version>1.8</jackson-coreutils.version>
         <java.version>1.8</java.version>
         <javassist.version>3.20.0-GA</javassist.version>
         <json-patch.version>1.9</json-patch.version>
         <json-path.version>2.1.0</json-path.version>
         <json-smart.version>2.2.1</json-smart.version>
-        <lombok.version>1.16.6</lombok.version>
-        <mariadb.version>1.3.3</mariadb.version>
+        <mariadb.version>1.2.3</mariadb.version>
         <!--<maven.test.failure.ignore>true</maven.test.failure.ignore>-->
         <!--<maven.test.skip>true</maven.test.skip>-->
         <objenesis.version>2.2</objenesis.version>
@@ -81,7 +81,8 @@
         <spring-security.version>4.1.0.BUILD-SNAPSHOT</spring-security.version>
         <start-class>com.github.zhanhb.judge.Application</start-class>
         <!--<thymeleaf.version>3.0.0.BETA01</thymeleaf.version>-->
-        <unbescape.version>1.1.1.RELEASE</unbescape.version>
+        <unbescape.version>1.1.2.RELEASE</unbescape.version>
+        <undertow.version>1.3.14.Final</undertow.version>
         <woodstox.version>4.4.1</woodstox.version>
         <xml-apis.version>1.4.01</xml-apis.version>
     </properties>
@@ -190,11 +191,6 @@
     </dependencyManagement>
 
     <dependencies>
-        <dependency>
-            <groupId>com.github.zhanhb</groupId>
-            <artifactId>character-encoding-filter</artifactId>
-            <version>2.1.6.4</version>
-        </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-compress</artifactId>
@@ -421,7 +417,7 @@
             <plugin>
                 <groupId>com.github.ekryd.sortpom</groupId>
                 <artifactId>sortpom-maven-plugin</artifactId>
-                <version>2.4.0</version>
+                <version>2.5.0</version>
                 <executions>
                     <execution>
                         <phase>verify</phase>
@@ -491,7 +487,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>2.16</version>
+                <version>2.17</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -565,7 +561,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>2.18.1</version>
+                <version>2.19</version>
                 <configuration>
                     <parallel>methods</parallel>
                     <threadCount>4</threadCount>
@@ -622,6 +618,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.19</version>
                 <configuration>
                     <!-- surefire doesn't support file.encoding in environment, -->
                     <!-- we must specify it using argLine -->
@@ -716,7 +713,7 @@
         <profile>
             <id>tomcat7</id>
             <properties>
-                <tomcat.version>7.0.64</tomcat.version>
+                <tomcat.version>7.0.67</tomcat.version>
             </properties>
             <dependencies>
                 <dependency>
@@ -762,12 +759,6 @@
         <profile>
             <id>undertow</id>
             <dependencies>
-                <dependency>
-                    <groupId>javax</groupId>
-                    <artifactId>javaee-api</artifactId>
-                    <version>7.0</version>
-                    <scope>provided</scope>
-                </dependency>
                 <dependency>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-starter-undertow</artifactId>

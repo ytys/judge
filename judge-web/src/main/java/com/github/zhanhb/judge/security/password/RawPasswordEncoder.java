@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 zhanhb.
+ * Copyright 2016 ZJNU ACM.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,14 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.zhanhb.download;
+package com.github.zhanhb.judge.security.password;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  *
  * @author zhanhb
  */
-public interface ContentDisposition {
+public enum RawPasswordEncoder implements PasswordEncoder {
 
-    String getContentDisposition(String filename);
+    INSTANCE;
+
+    @Override
+    public String encode(CharSequence rawPassword) {
+        return rawPassword != null ? rawPassword.toString() : null;
+    }
+
+    @Override
+    public boolean matches(CharSequence rawPassword, String encodedPassword) {
+        return encodedPassword != null ? encodedPassword.contentEquals(rawPassword) : rawPassword == null;
+    }
 
 }

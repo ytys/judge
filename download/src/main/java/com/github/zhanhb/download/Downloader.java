@@ -16,30 +16,27 @@
  */
 package com.github.zhanhb.download;
 
-import java.io.BufferedInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
 import java.util.StringTokenizer;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.IOUtils;
+import org.springframework.http.HttpHeaders;
 
+@Slf4j
 public class Downloader {
-
-    private static final Logger LOG = LoggerFactory.getLogger(Downloader.class);
 
     /**
      * Full range marker.
      */
-    private static final List<Range> FULL = Collections.emptyList();
+    private static final Range[] FULL = new Range[0];
 
     // ----------------------------------------------------- Static Initializer
     /**
@@ -72,6 +69,7 @@ public class Downloader {
      * with static resources?
      */
     private ContentDisposition contentDisposition = SimpleContentDisposition.ATTACHMENT;
+    private final ThreadLocal<byte[]> inputBufferPoll = ThreadLocal.withInitial(() -> new byte[input]);
 
     private Downloader() {
     }
@@ -105,12 +103,17 @@ public class Downloader {
         return this;
     }
 
+    public void service(HttpServletRequest request, HttpServletResponse response,
+            Resource resource) throws IOException {
+        serveResource(request, response, !"HEAD".equals(request.getMethod()), resource);
+    }
+
     /**
      * Process a HEAD request for the specified resource.
      *
      * @param request The servlet request we are processing
      * @param response The servlet response we are creating
-     * @param resource The requested resource we are processing
+     * @param resource
      *
      * @exception IOException if an input/output error occurs
      */
@@ -120,31 +123,9 @@ public class Downloader {
         serveResource(request, response, false, resource);
     }
 
-    /**
-     * Process a GET request for the specified resource.
-     *
-     * @param request The servlet request we are processing
-     * @param response The servlet response we are creating
-     * @param resource The requested resource we are processing
-     *
-     * @exception IOException if an input/output error occurs
-     */
     public void doGet(HttpServletRequest request, HttpServletResponse response,
             Resource resource) throws IOException {
         serveResource(request, response, true, resource);
-    }
-
-    /**
-     * Process a request for the specified resource.
-     *
-     * @param request The servlet request we are processing
-     * @param response The servlet response we are creating
-     * @param resource
-     * @throws IOException
-     */
-    public void service(HttpServletRequest request, HttpServletResponse response,
-            Resource resource) throws IOException {
-        serveResource(request, response, !"HEAD".equals(request.getMethod()), resource);
     }
 
     /**
@@ -158,10 +139,8 @@ public class Downloader {
      * and false if any of the conditions is not satisfied, in which case
      * request processing is stopped
      */
-    private boolean checkIfHeaders(HttpServletRequest request,
-            HttpServletResponse response,
-            Resource resource)
-            throws IOException {
+    private boolean checkIfHeaders(HttpServletRequest request, HttpServletResponse response,
+            Resource resource) throws IOException {
         return checkIfMatch(request, response, resource)
                 && checkIfModifiedSince(request, response, resource)
                 && checkIfNoneMatch(request, response, resource)
@@ -180,8 +159,7 @@ public class Downloader {
      * @exception ServletException if a servlet-specified error occurs
      */
     private void serveResource(HttpServletRequest request, HttpServletResponse response,
-            boolean content, Resource resource)
-            throws IOException {
+            boolean content, Resource resource) throws IOException {
         boolean serveContent = content;
         if (resource == null || !resource.exists()) {
             // Check if we're included so we can return the appropriate
@@ -208,21 +186,21 @@ public class Downloader {
         // Find content type.
         String contentType = resource.getMimeType();
         if (contentType == null) {
-            contentType = request.getServletContext().getMimeType(resource.getName());
+            contentType = request.getServletContext().getMimeType(resource.getFilename());
         }
-        List<Range> ranges = null;
+        Range[] ranges = null;
         long contentLength;
         if (!isError) {
             if (useAcceptRanges) {
                 // Accept ranges header
-                response.setHeader("Accept-Ranges", "bytes");
+                response.setHeader(HttpHeaders.ACCEPT_RANGES, "bytes");
             }
             // Parse range specifier
             ranges = parseRange(request, response, resource);
             // ETag header
-            response.setHeader("ETag", resource.getETag());
+            response.setHeader(HttpHeaders.ETAG, resource.getETag());
             // Last-Modified header
-            response.setHeader("Last-Modified", resource.getLastModifiedHttp());
+            response.setHeader(HttpHeaders.LAST_MODIFIED, resource.getLastModifiedHttp());
         }
         // Get content length
         contentLength = resource.getContentLength();
@@ -233,41 +211,28 @@ public class Downloader {
         }
         ServletOutputStream ostream = null;
         if (serveContent) {
-            // Trying to retrieve the servlet output stream
-            try {
-                ostream = response.getOutputStream();
-            } catch (IllegalStateException e) {
-                // If it fails, we try to get a Writer instead if we're
-                // trying to serve a text file
-                throw e;
-            }
+            ostream = response.getOutputStream();
         }
 
         ContentDisposition cd = this.contentDisposition;
         if (cd != null) {
-            cd.setContentDisposition(request, response, resource.getName());
+            String disposition = cd.getContentDisposition(resource.getFilename());
+            if (disposition != null) {
+                response.setHeader(HttpHeaders.CONTENT_DISPOSITION, disposition);
+            }
         }
 
         // Check to see if a Filter, Valve of wrapper has written some content.
         // If it has, disable range requests and setting of a content length
         // since neither can be done reliably.
-        if (isError || ((ranges == null || ranges.isEmpty()) && request.getHeader("Range") == null)
-                || ranges == FULL) {
+        if (isError || ranges == FULL) {
             // Set the appropriate output headers
             if (contentType != null) {
-                LOG.debug("serveFile:  contentType='{}'", contentType);
+                log.debug("serveFile: contentType='{}'", contentType);
                 response.setContentType(contentType);
             }
-            if ((contentLength >= 0) && (!serveContent || ostream != null)) {
-                LOG.debug("serveFile:  contentLength={}", contentLength);
-                // Don't set a content length if something else has already
-                // written to the response.
-                if (contentLength < Integer.MAX_VALUE) {
-                    response.setContentLength((int) contentLength);
-                } else {
-                    // Set the content-length as String to be able to use a long
-                    response.setHeader("content-length", "" + contentLength);
-                }
+            if (contentLength >= 0) {
+                response.setContentLengthLong(contentLength);
             }
             // Copy the input stream to our output stream (if requested)
             if (serveContent) {
@@ -276,30 +241,20 @@ public class Downloader {
                 } catch (IllegalStateException e) {
                     // Silent catch
                 }
-                if (ostream != null) {
-                    copy(resource, ostream);
-                } else {
-                    throw new IllegalStateException();
+                try (InputStream stream = resource.openStream()) {
+                    IOUtils.copyLarge(stream, ostream, inputBufferPoll.get());
                 }
             }
-        } else {
-            if ((ranges == null) || (ranges.isEmpty())) {
-                return;
-            }
+        } else if (ranges != null && ranges.length != 0) {
             // Partial content response.
             response.setStatus(HttpServletResponse.SC_PARTIAL_CONTENT);
-            if (ranges.size() == 1) {
-                Range range = ranges.get(0);
-                response.addHeader("Content-Range", "bytes " + range.start + "-" + range.end + "/" + range.length);
+            if (ranges.length == 1) {
+                Range range = ranges[0];
+                response.addHeader(HttpHeaders.CONTENT_RANGE, "bytes " + range.start + "-" + range.end + "/" + range.total);
                 long length = range.end - range.start + 1;
-                if (length < Integer.MAX_VALUE) {
-                    response.setContentLength((int) length);
-                } else {
-                    // Set the content-length as String to be able to use a long
-                    response.setHeader("content-length", "" + length);
-                }
+                response.setContentLengthLong(length);
                 if (contentType != null) {
-                    LOG.debug("serveFile:  contentType='{}'", contentType);
+                    log.debug("serveFile: contentType='{}'", contentType);
                     response.setContentType(contentType);
                 }
                 if (serveContent) {
@@ -308,11 +263,8 @@ public class Downloader {
                     } catch (IllegalStateException e) {
                         // Silent catch
                     }
-                    if (ostream != null) {
-                        copy(resource, ostream, range);
-                    } else {
-                        // we should not get here
-                        throw new IllegalStateException();
+                    try (InputStream stream = resource.openStream()) {
+                        copyRange(stream, ostream, range.start, range.end);
                     }
                 }
             } else {
@@ -323,13 +275,7 @@ public class Downloader {
                     } catch (IllegalStateException e) {
                         // Silent catch
                     }
-                    if (ostream != null) {
-                        copy(resource, ostream, ranges.iterator(),
-                                contentType);
-                    } else {
-                        // we should not get here
-                        throw new IllegalStateException();
-                    }
+                    copy(resource, ostream, ranges, contentType);
                 }
             }
         }
@@ -344,27 +290,26 @@ public class Downloader {
      * @return Vector of ranges
      */
     @SuppressWarnings("ReturnOfCollectionOrArrayField")
-    private List<Range> parseRange(HttpServletRequest request,
-            HttpServletResponse response,
+    private Range[] parseRange(HttpServletRequest request, HttpServletResponse response,
             Resource resource) throws IOException {
         // Checking If-Range
-        String headerValue = request.getHeader("If-Range");
+        String headerValue = request.getHeader(HttpHeaders.IF_RANGE);
         if (headerValue != null) {
-            long headerValueTime = (-1);
+            long headerValueTime = -1;
             try {
-                headerValueTime = request.getDateHeader("If-Range");
+                headerValueTime = request.getDateHeader(HttpHeaders.IF_RANGE);
             } catch (IllegalArgumentException e) {
                 // Ignore
             }
             String eTag = resource.getETag();
             long lastModified = resource.getLastModified();
-            if (headerValueTime == (-1)) {
+            if (headerValueTime == -1) {
                 // If the ETag the client gave does not match the entity
                 // etag, then the entire entity is returned.
                 if (!eTag.equals(headerValue.trim())) {
                     return FULL;
                 }
-            } else if (lastModified > (headerValueTime + 1000)) {
+            } else if (lastModified > headerValueTime + 1000) {
                 // If the timestamp of the entity the client got is older than
                 // the last modification date of the entity, the entire entity
                 // is returned.
@@ -373,68 +318,61 @@ public class Downloader {
         }
         long fileLength = resource.getContentLength();
         if (fileLength == 0) {
-            return null;
+            return FULL;
         }
         // Retrieving the range header (if any is specified
-        final String rangeHeader = request.getHeader("Range");
+        String rangeHeader = request.getHeader(HttpHeaders.RANGE);
         if (rangeHeader == null) {
-            return null;
+            return FULL;
         }
         // bytes is the only range unit supported (and I don't see the point
         // of adding new ones).
-        if (!rangeHeader.startsWith("bytes")) {
-            response.addHeader("Content-Range", "bytes */" + fileLength);
-            response.sendError(HttpServletResponse.SC_REQUESTED_RANGE_NOT_SATISFIABLE);
-            return null;
+        if (!rangeHeader.startsWith("bytes=")) {
+            return FULL;
         }
-
         // Vector which will contain all the ranges which are successfully
         // parsed.
-        final StringTokenizer commaTokenizer = new StringTokenizer(rangeHeader.substring(6), ",");
-        final ArrayList<Range> result = new ArrayList<>(commaTokenizer.countTokens());
+        ArrayList<Range> result = new ArrayList<>(4);
         // Parsing the range list
-        while (commaTokenizer.hasMoreTokens()) {
-            final String rangeDefinition = commaTokenizer.nextToken().trim();
-            final Range currentRange = new Range();
-            currentRange.length = fileLength;
+        // "bytes=".length() = 6
+        for (int index, last = 6;; last = index + 1) {
+            index = rangeHeader.indexOf(',', last);
+            final String rangeDefinition = (index != -1 ? rangeHeader.substring(last, index) : rangeHeader.substring(last)).trim();
+            final Range currentRange = new Range(fileLength);
             final int dashPos = rangeDefinition.indexOf('-');
             if (dashPos == -1) {
-                response.addHeader("Content-Range", "bytes */" + fileLength);
-                response.sendError(HttpServletResponse.SC_REQUESTED_RANGE_NOT_SATISFIABLE);
-                return null;
+                break;
             }
-            if (dashPos == 0) {
-                try {
+            try {
+                if (dashPos == 0) {
                     final long offset = Long.parseLong(rangeDefinition);
-                    currentRange.start = fileLength + offset;
-                    currentRange.end = fileLength - 1;
-                } catch (NumberFormatException e) {
-                    response.addHeader("Content-Range", "bytes */" + fileLength);
-                    response.sendError(HttpServletResponse.SC_REQUESTED_RANGE_NOT_SATISFIABLE);
-                    return null;
-                }
-            } else {
-                try {
+                    if (offset == 0) { // -0
+                        break;
+                    }
+                    currentRange.start = Math.max(fileLength + offset, 0);
+                } else {
                     currentRange.start = Long.parseLong(rangeDefinition.substring(0, dashPos));
                     if (dashPos < rangeDefinition.length() - 1) {
                         currentRange.end = Long.parseLong(rangeDefinition.substring(dashPos + 1, rangeDefinition.length()));
-                    } else {
-                        currentRange.end = fileLength - 1;
                     }
-                } catch (NumberFormatException e) {
-                    response.addHeader("Content-Range", "bytes */" + fileLength);
-                    response.sendError(HttpServletResponse.SC_REQUESTED_RANGE_NOT_SATISFIABLE);
-                    return null;
                 }
+            } catch (NumberFormatException e) {
+                break;
             }
-            if (!currentRange.validate()) {
-                response.addHeader("Content-Range", "bytes */" + fileLength);
-                response.sendError(HttpServletResponse.SC_REQUESTED_RANGE_NOT_SATISFIABLE);
-                return null;
+            if (currentRange.validate()) {
+                result.add(currentRange);
             }
-            result.add(currentRange);
+            if (index == -1) {
+                int size = result.size();
+                if (size == 0) {
+                    break;
+                }
+                return result.toArray(new Range[size]);
+            }
         }
-        return result;
+        response.addHeader(HttpHeaders.CONTENT_RANGE, "bytes */" + fileLength);
+        response.sendError(HttpServletResponse.SC_REQUESTED_RANGE_NOT_SATISFIABLE);
+        return null;
     }
 
     /**
@@ -447,30 +385,16 @@ public class Downloader {
      * false if the condition is not satisfied, in which case request processing
      * is stopped
      */
-    private boolean checkIfMatch(HttpServletRequest request,
-            HttpServletResponse response,
-            Resource resource)
-            throws IOException {
+    private boolean checkIfMatch(HttpServletRequest request, HttpServletResponse response,
+            Resource resource) throws IOException {
         String eTag = resource.getETag();
-        String headerValue = request.getHeader("If-Match");
-        if (headerValue != null) {
-            if (headerValue.indexOf('*') == -1) {
-                StringTokenizer commaTokenizer = new StringTokenizer(headerValue, ",");
-                boolean conditionSatisfied = false;
-                while (commaTokenizer.hasMoreTokens()) {
-                    String currentToken = commaTokenizer.nextToken();
-                    if (currentToken.trim().equals(eTag)) {
-                        conditionSatisfied = true;
-                        break;
-                    }
-                }
-                // If none of the given ETags match, 412 Precodition failed is
-                // sent back
-                if (!conditionSatisfied) {
-                    response.sendError(HttpServletResponse.SC_PRECONDITION_FAILED);
-                    return false;
-                }
-            }
+        String headerValue = request.getHeader(HttpHeaders.IF_MATCH);
+        if (headerValue != null && headerValue.indexOf('*') == -1
+                && !anyMatches(headerValue, eTag)) {
+            // If none of the given ETags match, 412 Precodition failed is
+            // sent back
+            response.sendError(HttpServletResponse.SC_PRECONDITION_FAILED);
+            return false;
         }
         return true;
     }
@@ -485,26 +409,23 @@ public class Downloader {
      * false if the condition is not satisfied, in which case request processing
      * is stopped
      */
-    private boolean checkIfModifiedSince(HttpServletRequest request,
-            HttpServletResponse response,
-            Resource resource) {
+    @SuppressWarnings("NestedAssignment")
+    private boolean checkIfModifiedSince(HttpServletRequest request, HttpServletResponse response,
+            Resource resource) throws IOException {
         try {
-            long headerValue = request.getDateHeader("If-Modified-Since");
-            long lastModified = resource.getLastModified();
-            if (headerValue != -1) {
-                // If an If-None-Match header has been specified, if modified since
-                // is ignored.
-                if ((request.getHeader("If-None-Match") == null)
-                        && (lastModified < headerValue + 1000)) {
-                    // The entity has not been modified since the date
-                    // specified by the client. This is not an error case.
-                    response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
-                    response.setHeader("ETag", resource.getETag());
-                    return false;
-                }
+            long headerValue;
+            // If an If-None-Match header has been specified, if modified since
+            // is ignored.
+            if (request.getHeader(HttpHeaders.IF_NONE_MATCH) == null
+                    && (headerValue = request.getDateHeader(HttpHeaders.IF_MODIFIED_SINCE)) != -1
+                    && resource.getLastModified() < headerValue + 1000) {
+                // The entity has not been modified since the date
+                // specified by the client. This is not an error case.
+                response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+                response.setHeader(HttpHeaders.ETAG, resource.getETag());
+                return false;
             }
-        } catch (IllegalArgumentException | IOException ex) {
-            return true;
+        } catch (IllegalArgumentException ex) {
         }
         return true;
     }
@@ -519,38 +440,22 @@ public class Downloader {
      * false if the condition is not satisfied, in which case request processing
      * is stopped
      */
-    private boolean checkIfNoneMatch(HttpServletRequest request,
-            HttpServletResponse response,
-            Resource resource)
-            throws IOException {
+    private boolean checkIfNoneMatch(HttpServletRequest request, HttpServletResponse response,
+            Resource resource) throws IOException {
         String eTag = resource.getETag();
-        String headerValue = request.getHeader("If-None-Match");
-        if (headerValue != null) {
-            boolean conditionSatisfied = false;
-            if (!headerValue.equals("*")) {
-                StringTokenizer commaTokenizer = new StringTokenizer(headerValue, ",");
-                while (!conditionSatisfied && commaTokenizer.hasMoreTokens()) {
-                    String currentToken = commaTokenizer.nextToken();
-                    if (currentToken.trim().equals(eTag)) {
-                        conditionSatisfied = true;
-                    }
-                }
+        String headerValue = request.getHeader(HttpHeaders.IF_NONE_MATCH);
+        if (headerValue != null && (headerValue.equals("*") || anyMatches(headerValue, eTag))) {
+            // For GET and HEAD, we should respond with
+            // 304 Not Modified.
+            // For every other method, 412 Precondition Failed is sent
+            // back.
+            if ("GET".equals(request.getMethod()) || "HEAD".equals(request.getMethod())) {
+                response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+                response.setHeader(HttpHeaders.ETAG, eTag);
             } else {
-                conditionSatisfied = true;
-            }
-            if (conditionSatisfied) {
-                // For GET and HEAD, we should respond with
-                // 304 Not Modified.
-                // For every other method, 412 Precondition Failed is sent
-                // back.
-                if (("GET".equals(request.getMethod())) || ("HEAD".equals(request.getMethod()))) {
-                    response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
-                    response.setHeader("ETag", eTag);
-                    return false;
-                }
                 response.sendError(HttpServletResponse.SC_PRECONDITION_FAILED);
-                return false;
             }
+            return false;
         }
         return true;
     }
@@ -565,74 +470,20 @@ public class Downloader {
      * false if the condition is not satisfied, in which case request processing
      * is stopped
      */
-    private boolean checkIfUnmodifiedSince(HttpServletRequest request,
-            HttpServletResponse response,
-            Resource resource)
-            throws IOException {
+    private boolean checkIfUnmodifiedSince(HttpServletRequest request, HttpServletResponse response,
+            Resource resource) throws IOException {
         try {
             long lastModified = resource.getLastModified();
-            long headerValue = request.getDateHeader("If-Unmodified-Since");
-            if (headerValue != -1) {
-                if (lastModified >= (headerValue + 1000)) {
-                    // The entity has not been modified since the date
-                    // specified by the client. This is not an error case.
-                    response.sendError(HttpServletResponse.SC_PRECONDITION_FAILED);
-                    return false;
-                }
+            long headerValue = request.getDateHeader(HttpHeaders.IF_UNMODIFIED_SINCE);
+            if (headerValue != -1 && lastModified >= headerValue + 1000) {
+                // The entity has not been modified since the date
+                // specified by the client. This is not an error case.
+                response.sendError(HttpServletResponse.SC_PRECONDITION_FAILED);
+                return false;
             }
-        } catch (IllegalArgumentException illegalArgument) {
-            return true;
+        } catch (IllegalArgumentException ex) {
         }
         return true;
-    }
-
-    /**
-     * Copy the contents of the specified input stream to the specified output
-     * stream, and ensure that both streams are closed before returning (even in
-     * the face of an exception).
-     *
-     * @param resource The cache entry for the source resource
-     * @param is The input stream to read the source resource from
-     * @param ostream The output stream to write to
-     *
-     * @exception IOException if an input/output error occurs
-     */
-    private void copy(Resource resource, ServletOutputStream ostream)
-            throws IOException {
-        IOException exception;
-
-        try (InputStream stream = resource.openStream();
-                BufferedInputStream bis = new BufferedInputStream(stream, input)) {
-            // Copy the input stream to the output stream
-            exception = copyRange(bis, ostream);
-        }
-        // Rethrow any exception that has occurred
-        if (exception != null) {
-            throw exception;
-        }
-    }
-
-    /**
-     * Copy the contents of the specified input stream to the specified output
-     * stream, and ensure that both streams are closed before returning (even in
-     * the face of an exception).
-     *
-     * @param resource The cache entry for the source resource
-     * @param ostream The output stream to write to
-     * @param range Range the client wanted to retrieve
-     * @exception IOException if an input/output error occurs
-     */
-    private void copy(Resource resource, ServletOutputStream ostream,
-            Range range) throws IOException {
-        IOException exception;
-        try (InputStream stream = resource.openStream();
-                BufferedInputStream bis = new BufferedInputStream(stream, input)) {
-            exception = copyRange(bis, ostream, range.start, range.end);
-        }
-        // Rethrow any exception that has occurred
-        if (exception != null) {
-            throw exception;
-        }
     }
 
     /**
@@ -646,61 +497,30 @@ public class Downloader {
      * @param contentType Content type of the resource
      * @exception IOException if an input/output error occurs
      */
-    private void copy(Resource resource, ServletOutputStream ostream, Iterator<Range> ranges, String contentType)
+    private void copy(Resource resource, ServletOutputStream ostream, Range[] ranges, String contentType)
             throws IOException {
         IOException exception = null;
-        while ((exception == null) && (ranges.hasNext())) {
-            try (InputStream stream = resource.openStream();
-                    BufferedInputStream bis = new BufferedInputStream(stream, input);) {
-
-                Range currentRange = ranges.next();
+        for (Range currentRange : ranges) {
+            try (InputStream stream = resource.openStream()) {
                 // Writing MIME header.
                 ostream.println();
                 ostream.println("--" + MIME_SEPARATION);
                 if (contentType != null) {
-                    ostream.println("Content-Type: " + contentType);
+                    ostream.println(HttpHeaders.CONTENT_TYPE + ": " + contentType);
                 }
-                ostream.println("Content-Range: bytes " + currentRange.start + "-" + currentRange.end + "/" + currentRange.length);
+                ostream.println(HttpHeaders.CONTENT_RANGE + ": bytes " + currentRange.start + "-" + currentRange.end + "/" + currentRange.total);
                 ostream.println();
                 // Printing content
-                exception = copyRange(bis, ostream, currentRange.start,
-                        currentRange.end);
+                copyRange(stream, ostream, currentRange.start, currentRange.end);
+            } catch (IOException ex) {
+                exception = ex;
             }
         }
         ostream.println();
         ostream.print("--" + MIME_SEPARATION + "--");
-        // Rethrow any exception that has occurred
         if (exception != null) {
             throw exception;
         }
-    }
-
-    /**
-     * Copy the contents of the specified input stream to the specified output
-     * stream, and ensure that both streams are closed before returning (even in
-     * the face of an exception).
-     *
-     * @param istream The input stream to read from
-     * @param ostream The output stream to write to
-     * @return Exception which occurred during processing
-     */
-    private IOException copyRange(InputStream istream, ServletOutputStream ostream) {
-        // Copy the input stream to the output stream
-        IOException exception = null;
-        byte buffer[] = new byte[input];
-        while (true) {
-            try {
-                int len = istream.read(buffer);
-                if (len == -1) {
-                    break;
-                }
-                ostream.write(buffer, 0, len);
-            } catch (IOException e) {
-                exception = e;
-                break;
-            }
-        }
-        return exception;
     }
 
     /**
@@ -714,56 +534,41 @@ public class Downloader {
      * @param end End of the range which will be copied
      * @return Exception which occurred during processing
      */
-    private IOException copyRange(InputStream istream,
-            ServletOutputStream ostream,
-            long start, long end) {
-        LOG.trace("Serving bytes:{}-{}", start, end);
+    private void copyRange(InputStream istream, OutputStream ostream, long start, long end)
+            throws IOException {
+        log.trace("Serving bytes: {}-{}", start, end);
+        IOUtils.copyLarge(istream, ostream, start, end + 1 - start, inputBufferPoll.get());
+    }
 
-        long skipped;
-        try {
-            skipped = istream.skip(start);
-        } catch (IOException e) {
-            return e;
-        }
-        if (skipped < start) {
-            return new IOException("Only skipped [" + skipped + "] bytes when [" + start + "] were requested");
-        }
-        IOException exception = null;
-        long bytesToRead = end - start + 1;
-        byte buffer[] = new byte[input];
-        int len = buffer.length;
-        while ((bytesToRead > 0) && (len > 0)) {
-            try {
-                len = istream.read(buffer);
-                if (bytesToRead >= len) {
-                    ostream.write(buffer, 0, len);
-                    bytesToRead -= len;
-                } else {
-                    ostream.write(buffer, 0, (int) bytesToRead);
-                    bytesToRead = 0;
-                }
-            } catch (IOException e) {
-                exception = e;
-                len = -1;
+    private boolean anyMatches(String headerValue, String eTag) {
+        StringTokenizer tokenizer = new StringTokenizer(headerValue, ",");
+        while (tokenizer.hasMoreTokens()) {
+            if (tokenizer.nextToken().trim().equals(eTag)) {
+                return true;
             }
         }
-        return exception;
+        return false;
     }
 
     private static class Range {
 
         public long start;
         public long end;
-        public long length;
+        public long total;
+
+        Range(long length) {
+            this.end = length - 1;
+            this.total = length;
+        }
 
         /**
          * Validate range.
          */
         public boolean validate() {
-            if (end >= length) {
-                end = length - 1;
-            }
-            return (start >= 0) && (end >= 0) && (start <= end) && (length > 0);
+            end = Math.min(end, total - 1);
+            return start <= end;
         }
+
     }
+
 }

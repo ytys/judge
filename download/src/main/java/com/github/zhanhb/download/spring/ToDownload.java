@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 zhanhb.
+ * Copyright 2016 ZJNU ACM.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,25 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.zhanhb.judge.security.password;
+package com.github.zhanhb.download.spring;
 
-import org.junit.Test;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  *
  * @author zhanhb
  */
-public class MessageDigestPasswordEncoderTest {
-
-    @Test
-    public void testOK() {
-        new MessageDigestPasswordEncoder("md5");
-        new MessageDigestPasswordEncoder("sha");
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testIllegalArgumentException() {
-        new MessageDigestPasswordEncoder("any");
-    }
-
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+public @interface ToDownload {
 }

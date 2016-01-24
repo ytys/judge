@@ -19,10 +19,10 @@ import com.github.zhanhb.judge.security.password.CombinePasswordEncoder;
 import com.github.zhanhb.judge.security.password.LengthLimitedPasswordEncoder;
 import com.github.zhanhb.judge.security.password.MessageDigestPasswordEncoder;
 import com.github.zhanhb.judge.security.password.MutiPasswordSupport;
+import com.github.zhanhb.judge.security.password.RawPasswordEncoder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
@@ -38,9 +38,9 @@ public class PasswordEncoderConfig {
                 new MutiPasswordSupport(
                         new CombinePasswordEncoder(
                                 new BCryptPasswordEncoder(),
-                                new MessageDigestPasswordEncoder("SHA"),
-                                new MessageDigestPasswordEncoder("MD5"),
-                                NoOpPasswordEncoder.getInstance()
+                                MessageDigestPasswordEncoder.SHA1,
+                                MessageDigestPasswordEncoder.MD5,
+                                RawPasswordEncoder.INSTANCE
                         )
                 ), 30);
     }
