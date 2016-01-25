@@ -142,9 +142,9 @@ public class Downloader {
     private boolean checkIfHeaders(HttpServletRequest request, HttpServletResponse response,
             Resource resource) throws IOException {
         return checkIfMatch(request, response, resource)
-                && checkIfModifiedSince(request, response, resource)
+                && checkIfUnmodifiedSince(request, response, resource)
                 && checkIfNoneMatch(request, response, resource)
-                && checkIfUnmodifiedSince(request, response, resource);
+                && checkIfModifiedSince(request, response, resource);
     }
 
     /**
@@ -449,7 +449,8 @@ public class Downloader {
             // 304 Not Modified.
             // For every other method, 412 Precondition Failed is sent
             // back.
-            if ("GET".equals(request.getMethod()) || "HEAD".equals(request.getMethod())) {
+            String method = request.getMethod();
+            if ("GET".equals(method) || "HEAD".equals(method)) {
                 response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
                 response.setHeader(HttpHeaders.ETAG, eTag);
             } else {
@@ -472,16 +473,20 @@ public class Downloader {
      */
     private boolean checkIfUnmodifiedSince(HttpServletRequest request, HttpServletResponse response,
             Resource resource) throws IOException {
-        try {
-            long lastModified = resource.getLastModified();
-            long headerValue = request.getDateHeader(HttpHeaders.IF_UNMODIFIED_SINCE);
-            if (headerValue != -1 && lastModified >= headerValue + 1000) {
-                // The entity has not been modified since the date
-                // specified by the client. This is not an error case.
+        if (request.getHeader(HttpHeaders.IF_MATCH) == null) {
+            try {
+                long lastModified = resource.getLastModified();
+                long headerValue = request.getDateHeader(HttpHeaders.IF_UNMODIFIED_SINCE);
+                if (headerValue != -1 && lastModified >= headerValue + 1000) {
+                    // The entity has not been modified since the date
+                    // specified by the client. This is not an error case.
+                    response.sendError(HttpServletResponse.SC_PRECONDITION_FAILED);
+                    return false;
+                }
+            } catch (IllegalArgumentException ex) {
                 response.sendError(HttpServletResponse.SC_PRECONDITION_FAILED);
                 return false;
             }
-        } catch (IllegalArgumentException ex) {
         }
         return true;
     }
