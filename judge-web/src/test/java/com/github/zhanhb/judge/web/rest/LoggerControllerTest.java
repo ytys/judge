@@ -120,7 +120,7 @@ public class LoggerControllerTest {
     public void testListAsXml() throws Exception {
         mvc.perform(get(logs).accept(APPLICATION_XML))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(APPLICATION_XML))
+                .andExpect(content().contentTypeCompatibleWith(APPLICATION_XML))
                 .andDo(print());
     }
 

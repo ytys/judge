@@ -65,12 +65,16 @@
         <java.version>1.8</java.version>
         <javassist.version>3.20.0-GA</javassist.version>
         <json-patch.version>1.9</json-patch.version>
+        <json-path.version>2.2.0</json-path.version>
         <json-smart.version>2.2.1</json-smart.version>
+        <logback.version>1.1.6</logback.version>
         <!--<maven.test.failure.ignore>true</maven.test.failure.ignore>-->
         <!--<maven.test.skip>true</maven.test.skip>-->
         <objenesis.version>2.2</objenesis.version>
         <poi.version>3.13</poi.version>
         <protobuf.version>2.6.1</protobuf.version>
+        <querydsl.version>4.0.9</querydsl.version>
+        <slf4j.version>1.7.18</slf4j.version>
         <spring-data-releasetrain.version>Hopper-BUILD-SNAPSHOT</spring-data-releasetrain.version>
         <spring-security.version>4.1.0.BUILD-SNAPSHOT</spring-security.version>
         <start-class>com.github.zhanhb.judge.Application</start-class>
@@ -649,7 +653,7 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.7.5.201505241946</version>
+                <version>0.7.6.201602180812</version>
                 <executions>
                     <execution>
                         <id>prepare-agent</id>

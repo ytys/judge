@@ -36,6 +36,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @author zhanhb
  */
 @DirtiesContext
+@Ignore("delete database")
 @RunWith(SpringJUnit4ClassRunner.class)
 @Slf4j
 @SpringApplicationConfiguration(classes = Application.class)
