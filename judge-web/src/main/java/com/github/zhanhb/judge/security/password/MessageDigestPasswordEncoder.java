@@ -18,56 +18,37 @@ package com.github.zhanhb.judge.security.password;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.codec.Hex;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  *
  * @author zhanhb
  */
+@RequiredArgsConstructor
 public enum MessageDigestPasswordEncoder implements PasswordEncoder {
 
-    MD5("MD5"),
-    SHA1("SHA1"),
-    SHA256("SHA-256");
-
-    private final char[] bytes = {
-        '0', '1', '2', '3', '4', '5', '6', '7',
-        '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'
-    };
+    MD5("MD5", 32),
+    SHA1("SHA1", 40),
+    SHA256("SHA-256", 64),
+    SHA512("SHA-512", 128);
 
     private final String algorithm;
     private final int passwordLength;
 
-    MessageDigestPasswordEncoder(String algorithm) {
-        MessageDigest digest = getDigest(algorithm);
-        this.algorithm = digest.getAlgorithm();
-        passwordLength = digest.getDigestLength() << 1; // hex bytes
-    }
-
-    public int getPasswordLength() {
-        return passwordLength;
-    }
-
     @Override
     public String encode(CharSequence password) {
-        return hexBytes(getDigest(algorithm)
-                .digest(password.toString()
-                        .getBytes(StandardCharsets.UTF_8)));
+        MessageDigest digest = getDigest(algorithm);
+        byte[] bytes = password == null ? digest.digest() : digest.digest(password.toString()
+                .getBytes(StandardCharsets.UTF_8));
+        return new String(Hex.encode(bytes));
     }
 
     @Override
     public boolean matches(CharSequence rawPassword, String encodedPassword) {
-        return encode(rawPassword).equalsIgnoreCase(encodedPassword);
-    }
-
-    private String hexBytes(byte[] digest) {
-        int len = digest.length;
-        char[] str = new char[len << 1];
-        for (int i = 0; i < len; i++) {
-            str[i << 1] = bytes[digest[i] >> 4 & 15];
-            str[i << 1 | 1] = bytes[digest[i] & 15];
-        }
-        return new String(str);
+        return encodedPassword.length() == passwordLength
+                && encode(rawPassword).equalsIgnoreCase(encodedPassword);
     }
 
     private MessageDigest getDigest(String algorithm) {

@@ -16,7 +16,6 @@
 package com.github.zhanhb.judge.security.password;
 
 import java.util.Objects;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
@@ -28,7 +27,11 @@ public class CombinePasswordEncoder extends PasswordEncoderWrapper {
     private final PasswordEncoder[] encoders;
 
     public CombinePasswordEncoder(PasswordEncoder... passwordEncoders) {
-        super(passwordEncoders[0]);
+        this(0, passwordEncoders);
+    }
+
+    public CombinePasswordEncoder(int index, PasswordEncoder... passwordEncoders) {
+        super(passwordEncoders[index]);
         PasswordEncoder[] clone = passwordEncoders.clone();
         // null check
         for (PasswordEncoder encoder : clone) {
@@ -40,18 +43,6 @@ public class CombinePasswordEncoder extends PasswordEncoderWrapper {
     @Override
     public boolean matches(CharSequence rawPassword, String encodedPassword) {
         for (PasswordEncoder encoder : encoders) {
-            Class<?> cl = encoder.getClass();
-            if (cl == BCryptPasswordEncoder.class && !encodedPassword.startsWith("$2")) { // fast failed
-                continue;
-            }
-            if (cl == MessageDigestPasswordEncoder.class) { // fast failed
-                MessageDigestPasswordEncoder mdpe = (MessageDigestPasswordEncoder) encoder;
-                int digestLength = mdpe.getPasswordLength();
-                if (digestLength > 0 && digestLength != encodedPassword.length()) {
-                    continue;
-                }
-                // fail through
-            }
             if (encoder.matches(rawPassword, encodedPassword)) {
                 return true;
             }
