@@ -26,7 +26,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.context.SpringApplicationConfiguration;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -86,7 +86,7 @@ public class ContestControllerTest {
     public void testListAsJson() throws Exception {
         log.info("listAsJson");
         mockMvc.perform(get("/rest/contests").accept(APPLICATION_JSON))
-                .andExpect(content().contentType(APPLICATION_JSON));
+                .andExpect(content().contentTypeCompatibleWith(APPLICATION_JSON));
     }
 
     /**
@@ -97,7 +97,7 @@ public class ContestControllerTest {
     @Test
     public void testViewAsJson() throws Exception {
         mockMvc.perform(get("/rest/contests/search/findByNameIgnoreCase?name={name}", CONTEST_NAME).accept(APPLICATION_JSON))
-                .andExpect(content().contentType(APPLICATION_JSON));
+                .andExpect(content().contentTypeCompatibleWith(APPLICATION_JSON));
     }
 
     @Test

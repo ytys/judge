@@ -1,113 +1,72 @@
+/*
+ * Copyright 2016 ZJNU ACM.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.github.zhanhb.judge.config;
 
-import java.util.LinkedHashMap;
-import javax.annotation.PostConstruct;
-import javax.servlet.Servlet;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.io.IOException;
+import java.io.Writer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfigureBefore;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
-import org.springframework.boot.autoconfigure.template.TemplateLocation;
-import org.springframework.boot.autoconfigure.thymeleaf.ThymeleafAutoConfiguration;
-import org.springframework.boot.autoconfigure.thymeleaf.ThymeleafProperties;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.Ordered;
-import org.springframework.util.MimeType;
+import org.springframework.util.StringUtils;
+import org.thymeleaf.Arguments;
+import org.thymeleaf.dom.Text;
 import org.thymeleaf.spring4.SpringTemplateEngine;
-import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
-import org.thymeleaf.spring4.view.ThymeleafViewResolver;
+import org.thymeleaf.templatemode.ITemplateModeHandler;
+import org.thymeleaf.templatemode.StandardTemplateModeHandlers;
+import org.thymeleaf.templatemode.TemplateModeHandler;
+import org.thymeleaf.templatewriter.AbstractGeneralTemplateWriter;
 
+/**
+ * Hacking Thymeleaf to minimize white space.
+ *
+ * @author zhanhb
+ * @see cn.edu.zjnu.acm.judge.config.WhiteSpaceNormalizedTemplateWriter
+ * @see
+ * <a href="https://distigme.wordpress.com/2012/10/11/hacking-thymeleaf-to-minimize-white-space/">Hacking
+ * Thymeleaf to minimize white space</a>
+ */
 @Configuration
 public class ThymeleafConfiguration {
 
-    private static final Log logger = LogFactory.getLog(ThymeleafAutoConfiguration.class);
-
-    @Configuration
-    @AutoConfigureBefore(ThymeleafAutoConfiguration.DefaultTemplateResolverConfiguration.class)
-    public static class DefaultTemplateResolverConfiguration {
-
-        @Autowired
-        private ThymeleafProperties properties;
-
-        @Autowired
-        private ApplicationContext applicationContext;
-
-        @PostConstruct
-        public void checkTemplateLocationExists() {
-            boolean checkTemplateLocation = this.properties.isCheckTemplateLocation();
-            if (checkTemplateLocation) {
-                TemplateLocation location = new TemplateLocation(
-                        this.properties.getPrefix());
-                if (!location.exists(this.applicationContext)) {
-                    logger.warn("Cannot find template location: " + location
-                            + " (please add some templates or check "
-                            + "your Thymeleaf configuration)");
-                }
-            }
-        }
-
-        @Bean
-        public SpringResourceTemplateResolver defaultTemplateResolver() {
-            SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
-            resolver.setApplicationContext(applicationContext);
-            resolver.setPrefix(this.properties.getPrefix());
-            resolver.setSuffix(this.properties.getSuffix());
-            resolver.setTemplateMode(this.properties.getMode());
-            if (this.properties.getEncoding() != null) {
-                resolver.setCharacterEncoding(this.properties.getEncoding().name());
-            }
-            resolver.setCacheable(this.properties.isCache());
-            Integer order = this.properties.getTemplateResolverOrder();
-            if (order != null) {
-                resolver.setOrder(order);
-            }
-            return resolver;
-        }
-
+    @Autowired
+    public void addTemplateModeHandlers(SpringTemplateEngine templateEngine) {
+        ITemplateModeHandler html5 = StandardTemplateModeHandlers.HTML5;
+        templateEngine.addTemplateModeHandler(new TemplateModeHandler(html5.getTemplateModeName(),
+                html5.getTemplateParser(),
+                new WhiteSpaceNormalizedTemplateWriter()));
     }
 
-    @Configuration
-    @ConditionalOnClass({Servlet.class})
-    @ConditionalOnWebApplication
-    protected static class ThymeleafViewResolverConfiguration {
+    private static class WhiteSpaceNormalizedTemplateWriter extends AbstractGeneralTemplateWriter {
 
-        @Autowired
-        private ThymeleafProperties properties;
-
-        @Autowired
-        private SpringTemplateEngine templateEngine;
-
-        @Bean
-        @ConditionalOnMissingBean(name = "thymeleafViewResolver")
-        @ConditionalOnProperty(name = "spring.thymeleaf.enabled", matchIfMissing = true)
-        public ThymeleafViewResolver thymeleafViewResolver() {
-            ThymeleafViewResolver resolver = new ThymeleafViewResolver();
-            resolver.setTemplateEngine(this.templateEngine);
-            resolver.setCharacterEncoding(this.properties.getEncoding().name());
-            resolver.setContentType(appendCharset(this.properties.getContentType(),
-                    resolver.getCharacterEncoding()));
-            resolver.setExcludedViewNames(this.properties.getExcludedViewNames());
-            resolver.setViewNames(this.properties.getViewNames());
-            // This resolver acts as a fallback resolver (e.g. like a
-            // InternalResourceViewResolver) so it needs to have low precedence
-            resolver.setOrder(Ordered.LOWEST_PRECEDENCE - 5);
-            return resolver;
+        @Override
+        protected boolean shouldWriteXmlDeclaration() {
+            return false;
         }
 
-        private String appendCharset(MimeType type, String charset) {
-            if (type.getCharSet() != null) {
-                return type.toString();
+        @Override
+        protected boolean useXhtmlTagMinimizationRules() {
+            return true;
+        }
+
+        @Override
+        protected void writeText(final Arguments arguments, final Writer writer, final Text text)
+                throws IOException {
+            final String content = text.getEscapedContent();
+            if (StringUtils.hasText(content)) {
+                writer.write(content);
             }
-            LinkedHashMap<String, String> parameters = new LinkedHashMap<String, String>();
-            parameters.put("charset", charset);
-            parameters.putAll(type.getParameters());
-            return new MimeType(type, parameters).toString();
         }
 
     }

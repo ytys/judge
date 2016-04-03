@@ -24,7 +24,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.context.SpringApplicationConfiguration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.http.MediaType;
 import static org.springframework.http.MediaType.APPLICATION_XML;
@@ -120,7 +120,7 @@ public class LoggerControllerTest {
     public void testListAsXml() throws Exception {
         mvc.perform(get(logs).accept(APPLICATION_XML))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(APPLICATION_XML))
+                .andExpect(content().contentTypeCompatibleWith(APPLICATION_XML))
                 .andDo(print());
     }
 

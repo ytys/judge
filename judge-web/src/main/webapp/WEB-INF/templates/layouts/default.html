@@ -138,10 +138,10 @@
             </div>
         </div>
 
-        <!--/*/<th:block th:fragment="footer">>/*/-->
+        <!--/*/<th:block th:fragment="footer">/*/-->
         <hr/>
         <div class="footer text-center">
-            <p>Copyright &#169; <span th:text="${#calendars.format(execInfo.now,'yyyy')}">2010</span> ZJNU ACM</p>
+            <p th:inline="text">Copyright &#169; [[${#calendars.format(execInfo.now,'yyyy')}]] ZJNU ACM</p>
         </div>
         <span th:title="#{back_to_top}" class="back-to-top" id="back-to-top"></span>
         <!--/*/</th:block>/*/-->

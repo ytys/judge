@@ -27,7 +27,6 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.IOUtils;
 import org.springframework.http.HttpHeaders;
 
 @Slf4j
@@ -140,11 +139,11 @@ public class Downloader {
      * request processing is stopped
      */
     private boolean checkIfHeaders(HttpServletRequest request, HttpServletResponse response,
-            Resource resource) throws IOException {
-        return checkIfMatch(request, response, resource)
-                && checkIfModifiedSince(request, response, resource)
-                && checkIfNoneMatch(request, response, resource)
-                && checkIfUnmodifiedSince(request, response, resource);
+            Resource resource, String eTag) throws IOException {
+        return checkIfMatch(request, response, eTag)
+                && checkIfUnmodifiedSince(request, response, resource)
+                && checkIfNoneMatch(request, response, eTag)
+                && checkIfModifiedSince(request, response, resource, eTag);
     }
 
     /**
@@ -180,7 +179,8 @@ public class Downloader {
         // satisfied.
         // Checking If headers
         boolean included = (request.getAttribute(RequestDispatcher.INCLUDE_CONTEXT_PATH) != null);
-        if (!included && !isError && !checkIfHeaders(request, response, resource)) {
+        String eTag = resource.getETag();
+        if (!included && !isError && !checkIfHeaders(request, response, resource, eTag)) {
             return;
         }
         // Find content type.
@@ -196,9 +196,9 @@ public class Downloader {
                 response.setHeader(HttpHeaders.ACCEPT_RANGES, "bytes");
             }
             // Parse range specifier
-            ranges = parseRange(request, response, resource);
+            ranges = parseRange(request, response, resource, eTag);
             // ETag header
-            response.setHeader(HttpHeaders.ETAG, resource.getETag());
+            response.setHeader(HttpHeaders.ETAG, eTag);
             // Last-Modified header
             response.setHeader(HttpHeaders.LAST_MODIFIED, resource.getLastModifiedHttp());
         }
@@ -291,7 +291,7 @@ public class Downloader {
      */
     @SuppressWarnings("ReturnOfCollectionOrArrayField")
     private Range[] parseRange(HttpServletRequest request, HttpServletResponse response,
-            Resource resource) throws IOException {
+            Resource resource, String eTag) throws IOException {
         // Checking If-Range
         String headerValue = request.getHeader(HttpHeaders.IF_RANGE);
         if (headerValue != null) {
@@ -301,7 +301,6 @@ public class Downloader {
             } catch (IllegalArgumentException e) {
                 // Ignore
             }
-            String eTag = resource.getETag();
             long lastModified = resource.getLastModified();
             if (headerValueTime == -1) {
                 // If the ETag the client gave does not match the entity
@@ -386,8 +385,7 @@ public class Downloader {
      * is stopped
      */
     private boolean checkIfMatch(HttpServletRequest request, HttpServletResponse response,
-            Resource resource) throws IOException {
-        String eTag = resource.getETag();
+            String eTag) throws IOException {
         String headerValue = request.getHeader(HttpHeaders.IF_MATCH);
         if (headerValue != null && headerValue.indexOf('*') == -1
                 && !anyMatches(headerValue, eTag)) {
@@ -411,7 +409,7 @@ public class Downloader {
      */
     @SuppressWarnings("NestedAssignment")
     private boolean checkIfModifiedSince(HttpServletRequest request, HttpServletResponse response,
-            Resource resource) throws IOException {
+            Resource resource, String eTag) throws IOException {
         try {
             long headerValue;
             // If an If-None-Match header has been specified, if modified since
@@ -422,7 +420,7 @@ public class Downloader {
                 // The entity has not been modified since the date
                 // specified by the client. This is not an error case.
                 response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
-                response.setHeader(HttpHeaders.ETAG, resource.getETag());
+                response.setHeader(HttpHeaders.ETAG, eTag);
                 return false;
             }
         } catch (IllegalArgumentException ex) {
@@ -441,15 +439,15 @@ public class Downloader {
      * is stopped
      */
     private boolean checkIfNoneMatch(HttpServletRequest request, HttpServletResponse response,
-            Resource resource) throws IOException {
-        String eTag = resource.getETag();
+            String eTag) throws IOException {
         String headerValue = request.getHeader(HttpHeaders.IF_NONE_MATCH);
         if (headerValue != null && (headerValue.equals("*") || anyMatches(headerValue, eTag))) {
             // For GET and HEAD, we should respond with
             // 304 Not Modified.
             // For every other method, 412 Precondition Failed is sent
             // back.
-            if ("GET".equals(request.getMethod()) || "HEAD".equals(request.getMethod())) {
+            String method = request.getMethod();
+            if ("GET".equals(method) || "HEAD".equals(method)) {
                 response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
                 response.setHeader(HttpHeaders.ETAG, eTag);
             } else {
@@ -472,16 +470,20 @@ public class Downloader {
      */
     private boolean checkIfUnmodifiedSince(HttpServletRequest request, HttpServletResponse response,
             Resource resource) throws IOException {
-        try {
-            long lastModified = resource.getLastModified();
-            long headerValue = request.getDateHeader(HttpHeaders.IF_UNMODIFIED_SINCE);
-            if (headerValue != -1 && lastModified >= headerValue + 1000) {
-                // The entity has not been modified since the date
-                // specified by the client. This is not an error case.
+        if (request.getHeader(HttpHeaders.IF_MATCH) == null) {
+            try {
+                long lastModified = resource.getLastModified();
+                long headerValue = request.getDateHeader(HttpHeaders.IF_UNMODIFIED_SINCE);
+                if (headerValue != -1 && lastModified >= headerValue + 1000) {
+                    // The entity has not been modified since the date
+                    // specified by the client. This is not an error case.
+                    response.sendError(HttpServletResponse.SC_PRECONDITION_FAILED);
+                    return false;
+                }
+            } catch (IllegalArgumentException ex) {
                 response.sendError(HttpServletResponse.SC_PRECONDITION_FAILED);
                 return false;
             }
-        } catch (IllegalArgumentException ex) {
         }
         return true;
     }
